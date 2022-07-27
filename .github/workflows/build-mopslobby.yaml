@@ -7,7 +7,12 @@ on:
       - 'dev/*'
     paths:
       - 'apps/mopslobby/**'
-
+  pull_request:
+    branches:
+      - 'main'
+      - 'dev/*'
+    paths:
+      - 'apps/mopslobby/**'
 jobs:
   build-plugin:
     name: build-plugin

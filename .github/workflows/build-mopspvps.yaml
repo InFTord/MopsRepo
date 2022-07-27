@@ -7,6 +7,12 @@ on:
       - 'dev/*'
     paths:
       - 'apps/mopspvps/**'
+  pull_request:
+    branches:
+      - 'main'
+      - 'dev/*'
+    paths:
+      - 'apps/mopslobby/**'
 
 jobs:
   build-plugin:
