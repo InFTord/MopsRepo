@@ -9,11 +9,12 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.plugin.java.JavaPlugin;
+import ml.mopslobby.Govno;
 
 public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     @Override
-    public void onEnable() {
-        Bukkit.getServer().getPluginManager().registerEvents(this, this);
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
+        return new Govno().commandsExecutor(sender, command, label, args);
     }
 
     @EventHandler
