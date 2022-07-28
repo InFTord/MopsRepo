@@ -15,7 +15,8 @@ public class Govno {
 	public boolean commandsExecutor(CommandSender sender, Command command, String label, String[] args) {
 		if (new AdminUtils().commandsExecutor(sender, command, label, args)) {
 			return true;
-		} else {
+		} 
+		else {
 			return new PlayerEssentials().commandsExecutor(sender, command, label, args);
 		}
 	}
