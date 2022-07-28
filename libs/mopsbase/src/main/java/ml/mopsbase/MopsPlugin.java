@@ -18,7 +18,7 @@ public class MopsPlugin extends JavaPlugin {
 	protected List<Method> doOnEnable = new LinkedList<Method>();
 	public Logger logger;
 	protected Map<String, Object>;
-	protected Map<String> hardcodedSettings = new HashMap<>();
+	protected Map<String> hardcodedSettings = new HashMap<String> ();
 
 	@Override
 	public void onEnable() {
@@ -30,7 +30,7 @@ public class MopsPlugin extends JavaPlugin {
 	}
 
 	public void registerUtilCommands() {
-		this.getCommand("cname").setExecutor(new UtilCommands(this))
+		this.getCommand("cname").setExecutor(new UtilCommands(this));
 	}
 
 	public TextComponent getByLang(String lang, String string) {
