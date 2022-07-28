@@ -3,13 +3,18 @@ package ml.mopsbase;
 import ml.mopsbase.game.GameSession;
 import ml.mopsutils.Translation;
 import net.kyori.adventure.text.TextComponent;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
-import java.util.concurrent.Callable;
 
-import java.util.List;
-import java.util.Map;
+import javax.annotation.Nullable;
+import java.lang.reflect.Method;
+import java.util.*;
+import java.util.concurrent.Callable;
+import ml.mopsutils.Option;
+
+import java.util.logging.Logger;
 
 public class MopsPlugin extends JavaPlugin {
 	private List<GameSession> gameSessions;
@@ -18,20 +23,20 @@ public class MopsPlugin extends JavaPlugin {
 	protected List<Method> doOnEnable = new LinkedList<Method>();
 	public Logger logger;
 	protected Map<String, Object> asjfdkafj;
-	protected Map<String> hardcodedSettings = new HashMap<String> ();
+	protected Map<String, Option> hardcodedSettings = new HashMap<String, Option>();
 
 	@Override
 	public void onEnable() {
 		this.logger = getLogger();
 		logger.info("§aS§at§2a§ar§2t§ai§2n§ag §2M§ao§2p§as§2P§al§2u§ag§2i§an§2!");
 		for(Method m : doOnEnable) {
-			m.invoke();
+			//m.invoke();
 		}
 	}
 
-	public void registerUtilCommands() {
-		this.getCommand("cname").setExecutor(new UtilCommands(this));
-	}
+	//public void registerUtilCommands() {
+	//	this.getCommand("cname").setExecutor(new UtilCommands(this));
+	//}
 
 	public TextComponent getByLang(String lang, String string) {
 		getLogger().info("MopsPlugin | getByLang: \n" + lang + "\n" + string);

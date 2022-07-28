@@ -1,5 +1,2 @@
-package ml.mopsutils;
-
-public class Option {
-
+package ml.mopsutils;public class Option {
 }
