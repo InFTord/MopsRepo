@@ -18,7 +18,7 @@ public class MopsPlugin extends JavaPlugin {
 	protected List<Method> doOnEnable = new LinkedList<Method>();
 	public Logger logger;
 	protected Map<String, Object>;
-	protected Map<String> hardcodedSettings = new HashMap<>
+	protected Map<String> hardcodedSettings = new HashMap<>();
 
 	@Override
 	public void onEnable() {
