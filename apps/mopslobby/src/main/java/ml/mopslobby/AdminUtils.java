@@ -1,9 +1,7 @@
-package ml.mopspvps.commands;
+package ml.mopslobby;
 
-import ml.mopspvps.Commands;
-import ml.mopspvps.Dependencies;
-import ml.mopspvps.messages.CommandError;
 import ml.mopspvps.utils.CHARACTER;
+import ml.mopslobby.utils.Utils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -22,7 +20,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scoreboard.Score;
 import org.bukkit.util.Vector;
-import ml.mopslobby.utils.Utils;
 import java.util.*;
 import static net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacyAmpersand;
 
@@ -53,15 +50,18 @@ public class AdminUtils extends Commands {
 						if (args[0].toLowerCase(Locale.ROOT).equals("me")) { //Проверка на использование me
 							target = player;
 						} else { //Ошибка, и всё к ней присущее
-							TextComponent errorCode = CommandError.UNKNOWN_PLAYER.errorCode();
-							Sound errorSound = CommandError.UNKNOWN_PLAYER.errorSound();
+//							TextComponent errorCode = CommandError.UNKNOWN_PLAYER.errorCode();
+//							Sound errorSound = CommandError.UNKNOWN_PLAYER.errorSound();
 
-							player.sendMessage(errorCode);
-							player.playSound(player.getLocation(), errorSound, 1, 2);
+//							player.sendMessage(errorCode);
+//							player.playSound(player.getLocation(), errorSound, 1, 2);
 
-							Dependencies.getLog().info("<=КОМАНДЫ AU=> Игрок " + player.getName() + " ввёл команду ,," + commandName + arguments + "'' и вызвал ошибку:");
-							Dependencies.getLog().info("<=КОМАНДЫ AU=> " + ChatColor.RED + expection.getMessage());
-							Dependencies.getLog().info("<=КОМАНДЫ AU=> Игроку " + player.getName() + " было отправленно сообщение о ошибке: " + legacyAmpersand().serialize(errorCode));
+//							Dependencies.getLog().info("<=КОМАНДЫ AU=> Игрок " + player.getName() + " ввёл команду ,," + commandName + arguments + "'' и вызвал ошибку:");
+//							Dependencies.getLog().info("<=КОМАНДЫ AU=> " + ChatColor.RED + expection.getMessage());
+//							Dependencies.getLog().info("<=КОМАНДЫ AU=> Игроку " + player.getName() + " было отправленно сообщение о ошибке: " + legacyAmpersand().serialize(errorCode));
+
+							player.sendMessage("я выебал кастомные ошибки");
+
 							return true;
 						}
 					}
@@ -71,9 +71,11 @@ public class AdminUtils extends Commands {
 					if (nextArguments.isEmpty() || nextArguments.isBlank() || nextArguments == null) { //Если последующих аргументов нет
 						String rank = ChatColor.GRAY + ""; //стандартный ранг
 						String name = target.getName();
-						Dependencies.putMopsRank(target, rank);
-						Dependencies.putMopsName(target, name);
-						Dependencies.getLog().info("<=РАНГИ=> Записано имя " + name + "с рангом " + rank); //логги
+//						Dependencies.putMopsRank(target, rank);
+//						Dependencies.putMopsName(target, name);
+//						Dependencies.getLog().info("<=РАНГИ=> Записано имя " + name + "с рангом " + rank); //логги
+
+						player.sendMessage("АХАХАХАХ МОПС РАНК");
 
 						Utils.updateDisplayName(target); //Обновление имени
 
@@ -94,7 +96,7 @@ public class AdminUtils extends Commands {
 					}
 
 					String rank = nextArguments; //Установка ранга
-					Dependencies.putMopsRank(target, rank);
+//					Dependencies.putMopsRank(target, rank);
 
 					Utils.updateDisplayName(target); //Обновление имени
 
@@ -119,420 +121,347 @@ public class AdminUtils extends Commands {
 
 				}
 				default: { //Сообщение о том что комманда не найдена
-					TextComponent errorCode = CommandError.ARGUMENT_NAN.errorCode();
-					Sound errorSound = CommandError.ARGUMENT_NAN.errorSound();
+//					TextComponent errorCode = CommandError.ARGUMENT_NAN.errorCode();
+//					Sound errorSound = CommandError.ARGUMENT_NAN.errorSound();
 
-					player.sendMessage(errorCode);
-					player.playSound(player.getLocation(), errorSound, 1, 2);
+//					player.sendMessage(errorCode);
+//					player.playSound(player.getLocation(), errorSound, 1, 2);
 
-					Dependencies.getLog().info("<=КОМАНДЫ AU=> Игрок " + player.getName() + " ввёл неизвестную команду ,," + commandName + arguments + "''");
-					Dependencies.getLog().info("<=КОМАНДЫ AU=> Игроку " + player.getName() + " было отправленно сообщение о ошибке: " + legacyAmpersand().serialize(errorCode));
+//					Dependencies.getLog().info("<=КОМАНДЫ AU=> Игрок " + player.getName() + " ввёл неизвестную команду ,," + commandName + arguments + "''");
+//					Dependencies.getLog().info("<=КОМАНДЫ AU=> Игроку " + player.getName() + " было отправленно сообщение о ошибке: " + legacyAmpersand().serialize(errorCode));
+					player.sendMessage("я выебал кастомные ошибки");
 				}
 			}
-		} else {
-			TextComponent errorCode = CommandError.NO_OP.errorCode(); //Логи
-			Sound errorSound = CommandError.NO_OP.errorSound();
-
-			sender.sendMessage(errorCode);
-
-			Dependencies.getLog().info("<=КОМАНДЫ AU=> Существо/Игрок С/БЕЗ оп " + sender.getName() + " ввёл(о) команду ,," + commandName + arguments + "''");
-			Dependencies.getLog().info("<=КОМАНДЫ AU=> Существу " + sender.getName() + " было отправленно сообщение о ошибке: " + legacyAmpersand().serialize(errorCode));
-		}
-		if (sender instanceof Player) {
-			Player player = (Player) sender;
-			if (commandName.equals("customgive")) {
-				if (perms) {
-					player.openInventory(Dependencies.getCustomGive());
-				} else {
-					player.sendMessage(ChatColor.RED + "У вас нет OP!");
-					player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 2);
-				}
-				return true;
-			}
+//		} else {
+//			TextComponent errorCode = CommandError.NO_OP.errorCode(); //Логи
+//			Sound errorSound = CommandError.NO_OP.errorSound();
+//
+//			sender.sendMessage(errorCode);
+//
+//			Dependencies.getLog().info("<=КОМАНДЫ AU=> Существо/Игрок С/БЕЗ оп " + sender.getName() + " ввёл(о) команду ,," + commandName + arguments + "''");
+//			Dependencies.getLog().info("<=КОМАНДЫ AU=> Существу " + sender.getName() + " было отправленно сообщение о ошибке: " + legacyAmpersand().serialize(errorCode));
+//		}
+//		if (sender instanceof Player) {
+//			Player player = (Player) sender;
+//			if (commandName.equals("customgive")) {
+//				if (perms) {
+//					player.openInventory(Dependencies.getCustomGive());
+//				} else {
+//					player.sendMessage(ChatColor.RED + "У вас нет OP!");
+//					player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 2);
+//				}
+//				return true;
+//			}
 
 			if (commandName.equals("slimetest")) {
-				if (perms) {
-					Slime slime = (Slime) player.getWorld().spawnEntity(player.getLocation(), EntityType.SLIME);
+				Slime slime = (Slime) player.getWorld().spawnEntity(player.getLocation(), EntityType.SLIME);
 
-					int integer;
-					if (args.length == 0 || args[0].equals("")) {
-						player.sendMessage(ChatColor.RED + "Напишите цифру.");
-						return true;
-					} else {
-						String string = args[0];
-						try {
-							integer = Integer.parseInt(string);
-						} catch (Exception e) {
-							TextComponent errorCode = CommandError.ARGUMENT_NAN.errorCode();
-							Sound errorSound = CommandError.ARGUMENT_NAN.errorSound();
-
-							player.sendMessage(errorCode);
-							player.playSound(player.getLocation(), errorSound, 1, 2);
-
-							Dependencies.getLog().info("<=КОМАНДЫ AU=> Игрок " + player.getName() + " ввёл команду ,," + commandName + arguments + "'' и вызвал ошибку:");
-							Dependencies.getLog().info("<=КОМАНДЫ AU=> " + ChatColor.RED + e.getMessage());
-							Dependencies.getLog().info("<=КОМАНДЫ AU=> Игроку " + player.getName() + " было отправленно сообщение о ошибке: " + legacyAmpersand().serialize(errorCode));
-							return true;
-						}
-
-						slime.setSize(integer);
-					}
+				int integer;
+				if (args.length == 0 || args[0].equals("")) {
+					player.sendMessage(ChatColor.RED + "Напишите цифру.");
+					return true;
 				} else {
-					player.sendMessage(ChatColor.RED + "У вас нет OP!");
-					player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 2);
+					String string = args[0];
+					try {
+						integer = Integer.parseInt(string);
+					} catch (Exception e) {
+//							TextComponent errorCode = CommandError.ARGUMENT_NAN.errorCode();
+//							Sound errorSound = CommandError.ARGUMENT_NAN.errorSound();
+//
+//							player.sendMessage(errorCode);
+//							player.playSound(player.getLocation(), errorSound, 1, 2);
+
+						player.sendMessage("я выебал кастомные ошибки");
+
+//							Dependencies.getLog().info("<=КОМАНДЫ AU=> Игрок " + player.getName() + " ввёл команду ,," + commandName + arguments + "'' и вызвал ошибку:");
+//							Dependencies.getLog().info("<=КОМАНДЫ AU=> " + ChatColor.RED + e.getMessage());
+//							Dependencies.getLog().info("<=КОМАНДЫ AU=> Игроку " + player.getName() + " было отправленно сообщение о ошибке: " + legacyAmpersand().serialize(errorCode));
+						return true;
+					}
+
+					slime.setSize(integer);
 				}
 				return true;
 			}
 
 			if (commandName.equals("name")) {
-				if (perms) {
-					if (args.length == 0 || args[0].equals("")) {
-						Dependencies.putMopsName(player, player.getName());
-						player.sendMessage(ChatColor.GREEN + "Вы ресетнули свой ник.");
-						player.playSound(player.getLocation(), Sound.BLOCK_LAVA_EXTINGUISH, 1, 2);
-					} else {
-						String string = args[0];
-						String string1 = string.replaceAll("_", " ").replaceAll("&0", ChatColor.BLACK + "").replaceAll("&1", ChatColor.DARK_BLUE + "").replaceAll("&2", ChatColor.DARK_GREEN + "").replaceAll("&3", ChatColor.DARK_AQUA + "").replaceAll("&4", ChatColor.DARK_RED + "").replaceAll("&5", ChatColor.DARK_PURPLE + "").replaceAll("&6", ChatColor.GOLD + "").replaceAll("&7", ChatColor.GRAY + "").replaceAll("&8", ChatColor.DARK_GRAY + "").replaceAll("&9", ChatColor.BLUE + "").replaceAll("&a", ChatColor.GREEN + "").replaceAll("&b", ChatColor.AQUA + "").replaceAll("&c", ChatColor.RED + "").replaceAll("&d", ChatColor.LIGHT_PURPLE + "").replaceAll("&e", ChatColor.YELLOW + "").replaceAll("&f", ChatColor.WHITE + "").replaceAll("&k", ChatColor.MAGIC + "").replaceAll("&l", ChatColor.BOLD + "").replaceAll("&m", ChatColor.STRIKETHROUGH + "").replaceAll("&n", ChatColor.UNDERLINE + "").replaceAll("&o", ChatColor.ITALIC + "").replaceAll("&r", ChatColor.RESET + "");
-						Dependencies.putMopsName(player, string1.substring(0, 16));
-						player.sendMessage(ChatColor.GREEN + "Вы изменили свой ник на " + ChatColor.RESET + string1);
-					}
-					player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
-					player.setPlayerListName(Dependencies.getMopsRank(player) + Dependencies.getMopsName(player));
-					return true;
+				if (args.length == 0 || args[0].equals("")) {
+//						Dependencies.putMopsName(player, player.getName());
+					player.sendMessage(ChatColor.GREEN + "Вы ресетнули свой ник.");
+					player.playSound(player.getLocation(), Sound.BLOCK_LAVA_EXTINGUISH, 1, 2);
+
+					player.sendMessage("не робе");
 				} else {
-					player.sendMessage(ChatColor.RED + "У вас нет OP!");
-					player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 2);
-					return true;
+					String string = args[0];
+					String string1 = string.replaceAll("_", " ").replaceAll("&0", ChatColor.BLACK + "").replaceAll("&1", ChatColor.DARK_BLUE + "").replaceAll("&2", ChatColor.DARK_GREEN + "").replaceAll("&3", ChatColor.DARK_AQUA + "").replaceAll("&4", ChatColor.DARK_RED + "").replaceAll("&5", ChatColor.DARK_PURPLE + "").replaceAll("&6", ChatColor.GOLD + "").replaceAll("&7", ChatColor.GRAY + "").replaceAll("&8", ChatColor.DARK_GRAY + "").replaceAll("&9", ChatColor.BLUE + "").replaceAll("&a", ChatColor.GREEN + "").replaceAll("&b", ChatColor.AQUA + "").replaceAll("&c", ChatColor.RED + "").replaceAll("&d", ChatColor.LIGHT_PURPLE + "").replaceAll("&e", ChatColor.YELLOW + "").replaceAll("&f", ChatColor.WHITE + "").replaceAll("&k", ChatColor.MAGIC + "").replaceAll("&l", ChatColor.BOLD + "").replaceAll("&m", ChatColor.STRIKETHROUGH + "").replaceAll("&n", ChatColor.UNDERLINE + "").replaceAll("&o", ChatColor.ITALIC + "").replaceAll("&r", ChatColor.RESET + "");
+//						Dependencies.putMopsName(player, string1.substring(0, 16));
+					player.sendMessage(ChatColor.GREEN + "Вы изменили свой ник на " + ChatColor.RESET + string1);
+
+					player.sendMessage("не робе");
 				}
+				player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
+//					player.setPlayerListName(Dependencies.getMopsRank(player) + Dependencies.getMopsName(player));
+				return true;
 			}
 			if (commandName.equals("rank")) {
-				if (perms) {
-					if (args.length == 0 || args[0].equals("")) {
-						Dependencies.putMopsRank(player, ChatColor.GRAY + "");
-						player.sendMessage(ChatColor.GREEN + "Вы ресетнули свой ранг.");
-						player.playSound(player.getLocation(), Sound.BLOCK_LAVA_EXTINGUISH, 1, 2);
-					} else {
-						String string = args[0];
-						String string1 = string.replaceAll("_", " ").replaceAll("&0", ChatColor.BLACK + "").replaceAll("&1", ChatColor.DARK_BLUE + "").replaceAll("&2", ChatColor.DARK_GREEN + "").replaceAll("&3", ChatColor.DARK_AQUA + "").replaceAll("&4", ChatColor.DARK_RED + "").replaceAll("&5", ChatColor.DARK_PURPLE + "").replaceAll("&6", ChatColor.GOLD + "").replaceAll("&7", ChatColor.GRAY + "").replaceAll("&8", ChatColor.DARK_GRAY + "").replaceAll("&9", ChatColor.BLUE + "").replaceAll("&a", ChatColor.GREEN + "").replaceAll("&b", ChatColor.AQUA + "").replaceAll("&c", ChatColor.RED + "").replaceAll("&d", ChatColor.LIGHT_PURPLE + "").replaceAll("&e", ChatColor.YELLOW + "").replaceAll("&f", ChatColor.WHITE + "").replaceAll("&k", ChatColor.MAGIC + "").replaceAll("&l", ChatColor.BOLD + "").replaceAll("&m", ChatColor.STRIKETHROUGH + "").replaceAll("&n", ChatColor.UNDERLINE + "").replaceAll("&o", ChatColor.ITALIC + "").replaceAll("&r", ChatColor.RESET + "");
-						Dependencies.putMopsRank(player, string1.substring(0, 16) + " ");
-						player.sendMessage(ChatColor.GREEN + "Вы изменили свой ранг на " + ChatColor.RESET + string1);
-					}
-					player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
-					player.setPlayerListName(Dependencies.getMopsRank(player) + Dependencies.getMopsName());
+				if (args.length == 0 || args[0].equals("")) {
+//						Dependencies.putMopsRank(player, ChatColor.GRAY + "");
+					player.sendMessage(ChatColor.GREEN + "Вы ресетнули свой ранг.");
+					player.playSound(player.getLocation(), Sound.BLOCK_LAVA_EXTINGUISH, 1, 2);
+
+					player.sendMessage("не робе");
 				} else {
-					player.sendMessage(ChatColor.RED + "У вас нет OP!");
-					player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 2);
+					String string = args[0];
+					String string1 = string.replaceAll("_", " ").replaceAll("&0", ChatColor.BLACK + "").replaceAll("&1", ChatColor.DARK_BLUE + "").replaceAll("&2", ChatColor.DARK_GREEN + "").replaceAll("&3", ChatColor.DARK_AQUA + "").replaceAll("&4", ChatColor.DARK_RED + "").replaceAll("&5", ChatColor.DARK_PURPLE + "").replaceAll("&6", ChatColor.GOLD + "").replaceAll("&7", ChatColor.GRAY + "").replaceAll("&8", ChatColor.DARK_GRAY + "").replaceAll("&9", ChatColor.BLUE + "").replaceAll("&a", ChatColor.GREEN + "").replaceAll("&b", ChatColor.AQUA + "").replaceAll("&c", ChatColor.RED + "").replaceAll("&d", ChatColor.LIGHT_PURPLE + "").replaceAll("&e", ChatColor.YELLOW + "").replaceAll("&f", ChatColor.WHITE + "").replaceAll("&k", ChatColor.MAGIC + "").replaceAll("&l", ChatColor.BOLD + "").replaceAll("&m", ChatColor.STRIKETHROUGH + "").replaceAll("&n", ChatColor.UNDERLINE + "").replaceAll("&o", ChatColor.ITALIC + "").replaceAll("&r", ChatColor.RESET + "");
+//						Dependencies.putMopsRank(player, string1.substring(0, 16) + " ");
+					player.sendMessage(ChatColor.GREEN + "Вы изменили свой ранг на " + ChatColor.RESET + string1);
+
+					player.sendMessage("не робе");
 				}
+				player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
+//					player.setPlayerListName(Dependencies.getMopsRank(player) + Dependencies.getMopsName());
+
+				player.sendMessage("не робе");
 				return true;
 			}
 			if (commandName.equals("kickall")) {
 
-				if (perms) {
+				String string = args[0];
+				String string1 = string.replaceAll("_", " ").replaceAll("&0", ChatColor.BLACK + "").replaceAll("&1", ChatColor.DARK_BLUE + "").replaceAll("&2", ChatColor.DARK_GREEN + "").replaceAll("&3", ChatColor.DARK_AQUA + "").replaceAll("&4", ChatColor.DARK_RED + "").replaceAll("&5", ChatColor.DARK_PURPLE + "").replaceAll("&6", ChatColor.GOLD + "").replaceAll("&7", ChatColor.GRAY + "").replaceAll("&8", ChatColor.DARK_GRAY + "").replaceAll("&9", ChatColor.BLUE + "").replaceAll("&a", ChatColor.GREEN + "").replaceAll("&b", ChatColor.AQUA + "").replaceAll("&c", ChatColor.RED + "").replaceAll("&d", ChatColor.LIGHT_PURPLE + "").replaceAll("&e", ChatColor.YELLOW + "").replaceAll("&f", ChatColor.WHITE + "").replaceAll("&k", ChatColor.MAGIC + "").replaceAll("&l", ChatColor.BOLD + "").replaceAll("&m", ChatColor.STRIKETHROUGH + "").replaceAll("&n", ChatColor.UNDERLINE + "").replaceAll("&o", ChatColor.ITALIC + "").replaceAll("&r", ChatColor.RESET + "");
 
-					String string = args[0];
-					String string1 = string.replaceAll("_", " ").replaceAll("&0", ChatColor.BLACK + "").replaceAll("&1", ChatColor.DARK_BLUE + "").replaceAll("&2", ChatColor.DARK_GREEN + "").replaceAll("&3", ChatColor.DARK_AQUA + "").replaceAll("&4", ChatColor.DARK_RED + "").replaceAll("&5", ChatColor.DARK_PURPLE + "").replaceAll("&6", ChatColor.GOLD + "").replaceAll("&7", ChatColor.GRAY + "").replaceAll("&8", ChatColor.DARK_GRAY + "").replaceAll("&9", ChatColor.BLUE + "").replaceAll("&a", ChatColor.GREEN + "").replaceAll("&b", ChatColor.AQUA + "").replaceAll("&c", ChatColor.RED + "").replaceAll("&d", ChatColor.LIGHT_PURPLE + "").replaceAll("&e", ChatColor.YELLOW + "").replaceAll("&f", ChatColor.WHITE + "").replaceAll("&k", ChatColor.MAGIC + "").replaceAll("&l", ChatColor.BOLD + "").replaceAll("&m", ChatColor.STRIKETHROUGH + "").replaceAll("&n", ChatColor.UNDERLINE + "").replaceAll("&o", ChatColor.ITALIC + "").replaceAll("&r", ChatColor.RESET + "");
-
-					for (Player player1 : Bukkit.getServer().getOnlinePlayers()) {
-						if (!player1.isOp()) {
-							player1.kickPlayer(string1);
-						} else {
-							player1.sendMessage(ChatColor.RED + "Возможно вам стоить выйти по причине " + ChatColor.RESET + string1);
-						}
+				for (Player player1 : Bukkit.getServer().getOnlinePlayers()) {
+					if (!player1.isOp()) {
+						player1.kickPlayer(string1);
+					} else {
+						player1.sendMessage(ChatColor.RED + "Возможно вам стоить выйти по причине " + ChatColor.RESET + string1);
 					}
-
-				} else {
-					player.sendMessage(ChatColor.RED + "У вас нет OP!");
-					player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 2);
 				}
+
 				return true;
 			}
 			if (commandName.equals("test")) {
-				if (perms) {
-					try {
-
-					} catch (ArrayIndexOutOfBoundsException event) {
-						player.sendMessage("ало ты какой то там эррей не написал");
-					}
-				} else {
-					player.sendMessage(ChatColor.RED + "У вас нет OP!");
-					player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 2);
+				try {
+					player.sendMessage("тут мнооого тестинга");
+				} catch (ArrayIndexOutOfBoundsException event) {
+					player.sendMessage("ало ты какой то там эррей не написал");
 				}
 				return true;
 			}
 			if (commandName.equals("vector")) {
-				if (perms) {
-					double x = 0;
-					double y = 0;
-					double z = 0;
-					try {
-						x = Double.parseDouble(args[0]);
-						y = Double.parseDouble(args[1]);
-						z = Double.parseDouble(args[2]);
-					} catch (ArrayIndexOutOfBoundsException ignored) {
-					}
-					Player player1;
-					try {
-						player = Bukkit.getServer().getPlayer(args[3]);
-					} catch (ArrayIndexOutOfBoundsException expection) {
+				double x = 0;
+				double y = 0;
+				double z = 0;
+				try {
+					x = Double.parseDouble(args[0]);
+					y = Double.parseDouble(args[1]);
+					z = Double.parseDouble(args[2]);
+				} catch (ArrayIndexOutOfBoundsException ignored) {
+					player.sendMessage("здрасте использование команды: /vector x y z ник_игрока");
+				}
 
-						player1 = player;
-					}
-					assert player != null;
-					player.setVelocity(new Vector(x, y, z).multiply(2));
+				try {
+					player = Bukkit.getServer().getPlayer(args[3]);
+				} catch (ArrayIndexOutOfBoundsException exception) {
+					player = (Player) sender;
 				}
-				return true;
-			}
-			if (commandName.equals("coins")) {
-				if (perms) {
-					Player player1;
-					try {
-						player1 = Bukkit.getPlayer(args[1]);
-					} catch (ArrayIndexOutOfBoundsException event) {
-						player1 = player;
-					}
-					assert player1 != null;
-					Score score = Objects.requireNonNull(Objects.requireNonNull(Bukkit.getScoreboardManager()).getMainScoreboard().getObjective("coins")).getScore(player1);
-					score.setScore(Integer.parseInt(args[0]));
-				}
+
+				assert player != null;
+				player.setVelocity(new Vector(x, y, z).multiply(2));
 				return true;
 			}
 
 			if (commandName.equals("loreadd")) {
-				if (perms) {
-					String string = args[0];
-					String string2 = string.replaceAll("_", " ").replaceAll("&0", ChatColor.BLACK + "").replaceAll("&1", ChatColor.DARK_BLUE + "").replaceAll("&2", ChatColor.DARK_GREEN + "").replaceAll("&3", ChatColor.DARK_AQUA + "").replaceAll("&4", ChatColor.DARK_RED + "").replaceAll("&5", ChatColor.DARK_PURPLE + "").replaceAll("&6", ChatColor.GOLD + "").replaceAll("&7", ChatColor.GRAY + "").replaceAll("&8", ChatColor.DARK_GRAY + "").replaceAll("&9", ChatColor.BLUE + "").replaceAll("&a", ChatColor.GREEN + "").replaceAll("&b", ChatColor.AQUA + "").replaceAll("&c", ChatColor.RED + "").replaceAll("&d", ChatColor.LIGHT_PURPLE + "").replaceAll("&e", ChatColor.YELLOW + "").replaceAll("&f", ChatColor.WHITE + "").replaceAll("&k", ChatColor.MAGIC + "").replaceAll("&l", ChatColor.BOLD + "").replaceAll("&m", ChatColor.STRIKETHROUGH + "").replaceAll("&n", ChatColor.UNDERLINE + "").replaceAll("&o", ChatColor.ITALIC + "").replaceAll("&r", ChatColor.RESET + "" + ChatColor.WHITE);
-					try {
-						ItemStack item = player.getInventory().getItemInMainHand();
-						ItemMeta meta = item.getItemMeta();
+				String string = args[0];
+				String string2 = string.replaceAll("_", " ").replaceAll("&0", ChatColor.BLACK + "").replaceAll("&1", ChatColor.DARK_BLUE + "").replaceAll("&2", ChatColor.DARK_GREEN + "").replaceAll("&3", ChatColor.DARK_AQUA + "").replaceAll("&4", ChatColor.DARK_RED + "").replaceAll("&5", ChatColor.DARK_PURPLE + "").replaceAll("&6", ChatColor.GOLD + "").replaceAll("&7", ChatColor.GRAY + "").replaceAll("&8", ChatColor.DARK_GRAY + "").replaceAll("&9", ChatColor.BLUE + "").replaceAll("&a", ChatColor.GREEN + "").replaceAll("&b", ChatColor.AQUA + "").replaceAll("&c", ChatColor.RED + "").replaceAll("&d", ChatColor.LIGHT_PURPLE + "").replaceAll("&e", ChatColor.YELLOW + "").replaceAll("&f", ChatColor.WHITE + "").replaceAll("&k", ChatColor.MAGIC + "").replaceAll("&l", ChatColor.BOLD + "").replaceAll("&m", ChatColor.STRIKETHROUGH + "").replaceAll("&n", ChatColor.UNDERLINE + "").replaceAll("&o", ChatColor.ITALIC + "").replaceAll("&r", ChatColor.RESET + "" + ChatColor.WHITE);
+				try {
+					ItemStack item = player.getInventory().getItemInMainHand();
+					ItemMeta meta = item.getItemMeta();
 
-						assert meta != null;
-						if (meta.hasLore()) {
-							List<String> lore = meta.getLore();
-							assert lore != null;
-							lore.add(string2);
-							meta.setLore(lore);
-						} else {
-							List<String> lore = new ArrayList<>();
-							lore.add(string2);
-							meta.setLore(lore);
-						}
-						item.setItemMeta(meta);
-						player.sendMessage(ChatColor.GREEN + "Вы добавили " + ChatColor.DARK_PURPLE + ChatColor.ITALIC + string2 + ChatColor.RESET + ChatColor.GREEN + " в описание предмета.");
-						player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
-						return true;
-					} catch (NullPointerException event) {
-						player.sendMessage(ChatColor.RED + "Вы не имеете предмета в руке!");
-						player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 2);
-						return true;
-					}
-				} else {
-					player.sendMessage(ChatColor.RED + "У вас нет OP!");
+					List<String> lore = new ArrayList<>();
+
+					assert meta != null;
+					if(meta.hasLore()) lore = meta.getLore();
+
+					assert lore != null;
+					lore.add(string2);
+					meta.setLore(lore);
+
+					item.setItemMeta(meta);
+					player.sendMessage(ChatColor.GREEN + "Вы добавили " + ChatColor.DARK_PURPLE + ChatColor.ITALIC + string2 + ChatColor.RESET + ChatColor.GREEN + " в описание предмета.");
+					player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
+					return true;
+				} catch (NullPointerException event) {
+					player.sendMessage(ChatColor.RED + "Вы не имеете предмета в руке!");
 					player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 2);
 					return true;
 				}
 			}
 			if (commandName.equals("loreclear")) {
-				if (perms) {
-					try {
-						ItemStack item = player.getInventory().getItemInMainHand();
-						ItemMeta meta = item.getItemMeta();
-						assert meta != null;
-						if (meta.hasLore()) {
-							List<String> lore = meta.getLore();
-							assert lore != null;
-							lore.clear();
-							meta.setLore(lore);
-							item.setItemMeta(meta);
-							player.sendMessage(ChatColor.GREEN + "Вы очистили лор предмета.");
-							player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
-						} else {
-							player.sendMessage(ChatColor.RED + "У предмета нет лора!");
-							player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 2);
-						}
-						return true;
-					} catch (NullPointerException event) {
-						player.sendMessage(ChatColor.RED + "Вы не имеете предмета в руке!");
+				try {
+					ItemStack item = player.getInventory().getItemInMainHand();
+					ItemMeta meta = item.getItemMeta();
+					assert meta != null;
+					if (meta.hasLore()) {
+						List<String> lore = meta.getLore();
+						assert lore != null;
+						lore.clear();
+						meta.setLore(lore);
+						item.setItemMeta(meta);
+						player.sendMessage(ChatColor.GREEN + "Вы очистили лор предмета.");
+						player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
+					} else {
+						player.sendMessage(ChatColor.RED + "У предмета нет лора!");
 						player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 2);
-						return true;
 					}
-				} else {
-					player.sendMessage(ChatColor.RED + "У вас нет OP!");
+					return true;
+				} catch (NullPointerException event) {
+					player.sendMessage(ChatColor.RED + "Вы не имеете предмета в руке!");
 					player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 2);
 					return true;
 				}
 			}
 			if (commandName.equals("nameitem")) {
-				if (perms) {
-					String string = args[0];
-					String string2 = string.replaceAll("_", " ").replaceAll("&0", ChatColor.BLACK + "").replaceAll("&1", ChatColor.DARK_BLUE + "").replaceAll("&2", ChatColor.DARK_GREEN + "").replaceAll("&3", ChatColor.DARK_AQUA + "").replaceAll("&4", ChatColor.DARK_RED + "").replaceAll("&5", ChatColor.DARK_PURPLE + "").replaceAll("&6", ChatColor.GOLD + "").replaceAll("&7", ChatColor.GRAY + "").replaceAll("&8", ChatColor.DARK_GRAY + "").replaceAll("&9", ChatColor.BLUE + "").replaceAll("&a", ChatColor.GREEN + "").replaceAll("&b", ChatColor.AQUA + "").replaceAll("&c", ChatColor.RED + "").replaceAll("&d", ChatColor.LIGHT_PURPLE + "").replaceAll("&e", ChatColor.YELLOW + "").replaceAll("&f", ChatColor.WHITE + "").replaceAll("&k", ChatColor.MAGIC + "").replaceAll("&l", ChatColor.BOLD + "").replaceAll("&m", ChatColor.STRIKETHROUGH + "").replaceAll("&n", ChatColor.UNDERLINE + "").replaceAll("&o", ChatColor.ITALIC + "").replaceAll("&r", ChatColor.RESET + "" + ChatColor.WHITE);
-					try {
-						ItemStack item = player.getInventory().getItemInMainHand();
-						ItemMeta meta = item.getItemMeta();
-						assert meta != null;
-						meta.setDisplayName(string2);
-						item.setItemMeta(meta);
-						player.sendMessage(ChatColor.GREEN + "Вы назвали предмет " + ChatColor.RESET + string2 + ChatColor.GREEN + ".");
-						player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
-						return true;
-					} catch (NullPointerException event) {
-						player.sendMessage(ChatColor.RED + "Вы не имеете предмета в руке!");
-						player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 2);
-						return true;
-					}
-				} else {
-					player.sendMessage(ChatColor.RED + "У вас нет OP!");
+				String string = args[0];
+				String string2 = string.replaceAll("_", " ").replaceAll("&0", ChatColor.BLACK + "").replaceAll("&1", ChatColor.DARK_BLUE + "").replaceAll("&2", ChatColor.DARK_GREEN + "").replaceAll("&3", ChatColor.DARK_AQUA + "").replaceAll("&4", ChatColor.DARK_RED + "").replaceAll("&5", ChatColor.DARK_PURPLE + "").replaceAll("&6", ChatColor.GOLD + "").replaceAll("&7", ChatColor.GRAY + "").replaceAll("&8", ChatColor.DARK_GRAY + "").replaceAll("&9", ChatColor.BLUE + "").replaceAll("&a", ChatColor.GREEN + "").replaceAll("&b", ChatColor.AQUA + "").replaceAll("&c", ChatColor.RED + "").replaceAll("&d", ChatColor.LIGHT_PURPLE + "").replaceAll("&e", ChatColor.YELLOW + "").replaceAll("&f", ChatColor.WHITE + "").replaceAll("&k", ChatColor.MAGIC + "").replaceAll("&l", ChatColor.BOLD + "").replaceAll("&m", ChatColor.STRIKETHROUGH + "").replaceAll("&n", ChatColor.UNDERLINE + "").replaceAll("&o", ChatColor.ITALIC + "").replaceAll("&r", ChatColor.RESET + "" + ChatColor.WHITE);
+				try {
+					ItemStack item = player.getInventory().getItemInMainHand();
+					ItemMeta meta = item.getItemMeta();
+					assert meta != null;
+					meta.setDisplayName(string2);
+					item.setItemMeta(meta);
+					player.sendMessage(ChatColor.GREEN + "Вы назвали предмет " + ChatColor.RESET + string2 + ChatColor.GREEN + ".");
+					player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
+					return true;
+				} catch (NullPointerException event) {
+					player.sendMessage(ChatColor.RED + "Вы не имеете предмета в руке!");
 					player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 2);
 					return true;
 				}
 			}
 			if (commandName.equals("enchantitem")) {
-				if (perms) {
+				try {
+					String ench = args[0];
+					String lvl0 = args[1];
 					try {
-						String ench = args[0];
-						String lvl0 = args[1];
+						int lvl = Integer.parseInt(lvl0);
 						try {
-							int lvl = Integer.parseInt(lvl0);
 							try {
-								try {
-									ItemStack item = player.getInventory().getItemInMainHand();
-									ItemMeta meta = item.getItemMeta();
-									assert meta != null;
-									meta.addEnchant(Objects.requireNonNull(Enchantment.getByKey(NamespacedKey.minecraft(ench))), lvl, true);
-									item.setItemMeta(meta);
-									player.sendMessage(ChatColor.GREEN + "Вы дали предмету зачарование " + ChatColor.RESET + ench + " " + lvl + ChatColor.GREEN + " уровня.");
-									player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
-									return true;
-								} catch (NullPointerException event) {
-									player.sendMessage(ChatColor.RED + "Вы не имеете предмета в руке!");
-									player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 2);
-									return true;
-								}
-							} catch (IllegalArgumentException event) {
-								player.sendMessage(ChatColor.RED + "Это не найдено в базе зачарований.");
+								ItemStack item = player.getInventory().getItemInMainHand();
+								ItemMeta meta = item.getItemMeta();
+								assert meta != null;
+								meta.addEnchant(Objects.requireNonNull(Enchantment.getByKey(NamespacedKey.minecraft(ench))), lvl, true);
+								item.setItemMeta(meta);
+								player.sendMessage(ChatColor.GREEN + "Вы дали предмету зачарование " + ChatColor.RESET + ench + " " + lvl + ChatColor.GREEN + " уровня.");
+								player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
+								return true;
+							} catch (NullPointerException event) {
+								player.sendMessage(ChatColor.RED + "Вы не имеете предмета в руке!");
 								player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 2);
 								return true;
 							}
-						} catch (NumberFormatException event) {
-							player.sendMessage(ChatColor.RED + "Комманду нужно использовать как: /enchantitem " + ChatColor.AQUA + ench + lvl0);
+						} catch (IllegalArgumentException event) {
+							player.sendMessage(ChatColor.RED + "Это не найдено в базе зачарований.");
 							player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 2);
 							return true;
 						}
-					} catch (ArrayIndexOutOfBoundsException event) {
-						player.sendMessage(ChatColor.RED + "Комманду нужно использовать как: /enchantitem " + ChatColor.AQUA + "<ЗАЧАРОВАНИЕ> " + "<УРОЕНЬ>");
+					} catch (NumberFormatException event) {
+						player.sendMessage(ChatColor.RED + "Комманду нужно использовать как: /enchantitem " + ChatColor.AQUA + ench + lvl0);
 						player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 2);
 						return true;
 					}
-				} else {
-					player.sendMessage(ChatColor.RED + "У вас нет OP!");
+				} catch (ArrayIndexOutOfBoundsException event) {
+					player.sendMessage(ChatColor.RED + "Комманду нужно использовать как: /enchantitem " + ChatColor.AQUA + "<ЗАЧАРОВАНИЕ> " + "<УРОЕНЬ>");
 					player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 2);
 					return true;
 				}
 			}
 			if (commandName.equals("enchantclear")) {
-				if (perms) {
-					try {
-						ItemStack item = player.getInventory().getItemInMainHand();
-						ItemMeta meta = item.getItemMeta();
-						assert meta != null;
-						if (meta.getEnchants().isEmpty()) {
-							player.sendMessage(ChatColor.RED + "На предмете нет зачарований.");
-							player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 2);
-						} else {
-							for (Enchantment e : item.getEnchantments().keySet()) {
-								item.removeEnchantment(e);
-							}
-							player.sendMessage(ChatColor.GREEN + "Вы стёрли зачарования предмета.");
-							player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
-						}
-						return true;
-					} catch (NullPointerException event) {
-						player.sendMessage(ChatColor.RED + "Вы не имеете предмета в руке!");
+				try {
+					ItemStack item = player.getInventory().getItemInMainHand();
+					ItemMeta meta = item.getItemMeta();
+					assert meta != null;
+					if (meta.getEnchants().isEmpty()) {
+						player.sendMessage(ChatColor.RED + "На предмете нет зачарований.");
 						player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 2);
-						return true;
+					} else {
+						for (Enchantment e : item.getEnchantments().keySet()) {
+							item.removeEnchantment(e);
+						}
+						player.sendMessage(ChatColor.GREEN + "Вы стёрли зачарования предмета.");
+						player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
 					}
-				} else {
-					player.sendMessage(ChatColor.RED + "У вас нет OP!");
+					return true;
+				} catch (NullPointerException event) {
+					player.sendMessage(ChatColor.RED + "Вы не имеете предмета в руке!");
 					player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 2);
 					return true;
 				}
 			}
 			if (commandName.equals("unbreak")) {
-				if (perms) {
-					try {
-						ItemStack item = player.getInventory().getItemInMainHand();
-						ItemMeta meta = item.getItemMeta();
-						assert meta != null;
-						if (meta.isUnbreakable()) {
-							player.sendMessage(ChatColor.YELLOW + "Вы " + ChatColor.RED + ChatColor.BOLD + "ВЫКЛЮЧИЛИ" + ChatColor.RESET + ChatColor.YELLOW + " неломаемость");
-							meta.setUnbreakable(false);
-						} else {
-							player.sendMessage(ChatColor.YELLOW + "Вы " + ChatColor.GREEN + ChatColor.BOLD + "ВКЛЮЧИЛИ" + ChatColor.RESET + ChatColor.YELLOW + " неломаемость");
-							meta.setUnbreakable(true);
-						}
-						item.setItemMeta(meta);
-						return true;
-					} catch (NullPointerException event) {
-						player.sendMessage(ChatColor.RED + "Вы не имеете предмета в руке!");
-						player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 2);
-						return true;
+				try {
+					ItemStack item = player.getInventory().getItemInMainHand();
+					ItemMeta meta = item.getItemMeta();
+					assert meta != null;
+					if (meta.isUnbreakable()) {
+						player.sendMessage(ChatColor.YELLOW + "Вы " + ChatColor.RED + ChatColor.BOLD + "ВЫКЛЮЧИЛИ" + ChatColor.RESET + ChatColor.YELLOW + " неломаемость");
+						meta.setUnbreakable(false);
+					} else {
+						player.sendMessage(ChatColor.YELLOW + "Вы " + ChatColor.GREEN + ChatColor.BOLD + "ВКЛЮЧИЛИ" + ChatColor.RESET + ChatColor.YELLOW + " неломаемость");
+						meta.setUnbreakable(true);
 					}
-				} else {
-					player.sendMessage(ChatColor.RED + "У вас нет OP!");
+					item.setItemMeta(meta);
+					return true;
+				} catch (NullPointerException event) {
+					player.sendMessage(ChatColor.RED + "Вы не имеете предмета в руке!");
 					player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 2);
 					return true;
 				}
 			}
 			if (commandName.equals("fly")) {
-				if (perms) {
-					if (player.getAllowFlight()) {
-						player.setAllowFlight(false);
-						player.sendMessage(ChatColor.YELLOW + "Вы " + ChatColor.RED + ChatColor.BOLD + "ВЫКЛЮЧИЛИ" + ChatColor.RESET + ChatColor.YELLOW + " флай");
-					} else {
-						player.setAllowFlight(true);
-						player.sendMessage(ChatColor.YELLOW + "Вы " + ChatColor.GREEN + ChatColor.BOLD + "ВКЛЮЧИЛИ" + ChatColor.RESET + ChatColor.YELLOW + " флай");
-					}
-					player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
+				if (player.getAllowFlight()) {
+					player.setAllowFlight(false);
+					player.sendMessage(ChatColor.YELLOW + "Вы " + ChatColor.RED + ChatColor.BOLD + "ВЫКЛЮЧИЛИ" + ChatColor.RESET + ChatColor.YELLOW + " флай");
 				} else {
-					player.sendMessage(ChatColor.RED + "У вас нет OP!");
-					player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 2);
+					player.setAllowFlight(true);
+					player.sendMessage(ChatColor.YELLOW + "Вы " + ChatColor.GREEN + ChatColor.BOLD + "ВКЛЮЧИЛИ" + ChatColor.RESET + ChatColor.YELLOW + " флай");
 				}
+				player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
 				return true;
 			}
 			if (commandName.equals("food")) {
-				if (player.isOp()) {
-					player.setFoodLevel(Integer.parseInt(args[0]));
-				} else {
-					player.sendMessage(ChatColor.RED + "У вас нет OP!");
-					player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 2);
-					return true;
-				}
+				player.setFoodLevel(Integer.parseInt(args[0]));
 			}
 			if (commandName.equals("announce")) {
-				if (perms) {
-					if (args.length == 0 || args[0].equals("")) {
-						player.sendMessage(ChatColor.RED + "Вам нужно написать хоть что то.");
-						player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 2);
-					} else {
-						String string = args[0];
-						String string1 = string.replaceAll("_", " ").replaceAll("&0", ChatColor.BLACK + "").replaceAll("&1", ChatColor.DARK_BLUE + "").replaceAll("&2", ChatColor.DARK_GREEN + "").replaceAll("&3", ChatColor.DARK_AQUA + "").replaceAll("&4", ChatColor.DARK_RED + "").replaceAll("&5", ChatColor.DARK_PURPLE + "").replaceAll("&6", ChatColor.GOLD + "").replaceAll("&7", ChatColor.GRAY + "").replaceAll("&8", ChatColor.DARK_GRAY + "").replaceAll("&9", ChatColor.BLUE + "").replaceAll("&a", ChatColor.GREEN + "").replaceAll("&b", ChatColor.AQUA + "").replaceAll("&c", ChatColor.RED + "").replaceAll("&d", ChatColor.LIGHT_PURPLE + "").replaceAll("&e", ChatColor.YELLOW + "").replaceAll("&f", ChatColor.WHITE + "").replaceAll("&k", ChatColor.MAGIC + "").replaceAll("&l", ChatColor.BOLD + "").replaceAll("&m", ChatColor.STRIKETHROUGH + "").replaceAll("&n", ChatColor.UNDERLINE + "").replaceAll("&o", ChatColor.ITALIC + "").replaceAll("&r", ChatColor.RESET + "");
-						for (Player player1 : Bukkit.getServer().getOnlinePlayers()) {
-							player1.sendMessage(string1);
-							player1.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
-						}
-					}
-				} else {
-					player.sendMessage(ChatColor.RED + "У вас нет OP!");
+				if (args.length == 0 || args[0].equals("")) {
+					player.sendMessage(ChatColor.RED + "Вам нужно написать хоть что то.");
 					player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 2);
+				} else {
+					String string = args[0];
+					String string1 = string.replaceAll("_", " ").replaceAll("&0", ChatColor.BLACK + "").replaceAll("&1", ChatColor.DARK_BLUE + "").replaceAll("&2", ChatColor.DARK_GREEN + "").replaceAll("&3", ChatColor.DARK_AQUA + "").replaceAll("&4", ChatColor.DARK_RED + "").replaceAll("&5", ChatColor.DARK_PURPLE + "").replaceAll("&6", ChatColor.GOLD + "").replaceAll("&7", ChatColor.GRAY + "").replaceAll("&8", ChatColor.DARK_GRAY + "").replaceAll("&9", ChatColor.BLUE + "").replaceAll("&a", ChatColor.GREEN + "").replaceAll("&b", ChatColor.AQUA + "").replaceAll("&c", ChatColor.RED + "").replaceAll("&d", ChatColor.LIGHT_PURPLE + "").replaceAll("&e", ChatColor.YELLOW + "").replaceAll("&f", ChatColor.WHITE + "").replaceAll("&k", ChatColor.MAGIC + "").replaceAll("&l", ChatColor.BOLD + "").replaceAll("&m", ChatColor.STRIKETHROUGH + "").replaceAll("&n", ChatColor.UNDERLINE + "").replaceAll("&o", ChatColor.ITALIC + "").replaceAll("&r", ChatColor.RESET + "");
+					for (Player player1 : Bukkit.getServer().getOnlinePlayers()) {
+						player1.sendMessage(string1);
+						player1.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
+					}
 				}
 				return true;
 			}
 			return false;
+		} else if (sender instanceof Player player) {
+			player.sendMessage(ChatColor.RED + "У вас нет OP!");
+			player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 2);
 		} else {
 			if (sender instanceof Pig) { //мем небаньте пж я очень уважаю граждан украины героям слава
-				Dependencies.getPlugin().getServer().broadcast(Component.text("ХОХЛА СПРО").color(NamedTextColor.AQUA).append(Component.text("СИТЬ ЗАБЫЛИ").color(NamedTextColor.YELLOW)));
+//				Dependencies.getPlugin().getServer().broadcast(Component.text("ХОХЛА СПРО").color(NamedTextColor.AQUA).append(Component.text("СИТЬ ЗАБЫЛИ").color(NamedTextColor.YELLOW)));
+
+				int i = 0;
+
+				while (i < 40) {
+					System.out.println("кто написал линию кода выше тот пидорас");
+					i++;
+				}
 			}
 			return true;
 		}
-
+		return false;
 	}
 }
