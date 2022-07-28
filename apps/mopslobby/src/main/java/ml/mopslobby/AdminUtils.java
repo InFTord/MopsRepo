@@ -30,7 +30,7 @@ import static net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializ
 
 public class AdminUtils extends Commands {
 
-	@Override
+	//@Override
 	public boolean commandsExecutor(CommandSender sender, Command command, String label, String[] args) {
 		boolean perms = sender.isOp(); //проверка прав
 		if (args == null) { //проверка аргументов на нуль
