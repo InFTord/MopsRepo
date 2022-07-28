@@ -1,5 +1,5 @@
-package ml.mopspvps;
-import ml.mopslobbys.AdminUtils;
+package ml.mopslobby;
+import ml.mopslobby.AdminUtils;
 import ml.mopslobby.PlayerEssentials;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -10,13 +10,13 @@ import org.bukkit.command.CommandSender;
  * @author Kofiy
  */
 
-public class Govno {
+public class Commands {
 	// Хандлер команд
-	public boolean commandsExecutor(CommandSender sender, Command command, String label, String[] args) {
-		if (new AdminUtils().commandsExecutor(sender, command, label, args)) {
+	public boolean commandsExecutor(CommandSender sender, Command command, String label, String[] args, Plugin plugin) {
+		if (new AdminUtils().commandsExecutor(sender, command, label, args, plugin)) {
 			return true;
 		} else {
-			return new PlayerEssentials().commandsExecutor(sender, command, label, args);
+			return new PlayerEssentials().commandsExecutor(sender, command, label, args, plugin);
 		}
 	}
 }

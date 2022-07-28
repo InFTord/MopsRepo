@@ -1,7 +1,10 @@
 package ml.mopslobby;
 
+//import ml.mopspvps.Commands;
 import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -9,12 +12,13 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.plugin.java.JavaPlugin;
-import ml.mopslobby.Govno;
+import ml.mopslobby.Commands;
+import org.jetbrains.annotations.NotNull;
 
 public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
-        return new Commands.commandsExecutor(sender, command, label, args);
+        return new Commands().commandsExecutor(sender, command, label, args, this);
     }
 
     @EventHandler

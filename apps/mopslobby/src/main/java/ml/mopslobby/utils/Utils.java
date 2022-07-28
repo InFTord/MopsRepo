@@ -1,10 +1,11 @@
-package ml.mopspvps.utils;
+package ml.mopslobby.utils;
 
-import ml.mopspvps.Dependencies;
+//import ml.mopspvps.Dependencies;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
 
@@ -16,6 +17,13 @@ import java.util.StringJoiner;
 import static net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacyAmpersand;
 
 public class Utils {
+
+	protected Plugin plugin;
+
+	public Utils(Plugin plugin) {
+		this.plugin = plugin;
+	}
+
 	static public String componentsToSingularString(List<Component> textComponents) {
 		List<String> strings = null;
 		for (Component component : textComponents) {
@@ -46,13 +54,13 @@ public class Utils {
 		return strings;
 	}
 
-	static public List<String> playerNames() {
-		List<String> playerNames = null;
-		for (Player player : Dependencies.getPlugin().getServer().getOnlinePlayers()) {
-			playerNames.add(player.getName());
-		}
-		return  playerNames;
-	}
+//	static public List<String> playerNames() {
+//		List<String> playerNames = null;
+//		for (Player player : Dependencies.getPlugin().getServer().getOnlinePlayers()) {
+//			playerNames.add(player.getName());
+//		}
+//		return  playerNames;
+//	}
 
 	static public String combineStrings(String[] strings) {
 		StringJoiner joiner = new StringJoiner("");
@@ -69,23 +77,23 @@ public class Utils {
 		return joiner.toString();
 	}
 
-	static public String combineStrings(String[] strings, CHARACTER character) {
-		StringJoiner joiner = new StringJoiner(character.getSymbol());
+	static public String combineStrings(String[] strings, String character) {
+		StringJoiner joiner = new StringJoiner(character);
 		for (String string : strings) {
 			joiner.add(string);
 		}
 		return joiner.toString();
 	}
-	static public String combineStrings(CharSequence[] strings, CHARACTER character) {
-		StringJoiner joiner = new StringJoiner(character.getSymbol());
+	static public String combineStrings(CharSequence[] strings, String character) {
+		StringJoiner joiner = new StringJoiner(character);
 		for (CharSequence string : strings) {
 			joiner.add(string);
 		}
 		return joiner.toString();
 	}
 
-	static public String combineStrings(String[] strings, CHARACTER character, Integer[] excludes) {
-		StringJoiner joiner = new StringJoiner(character.getSymbol());
+	static public String combineStrings(String[] strings, String character, Integer[] excludes) {
+		StringJoiner joiner = new StringJoiner(character);
 		for (int i = 0; i<strings.length; i++) {
 			final int j = i;
 			if (!Arrays.stream(excludes).anyMatch(x -> x == j)) {
@@ -107,17 +115,18 @@ public class Utils {
 	}
 
 	static public void updateDisplayName(Player target) {
-		String rank = Dependencies.getMopsRank(target);
-		String name = Dependencies.getMopsName(target);
-
-		if (rank == null || rank.isBlank() || rank.isEmpty()) {
-			rank = ChatColor.GRAY + "";
-		}
-		if (name == null || name.isBlank() || name.isEmpty()) {
-			name = target.getName();
-		}
-
-		target.displayName(Component.empty().append(legacyAmpersand().deserialize(rank)).append(legacyAmpersand().deserialize(name)));
+//		String rank = Dependencies.getMopsRank(target);
+//		String name = Dependencies.getMopsName(target);
+//
+//		if (rank == null || rank.isBlank() || rank.isEmpty()) {
+//			rank = ChatColor.GRAY + "";
+//		}
+//		if (name == null || name.isBlank() || name.isEmpty()) {
+//			name = target.getName();
+//		}
+//
+//		target.displayName(Component.empty().append(legacyAmpersand().deserialize(rank)).append(legacyAmpersand().deserialize(name)));
+		target.sendMessage("временно не работает");
 	}
 
 	static public void addScore(Objective objective, Integer number, TextComponent displayContent) {

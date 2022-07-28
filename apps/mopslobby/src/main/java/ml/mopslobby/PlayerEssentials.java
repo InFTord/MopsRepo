@@ -1,8 +1,8 @@
-package ml.mopspvps.commands;
+package ml.mopslobby;
 
-import ml.mopspvps.Commands;
-import ml.mopspvps.Dependencies;
-import ml.mopspvps.Plugin;
+import ml.mopslobby.Commands;
+//import ml.mopspvps.Dependencies;
+//import ml.mopspvps.Plugin;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
@@ -24,8 +24,7 @@ import java.util.Locale;
 
 public class PlayerEssentials extends Commands {
 	@Override
-	public boolean commandsExecutor(CommandSender sender, Command command, String label, String[] args) {
-		Plugin plugin = Dependencies.getPlugin();
+	public boolean commandsExecutor(CommandSender sender, Command command, String label, String[] args, Plugin plugin) {
 		Player player = (Player) sender;
 		String commandName = command.getName().toLowerCase(Locale.ROOT);
 		if (commandName.equals("pog")) {
@@ -41,7 +40,8 @@ public class PlayerEssentials extends Commands {
 			return true;
 		}
 		if (commandName.equals("kit")) {
-			player.openInventory(Dependencies.getKits());
+			//player.openInventory(Dependencies.getKits());
+			player.sendMessage("киты не работают");
 			return true;
 		}
 		if (commandName.equals("whoiam")) {

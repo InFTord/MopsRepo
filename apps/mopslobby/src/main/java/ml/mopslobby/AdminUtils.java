@@ -1,6 +1,6 @@
 package ml.mopslobby;
 
-import ml.mopspvps.utils.CHARACTER;
+//import ml.mopspvps.utils.CHARACTER;
 import ml.mopslobby.utils.Utils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
@@ -37,7 +37,7 @@ public class AdminUtils extends Commands {
 			args = new String[] {""};
 		}
 
-		String arguments = Utils.combineStrings(args, CHARACTER.SPACE); //Объеденение всех аргументов в строку в стиле "arg0 arg1 arg2"
+		String arguments = Utils.combineStrings(args, " "); //Объеденение всех аргументов в строку в стиле "arg0 arg1 arg2"
 		String commandName = command.getName().toLowerCase(Locale.ROOT); //Получение названия команды
 
 		if (sender instanceof Player player && perms) { //Проверка на права и игрока
@@ -66,7 +66,7 @@ public class AdminUtils extends Commands {
 						}
 					}
 					Integer[] array0 = {0}; //Обозначает, что в строке nextArgument будет пропущен аргумент arg[0]
-					String nextArguments = Utils.combineStrings(args, CHARACTER.SPACE, array0);
+					String nextArguments = Utils.combineStrings(args, " ", array0);
 
 					if (nextArguments.isEmpty() || nextArguments.isBlank() || nextArguments == null) { //Если последующих аргументов нет
 						String rank = ChatColor.GRAY + ""; //стандартный ранг
@@ -78,6 +78,7 @@ public class AdminUtils extends Commands {
 						player.sendMessage("АХАХАХАХ МОПС РАНК");
 
 						Utils.updateDisplayName(target); //Обновление имени
+						sender.sendMessage("временно не работает");
 
 						if (target.equals(player)) { //Сообщения о успешном ресете ранга
 							target.sendMessage(ChatColor.GREEN + "Вы ресетнули свой ранг.");

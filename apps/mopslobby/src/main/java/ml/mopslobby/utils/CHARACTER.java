@@ -1,4 +1,4 @@
-package ml.mopspvps.utils;
+package ml.mopslobby.utils;
 
 import javax.annotation.CheckForNull;
 
