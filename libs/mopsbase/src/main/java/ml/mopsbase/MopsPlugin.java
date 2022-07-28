@@ -17,7 +17,7 @@ public class MopsPlugin extends JavaPlugin {
 	public final FileConfiguration translation = new YamlConfiguration();
 	protected List<Method> doOnEnable = new LinkedList<Method>();
 	public Logger logger;
-	protected Map<String, Object>;
+	protected Map<String, Object> asjfdkafj;
 	protected Map<String> hardcodedSettings = new HashMap<String> ();
 
 	@Override
