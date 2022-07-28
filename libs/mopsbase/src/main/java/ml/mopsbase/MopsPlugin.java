@@ -47,7 +47,7 @@ public class MopsPlugin extends JavaPlugin {
 		return new Translation(translation, getLogger(), "mopsgeneral").getTranslation(lang, string.replaceFirst("mopsgeneral.", ""));
 	}
 
-	protected void loadConfigurableData(@Nullable List<String> optionalConfigPaths, @Nullable List<string> optionalTranslationsPaths) {
+	protected void loadConfigurableData(@Nullable List<String> optionalConfigPaths, @Nullable List<String> optionalTranslationsPaths) {
 		this.saveDefaultConfig();
 		this.config = this.getConfig();
 		logger.info("config: \n" + config.saveToString() );
@@ -72,7 +72,7 @@ public class MopsPlugin extends JavaPlugin {
 	}
 
 	protected void clearConfigurableData() {
-		this.config = null;
-		this.translation = null;
+		//this.config = null;
+		//this.translation = null;
 	}
 }

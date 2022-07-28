@@ -1,6 +1,5 @@
 package ml.mopslobby;
 
-//import ml.mopspvps.utils.CHARACTER;
 import ml.mopslobby.utils.Utils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;

@@ -1,5 +1,6 @@
 package ml.mopsutils;
 
-public class UtilCommands extends CommandExecutor {
+public class UtilCommands //extends CommandExecutor
+{
 
 }
