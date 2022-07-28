@@ -2025,7 +2025,6 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		fakekills.getScoreboard().resetScores(getStringByLang(lang, "kills.blue") + comma + ChatColor.AQUA + bluekills + blueyourteam);
 		fakekills.getScoreboard().resetScores(getStringByLang(lang, "kills.blue") + comma + ChatColor.AQUA + (bluekills-1) + blueyourteam);
 		bluekills = 0;
-
 		player.setScoreboard(fakekills.getScoreboard());
 	}
 

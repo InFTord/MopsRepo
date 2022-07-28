@@ -35,7 +35,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 	@Override
 	public void onEnable() {
-		Logger logger = getLogger();
+
 		Timestamp enableTimeStamp = new Timestamp(System.currentTimeMillis());
 		Bukkit.broadcast(restartMessage);
 

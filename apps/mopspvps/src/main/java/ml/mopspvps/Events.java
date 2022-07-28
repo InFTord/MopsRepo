@@ -40,6 +40,7 @@ import static net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializ
  */
 
 public class Events implements Listener {
+	
 	//    TODO: базовый менеджер ивентов
 	Dependencies dependencies;
 	Plugin plugin;

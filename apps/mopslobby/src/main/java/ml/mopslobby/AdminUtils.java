@@ -12,7 +12,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Sound;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
@@ -23,9 +22,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scoreboard.Score;
 import org.bukkit.util.Vector;
-import ml.mopspvps.utils.Utils;
-import org.jetbrains.annotations.NotNull;
-
+import ml.mopslobby.utils.Utils;
 import java.util.*;
 import static net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacyAmpersand;
 
@@ -35,13 +32,8 @@ import static net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializ
  * @author Kofiy
  */
 
-public class AdminUtils extends Commands implements CommandExecutor {
+public class AdminUtils extends Commands {
 	@Override
-	public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
-		return false;
-	}
-
-	@Override @Deprecated //Я даун написал эту хуиту через жопу
 	public boolean commandsExecutor(CommandSender sender, Command command, String label, String[] args) {
 		boolean perms = sender.isOp(); //проверка прав
 		if (args == null) { //проверка аргументов на нуль
