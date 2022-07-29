@@ -6,6 +6,7 @@ import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Color;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Sound;
 import org.bukkit.command.Command;
@@ -17,9 +18,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Slime;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.scoreboard.Score;
 import org.bukkit.util.Vector;
+
+import java.awt.*;
 import java.util.*;
+import java.util.List;
+
 import ml.mopslobby.Commands;
 import static net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacyAmpersand;
 
@@ -447,14 +453,41 @@ public class AdminUtils {
 					player.sendMessage(ChatColor.RED + "Вам нужно написать хоть что то.");
 					player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 2);
 				} else {
-					String string = args[0];
-					String string1 = string.replaceAll("_", " ").replaceAll("&0", ChatColor.BLACK + "").replaceAll("&1", ChatColor.DARK_BLUE + "").replaceAll("&2", ChatColor.DARK_GREEN + "").replaceAll("&3", ChatColor.DARK_AQUA + "").replaceAll("&4", ChatColor.DARK_RED + "").replaceAll("&5", ChatColor.DARK_PURPLE + "").replaceAll("&6", ChatColor.GOLD + "").replaceAll("&7", ChatColor.GRAY + "").replaceAll("&8", ChatColor.DARK_GRAY + "").replaceAll("&9", ChatColor.BLUE + "").replaceAll("&a", ChatColor.GREEN + "").replaceAll("&b", ChatColor.AQUA + "").replaceAll("&c", ChatColor.RED + "").replaceAll("&d", ChatColor.LIGHT_PURPLE + "").replaceAll("&e", ChatColor.YELLOW + "").replaceAll("&f", ChatColor.WHITE + "").replaceAll("&k", ChatColor.MAGIC + "").replaceAll("&l", ChatColor.BOLD + "").replaceAll("&m", ChatColor.STRIKETHROUGH + "").replaceAll("&n", ChatColor.UNDERLINE + "").replaceAll("&o", ChatColor.ITALIC + "").replaceAll("&r", ChatColor.RESET + "");
+					StringBuilder string = new StringBuilder();
+					for(String arg : args) {
+						string.append(" ").append(arg);
+					}
+					String string2 = string.toString().replaceAll("&0", ChatColor.BLACK + "").replaceAll("&1", ChatColor.DARK_BLUE + "").replaceAll("&2", ChatColor.DARK_GREEN + "").replaceAll("&3", ChatColor.DARK_AQUA + "").replaceAll("&4", ChatColor.DARK_RED + "").replaceAll("&5", ChatColor.DARK_PURPLE + "").replaceAll("&6", ChatColor.GOLD + "").replaceAll("&7", ChatColor.GRAY + "").replaceAll("&8", ChatColor.DARK_GRAY + "").replaceAll("&9", ChatColor.BLUE + "").replaceAll("&a", ChatColor.GREEN + "").replaceAll("&b", ChatColor.AQUA + "").replaceAll("&c", ChatColor.RED + "").replaceAll("&d", ChatColor.LIGHT_PURPLE + "").replaceAll("&e", ChatColor.YELLOW + "").replaceAll("&f", ChatColor.WHITE + "").replaceAll("&k", ChatColor.MAGIC + "").replaceAll("&l", ChatColor.BOLD + "").replaceAll("&m", ChatColor.STRIKETHROUGH + "").replaceAll("&n", ChatColor.UNDERLINE + "").replaceAll("&o", ChatColor.ITALIC + "").replaceAll("&r", ChatColor.RESET + "" + ChatColor.WHITE);
+
+
 					for (Player player1 : Bukkit.getServer().getOnlinePlayers()) {
-						player1.sendMessage(string1);
+						player1.sendMessage(string2);
 						player1.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
 					}
 				}
 				return true;
+			}
+			if(commandName.equals("color")) {
+				try {
+					try {
+						ItemStack item = player.getInventory().getItemInMainHand();
+						ItemMeta meta = item.hasItemMeta() ? item.getItemMeta() : Bukkit.getItemFactory().getItemMeta(item.getType());
+						LeatherArmorMeta leatherArmorMeta = (LeatherArmorMeta) meta;
+
+						leatherArmorMeta.setColor(Color.fromRGB(java.awt.Color.decode(args[1]).getRGB()));
+
+						item.setItemMeta(meta);
+						return true;
+					} catch (ClassCastException exception) {
+						player.sendMessage(ChatColor.RED + "Предмет в вашей руке не кожанный!");
+						player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 2);
+						return true;
+					}
+				} catch (NullPointerException exception) {
+					player.sendMessage(ChatColor.RED + "Вы не имеете предмета в руке!");
+					player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 2);
+					return true;
+				}
 			}
 			return false;
 		} else if (sender instanceof Player player) {

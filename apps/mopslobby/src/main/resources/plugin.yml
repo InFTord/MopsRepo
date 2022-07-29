@@ -68,3 +68,6 @@ commands:
   food:
     description: ""
     usage: /food
+  color:
+    description: ""
+    usage: /color
