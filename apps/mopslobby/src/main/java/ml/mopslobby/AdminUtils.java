@@ -20,6 +20,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scoreboard.Score;
 import org.bukkit.util.Vector;
 import java.util.*;
+import ml.mopslobby.Commands;
 import static net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacyAmpersand;
 
 /**
@@ -28,10 +29,10 @@ import static net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializ
  * @author Kofiy
  */
 
-public class AdminUtils extends Commands {
+public class AdminUtils {
 
-	//@Override
-	public boolean commandsExecutor(CommandSender sender, Command command, String label, String[] args) {
+
+	public boolean execCommands(CommandSender sender, Command command, String label, String[] args, Plugin plugin) {
 		boolean perms = sender.isOp(); //проверка прав
 		if (args == null) { //проверка аргументов на нуль
 			args = new String[] {""};
