@@ -482,8 +482,12 @@ public class AdminUtils {
 						ItemStack item = player.getInventory().getItemInMainHand();
 						ItemMeta meta = item.hasItemMeta() ? item.getItemMeta() : Bukkit.getItemFactory().getItemMeta(item.getType());
 						LeatherArmorMeta leatherArmorMeta = (LeatherArmorMeta) meta;
-
-						leatherArmorMeta.setColor(Color.fromRGB(java.awt.Color.decode(args[0].trim()).getRGB()));
+						String rgbBase16 = args[0].trim().replaceAll("#", "");
+						int rgbBase10 = Integer.parseInt(rgbBase16, 16);
+						plugin.getLogger().info("ARGUMENT #0:       " + args[0]);
+						plugin.getLogger().info("RGB BASE 16 (HEX): " + rgbBase16);
+						plugin.getLogger().info("RGB BASE 10:       " + rgbBase10);
+						leatherArmorMeta.setColor(Color.fromRGB(rgbBase10));
 
 						item.setItemMeta(leatherArmorMeta);
 						return true;
