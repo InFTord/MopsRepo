@@ -26,8 +26,7 @@ public enum CHARACTER {
 			case VERTICAL_LINE -> chr = '|';
 			case DASH -> chr = '-';
 			case TILDE -> chr = '~';
-			case SPACE, SPACEBAR -> chr = ' ';
-			case DEFAULT -> chr = ' ';
+			case SPACE, SPACEBAR, DEFAULT -> chr = ' ';
 			default -> chr = ' ';
 		}
 		return chr;
