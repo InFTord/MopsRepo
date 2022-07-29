@@ -483,7 +483,7 @@ public class AdminUtils {
 						ItemMeta meta = item.hasItemMeta() ? item.getItemMeta() : Bukkit.getItemFactory().getItemMeta(item.getType());
 						LeatherArmorMeta leatherArmorMeta = (LeatherArmorMeta) meta;
 
-						leatherArmorMeta.setColor(Color.fromRGB(java.awt.Color.decode(args[0]).getRGB()));
+						leatherArmorMeta.setColor(Color.fromRGB(java.awt.Color.decode(args[0].trim()).getRGB()));
 
 						item.setItemMeta(leatherArmorMeta);
 						return true;
@@ -498,6 +498,7 @@ public class AdminUtils {
 					return true;
 				}
 			}
+
 			return false;
 		} else if (sender instanceof Player player) {
 			player.sendMessage(ChatColor.RED + "У вас нет OP!");
