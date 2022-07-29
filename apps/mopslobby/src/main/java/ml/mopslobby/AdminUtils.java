@@ -35,9 +35,6 @@ import java.util.List;
 public class AdminUtils {
 
 	private Utilities Utils;
-	public Map<String, String> legacyCodeMap = new HashMap<String, String>();
-	legacyCodeMap.put("&s", CHARACTER.SPACE.getString());
-
 
 	public boolean execCommands(CommandSender sender, Command command, String label, String[] args, Plugin plugin) {
 		boolean perms = sender.isOp(); //проверка прав
@@ -280,12 +277,8 @@ public class AdminUtils {
 			}
 
 			if (commandName.equals("loreadd")) {
-//				StringBuilder string = new StringBuilder();
-//				for(String arg : args) {
-//					string.append(" ").append(arg);
-//				}
-//				String string2 = string.toString().replaceAll("&0", ChatColor.BLACK + "").replaceAll("&1", ChatColor.DARK_BLUE + "").replaceAll("&2", ChatColor.DARK_GREEN + "").replaceAll("&3", ChatColor.DARK_AQUA + "").replaceAll("&4", ChatColor.DARK_RED + "").replaceAll("&5", ChatColor.DARK_PURPLE + "").replaceAll("&6", ChatColor.GOLD + "").replaceAll("&7", ChatColor.GRAY + "").replaceAll("&8", ChatColor.DARK_GRAY + "").replaceAll("&9", ChatColor.BLUE + "").replaceAll("&a", ChatColor.GREEN + "").replaceAll("&b", ChatColor.AQUA + "").replaceAll("&c", ChatColor.RED + "").replaceAll("&d", ChatColor.LIGHT_PURPLE + "").replaceAll("&e", ChatColor.YELLOW + "").replaceAll("&f", ChatColor.WHITE + "").replaceAll("&k", ChatColor.MAGIC + "").replaceAll("&l", ChatColor.BOLD + "").replaceAll("&m", ChatColor.STRIKETHROUGH + "").replaceAll("&n", ChatColor.UNDERLINE + "").replaceAll("&o", ChatColor.ITALIC + "").replaceAll("&r", ChatColor.RESET + "" + ChatColor.WHITE).trim().replaceAll("&s", " ");
-
+				Map<String, String> legacyCodeMap = new HashMap<String, String>();
+				legacyCodeMap.put("&s", " ");
 				String string = Utils.combineStrings(args, CHARACTER.SPACE);
 				String string2 = "<error>";
 				try {
@@ -343,12 +336,8 @@ public class AdminUtils {
 				}
 			}
 			if (commandName.equals("nameitem")) {
-//				StringBuilder string = new StringBuilder();
-//				for(String arg : args) {
-//					string.append(" ").append(arg);
-//				}
-//				String string2 = string.toString().replaceAll("&0", ChatColor.BLACK + "").replaceAll("&1", ChatColor.DARK_BLUE + "").replaceAll("&2", ChatColor.DARK_GREEN + "").replaceAll("&3", ChatColor.DARK_AQUA + "").replaceAll("&4", ChatColor.DARK_RED + "").replaceAll("&5", ChatColor.DARK_PURPLE + "").replaceAll("&6", ChatColor.GOLD + "").replaceAll("&7", ChatColor.GRAY + "").replaceAll("&8", ChatColor.DARK_GRAY + "").replaceAll("&9", ChatColor.BLUE + "").replaceAll("&a", ChatColor.GREEN + "").replaceAll("&b", ChatColor.AQUA + "").replaceAll("&c", ChatColor.RED + "").replaceAll("&d", ChatColor.LIGHT_PURPLE + "").replaceAll("&e", ChatColor.YELLOW + "").replaceAll("&f", ChatColor.WHITE + "").replaceAll("&k", ChatColor.MAGIC + "").replaceAll("&l", ChatColor.BOLD + "").replaceAll("&m", ChatColor.STRIKETHROUGH + "").replaceAll("&n", ChatColor.UNDERLINE + "").replaceAll("&o", ChatColor.ITALIC + "").replaceAll("&r", ChatColor.RESET + "" + ChatColor.WHITE).trim();
-
+				Map<String, String> legacyCodeMap = new HashMap<String, String>();
+				legacyCodeMap.put("&s", " ");
 				String string = Utils.combineStrings(args, CHARACTER.SPACE);
 				String string2 = "<error>";
 				try {
@@ -470,12 +459,8 @@ public class AdminUtils {
 					player.sendMessage(ChatColor.RED + "Вам нужно написать хоть что то.");
 					player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 2);
 				} else {
-//					StringBuilder string = new StringBuilder();
-//					for(String arg : args) {
-//						string.append(" ").append(arg);
-//					}
-//					String string2 = string.toString().replaceAll("&0", ChatColor.BLACK + "").replaceAll("&1", ChatColor.DARK_BLUE + "").replaceAll("&2", ChatColor.DARK_GREEN + "").replaceAll("&3", ChatColor.DARK_AQUA + "").replaceAll("&4", ChatColor.DARK_RED + "").replaceAll("&5", ChatColor.DARK_PURPLE + "").replaceAll("&6", ChatColor.GOLD + "").replaceAll("&7", ChatColor.GRAY + "").replaceAll("&8", ChatColor.DARK_GRAY + "").replaceAll("&9", ChatColor.BLUE + "").replaceAll("&a", ChatColor.GREEN + "").replaceAll("&b", ChatColor.AQUA + "").replaceAll("&c", ChatColor.RED + "").replaceAll("&d", ChatColor.LIGHT_PURPLE + "").replaceAll("&e", ChatColor.YELLOW + "").replaceAll("&f", ChatColor.WHITE + "").replaceAll("&k", ChatColor.MAGIC + "").replaceAll("&l", ChatColor.BOLD + "").replaceAll("&m", ChatColor.STRIKETHROUGH + "").replaceAll("&n", ChatColor.UNDERLINE + "").replaceAll("&o", ChatColor.ITALIC + "").replaceAll("&r", ChatColor.RESET + "" + ChatColor.WHITE).trim();
-
+					Map<String, String> legacyCodeMap = new HashMap<String, String>();
+					legacyCodeMap.put("&s", " ");
 					String string = Utils.combineStrings(args, CHARACTER.SPACE);
 					String string2 = "<error>";
 					try {
