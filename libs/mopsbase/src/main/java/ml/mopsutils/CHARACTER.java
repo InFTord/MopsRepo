@@ -32,18 +32,8 @@ public enum CHARACTER {
 		return chr;
 	}
 
-	public String getSymbol() {
-		String chr = null;
-		switch (this) {
-			case DOT, PERIOD -> chr = ".";
-			case COMMA -> chr = ",";
-			case COLON -> chr = ":";
-			case COLON_WITH_DOT, SEMICOLON -> chr = ";";
-			case VERTICAL_LINE -> chr = "|";
-			case DASH -> chr = "-";
-			case TILDE -> chr = "~";
-			case SPACE, SPACEBAR -> chr = " ";
-		}
-		return chr;
+	public String getString() {
+		final char[] chr = {getCharacter()};
+		return new String(chr);
 	}
 }
