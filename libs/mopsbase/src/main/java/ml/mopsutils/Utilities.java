@@ -1,18 +1,19 @@
 package ml.mopsutils;
 
+import org.apache.commons.lang3.StringUtils;
 import ml.mopsbase.MopsPlugin;
+import ml.mopsexception.UnsoportedYetFeature;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.title.Title;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Objective;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.time.Duration;
-import java.util.Arrays;
-import java.util.List;
-import java.util.StringJoiner;
+import java.util.*;
 
 import static net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacyAmpersand;
 
@@ -134,6 +135,21 @@ public class Utilities {
 		return joiner.toString();
 	}
 
+	static public String combineStrings(String[] strings, CHARACTER character) {
+		StringJoiner joiner = new StringJoiner(character.getString());
+		for (String string : strings) {
+			joiner.add(string);
+		}
+		return joiner.toString();
+	}
+	static public String combineStrings(CharSequence[] strings, CHARACTER character) {
+		StringJoiner joiner = new StringJoiner(character.getString());
+		for (CharSequence string : strings) {
+			joiner.add(string);
+		}
+		return joiner.toString();
+	}
+
 	static public String combineStrings(String[] strings, String character, Integer[] excludes) {
 		StringJoiner joiner = new StringJoiner(character);
 		for (int i = 0; i<strings.length; i++) {
@@ -173,5 +189,53 @@ public class Utilities {
 
 	static public void addScore(Objective objective, Integer number, TextComponent displayContent) {
 		objective.getScore(legacyAmpersand().serialize(displayContent)).setScore(number);
+	}
+
+	@Deprecated
+	static public String legacyAmpersandStringToDeprecatedBukkitChatColor(String string, Map<String, String> customMapping, MAP_BOOLEAN_MODE customMappingOption) throws UnsoportedYetFeature {
+		Map<String, String> defaultMapping = new HashMap<String, String>();
+		defaultMapping.put("&0", ChatColor.BLACK + "");
+		defaultMapping.put("&1", ChatColor.DARK_BLUE + "");
+		defaultMapping.put("&2", ChatColor.DARK_GREEN + "");
+		defaultMapping.put("&3", ChatColor.DARK_AQUA + "");
+		defaultMapping.put("&4", ChatColor.DARK_RED + "");
+		defaultMapping.put("&5", ChatColor.DARK_PURPLE + "");
+		defaultMapping.put("&6", ChatColor.GOLD + "");
+		defaultMapping.put("&7", ChatColor.GRAY + "");
+		defaultMapping.put("&8", ChatColor.DARK_GRAY + "");
+		defaultMapping.put("&9", ChatColor.BLUE + "");
+		defaultMapping.put("&a", ChatColor.GREEN + "");
+		defaultMapping.put("&b", ChatColor.AQUA + "");
+		defaultMapping.put("&c", ChatColor.RED + "");
+		defaultMapping.put("&d", ChatColor.LIGHT_PURPLE + "");
+		defaultMapping.put("&e", ChatColor.YELLOW + "");
+		defaultMapping.put("&f", ChatColor.WHITE + "");
+		defaultMapping.put("&k", ChatColor.MAGIC + "");
+		defaultMapping.put("&l", ChatColor.BOLD + "");
+		defaultMapping.put("&m", ChatColor.STRIKETHROUGH + "");
+		defaultMapping.put("&n", ChatColor.UNDERLINE + "");
+		defaultMapping.put("&o", ChatColor.ITALIC + "");
+		defaultMapping.put("&r", ChatColor.RESET + "" + ChatColor.WHITE);
+
+		Map<String, String> mapping = new LinkedHashMap<String, String>();
+
+		switch (customMappingOption) {
+			case IGNORE -> {
+				mapping.putAll(defaultMapping);
+			}
+			case UNION -> {
+				mapping.putAll(defaultMapping);
+				mapping.putAll(customMapping);
+			}
+			case DIFFERENCE,SUBTRACTION,INTERSECTION -> {
+				mapping.putAll(defaultMapping);
+				throw new UnsoportedYetFeature("DIFFERENCE, SUBSRACTION and INTERSECTION in legacyAmpersandStringToDeprecatedBukkitChatColor()");
+			}
+
+		}
+		int size = mapping.size();
+		String[] keys = mapping.keySet().toArray(new String[size]);
+		String[] values = mapping.values().toArray(new String[size]);
+		return StringUtils.replaceEach(string, keys, values);
 	}
 }
