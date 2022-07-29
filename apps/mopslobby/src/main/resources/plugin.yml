@@ -22,10 +22,13 @@ commands:
     usage: /customgive
   loreadd:
     description: ""
-    usage: /loreadditem
+    usage: /loreadd
   loreclear:
     description: ""
-    usage: /loreclearitem
+    usage: /loreclear
+  loreremove:
+    description: ""
+    usage: /loreremove
   nameitem:
     description: ""
     usage: /nameitem

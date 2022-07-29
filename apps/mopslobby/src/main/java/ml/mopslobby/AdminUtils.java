@@ -335,6 +335,32 @@ public class AdminUtils {
 					return true;
 				}
 			}
+			if (commandName.equals("loreremove")) {
+				try {
+					try {
+						ItemStack item = player.getInventory().getItemInMainHand();
+						ItemMeta meta = item.getItemMeta();
+						assert meta != null;
+						if (meta.hasLore()) {
+							List<String> lore = meta.getLore();
+							assert lore != null;
+							lore.remove(args[0]);
+
+							meta.setLore(lore);
+							item.setItemMeta(meta);
+						} else {
+							player.sendMessage(ChatColor.RED + "У предмета нет лора!");
+							player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 2);
+						}
+					} catch (IndexOutOfBoundsException exception) {
+						player.sendMessage(ChatColor.RED + "У предмета нет такой строчки!");
+						player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 2);
+					}
+				} catch (NullPointerException exception) {
+					player.sendMessage(ChatColor.RED + "Вы не имеете предмета в руке!");
+					player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 2);
+				}
+			}
 			if (commandName.equals("nameitem")) {
 				Map<String, String> legacyCodeMap = new HashMap<String, String>();
 				legacyCodeMap.put("&s", " ");
