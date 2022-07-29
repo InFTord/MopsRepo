@@ -146,7 +146,7 @@ public class Utilities {
 
 	}
 	static public String combineStrings(CharSequence[] strings, CHARACTER character, Integer[] excludes) {
-		StringJoiner joiner = new StringJoiner(character.getSymbol());
+		StringJoiner joiner = new StringJoiner(character.getString());
 		for (int i = 0; i<strings.length; i++) {
 			final int j = i;
 			if (!Arrays.stream(excludes).anyMatch(x -> x == j)) {
