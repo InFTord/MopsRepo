@@ -474,9 +474,9 @@ public class AdminUtils {
 						ItemMeta meta = item.hasItemMeta() ? item.getItemMeta() : Bukkit.getItemFactory().getItemMeta(item.getType());
 						LeatherArmorMeta leatherArmorMeta = (LeatherArmorMeta) meta;
 
-						leatherArmorMeta.setColor(Color.fromRGB(java.awt.Color.decode(args[1]).getRGB()));
+						leatherArmorMeta.setColor(Color.fromRGB(java.awt.Color.decode(args[0]).getRGB()));
 
-						item.setItemMeta(meta);
+						item.setItemMeta(leatherArmorMeta);
 						return true;
 					} catch (ClassCastException exception) {
 						player.sendMessage(ChatColor.RED + "Предмет в вашей руке не кожанный!");
