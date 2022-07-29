@@ -42,7 +42,7 @@ public class AdminUtils {
 			args = new String[] {""};
 		}
 
-		String arguments = Utils.combineStrings(args, " "); //Объеденение всех аргументов в строку в стиле "arg0 arg1 arg2"
+		String arguments = Utilities.combineStrings(args, " "); //Объеденение всех аргументов в строку в стиле "arg0 arg1 arg2"
 		String commandName = command.getName().toLowerCase(Locale.ROOT); //Получение названия команды
 
 		if (sender instanceof Player player && perms) { //Проверка на права и игрока
@@ -71,7 +71,7 @@ public class AdminUtils {
 						}
 					}
 					Integer[] array0 = {0}; //Обозначает, что в строке nextArgument будет пропущен аргумент arg[0]
-					String nextArguments = Utils.combineStrings(args, " ", array0);
+					String nextArguments = Utilities.combineStrings(args, " ", array0);
 
 					if (nextArguments.isEmpty() || nextArguments.isBlank() || nextArguments == null) { //Если последующих аргументов нет
 						String rank = ChatColor.GRAY + ""; //стандартный ранг
@@ -82,7 +82,7 @@ public class AdminUtils {
 
 						player.sendMessage("АХАХАХАХ МОПС РАНК");
 
-						Utils.updateDisplayName(target); //Обновление имени
+						Utilities.updateDisplayName(target); //Обновление имени
 						sender.sendMessage("временно не работает");
 
 						if (target.equals(player)) { //Сообщения о успешном ресете ранга
@@ -104,7 +104,7 @@ public class AdminUtils {
 					String rank = nextArguments; //Установка ранга
 //					Dependencies.putMopsRank(target, rank);
 
-					Utils.updateDisplayName(target); //Обновление имени
+					Utilities.updateDisplayName(target); //Обновление имени
 
 					if (target.equals(player)) { //Сообщение о успешном выполнении команды
 						target.sendMessage(ChatColor.GREEN + "Вы изменили свой ранг.");
@@ -279,10 +279,10 @@ public class AdminUtils {
 			if (commandName.equals("loreadd")) {
 				Map<String, String> legacyCodeMap = new HashMap<String, String>();
 				legacyCodeMap.put("&s", " ");
-				String string = Utils.combineStrings(args, CHARACTER.SPACE);
+				String string = Utilities.combineStrings(args, CHARACTER.SPACE);
 				String string2 = "<error>";
 				try {
-					string2 = Utils.legacyAmpersandStringToDeprecatedBukkitChatColor(string.trim(), legacyCodeMap, MAP_BOOLEAN_MODE.UNION);
+					string2 = Utilities.legacyAmpersandStringToDeprecatedBukkitChatColor(string.trim(), legacyCodeMap, MAP_BOOLEAN_MODE.UNION);
 				} catch (Exception e) {
 					plugin.getLogger().warning("<AU> " + e.getMessage());
 				}
@@ -338,10 +338,10 @@ public class AdminUtils {
 			if (commandName.equals("nameitem")) {
 				Map<String, String> legacyCodeMap = new HashMap<String, String>();
 				legacyCodeMap.put("&s", " ");
-				String string = Utils.combineStrings(args, CHARACTER.SPACE);
+				String string = Utilities.combineStrings(args, CHARACTER.SPACE);
 				String string2 = "<error>";
 				try {
-					string2 = Utils.legacyAmpersandStringToDeprecatedBukkitChatColor(string.trim(), legacyCodeMap, MAP_BOOLEAN_MODE.UNION);
+					string2 = Utilities.legacyAmpersandStringToDeprecatedBukkitChatColor(string.trim(), legacyCodeMap, MAP_BOOLEAN_MODE.UNION);
 				} catch (Exception e) {
 					plugin.getLogger().warning("<AU> " + e.getMessage());
 				}
@@ -461,10 +461,10 @@ public class AdminUtils {
 				} else {
 					Map<String, String> legacyCodeMap = new HashMap<String, String>();
 					legacyCodeMap.put("&s", " ");
-					String string = Utils.combineStrings(args, CHARACTER.SPACE);
+					String string = Utilities.combineStrings(args, CHARACTER.SPACE);
 					String string2 = "<error>";
 					try {
-						string2 = Utils.legacyAmpersandStringToDeprecatedBukkitChatColor(string.trim(), legacyCodeMap, MAP_BOOLEAN_MODE.UNION);
+						string2 = Utilities.legacyAmpersandStringToDeprecatedBukkitChatColor(string.trim(), legacyCodeMap, MAP_BOOLEAN_MODE.UNION);
 					} catch (Exception e) {
 						plugin.getLogger().warning("<AU> " + e.getMessage());
 					}
