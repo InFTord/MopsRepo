@@ -1,4 +1,4 @@
-package ml.mopspvps.utils;
+package ml.mopsutils;
 
 import javax.annotation.CheckForNull;
 
@@ -13,7 +13,8 @@ public enum CHARACTER {
 	DASH,               // - ТИРЕ
 	TILDE,              // ~ ТИЛ(ть)ДА
 	SPACE,              //   ПРОБЕЛ
-	SPACEBAR;           //   ПРОБЕЛ
+	SPACEBAR,           //   ПРОБЕЛ
+	DEFAULT;            //   СТАНДАРТНЫЙ (пробел)
 
 	public char getCharacter() {
 		char chr;
@@ -26,6 +27,7 @@ public enum CHARACTER {
 			case DASH -> chr = '-';
 			case TILDE -> chr = '~';
 			case SPACE, SPACEBAR -> chr = ' ';
+			case DEFAULT -> chr = ' ';
 			default -> chr = ' ';
 		}
 		return chr;
