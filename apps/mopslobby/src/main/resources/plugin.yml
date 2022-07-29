@@ -1,7 +1,7 @@
 name: MopsPVP
-main: ml.mopspvps.Plugin
+main: ml.mopslobby.Plugin
 version: "'indev-SNAPSHOT-1.0"
-api-version: 1.18
+api-version: 1.19
 author: MopsCorporation
 description: Plugin for MopsPVP
 commands:
