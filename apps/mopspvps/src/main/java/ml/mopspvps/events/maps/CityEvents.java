@@ -3,7 +3,7 @@ package ml.mopspvps.events.maps;
 import ml.mopspvps.Dependencies;
 import ml.mopspvps.Plugin;
 import ml.mopspvps.events.EVENT_STAT;
-import ml.mopspvps.utils.Utils;
+import ml.mopsutils.Utilities;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.title.Title;
@@ -35,6 +35,9 @@ public class CityEvents {
 	 * @return EVENT_STAT
 	 * @see PlayerInteractEvent
 	 */
+
+	private Utilities Utils;
+
 	public EVENT_STAT cityDeadEvent(PlayerInteractEvent event, Player player, ItemStack item) {
 		try {
 			if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
