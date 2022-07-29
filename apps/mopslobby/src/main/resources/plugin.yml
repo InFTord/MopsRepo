@@ -3,7 +3,7 @@ main: ml.mopslobby.Plugin
 version: "'indev-SNAPSHOT-1.0"
 api-version: 1.19
 author: MopsCorporation
-description: Plugin for MopsPVP
+description: Plugin for MopsNetworks' lobby
 commands:
   slimetest:
     description: ""
@@ -70,4 +70,4 @@ commands:
     usage: /food
   color:
     description: ""
-    usage: /color
+    usage: "/color #11ccee"
