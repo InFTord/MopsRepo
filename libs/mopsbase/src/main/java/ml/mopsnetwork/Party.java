@@ -1,4 +1,4 @@
-package ml.mopsbase;
+package ml.mopsnetwork;
 
 import org.bukkit.entity.Player;
 
@@ -6,9 +6,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Party {
-	List<Player> partyMembers = new ArrayList<>();
-	Player owner = null;
+	public Party(Player player) {
+		partyMembers.add(player);
+		owner = player;
+	}
 
+	List<Player> partyMembers = new ArrayList<>();
+	Player owner;
 
 	public List<Player> getPartyMembers() {
 		return partyMembers;
@@ -25,11 +29,6 @@ public class Party {
 	}
 
 	public void setOwner(Player player) {
-		owner = player;
-	}
-
-	public void createParty(Player player) {
-		partyMembers.add(player);
 		owner = player;
 	}
 }

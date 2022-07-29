@@ -1,4 +1,4 @@
-package ml.mopsbase;
+package ml.mopsnetwork;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Color;

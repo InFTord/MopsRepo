@@ -273,8 +273,13 @@ public class AdminUtils {
 			}
 
 			if (commandName.equals("loreadd")) {
-				String string = args[0];
-				String string2 = string.replaceAll("_", " ").replaceAll("&0", ChatColor.BLACK + "").replaceAll("&1", ChatColor.DARK_BLUE + "").replaceAll("&2", ChatColor.DARK_GREEN + "").replaceAll("&3", ChatColor.DARK_AQUA + "").replaceAll("&4", ChatColor.DARK_RED + "").replaceAll("&5", ChatColor.DARK_PURPLE + "").replaceAll("&6", ChatColor.GOLD + "").replaceAll("&7", ChatColor.GRAY + "").replaceAll("&8", ChatColor.DARK_GRAY + "").replaceAll("&9", ChatColor.BLUE + "").replaceAll("&a", ChatColor.GREEN + "").replaceAll("&b", ChatColor.AQUA + "").replaceAll("&c", ChatColor.RED + "").replaceAll("&d", ChatColor.LIGHT_PURPLE + "").replaceAll("&e", ChatColor.YELLOW + "").replaceAll("&f", ChatColor.WHITE + "").replaceAll("&k", ChatColor.MAGIC + "").replaceAll("&l", ChatColor.BOLD + "").replaceAll("&m", ChatColor.STRIKETHROUGH + "").replaceAll("&n", ChatColor.UNDERLINE + "").replaceAll("&o", ChatColor.ITALIC + "").replaceAll("&r", ChatColor.RESET + "" + ChatColor.WHITE);
+				StringBuilder string = new StringBuilder();
+				for(String arg : args) {
+					string.append(" ").append(arg);
+				}
+				String string2 = string.toString().replaceAll("&0", ChatColor.BLACK + "").replaceAll("&1", ChatColor.DARK_BLUE + "").replaceAll("&2", ChatColor.DARK_GREEN + "").replaceAll("&3", ChatColor.DARK_AQUA + "").replaceAll("&4", ChatColor.DARK_RED + "").replaceAll("&5", ChatColor.DARK_PURPLE + "").replaceAll("&6", ChatColor.GOLD + "").replaceAll("&7", ChatColor.GRAY + "").replaceAll("&8", ChatColor.DARK_GRAY + "").replaceAll("&9", ChatColor.BLUE + "").replaceAll("&a", ChatColor.GREEN + "").replaceAll("&b", ChatColor.AQUA + "").replaceAll("&c", ChatColor.RED + "").replaceAll("&d", ChatColor.LIGHT_PURPLE + "").replaceAll("&e", ChatColor.YELLOW + "").replaceAll("&f", ChatColor.WHITE + "").replaceAll("&k", ChatColor.MAGIC + "").replaceAll("&l", ChatColor.BOLD + "").replaceAll("&m", ChatColor.STRIKETHROUGH + "").replaceAll("&n", ChatColor.UNDERLINE + "").replaceAll("&o", ChatColor.ITALIC + "").replaceAll("&r", ChatColor.RESET + "" + ChatColor.WHITE);
+
+
 				try {
 					ItemStack item = player.getInventory().getItemInMainHand();
 					ItemMeta meta = item.getItemMeta();
@@ -323,8 +328,12 @@ public class AdminUtils {
 				}
 			}
 			if (commandName.equals("nameitem")) {
-				String string = args[0];
-				String string2 = string.replaceAll("_", " ").replaceAll("&0", ChatColor.BLACK + "").replaceAll("&1", ChatColor.DARK_BLUE + "").replaceAll("&2", ChatColor.DARK_GREEN + "").replaceAll("&3", ChatColor.DARK_AQUA + "").replaceAll("&4", ChatColor.DARK_RED + "").replaceAll("&5", ChatColor.DARK_PURPLE + "").replaceAll("&6", ChatColor.GOLD + "").replaceAll("&7", ChatColor.GRAY + "").replaceAll("&8", ChatColor.DARK_GRAY + "").replaceAll("&9", ChatColor.BLUE + "").replaceAll("&a", ChatColor.GREEN + "").replaceAll("&b", ChatColor.AQUA + "").replaceAll("&c", ChatColor.RED + "").replaceAll("&d", ChatColor.LIGHT_PURPLE + "").replaceAll("&e", ChatColor.YELLOW + "").replaceAll("&f", ChatColor.WHITE + "").replaceAll("&k", ChatColor.MAGIC + "").replaceAll("&l", ChatColor.BOLD + "").replaceAll("&m", ChatColor.STRIKETHROUGH + "").replaceAll("&n", ChatColor.UNDERLINE + "").replaceAll("&o", ChatColor.ITALIC + "").replaceAll("&r", ChatColor.RESET + "" + ChatColor.WHITE);
+				StringBuilder string = new StringBuilder();
+				for(String arg : args) {
+					string.append(" ").append(arg);
+				}
+				String string2 = string.toString().replaceAll("&0", ChatColor.BLACK + "").replaceAll("&1", ChatColor.DARK_BLUE + "").replaceAll("&2", ChatColor.DARK_GREEN + "").replaceAll("&3", ChatColor.DARK_AQUA + "").replaceAll("&4", ChatColor.DARK_RED + "").replaceAll("&5", ChatColor.DARK_PURPLE + "").replaceAll("&6", ChatColor.GOLD + "").replaceAll("&7", ChatColor.GRAY + "").replaceAll("&8", ChatColor.DARK_GRAY + "").replaceAll("&9", ChatColor.BLUE + "").replaceAll("&a", ChatColor.GREEN + "").replaceAll("&b", ChatColor.AQUA + "").replaceAll("&c", ChatColor.RED + "").replaceAll("&d", ChatColor.LIGHT_PURPLE + "").replaceAll("&e", ChatColor.YELLOW + "").replaceAll("&f", ChatColor.WHITE + "").replaceAll("&k", ChatColor.MAGIC + "").replaceAll("&l", ChatColor.BOLD + "").replaceAll("&m", ChatColor.STRIKETHROUGH + "").replaceAll("&n", ChatColor.UNDERLINE + "").replaceAll("&o", ChatColor.ITALIC + "").replaceAll("&r", ChatColor.RESET + "" + ChatColor.WHITE);
+
 				try {
 					ItemStack item = player.getInventory().getItemInMainHand();
 					ItemMeta meta = item.getItemMeta();
