@@ -1,6 +1,6 @@
 package ml.mopslobby;
 
-import ml.mopslobby.utils.Utils;
+import ml.mopsutils.Utilities;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -19,15 +19,10 @@ import org.bukkit.entity.Slime;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
-import org.bukkit.scoreboard.Score;
 import org.bukkit.util.Vector;
 
-import java.awt.*;
 import java.util.*;
 import java.util.List;
-
-import ml.mopslobby.Commands;
-import static net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacyAmpersand;
 
 /**
  * Обработчик комманд администрации (требуют права оператора)
@@ -37,6 +32,7 @@ import static net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializ
 
 public class AdminUtils {
 
+	private Utilities Utils;
 
 	public boolean execCommands(CommandSender sender, Command command, String label, String[] args, Plugin plugin) {
 		boolean perms = sender.isOp(); //проверка прав
@@ -296,6 +292,7 @@ public class AdminUtils {
 
 					assert lore != null;
 					lore.add(string2);
+
 					meta.setLore(lore);
 
 					item.setItemMeta(meta);

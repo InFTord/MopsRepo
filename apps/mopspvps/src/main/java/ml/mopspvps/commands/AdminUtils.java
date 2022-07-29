@@ -3,7 +3,7 @@ package ml.mopspvps.commands;
 import ml.mopspvps.Commands;
 import ml.mopspvps.Dependencies;
 import ml.mopspvps.messages.CommandError;
-import ml.mopspvps.utils.CHARACTER;
+import ml.mopsutils.CHARACTER;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -23,7 +23,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scoreboard.Score;
 import org.bukkit.util.Vector;
-import ml.mopspvps.utils.Utils;
+import ml.mopsutils.Utilities;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -36,6 +36,9 @@ import static net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializ
  */
 
 public class AdminUtils extends Commands implements CommandExecutor {
+
+	private Utilities Utils;
+
 	@Override
 	public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
 		return false;
