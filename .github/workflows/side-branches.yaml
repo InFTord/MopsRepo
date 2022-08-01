@@ -23,15 +23,14 @@ jobs:
           distribution: 'zulu'
           cache: maven
       - name: 'Install libs and build plugins'
-        run: mvn install --projects :libs,:apps #:mops-base,:mops-pvps,:mops-lobby,:wool-battle
+        run: mvn install --projects :mops-base,:mops-pvps,:mops-lobby,:wool-battle
       - name: "Move .jar's"
         run: |
           mkdir staging
-#          cp apps/mops-pvps/target/*.jar staging
-#          cp apps/wool-battle/target/*.jar staging
-#          cp apps/mops-lobby/target/*.jar staging
-#          cp libs/mops-base/target/*.jar staging
-          cp target/*.jar staging
+          cp apps/mops-pvps/target/*.jar staging
+          cp apps/wool-battle/target/*.jar staging
+          cp apps/mops-lobby/target/*.jar staging
+          cp libs/mops-base/target/*.jar staging
       - name: 'Upload .jar artefacts of plugin'
         uses: actions/upload-artifact@v3.1.0
         with:
