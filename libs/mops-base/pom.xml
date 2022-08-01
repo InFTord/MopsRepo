@@ -6,11 +6,12 @@
 
     <parent>
         <artifactId>libs</artifactId>
-        <groupId>ml.monorepo</groupId>
-        <version>1.0-SNAPSHOT</version>
+        <groupId>ml.mops.repo</groupId>
+        <version>IN_DEV</version>
     </parent>
 
-    <artifactId>mopsbase</artifactId>
+    <groupId>ml.mops.base</groupId>
+    <artifactId>mops-base</artifactId>
     <name>Mops :: Libs :: Mops Base</name>
 
     <properties>
@@ -63,7 +64,7 @@
     </dependencies>
 
     <build>
-        <finalName>mopsbase</finalName>
+        <finalName>mops-base</finalName>
         <plugins>
             <plugin>
                 <version>3.10.1</version>

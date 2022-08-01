@@ -5,14 +5,15 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>woolbattle</artifactId>
+    <groupId>ml.mops.wool.battle</groupId>
+    <artifactId>wool-battle</artifactId>
     <name>Mops :: Apps [AKA Plugins] :: WoolBattle</name>
-    <version>1.0-SNAPSHOT</version>
+    <version>IN_DEV</version>
 
     <parent>
-        <groupId>ml.monorepo</groupId>
+        <groupId>ml.mops.repo</groupId>
         <artifactId>apps</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>IN_DEV</version>
     </parent>
 
     <properties>
@@ -49,14 +50,14 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>ml.monorepo</groupId>
-            <artifactId>mopsbase</artifactId>
+            <groupId>ml.mops.base</groupId>
+            <artifactId>mops-base</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>
 
     <build>
-        <finalName>woolbattle</finalName>
+        <finalName>wool-battle</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -80,7 +81,7 @@
                         <configuration>
                             <artifactSet>
                                 <includes>
-                                    <include>ml.monorepo:*</include>
+                                    <include>ml.mops:*</include>
                                     <include>com.fasterxml.jackson.core:*</include>
                                     <include>com.fasterxml.jackson.dataformat:jackson-dataformat-yaml</include>
                                 </includes>
