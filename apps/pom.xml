@@ -27,9 +27,9 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>mopslobby</module>
-        <module>mopspvps</module>
-        <module>woolbattle</module>
+        <module>mops-lobby</module>
+        <module>mops-pvps</module>
+        <module>wool-battle</module>
     </modules>
 
 </project>
