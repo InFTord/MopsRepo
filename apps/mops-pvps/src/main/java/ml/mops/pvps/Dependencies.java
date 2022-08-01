@@ -63,7 +63,6 @@ public class Dependencies {
 	private static Inventory popit;
 
 	private static Logger log;
-
 	static ScoreboardManager manager;
 	static Scoreboard board;
 
