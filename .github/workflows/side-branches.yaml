@@ -31,8 +31,9 @@ jobs:
           cp apps/wool-battle/target/*.jar staging
           cp apps/mops-lobby/target/*.jar staging
           cp libs/mops-base/target/*.jar staging
+          cp target/*.jar staging
       - name: 'Upload .jar artefacts of plugin'
         uses: actions/upload-artifact@v3.1.0
         with:
-          name: Mops Plugins .jar
+          name: Mops Plugins
           path: staging/
