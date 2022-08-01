@@ -454,13 +454,13 @@ public class Events implements Listener {
 		try { //Ивенты для мёртвых горожян
 			if (player.getScoreboardTags().contains("citydead")) {
 				switch (cityEvents.cityDeadEvent(event, player, item)) {
-					case EVENT_STAT.CANCELED -> event.setCancelled(true); //Ивент был отменён
-					case EVENT_STAT.HANDLED -> { //Ивент был обработан
+					case CANCELED -> event.setCancelled(true); //Ивент был отменён
+					case HANDLED -> { //Ивент был обработан
 						return;
 					}
-					case EVENT_STAT.NOT_HANDLED -> { //Ивент не был обработан (пока что)
+					case NOT_HANDLED -> { //Ивент не был обработан (пока что)
 					}
-					case EVENT_STAT.THROWABLE -> {
+					case THROWABLE -> {
 					}
 				}
 			}
