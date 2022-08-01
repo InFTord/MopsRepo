@@ -1,4 +1,4 @@
-package ml.mopsutils;
+package ml.mops.utils;
 
 public class Option {
 }
