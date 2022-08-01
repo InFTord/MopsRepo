@@ -31,7 +31,6 @@ jobs:
           cp apps/woolbattle/target/*.jar staging
           cp apps/mopslobby/target/*.jar staging
           cp libs/mopsbase/target/*.jar staging
-          cp libs/mopselements/target/*.jar staging
       - name: 'Upload .jar artefacts of plugin'
         uses: actions/upload-artifact@v3.1.0
         with:
