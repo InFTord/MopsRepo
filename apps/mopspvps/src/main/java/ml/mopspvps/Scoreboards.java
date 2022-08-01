@@ -27,7 +27,7 @@ public class Scoreboards {
 		} else if (tags.contains("city")){
 			try {
 				player.setScoreboard(Dependencies.getCityScoreboards().generateCityScoreboard(player));
-			} catch (Exception | Error e) {
+			} catch (Exception e) {
 				Dependencies.getLog().info("<=СОЗДАНИЕ СКОРБОАРДА=> ОШИБКА В generateCityScoreboard:");
 				Dependencies.getLog().warning(e.getMessage());
 			}

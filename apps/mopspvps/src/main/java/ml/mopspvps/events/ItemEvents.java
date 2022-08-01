@@ -182,14 +182,14 @@ public class ItemEvents {
 			if (itemDisplayName.equals(ChatColor.BLUE + "ПопИт!")) {
 				player.openInventory(Dependencies.getPopIt());
 			}
-		} catch (Exception | Error exception) {
+		} catch (Exception exception) {
 			return EVENT_STAT.THROWABLE;
 		}
 		try {
 			if (itemDisplayName.equals(ChatColor.GREEN + "СимплДимпл!")) {
 				player.openInventory(Dependencies.getSimpleDimple());
 			}
-		} catch (Exception | Error exception) {
+		} catch (Exception exception) {
 			return EVENT_STAT.THROWABLE;
 		}
 		try {
@@ -198,7 +198,7 @@ public class ItemEvents {
 					player.getInventory().setHelmet(item);
 				}
 			}
-		} catch (Exception | Error exception) {
+		} catch (Exception exception) {
 			return EVENT_STAT.THROWABLE;
 		}
 		try {
@@ -220,7 +220,7 @@ public class ItemEvents {
 
 				}
 			}
-		} catch (Exception | Error exception) {
+		} catch (Exception exception) {
 			return EVENT_STAT.THROWABLE;
 		}
 		try {
@@ -231,7 +231,7 @@ public class ItemEvents {
 					Objects.requireNonNull(loc.getWorld()).strikeLightning(loc);
 				}
 			}
-		} catch (Exception | Error exception) {
+		} catch (Exception exception) {
 			return EVENT_STAT.THROWABLE;
 		}
 		return EVENT_STAT.NOT_HANDLED;

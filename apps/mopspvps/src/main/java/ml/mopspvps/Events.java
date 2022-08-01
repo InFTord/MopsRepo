@@ -565,23 +565,30 @@ public class Events implements Listener {
 				case "vip":
 					rank = ChatColor.GOLD + "[VIP] ";
 					name = ChatColor.GOLD + name;
+					break;
 				case "developers":
 					rank = ChatColor.GREEN + "[DEV] ";
 					name = ChatColor.GREEN + name;
+					break;
 				case "admin":
 					rank = ChatColor.RED + "[ADMIN] ";
 					name = ChatColor.RED + name;
+					break;
 				case "mod":
 					rank = ChatColor.RED + "[MOD] ";
 					name = ChatColor.RED + name;
+					break;
 				case "builders":
 					rank = ChatColor.BLUE + "[BUILD] ";
 					name = ChatColor.BLUE + name;
+					break;
 				case "youtube":
 					rank = ChatColor.RED + "[" + ChatColor.WHITE + "YOUTUBE" + ChatColor.RED + "] ";
 					name = ChatColor.RED + name;
+					break;
 				default:
 					rank = ChatColor.GRAY + "";
+					break;
 			}
 			Dependencies.putMopsRank(player, rank);
 			Dependencies.putMopsName(player, name);

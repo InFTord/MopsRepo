@@ -117,8 +117,7 @@ public class AdminUtils {
 						player.playSound(player.getLocation(), Sound.BLOCK_LAVA_EXTINGUISH, 1, 2);
 						target.playSound(player.getLocation(), Sound.BLOCK_LAVA_EXTINGUISH, 1, 2);
 					}
-
-
+					break;
 				}
 				case "cname": {
 
@@ -199,7 +198,7 @@ public class AdminUtils {
 					player.sendMessage("не робе");
 				} else {
 					String string = args[0];
-					String string1 = string.replaceAll("_", " ").replaceAll("&0", ChatColor.BLACK + "").replaceAll("&1", ChatColor.DARK_BLUE + "").replaceAll("&2", ChatColor.DARK_GREEN + "").replaceAll("&3", ChatColor.DARK_AQUA + "").replaceAll("&4", ChatColor.DARK_RED + "").replaceAll("&5", ChatColor.DARK_PURPLE + "").replaceAll("&6", ChatColor.GOLD + "").replaceAll("&7", ChatColor.GRAY + "").replaceAll("&8", ChatColor.DARK_GRAY + "").replaceAll("&9", ChatColor.BLUE + "").replaceAll("&a", ChatColor.GREEN + "").replaceAll("&b", ChatColor.AQUA + "").replaceAll("&c", ChatColor.RED + "").replaceAll("&d", ChatColor.LIGHT_PURPLE + "").replaceAll("&e", ChatColor.YELLOW + "").replaceAll("&f", ChatColor.WHITE + "").replaceAll("&k", ChatColor.MAGIC + "").replaceAll("&l", ChatColor.BOLD + "").replaceAll("&m", ChatColor.STRIKETHROUGH + "").replaceAll("&n", ChatColor.UNDERLINE + "").replaceAll("&o", ChatColor.ITALIC + "").replaceAll("&r", ChatColor.RESET + "");
+					String string1 = string.replace("_", " ").replace("&0", ChatColor.BLACK + "").replace("&1", ChatColor.DARK_BLUE + "").replace("&2", ChatColor.DARK_GREEN + "").replace("&3", ChatColor.DARK_AQUA + "").replace("&4", ChatColor.DARK_RED + "").replace("&5", ChatColor.DARK_PURPLE + "").replace("&6", ChatColor.GOLD + "").replace("&7", ChatColor.GRAY + "").replace("&8", ChatColor.DARK_GRAY + "").replace("&9", ChatColor.BLUE + "").replace("&a", ChatColor.GREEN + "").replace("&b", ChatColor.AQUA + "").replace("&c", ChatColor.RED + "").replace("&d", ChatColor.LIGHT_PURPLE + "").replace("&e", ChatColor.YELLOW + "").replace("&f", ChatColor.WHITE + "").replace("&k", ChatColor.MAGIC + "").replace("&l", ChatColor.BOLD + "").replace("&m", ChatColor.STRIKETHROUGH + "").replace("&n", ChatColor.UNDERLINE + "").replace("&o", ChatColor.ITALIC + "").replace("&r", ChatColor.RESET + "");
 //						Dependencies.putMopsName(player, string1.substring(0, 16));
 					player.sendMessage(ChatColor.GREEN + "Вы изменили свой ник на " + ChatColor.RESET + string1);
 
@@ -218,7 +217,7 @@ public class AdminUtils {
 					player.sendMessage("не робе");
 				} else {
 					String string = args[0];
-					String string1 = string.replaceAll("_", " ").replaceAll("&0", ChatColor.BLACK + "").replaceAll("&1", ChatColor.DARK_BLUE + "").replaceAll("&2", ChatColor.DARK_GREEN + "").replaceAll("&3", ChatColor.DARK_AQUA + "").replaceAll("&4", ChatColor.DARK_RED + "").replaceAll("&5", ChatColor.DARK_PURPLE + "").replaceAll("&6", ChatColor.GOLD + "").replaceAll("&7", ChatColor.GRAY + "").replaceAll("&8", ChatColor.DARK_GRAY + "").replaceAll("&9", ChatColor.BLUE + "").replaceAll("&a", ChatColor.GREEN + "").replaceAll("&b", ChatColor.AQUA + "").replaceAll("&c", ChatColor.RED + "").replaceAll("&d", ChatColor.LIGHT_PURPLE + "").replaceAll("&e", ChatColor.YELLOW + "").replaceAll("&f", ChatColor.WHITE + "").replaceAll("&k", ChatColor.MAGIC + "").replaceAll("&l", ChatColor.BOLD + "").replaceAll("&m", ChatColor.STRIKETHROUGH + "").replaceAll("&n", ChatColor.UNDERLINE + "").replaceAll("&o", ChatColor.ITALIC + "").replaceAll("&r", ChatColor.RESET + "");
+					String string1 = string.replace("_", " ").replace("&0", ChatColor.BLACK + "").replace("&1", ChatColor.DARK_BLUE + "").replace("&2", ChatColor.DARK_GREEN + "").replace("&3", ChatColor.DARK_AQUA + "").replace("&4", ChatColor.DARK_RED + "").replace("&5", ChatColor.DARK_PURPLE + "").replace("&6", ChatColor.GOLD + "").replace("&7", ChatColor.GRAY + "").replace("&8", ChatColor.DARK_GRAY + "").replace("&9", ChatColor.BLUE + "").replace("&a", ChatColor.GREEN + "").replace("&b", ChatColor.AQUA + "").replace("&c", ChatColor.RED + "").replace("&d", ChatColor.LIGHT_PURPLE + "").replace("&e", ChatColor.YELLOW + "").replace("&f", ChatColor.WHITE + "").replace("&k", ChatColor.MAGIC + "").replace("&l", ChatColor.BOLD + "").replace("&m", ChatColor.STRIKETHROUGH + "").replace("&n", ChatColor.UNDERLINE + "").replace("&o", ChatColor.ITALIC + "").replace("&r", ChatColor.RESET + "");
 //						Dependencies.putMopsRank(player, string1.substring(0, 16) + " ");
 					player.sendMessage(ChatColor.GREEN + "Вы изменили свой ранг на " + ChatColor.RESET + string1);
 
@@ -233,7 +232,7 @@ public class AdminUtils {
 			if (commandName.equals("kickall")) {
 
 				String string = args[0];
-				String string1 = string.replaceAll("_", " ").replaceAll("&0", ChatColor.BLACK + "").replaceAll("&1", ChatColor.DARK_BLUE + "").replaceAll("&2", ChatColor.DARK_GREEN + "").replaceAll("&3", ChatColor.DARK_AQUA + "").replaceAll("&4", ChatColor.DARK_RED + "").replaceAll("&5", ChatColor.DARK_PURPLE + "").replaceAll("&6", ChatColor.GOLD + "").replaceAll("&7", ChatColor.GRAY + "").replaceAll("&8", ChatColor.DARK_GRAY + "").replaceAll("&9", ChatColor.BLUE + "").replaceAll("&a", ChatColor.GREEN + "").replaceAll("&b", ChatColor.AQUA + "").replaceAll("&c", ChatColor.RED + "").replaceAll("&d", ChatColor.LIGHT_PURPLE + "").replaceAll("&e", ChatColor.YELLOW + "").replaceAll("&f", ChatColor.WHITE + "").replaceAll("&k", ChatColor.MAGIC + "").replaceAll("&l", ChatColor.BOLD + "").replaceAll("&m", ChatColor.STRIKETHROUGH + "").replaceAll("&n", ChatColor.UNDERLINE + "").replaceAll("&o", ChatColor.ITALIC + "").replaceAll("&r", ChatColor.RESET + "");
+				String string1 = string.replace("_", " ").replace("&0", ChatColor.BLACK + "").replace("&1", ChatColor.DARK_BLUE + "").replace("&2", ChatColor.DARK_GREEN + "").replace("&3", ChatColor.DARK_AQUA + "").replace("&4", ChatColor.DARK_RED + "").replace("&5", ChatColor.DARK_PURPLE + "").replace("&6", ChatColor.GOLD + "").replace("&7", ChatColor.GRAY + "").replace("&8", ChatColor.DARK_GRAY + "").replace("&9", ChatColor.BLUE + "").replace("&a", ChatColor.GREEN + "").replace("&b", ChatColor.AQUA + "").replace("&c", ChatColor.RED + "").replace("&d", ChatColor.LIGHT_PURPLE + "").replace("&e", ChatColor.YELLOW + "").replace("&f", ChatColor.WHITE + "").replace("&k", ChatColor.MAGIC + "").replace("&l", ChatColor.BOLD + "").replace("&m", ChatColor.STRIKETHROUGH + "").replace("&n", ChatColor.UNDERLINE + "").replace("&o", ChatColor.ITALIC + "").replace("&r", ChatColor.RESET + "");
 
 				for (Player player1 : Bukkit.getServer().getOnlinePlayers()) {
 					if (!player1.isOp()) {
@@ -508,7 +507,7 @@ public class AdminUtils {
 						ItemStack item = player.getInventory().getItemInMainHand();
 						ItemMeta meta = item.hasItemMeta() ? item.getItemMeta() : Bukkit.getItemFactory().getItemMeta(item.getType());
 						LeatherArmorMeta leatherArmorMeta = (LeatherArmorMeta) meta;
-						String rgbBase16 = args[0].trim().replaceAll("#", "");
+						String rgbBase16 = args[0].trim().replace("#", "");
 						int rgbBase10 = Integer.parseInt(rgbBase16, 16);
 						plugin.getLogger().info("ARGUMENT #0:       " + args[0]);
 						plugin.getLogger().info("RGB BASE 16 (HEX): " + rgbBase16);
