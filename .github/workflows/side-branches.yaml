@@ -23,7 +23,7 @@ jobs:
           distribution: 'zulu'
           cache: maven
       - name: 'Install libs and build plugins'
-        run: mvn install --projects :mops-base,:mops-pvps,:mops-lobby,:wool-battle
+        run: mvn install --projects :libs,:apps #:mops-base,:mops-pvps,:mops-lobby,:wool-battle
       - name: "Move .jar's"
         run: |
           mkdir staging
