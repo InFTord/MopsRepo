@@ -6,7 +6,7 @@ on:
       - '**'
       - '!main'
       - '!dev'
-      - '!dev/*'
+      - 'dev/*'
       - '!dependabot/*'
 
 jobs:
@@ -23,17 +23,16 @@ jobs:
           distribution: 'zulu'
           cache: maven
       - name: 'Install libs and build plugins'
-        run: mvn install --projects :mopsbase,:mopselements,:mopspvps,:mopslobby,:woolbattle
+        run: mvn install --projects :mops-base,:mops-pvps,:mops-lobby,:wool-battle
       - name: "Move .jar's"
         run: |
           mkdir staging
-          cp apps/mopspvps/target/*.jar staging
-          cp apps/woolbattle/target/*.jar staging
-          cp apps/mopslobby/target/*.jar staging
-          cp libs/mopsbase/target/*.jar staging
-          cp libs/mopselements/target/*.jar staging
+          cp apps/mops-pvps/target/*.jar staging
+          cp apps/wool-battle/target/*.jar staging
+          cp apps/mops-lobby/target/*.jar staging
+          cp libs/mops-base/target/*.jar staging
       - name: 'Upload .jar artefacts of plugin'
         uses: actions/upload-artifact@v3.1.0
         with:
-          name: Mops Plugins .jar
+          name: Mops Plugins
           path: staging/

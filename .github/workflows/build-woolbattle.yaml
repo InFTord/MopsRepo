@@ -6,13 +6,13 @@ on:
       - 'main'
       - 'dev/*'
     paths:
-      - 'apps/woolbattle/**'
+      - 'apps/wool-battle/**'
   pull_request:
     branches:
       - 'main'
       - 'dev/*'
     paths:
-      - 'apps/mopslobby/**'
+      - 'apps/mops-lobby/**'
 jobs:
   build-plugin:
     name: build-plugin
@@ -27,9 +27,9 @@ jobs:
           distribution: 'zulu'
           cache: maven
       - name: 'Install libs and build plugin for WoolBattle'
-        run: mvn install --projects :mopsbase,:mopselements,:woolbattle
+        run: mvn install --projects :mops-base,:mops-elements,:wool-battle
       - name: 'Upload .jar artefact of plugin'
         uses: actions/upload-artifact@v3.1.0
         with:
           name: WoolBattle Plugin JAR
-          path: apps/woolbattle/target/woolbattle.jar
+          path: apps/woolbattle/target/wool-battle.jar
