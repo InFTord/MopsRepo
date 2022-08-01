@@ -27,7 +27,7 @@ jobs:
           distribution: 'zulu'
           cache: maven
       - name: 'Install libs and build PVP'
-        run: mvn install --projects :mops-base,:mops-elements,:mops-lobby
+        run: mvn install --projects :mops-base,:mops-lobby
       - name: 'Upload .jar artefact of plugin'
         uses: actions/upload-artifact@v3.1.0
         with:
