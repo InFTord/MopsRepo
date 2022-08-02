@@ -45,7 +45,7 @@ public class AdminUtils {
 		if (sender instanceof Player player && perms) { //Проверка на права и игрока
 			Player target;
 			switch (commandName) { //Проверка команды
-				case "crank": {
+				case "crank" -> {
 					try {
 						target = Bukkit.getServer().getPlayer(args[0]); //Попытка получить игрока
 					} catch (ArrayIndexOutOfBoundsException expection) {
@@ -116,13 +116,114 @@ public class AdminUtils {
 					}
 					break;
 				}
-				case "cname": {
 
-				}
-				case "cnameitem": {
 
+
+				case "test" -> {
+					try {
+						player.sendMessage("тут мнооого тестинга");
+					} catch (ArrayIndexOutOfBoundsException event) {
+						player.sendMessage("ало ты какой то там эррей не написал");
+					}
+					return true;
 				}
-				default: { //Сообщение о том что комманда не найдена
+				case "slimetest" -> {
+					Slime slime = (Slime) player.getWorld().spawnEntity(player.getLocation(), EntityType.SLIME);
+
+					int integer = 1;
+					if (args.length == 0 || args[0].equals("")) {
+						player.sendMessage(ChatColor.RED + "Напишите цифру.");
+					} else {
+						try {
+							integer = Integer.parseInt(args[0]);
+						} catch (Exception e) { player.sendMessage("я выебал кастомные ошибки"); }
+
+						slime.setSize(integer);
+					}
+					return true;
+				}
+				case "vector" -> {
+					double x = 0;
+					double y = 0;
+					double z = 0;
+					try {
+						x = Double.parseDouble(args[0]);
+						y = Double.parseDouble(args[1]);
+						z = Double.parseDouble(args[2]);
+					} catch (ArrayIndexOutOfBoundsException ignored) {
+						player.sendMessage("здрасте использование команды: /vector x y z ник_игрока");
+					}
+
+					try {
+						player = Bukkit.getServer().getPlayer(args[3]);
+					} catch (ArrayIndexOutOfBoundsException exception) {
+						player = (Player) sender;
+					}
+
+					assert player != null;
+					player.setVelocity(new Vector(x, y, z).multiply(2));
+					return true;
+				}
+				case "kickall" -> {
+					Map<String, String> legacyCodeMap = new HashMap<String, String>();
+					legacyCodeMap.put("&s", " ");
+					String inputString = ml.mops.utils.Utils.combineStrings(args, CHARACTER.SPACE);
+					String string = "<error>";
+					try {
+						string = ml.mops.utils.Utils.legacyAmpersandStringToDeprecatedBukkitChatColor(inputString.trim(), legacyCodeMap, MAP_BOOLEAN_MODE.UNION);
+					} catch (Exception e) {
+						plugin.getLogger().warning("<AU> " + e.getMessage());
+					}
+
+					for (Player player1 : Bukkit.getServer().getOnlinePlayers()) {
+						if (!player1.isOp()) {
+							player1.kickPlayer(string);
+						} else {
+							player1.sendMessage(ChatColor.RED + "Возможно вам стоить выйти по причине " + ChatColor.RESET + string);
+						}
+					}
+					return true;
+				}
+				case "loreadd" -> {
+					Map<String, String> legacyCodeMap = new HashMap<String, String>();
+					legacyCodeMap.put("&s", " ");
+					String inputString = ml.mops.utils.Utils.combineStrings(args, CHARACTER.SPACE);
+					String string = "<error>";
+					try {
+						string = ml.mops.utils.Utils.legacyAmpersandStringToDeprecatedBukkitChatColor(inputString.trim(), legacyCodeMap, MAP_BOOLEAN_MODE.UNION);
+					} catch (Exception e) {
+						plugin.getLogger().warning("<AU> " + e.getMessage());
+					}
+
+					try {
+						ItemStack item = player.getInventory().getItemInMainHand();
+						ItemMeta meta = item.getItemMeta();
+
+						List<String> lore = new ArrayList<>();
+
+						assert meta != null;
+						if(meta.hasLore()) lore = meta.getLore();
+
+						assert lore != null;
+						lore.add(string);
+
+						meta.setLore(lore);
+
+						item.setItemMeta(meta);
+						player.sendMessage(ChatColor.GREEN + "Вы добавили " + ChatColor.DARK_PURPLE + ChatColor.ITALIC + string + ChatColor.RESET + ChatColor.GREEN + " в описание предмета.");
+						player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
+					} catch (NullPointerException event) {
+						player.sendMessage(ChatColor.RED + "Вы не имеете предмета в руке!");
+						player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 2);
+					}
+					return true;
+				}
+
+
+
+
+
+				default -> { //Сообщение о том что комманда не найдена
 //					TextComponent errorCode = CommandError.ARGUMENT_NAN.errorCode();
 //					Sound errorSound = CommandError.ARGUMENT_NAN.errorSound();
 
@@ -155,36 +256,6 @@ public class AdminUtils {
 //				return true;
 //			}
 
-			if (commandName.equals("slimetest")) {
-				Slime slime = (Slime) player.getWorld().spawnEntity(player.getLocation(), EntityType.SLIME);
-
-				int integer;
-				if (args.length == 0 || args[0].equals("")) {
-					player.sendMessage(ChatColor.RED + "Напишите цифру.");
-					return true;
-				} else {
-					String string = args[0];
-					try {
-						integer = Integer.parseInt(string);
-					} catch (Exception e) {
-//							TextComponent errorCode = CommandError.ARGUMENT_NAN.errorCode();
-//							Sound errorSound = CommandError.ARGUMENT_NAN.errorSound();
-//
-//							player.sendMessage(errorCode);
-//							player.playSound(player.getLocation(), errorSound, 1, 2);
-
-						player.sendMessage("я выебал кастомные ошибки");
-
-//							Dependencies.getLog().info("<=КОМАНДЫ AU=> Игрок " + player.getName() + " ввёл команду ,," + commandName + arguments + "'' и вызвал ошибку:");
-//							Dependencies.getLog().info("<=КОМАНДЫ AU=> " + ChatColor.RED + e.getMessage());
-//							Dependencies.getLog().info("<=КОМАНДЫ AU=> Игроку " + player.getName() + " было отправленно сообщение о ошибке: " + legacyAmpersand().serialize(errorCode));
-						return true;
-					}
-
-					slime.setSize(integer);
-				}
-				return true;
-			}
 
 			if (commandName.equals("name")) {
 				if (args.length == 0 || args[0].equals("")) {
@@ -226,87 +297,10 @@ public class AdminUtils {
 				player.sendMessage("не робе");
 				return true;
 			}
-			if (commandName.equals("kickall")) {
 
-				String string = args[0];
-				String string1 = string.replace("_", " ").replace("&0", ChatColor.BLACK + "").replace("&1", ChatColor.DARK_BLUE + "").replace("&2", ChatColor.DARK_GREEN + "").replace("&3", ChatColor.DARK_AQUA + "").replace("&4", ChatColor.DARK_RED + "").replace("&5", ChatColor.DARK_PURPLE + "").replace("&6", ChatColor.GOLD + "").replace("&7", ChatColor.GRAY + "").replace("&8", ChatColor.DARK_GRAY + "").replace("&9", ChatColor.BLUE + "").replace("&a", ChatColor.GREEN + "").replace("&b", ChatColor.AQUA + "").replace("&c", ChatColor.RED + "").replace("&d", ChatColor.LIGHT_PURPLE + "").replace("&e", ChatColor.YELLOW + "").replace("&f", ChatColor.WHITE + "").replace("&k", ChatColor.MAGIC + "").replace("&l", ChatColor.BOLD + "").replace("&m", ChatColor.STRIKETHROUGH + "").replace("&n", ChatColor.UNDERLINE + "").replace("&o", ChatColor.ITALIC + "").replace("&r", ChatColor.RESET + "");
 
-				for (Player player1 : Bukkit.getServer().getOnlinePlayers()) {
-					if (!player1.isOp()) {
-						player1.kickPlayer(string1);
-					} else {
-						player1.sendMessage(ChatColor.RED + "Возможно вам стоить выйти по причине " + ChatColor.RESET + string1);
-					}
-				}
 
-				return true;
-			}
-			if (commandName.equals("test")) {
-				try {
-					player.sendMessage("тут мнооого тестинга");
-				} catch (ArrayIndexOutOfBoundsException event) {
-					player.sendMessage("ало ты какой то там эррей не написал");
-				}
-				return true;
-			}
-			if (commandName.equals("vector")) {
-				double x = 0;
-				double y = 0;
-				double z = 0;
-				try {
-					x = Double.parseDouble(args[0]);
-					y = Double.parseDouble(args[1]);
-					z = Double.parseDouble(args[2]);
-				} catch (ArrayIndexOutOfBoundsException ignored) {
-					player.sendMessage("здрасте использование команды: /vector x y z ник_игрока");
-				}
 
-				try {
-					player = Bukkit.getServer().getPlayer(args[3]);
-				} catch (ArrayIndexOutOfBoundsException exception) {
-					player = (Player) sender;
-				}
-
-				assert player != null;
-				player.setVelocity(new Vector(x, y, z).multiply(2));
-				return true;
-			}
-
-			if (commandName.equals("loreadd")) {
-				Map<String, String> legacyCodeMap = new HashMap<String, String>();
-				legacyCodeMap.put("&s", " ");
-				String string = ml.mops.utils.Utils.combineStrings(args, CHARACTER.SPACE);
-				String string2 = "<error>";
-				try {
-					string2 = ml.mops.utils.Utils.legacyAmpersandStringToDeprecatedBukkitChatColor(string.trim(), legacyCodeMap, MAP_BOOLEAN_MODE.UNION);
-				} catch (Exception e) {
-					plugin.getLogger().warning("<AU> " + e.getMessage());
-				}
-
-				try {
-					ItemStack item = player.getInventory().getItemInMainHand();
-					ItemMeta meta = item.getItemMeta();
-
-					List<String> lore = new ArrayList<>();
-
-					assert meta != null;
-					if(meta.hasLore()) lore = meta.getLore();
-
-					assert lore != null;
-					lore.add(string2);
-
-					meta.setLore(lore);
-
-					item.setItemMeta(meta);
-					player.sendMessage(ChatColor.GREEN + "Вы добавили " + ChatColor.DARK_PURPLE + ChatColor.ITALIC + string2 + ChatColor.RESET + ChatColor.GREEN + " в описание предмета.");
-					player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
-					return true;
-				} catch (NullPointerException event) {
-					player.sendMessage(ChatColor.RED + "Вы не имеете предмета в руке!");
-					player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 2);
-					return true;
-				}
-			}
 			if (commandName.equals("loreclear")) {
 				try {
 					ItemStack item = player.getInventory().getItemInMainHand();
