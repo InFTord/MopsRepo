@@ -3,7 +3,6 @@ package ml.mops.pvps.events.maps;
 import ml.mops.pvps.Dependencies;
 import ml.mops.pvps.Plugin;
 import ml.mops.pvps.events.EVENT_STAT;
-import ml.mops.utils.Utilities;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.title.Title;
@@ -36,7 +35,7 @@ public class CityEvents {
 	 * @see PlayerInteractEvent
 	 */
 
-	private Utilities Utils;
+	private ml.mops.utils.Utils Utils;
 
 	public EVENT_STAT cityDeadEvent(PlayerInteractEvent event, Player player, ItemStack item) {
 		try {

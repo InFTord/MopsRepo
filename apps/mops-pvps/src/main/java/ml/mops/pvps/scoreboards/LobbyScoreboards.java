@@ -1,7 +1,6 @@
 package ml.mops.pvps.scoreboards;
 
 import ml.mops.pvps.Dependencies;
-import ml.mops.utils.Utilities;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -16,7 +15,7 @@ import static net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializ
 
 public class LobbyScoreboards {
 
-	private Utilities Utils;
+	private ml.mops.utils.Utils Utils;
 
 	public Scoreboard generateLobbyScoreboard(Player player) {
 		ScoreboardManager manager = Dependencies.getManager();
