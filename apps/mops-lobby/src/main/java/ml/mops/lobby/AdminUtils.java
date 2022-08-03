@@ -218,6 +218,223 @@ public class AdminUtils {
 					}
 					return true;
 				}
+				case "loreclear" -> {
+					try {
+						ItemStack item = player.getInventory().getItemInMainHand();
+						ItemMeta meta = item.getItemMeta();
+						assert meta != null;
+						if (meta.hasLore()) {
+							meta.setLore(new ArrayList<>());
+							item.setItemMeta(meta);
+							player.sendMessage(ChatColor.GREEN + "Вы очистили лор предмета.");
+							player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
+						} else {
+							player.sendMessage(ChatColor.RED + "У предмета нет лора!");
+							player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 2);
+						}
+					} catch (NullPointerException event) {
+						player.sendMessage(ChatColor.RED + "Вы не имеете предмета в руке!");
+						player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 2);
+					}
+					return true;
+				}
+				case "loreremove" -> {
+					try {
+						try {
+							ItemStack item = player.getInventory().getItemInMainHand();
+							ItemMeta meta = item.getItemMeta();
+							assert meta != null;
+							if (meta.hasLore()) {
+								List<String> lore = meta.getLore();
+								assert lore != null;
+								lore.remove(args[0]);
+
+								meta.setLore(lore);
+								item.setItemMeta(meta);
+							} else {
+								player.sendMessage(ChatColor.RED + "У предмета нет лора!");
+								player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 2);
+							}
+						} catch (IndexOutOfBoundsException exception) {
+							player.sendMessage(ChatColor.RED + "У предмета нет такой строчки!");
+							player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 2);
+						}
+					} catch (NullPointerException exception) {
+						player.sendMessage(ChatColor.RED + "Вы не имеете предмета в руке!");
+						player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 2);
+					}
+					return true;
+				}
+				case "nameitem" -> {
+					Map<String, String> legacyCodeMap = new HashMap<String, String>();
+					legacyCodeMap.put("&s", " ");
+					String inputString = ml.mops.utils.Utils.combineStrings(args, CHARACTER.SPACE);
+					String string = "<error>";
+					try {
+						string = ml.mops.utils.Utils.legacyAmpersandStringToDeprecatedBukkitChatColor(inputString.trim(), legacyCodeMap, MAP_BOOLEAN_MODE.UNION);
+					} catch (Exception e) {
+						plugin.getLogger().warning("<AU> " + e.getMessage());
+					}
+
+					try {
+						ItemStack item = player.getInventory().getItemInMainHand();
+						ItemMeta meta = item.getItemMeta();
+						assert meta != null;
+						meta.setDisplayName(string);
+						item.setItemMeta(meta);
+						player.sendMessage(ChatColor.GREEN + "Вы назвали предмет " + ChatColor.RESET + string + ChatColor.GREEN + ".");
+						player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
+					} catch (NullPointerException event) {
+						player.sendMessage(ChatColor.RED + "Вы не имеете предмета в руке!");
+						player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 2);
+					}
+					return true;
+				}
+				case "enchantitem" -> {
+					try {
+						String ench = args[0];
+						String rawLevel = args[1];
+						try {
+							int lvl = Integer.parseInt(rawLevel);
+							try {
+								try {
+									ItemStack item = player.getInventory().getItemInMainHand();
+									ItemMeta meta = item.getItemMeta();
+									assert meta != null;
+									meta.addEnchant(Objects.requireNonNull(Enchantment.getByKey(NamespacedKey.minecraft(ench))), lvl, true);
+									item.setItemMeta(meta);
+									player.sendMessage(ChatColor.GREEN + "Вы дали предмету зачарование " + ChatColor.RESET + ench + " " + lvl + ChatColor.GREEN + " уровня.");
+									player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
+								} catch (NullPointerException event) {
+									player.sendMessage(ChatColor.RED + "Вы не имеете предмета в руке!");
+									player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 2);
+								}
+							} catch (IllegalArgumentException event) {
+								player.sendMessage(ChatColor.RED + "Это не найдено в базе зачарований.");
+								player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 2);
+							}
+						} catch (NumberFormatException event) {
+							player.sendMessage(ChatColor.RED + "Комманду нужно использовать как: /enchantitem " + ChatColor.AQUA + rawLevel + ench);
+							player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 2);
+						}
+					} catch (ArrayIndexOutOfBoundsException event) {
+						player.sendMessage(ChatColor.RED + "Комманду нужно использовать как: /enchantitem " + ChatColor.AQUA + "<ЗАЧАРОВАНИЕ> " + "<УРОЕНЬ>");
+						player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 2);
+					}
+					return true;
+				}
+				case "enchantclear" -> {
+					try {
+						ItemStack item = player.getInventory().getItemInMainHand();
+						ItemMeta meta = item.getItemMeta();
+						assert meta != null;
+						if (meta.getEnchants().isEmpty()) {
+							player.sendMessage(ChatColor.RED + "На предмете нет зачарований.");
+							player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 2);
+						} else {
+							item.getEnchantments().keySet().clear();
+							player.sendMessage(ChatColor.GREEN + "Вы стёрли зачарования предмета.");
+							player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
+						}
+					} catch (NullPointerException event) {
+						player.sendMessage(ChatColor.RED + "Вы не имеете предмета в руке!");
+						player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 2);
+					}
+					return true;
+				}
+				case "unbreak" -> {
+					try {
+						ItemStack item = player.getInventory().getItemInMainHand();
+						ItemMeta meta = item.getItemMeta();
+						assert meta != null;
+						if (meta.isUnbreakable()) {
+							player.sendMessage(ChatColor.YELLOW + "Вы " + ChatColor.RED + ChatColor.BOLD + "ВЫКЛЮЧИЛИ" + ChatColor.RESET + ChatColor.YELLOW + " неломаемость");
+							meta.setUnbreakable(false);
+						} else {
+							player.sendMessage(ChatColor.YELLOW + "Вы " + ChatColor.GREEN + ChatColor.BOLD + "ВКЛЮЧИЛИ" + ChatColor.RESET + ChatColor.YELLOW + " неломаемость");
+							meta.setUnbreakable(true);
+						}
+						item.setItemMeta(meta);
+					} catch (NullPointerException event) {
+						player.sendMessage(ChatColor.RED + "Вы не имеете предмета в руке!");
+						player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 2);
+					}
+					return true;
+				}
+				case "color" -> {
+					try {
+						try {
+							ItemStack item = player.getInventory().getItemInMainHand();
+							ItemMeta meta = item.hasItemMeta() ? item.getItemMeta() : Bukkit.getItemFactory().getItemMeta(item.getType());
+							LeatherArmorMeta leatherArmorMeta = (LeatherArmorMeta) meta;
+							String rgbBase16 = args[0].trim().replace("#", "");
+							int rgbBase10 = Integer.parseInt(rgbBase16, 16);
+							plugin.getLogger().info("ARGUMENT #0:       " + args[0]);
+							plugin.getLogger().info("RGB BASE 16 (HEX): " + rgbBase16);
+							plugin.getLogger().info("RGB BASE 10:       " + rgbBase10);
+							leatherArmorMeta.setColor(Color.fromRGB(rgbBase10));
+
+							item.setItemMeta(leatherArmorMeta);
+						} catch (ClassCastException exception) {
+							player.sendMessage(ChatColor.RED + "Предмет в вашей руке не кожанный!");
+							player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 2);
+						}
+					} catch (NullPointerException exception) {
+						player.sendMessage(ChatColor.RED + "Вы не имеете предмета в руке!");
+						player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 2);
+					}
+					return true;
+				}
+				case "fly" -> {
+					if (player.getAllowFlight()) {
+						player.setAllowFlight(false);
+						player.sendMessage(ChatColor.YELLOW + "Вы " + ChatColor.RED + ChatColor.BOLD + "ВЫКЛЮЧИЛИ" + ChatColor.RESET + ChatColor.YELLOW + " флай");
+					} else {
+						player.setAllowFlight(true);
+						player.sendMessage(ChatColor.YELLOW + "Вы " + ChatColor.GREEN + ChatColor.BOLD + "ВКЛЮЧИЛИ" + ChatColor.RESET + ChatColor.YELLOW + " флай");
+					}
+					player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
+					return true;
+				}
+				case "food" -> {
+					try {
+						int inputFoodLevel = Integer.parseInt(args[0]);
+						player.setFoodLevel(inputFoodLevel);
+						player.sendMessage(ChatColor.GREEN + "Вы установили себе " + inputFoodLevel + " еды.");
+						player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
+					} catch (NumberFormatException e) {
+						player.sendMessage(ChatColor.RED + "Вы написали не цифру!");
+						player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 2);
+					}
+					return true;
+				}
+				case "announce" -> {
+					if (args.length == 0 || args[0].equals("")) {
+						player.sendMessage(ChatColor.RED + "Вам нужно написать хоть что то.");
+						player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 2);
+					} else {
+						Map<String, String> legacyCodeMap = new HashMap<String, String>();
+						legacyCodeMap.put("&s", " ");
+						String inputString = ml.mops.utils.Utils.combineStrings(args, CHARACTER.SPACE);
+						String string = "<error>";
+						try {
+							string = ml.mops.utils.Utils.legacyAmpersandStringToDeprecatedBukkitChatColor(inputString.trim(), legacyCodeMap, MAP_BOOLEAN_MODE.UNION);
+						} catch (Exception e) {
+							plugin.getLogger().warning("<AU> " + e.getMessage());
+						}
+
+						for (Player player1 : Bukkit.getServer().getOnlinePlayers()) {
+							player1.sendMessage(string);
+							player1.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
+						}
+					}
+					return true;
+				}
+
+
+
+
+
 
 
 
@@ -301,240 +518,20 @@ public class AdminUtils {
 
 
 
-			if (commandName.equals("loreclear")) {
-				try {
-					ItemStack item = player.getInventory().getItemInMainHand();
-					ItemMeta meta = item.getItemMeta();
-					assert meta != null;
-					if (meta.hasLore()) {
-						List<String> lore = meta.getLore();
-						assert lore != null;
-						lore.clear();
-						meta.setLore(lore);
-						item.setItemMeta(meta);
-						player.sendMessage(ChatColor.GREEN + "Вы очистили лор предмета.");
-						player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
-					} else {
-						player.sendMessage(ChatColor.RED + "У предмета нет лора!");
-						player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 2);
-					}
-					return true;
-				} catch (NullPointerException event) {
-					player.sendMessage(ChatColor.RED + "Вы не имеете предмета в руке!");
-					player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 2);
-					return true;
-				}
-			}
-			if (commandName.equals("loreremove")) {
-				try {
-					try {
-						ItemStack item = player.getInventory().getItemInMainHand();
-						ItemMeta meta = item.getItemMeta();
-						assert meta != null;
-						if (meta.hasLore()) {
-							List<String> lore = meta.getLore();
-							assert lore != null;
-							lore.remove(args[0]);
 
-							meta.setLore(lore);
-							item.setItemMeta(meta);
-						} else {
-							player.sendMessage(ChatColor.RED + "У предмета нет лора!");
-							player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 2);
-						}
-					} catch (IndexOutOfBoundsException exception) {
-						player.sendMessage(ChatColor.RED + "У предмета нет такой строчки!");
-						player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 2);
-					}
-				} catch (NullPointerException exception) {
-					player.sendMessage(ChatColor.RED + "Вы не имеете предмета в руке!");
-					player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 2);
-				}
-			}
-			if (commandName.equals("nameitem")) {
-				Map<String, String> legacyCodeMap = new HashMap<String, String>();
-				legacyCodeMap.put("&s", " ");
-				String string = ml.mops.utils.Utils.combineStrings(args, CHARACTER.SPACE);
-				String string2 = "<error>";
-				try {
-					string2 = ml.mops.utils.Utils.legacyAmpersandStringToDeprecatedBukkitChatColor(string.trim(), legacyCodeMap, MAP_BOOLEAN_MODE.UNION);
-				} catch (Exception e) {
-					plugin.getLogger().warning("<AU> " + e.getMessage());
-				}
 
-				try {
-					ItemStack item = player.getInventory().getItemInMainHand();
-					ItemMeta meta = item.getItemMeta();
-					assert meta != null;
-					meta.setDisplayName(string2);
-					item.setItemMeta(meta);
-					player.sendMessage(ChatColor.GREEN + "Вы назвали предмет " + ChatColor.RESET + string2 + ChatColor.GREEN + ".");
-					player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
-					return true;
-				} catch (NullPointerException event) {
-					player.sendMessage(ChatColor.RED + "Вы не имеете предмета в руке!");
-					player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 2);
-					return true;
-				}
-			}
-			if (commandName.equals("enchantitem")) {
-				try {
-					String ench = args[0];
-					String lvl0 = args[1];
-					try {
-						int lvl = Integer.parseInt(lvl0);
-						try {
-							try {
-								ItemStack item = player.getInventory().getItemInMainHand();
-								ItemMeta meta = item.getItemMeta();
-								assert meta != null;
-								meta.addEnchant(Objects.requireNonNull(Enchantment.getByKey(NamespacedKey.minecraft(ench))), lvl, true);
-								item.setItemMeta(meta);
-								player.sendMessage(ChatColor.GREEN + "Вы дали предмету зачарование " + ChatColor.RESET + ench + " " + lvl + ChatColor.GREEN + " уровня.");
-								player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
-								return true;
-							} catch (NullPointerException event) {
-								player.sendMessage(ChatColor.RED + "Вы не имеете предмета в руке!");
-								player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 2);
-								return true;
-							}
-						} catch (IllegalArgumentException event) {
-							player.sendMessage(ChatColor.RED + "Это не найдено в базе зачарований.");
-							player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 2);
-							return true;
-						}
-					} catch (NumberFormatException event) {
-						player.sendMessage(ChatColor.RED + "Комманду нужно использовать как: /enchantitem " + ChatColor.AQUA + ench + lvl0);
-						player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 2);
-						return true;
-					}
-				} catch (ArrayIndexOutOfBoundsException event) {
-					player.sendMessage(ChatColor.RED + "Комманду нужно использовать как: /enchantitem " + ChatColor.AQUA + "<ЗАЧАРОВАНИЕ> " + "<УРОЕНЬ>");
-					player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 2);
-					return true;
-				}
-			}
-			if (commandName.equals("enchantclear")) {
-				try {
-					ItemStack item = player.getInventory().getItemInMainHand();
-					ItemMeta meta = item.getItemMeta();
-					assert meta != null;
-					if (meta.getEnchants().isEmpty()) {
-						player.sendMessage(ChatColor.RED + "На предмете нет зачарований.");
-						player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 2);
-					} else {
-						for (Enchantment e : item.getEnchantments().keySet()) {
-							item.removeEnchantment(e);
-						}
-						player.sendMessage(ChatColor.GREEN + "Вы стёрли зачарования предмета.");
-						player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
-					}
-					return true;
-				} catch (NullPointerException event) {
-					player.sendMessage(ChatColor.RED + "Вы не имеете предмета в руке!");
-					player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 2);
-					return true;
-				}
-			}
-			if (commandName.equals("unbreak")) {
-				try {
-					ItemStack item = player.getInventory().getItemInMainHand();
-					ItemMeta meta = item.getItemMeta();
-					assert meta != null;
-					if (meta.isUnbreakable()) {
-						player.sendMessage(ChatColor.YELLOW + "Вы " + ChatColor.RED + ChatColor.BOLD + "ВЫКЛЮЧИЛИ" + ChatColor.RESET + ChatColor.YELLOW + " неломаемость");
-						meta.setUnbreakable(false);
-					} else {
-						player.sendMessage(ChatColor.YELLOW + "Вы " + ChatColor.GREEN + ChatColor.BOLD + "ВКЛЮЧИЛИ" + ChatColor.RESET + ChatColor.YELLOW + " неломаемость");
-						meta.setUnbreakable(true);
-					}
-					item.setItemMeta(meta);
-					return true;
-				} catch (NullPointerException event) {
-					player.sendMessage(ChatColor.RED + "Вы не имеете предмета в руке!");
-					player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 2);
-					return true;
-				}
-			}
-			if (commandName.equals("fly")) {
-				if (player.getAllowFlight()) {
-					player.setAllowFlight(false);
-					player.sendMessage(ChatColor.YELLOW + "Вы " + ChatColor.RED + ChatColor.BOLD + "ВЫКЛЮЧИЛИ" + ChatColor.RESET + ChatColor.YELLOW + " флай");
-				} else {
-					player.setAllowFlight(true);
-					player.sendMessage(ChatColor.YELLOW + "Вы " + ChatColor.GREEN + ChatColor.BOLD + "ВКЛЮЧИЛИ" + ChatColor.RESET + ChatColor.YELLOW + " флай");
-				}
-				player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
-				return true;
-			}
-			if (commandName.equals("food")) {
-				player.setFoodLevel(Integer.parseInt(args[0]));
-			}
-			if (commandName.equals("announce")) {
-				if (args.length == 0 || args[0].equals("")) {
-					player.sendMessage(ChatColor.RED + "Вам нужно написать хоть что то.");
-					player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 2);
-				} else {
-					Map<String, String> legacyCodeMap = new HashMap<String, String>();
-					legacyCodeMap.put("&s", " ");
-					String string = ml.mops.utils.Utils.combineStrings(args, CHARACTER.SPACE);
-					String string2 = "<error>";
-					try {
-						string2 = ml.mops.utils.Utils.legacyAmpersandStringToDeprecatedBukkitChatColor(string.trim(), legacyCodeMap, MAP_BOOLEAN_MODE.UNION);
-					} catch (Exception e) {
-						plugin.getLogger().warning("<AU> " + e.getMessage());
-					}
 
-					for (Player player1 : Bukkit.getServer().getOnlinePlayers()) {
-						player1.sendMessage(string2);
-						player1.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
-					}
-				}
-				return true;
-			}
-			if(commandName.equals("color")) {
-				try {
-					try {
-						ItemStack item = player.getInventory().getItemInMainHand();
-						ItemMeta meta = item.hasItemMeta() ? item.getItemMeta() : Bukkit.getItemFactory().getItemMeta(item.getType());
-						LeatherArmorMeta leatherArmorMeta = (LeatherArmorMeta) meta;
-						String rgbBase16 = args[0].trim().replace("#", "");
-						int rgbBase10 = Integer.parseInt(rgbBase16, 16);
-						plugin.getLogger().info("ARGUMENT #0:       " + args[0]);
-						plugin.getLogger().info("RGB BASE 16 (HEX): " + rgbBase16);
-						plugin.getLogger().info("RGB BASE 10:       " + rgbBase10);
-						leatherArmorMeta.setColor(Color.fromRGB(rgbBase10));
 
-						item.setItemMeta(leatherArmorMeta);
-						return true;
-					} catch (ClassCastException exception) {
-						player.sendMessage(ChatColor.RED + "Предмет в вашей руке не кожанный!");
-						player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 2);
-						return true;
-					}
-				} catch (NullPointerException exception) {
-					player.sendMessage(ChatColor.RED + "Вы не имеете предмета в руке!");
-					player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 2);
-					return true;
-				}
-			}
+
+
+
+
+
 
 			return false;
 		} else if (sender instanceof Player player) {
 			player.sendMessage(ChatColor.RED + "У вас нет OP!");
 			player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 2);
-		} else {
-			if (sender instanceof Pig) { //мем небаньте пж я очень уважаю граждан украины героям слава
-//				Dependencies.getPlugin().getServer().broadcast(Component.text("ХОХЛА СПРО").color(NamedTextColor.AQUA).append(Component.text("СИТЬ ЗАБЫЛИ").color(NamedTextColor.YELLOW)));
-
-				int i = 0;
-
-				while (i < 40) {
-					System.out.println("кто написал линию кода выше тот пидорас");
-					i++;
-				}
-			}
-			return true;
 		}
 		return false;
 	}
