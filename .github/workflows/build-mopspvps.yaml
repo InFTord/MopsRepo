@@ -12,7 +12,7 @@ on:
       - 'main'
       - 'dev/*'
     paths:
-      - 'apps/mops-lobby/**'
+      - 'apps/mops-pvps/**'
 
 jobs:
   build-plugin:
@@ -33,4 +33,4 @@ jobs:
         uses: actions/upload-artifact@v3.1.0
         with:
          name: MopsPVP Plugin JAR
-         path: apps/mopspvps/target/*.jar
+         path: apps/mops-pvps/target/*.jar

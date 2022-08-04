@@ -12,7 +12,7 @@ on:
       - 'main'
       - 'dev/*'
     paths:
-      - 'apps/mops-lobby/**'
+      - 'apps/wool-battle/**'
 jobs:
   build-plugin:
     name: build-plugin
