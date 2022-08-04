@@ -13,6 +13,8 @@ on:
       - 'dev/*'
     paths:
       - 'apps/mops-lobby/**'
+      - '.github/workflows/build-mopslobby.yaml'
+
 jobs:
   build-plugin:
     name: build-plugin

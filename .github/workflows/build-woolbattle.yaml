@@ -13,6 +13,7 @@ on:
       - 'dev/*'
     paths:
       - 'apps/wool-battle/**'
+      - '.github/workflows/build-woolbattle.yaml'
 jobs:
   build-plugin:
     name: build-plugin
