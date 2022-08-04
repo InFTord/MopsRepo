@@ -32,4 +32,4 @@ jobs:
         uses: actions/upload-artifact@v3.1.0
         with:
           name: MopsPVP Plugin JAR
-          path: apps/mopslobby/target/mops-lobby.jar
+          path: apps/mopslobby/target/*.jar
