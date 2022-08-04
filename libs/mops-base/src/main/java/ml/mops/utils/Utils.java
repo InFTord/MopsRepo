@@ -17,10 +17,10 @@ import java.util.*;
 
 import static net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacyAmpersand;
 
-public class Utilities {
+public class Utils {
 	MopsPlugin plugin;
 
-	public Utilities(MopsPlugin plugin) {
+	public Utils(MopsPlugin plugin) {
 		this.plugin = plugin;
 	}
 

@@ -23,7 +23,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scoreboard.Score;
 import org.bukkit.util.Vector;
-import ml.mops.utils.Utilities;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -37,7 +36,7 @@ import static net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializ
 
 public class AdminUtils extends Commands implements CommandExecutor {
 
-	private Utilities Utils;
+	private ml.mops.utils.Utils Utils;
 
 	@Override
 	public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {

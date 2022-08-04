@@ -2,7 +2,7 @@ package ml.mops.wool.battle;
 
 import ml.mops.base.MopsPlugin;
 import ml.mops.utils.Translation;
-import ml.mops.utils.Utilities;
+import ml.mops.utils.Utils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.NamedTextColor;
@@ -51,7 +51,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 	// спасибо
 	// пододжди два года и сделаю))))
 
-	 final Utilities utilities = new Utilities(this);
+	 final Utils utils = new Utils(this);
 	final Abilities abilities = new Abilities(this);
 	Translation translator;
 
@@ -2315,13 +2315,13 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 	}
 	public Title genTitle(@NotNull String lang, @Nullable String id, @Nullable String id2nd, int i, int j, int k) {
-		return utilities.createTitle(lang, id, id2nd, i, j, k);
+		return utils.createTitle(lang, id, id2nd, i, j, k);
 	}
 	public TextComponent uniteTC(TextComponent[] tcs) {
-		return utilities.combineComponents(tcs, Component.empty());
+		return utils.combineComponents(tcs, Component.empty());
 	}
 	public TextComponent uniteTCspace(TextComponent[] tcs) {
-		return utilities.combineComponents(tcs, Component.space());
+		return utils.combineComponents(tcs, Component.space());
 	}
 
 	public String getStringByLang(String lang, String string, Map<String, String> formatValues) {
