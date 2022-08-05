@@ -1,9 +1,13 @@
 package ml.mops.pvps;
 
-import ml.mops.pvps.menus.*;
-import ml.mops.pvps.menus.*;
 import org.apache.commons.lang.NullArgumentException;
 import org.bukkit.inventory.Inventory;
+
+import ml.mops.pvps.menus.CustomGive;
+import ml.mops.pvps.menus.Kits;
+import ml.mops.pvps.menus.MENUS;
+import ml.mops.pvps.menus.PopIt;
+import ml.mops.pvps.menus.SimpleDimple;
 
 /**
  * Класс Menus возвращает кастомный инвентарь.
