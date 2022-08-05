@@ -27,7 +27,7 @@ public class ItemEvents {
 	 */
 	public EVENT_STAT useAbilityWeaponEvent(PlayerInteractEvent event, Player player, ItemStack item) {
 		try {
-			String itemDisplayName = Objects.requireNonNull(item.getItemMeta()).getDisplayName();
+			String itemDisplayName = Objects.requireNonNull(item.getItemMeta()).displayName().toString();
 			if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
 				if (itemDisplayName.equals(ChatColor.DARK_AQUA + "Скипетр Иллюзиониста")) {
 					if (player.getLocation().getBlock().getType() != Material.BEDROCK || player.getLocation().getBlock().getType() != Material.BARRIER || player.getLocation().getBlock().getType() != Material.ANDESITE) {

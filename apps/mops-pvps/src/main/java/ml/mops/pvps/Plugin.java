@@ -122,8 +122,5 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		return Dependencies.getCommands().commandsExecutor(sender, command, label, args);
 	}
 
-//	static Dependencies getDependencies() {
-//		return dependencies;
-//	}
 }
 
