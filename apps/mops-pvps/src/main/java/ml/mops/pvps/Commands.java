@@ -10,7 +10,7 @@ import org.bukkit.command.CommandSender;
  *
  * @author Kofiy
  */
-
+ 
 public class Commands {
 	// Хандлер команд
 	public boolean commandsExecutor(CommandSender sender, Command command, String label, String[] args) {
