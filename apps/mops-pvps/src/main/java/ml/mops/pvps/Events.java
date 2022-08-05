@@ -6,6 +6,7 @@ import ml.mops.pvps.events.maps.CityEvents;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.ShulkerBox;
@@ -115,9 +116,7 @@ public class Events implements Listener {
 		if (event.getEntity() instanceof Player player) {
 			if (player.getScoreboardTags().contains("city")) {
 				switch (Dependencies.getCityEvents().cityPLayerDamageEvent(event, player)) {
-					case CANCELED -> {
-						event.setCancelled(true);
-					}
+					case CANCELED -> event.setCancelled(true);
 					case HANDLED, NOT_HANDLED -> {
 					}
 					case THROWABLE -> //тут должны быть логи
@@ -376,7 +375,8 @@ public class Events implements Listener {
 			if (event.getSlot() == 0) {
 				ItemStack item = new ItemStack(Material.LIGHTNING_ROD);
 				ItemMeta meta = item.getItemMeta();
-				Objects.requireNonNull(meta).setDisplayName(ChatColor.GOLD + "Молниеносная Палка");
+				Component name = MiniMessage.miniMessage().deserialize("<gold>Молниеносная Палка");
+				Objects.requireNonNull(meta).displayName(name);
 				List<String> lore = new ArrayList<>();
 				lore.add("");
 				lore.add(ChatColor.YELLOW + "Способность Предмета: Молния!" + ChatColor.BOLD + " ПКМ");
@@ -390,7 +390,8 @@ public class Events implements Listener {
 			if (event.getSlot() == 1) {
 				ItemStack item = new ItemStack(Material.SLIME_BALL);
 				ItemMeta meta = item.getItemMeta();
-				Objects.requireNonNull(meta).setDisplayName(ChatColor.GREEN + "Слизень Мощи");
+				Component name = MiniMessage.miniMessage().deserialize("<green>Слизень Мощи");
+				Objects.requireNonNull(meta).displayName(name);
 				meta.addEnchant(Enchantment.KNOCKBACK, 10, true);
 				List<String> lore2 = new ArrayList<>();
 				lore2.add("");
@@ -406,7 +407,8 @@ public class Events implements Listener {
 				ItemStack item = new ItemStack(Material.IRON_INGOT);
 				ItemMeta meta = item.getItemMeta();
 				List<String> lore = new ArrayList<>();
-				Objects.requireNonNull(meta).setDisplayName(ChatColor.GRAY + "Убийца Крови Воздуха Фрагмента Алюминия 2046");
+				Component name = MiniMessage.miniMessage().deserialize("<gray>Убийца Крови Воздуха Фрагмента Алюминия 2046");
+				Objects.requireNonNull(meta).displayName(name);
 				lore.add("");
 				lore.add(ChatColor.YELLOW + "Способность Предмета: иди нахер" + ChatColor.BOLD + " ПКМ");
 				lore.add(ChatColor.GRAY + "Нажмите ПКМ чтобы");
