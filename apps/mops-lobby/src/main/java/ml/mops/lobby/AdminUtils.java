@@ -1,8 +1,8 @@
 package ml.mops.lobby;
 
+import ml.mops.utils.MopsUtils;
 import ml.mops.utils.CHARACTER;
 import ml.mops.utils.MAP_BOOLEAN_MODE;
-import ml.mops.utils.MopsUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
