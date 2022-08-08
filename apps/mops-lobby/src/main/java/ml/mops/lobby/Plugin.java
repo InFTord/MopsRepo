@@ -32,19 +32,25 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
         Player player = event.getPlayer();
-        event.setCancelled(!player.getScoreboardTags().contains("admin"));
+        if(!player.getScoreboardTags().contains("admin")) {
+            event.setCancelled(true);
+        }
     }
 
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
         Player player = event.getPlayer();
-        event.setCancelled(!player.getScoreboardTags().contains("admin"));
+        if(!player.getScoreboardTags().contains("admin")) {
+            event.setCancelled(true);
+        }
     }
 
     @EventHandler
     public void onInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
-        event.setCancelled(!player.getScoreboardTags().contains("admin"));
+        if(!player.getScoreboardTags().contains("admin")) {
+            event.setCancelled(true);
+        }
     }
 
 }
