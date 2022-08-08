@@ -2,7 +2,9 @@ package ml.mops.lobby;
 
 import ml.mops.utils.CHARACTER;
 import ml.mops.utils.MAP_BOOLEAN_MODE;
-import ml.mops.utils.MopsUtils;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
@@ -12,6 +14,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Pig;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Slime;
 import org.bukkit.inventory.ItemStack;
@@ -36,11 +39,10 @@ public class AdminUtils {
 			args = new String[] {""};
 		}
 
-		String arguments = MopsUtils.combineStrings(args, " "); //Объеденение всех аргументов в строку в стиле "arg0 arg1 arg2"
+		String arguments = ml.mops.utils.Utils.combineStrings(args, " "); //Объеденение всех аргументов в строку в стиле "arg0 arg1 arg2"
 		String commandName = command.getName().toLowerCase(Locale.ROOT); //Получение названия команды
 
 		if (sender instanceof Player player && perms) { //Проверка на права и игрока
-
 			switch (commandName) { //Проверка команды
 				case "test" -> {
 					try {
@@ -90,10 +92,10 @@ public class AdminUtils {
 				case "kickall" -> {
 					Map<String, String> legacyCodeMap = new HashMap<String, String>();
 					legacyCodeMap.put("&s", " ");
-					String inputString = MopsUtils.combineStrings(args, CHARACTER.SPACE);
+					String inputString = ml.mops.utils.Utils.combineStrings(args, CHARACTER.SPACE);
 					String string = "<error>";
 					try {
-						string = MopsUtils.legacyAmpersandStringToDeprecatedBukkitChatColor(inputString.trim(), legacyCodeMap, MAP_BOOLEAN_MODE.UNION);
+						string = ml.mops.utils.Utils.legacyAmpersandStringToDeprecatedBukkitChatColor(inputString.trim(), legacyCodeMap, MAP_BOOLEAN_MODE.UNION);
 					} catch (Exception e) {
 						plugin.getLogger().warning("<AU> " + e.getMessage());
 					}
@@ -110,10 +112,10 @@ public class AdminUtils {
 				case "loreadd" -> {
 					Map<String, String> legacyCodeMap = new HashMap<String, String>();
 					legacyCodeMap.put("&s", " ");
-					String inputString = MopsUtils.combineStrings(args, CHARACTER.SPACE);
+					String inputString = ml.mops.utils.Utils.combineStrings(args, CHARACTER.SPACE);
 					String string = "<error>";
 					try {
-						string = MopsUtils.legacyAmpersandStringToDeprecatedBukkitChatColor(inputString.trim(), legacyCodeMap, MAP_BOOLEAN_MODE.UNION);
+						string = ml.mops.utils.Utils.legacyAmpersandStringToDeprecatedBukkitChatColor(inputString.trim(), legacyCodeMap, MAP_BOOLEAN_MODE.UNION);
 					} catch (Exception e) {
 						plugin.getLogger().warning("<AU> " + e.getMessage());
 					}
@@ -191,10 +193,10 @@ public class AdminUtils {
 				case "nameitem" -> {
 					Map<String, String> legacyCodeMap = new HashMap<String, String>();
 					legacyCodeMap.put("&s", " ");
-					String inputString = MopsUtils.combineStrings(args, CHARACTER.SPACE);
+					String inputString = ml.mops.utils.Utils.combineStrings(args, CHARACTER.SPACE);
 					String string = "<error>";
 					try {
-						string = MopsUtils.legacyAmpersandStringToDeprecatedBukkitChatColor(inputString.trim(), legacyCodeMap, MAP_BOOLEAN_MODE.UNION);
+						string = ml.mops.utils.Utils.legacyAmpersandStringToDeprecatedBukkitChatColor(inputString.trim(), legacyCodeMap, MAP_BOOLEAN_MODE.UNION);
 					} catch (Exception e) {
 						plugin.getLogger().warning("<AU> " + e.getMessage());
 					}
@@ -338,10 +340,10 @@ public class AdminUtils {
 					} else {
 						Map<String, String> legacyCodeMap = new HashMap<String, String>();
 						legacyCodeMap.put("&s", " ");
-						String inputString = MopsUtils.combineStrings(args, CHARACTER.SPACE);
+						String inputString = ml.mops.utils.Utils.combineStrings(args, CHARACTER.SPACE);
 						String string = "<error>";
 						try {
-							string = MopsUtils.legacyAmpersandStringToDeprecatedBukkitChatColor(inputString.trim(), legacyCodeMap, MAP_BOOLEAN_MODE.UNION);
+							string = ml.mops.utils.Utils.legacyAmpersandStringToDeprecatedBukkitChatColor(inputString.trim(), legacyCodeMap, MAP_BOOLEAN_MODE.UNION);
 						} catch (Exception e) {
 							plugin.getLogger().warning("<AU> " + e.getMessage());
 						}
@@ -354,6 +356,7 @@ public class AdminUtils {
 					return true;
 				}
 			}
+
 
 
 			if (commandName.equals("name")) {

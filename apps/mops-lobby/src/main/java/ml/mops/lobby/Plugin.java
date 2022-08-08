@@ -24,6 +24,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         Bukkit.getServer().getPluginManager().registerEvents(this, this);
     }
 
+
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         return new Commands().commandsExecutor(sender, command, label, args, this);
@@ -31,17 +32,20 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
-        event.setCancelled(event.getPlayer().getScoreboardTags().contains("admin"));
+        Player player = event.getPlayer();
+        event.setCancelled(!player.getScoreboardTags().contains("admin"));
     }
 
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
-        event.setCancelled(event.getPlayer().getScoreboardTags().contains("admin"));
+        Player player = event.getPlayer();
+        event.setCancelled(!player.getScoreboardTags().contains("admin"));
     }
 
     @EventHandler
     public void onInteract(PlayerInteractEvent event) {
-        event.setCancelled(event.getPlayer().getScoreboardTags().contains("admin"));
+        Player player = event.getPlayer();
+        event.setCancelled(!player.getScoreboardTags().contains("admin"));
     }
 
 }
