@@ -1,7 +1,6 @@
 package ml.mops.lobby;
 
 import ml.mops.utils.MopsUtils;
-import ml.mops.utils.CHARACTER;
 import ml.mops.utils.MAP_BOOLEAN_MODE;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -88,7 +87,7 @@ public class AdminUtils {
 				case "kickall" -> {
 					Map<String, String> legacyCodeMap = new HashMap<String, String>();
 					legacyCodeMap.put("&s", " ");
-					String inputString = MopsUtils.combineStrings(args, CHARACTER.SPACE);
+					String inputString = MopsUtils.combineStrings(args, " ");
 					String string = "<error>";
 					try {
 						string = MopsUtils.legacyAmpersandStringToDeprecatedBukkitChatColor(inputString.trim(), legacyCodeMap, MAP_BOOLEAN_MODE.UNION);
@@ -108,7 +107,7 @@ public class AdminUtils {
 				case "loreadd" -> {
 					Map<String, String> legacyCodeMap = new HashMap<String, String>();
 					legacyCodeMap.put("&s", " ");
-					String inputString = MopsUtils.combineStrings(args, CHARACTER.SPACE);
+					String inputString = MopsUtils.combineStrings(args, " ");
 					String string = "<error>";
 					try {
 						string = MopsUtils.legacyAmpersandStringToDeprecatedBukkitChatColor(inputString.trim(), legacyCodeMap, MAP_BOOLEAN_MODE.UNION);
@@ -189,7 +188,7 @@ public class AdminUtils {
 				case "nameitem" -> {
 					Map<String, String> legacyCodeMap = new HashMap<>();
 					legacyCodeMap.put("&s", " ");
-					String inputString = MopsUtils.combineStrings(args, CHARACTER.SPACE);
+					String inputString = MopsUtils.combineStrings(args, " ");
 					String string = "<error>";
 					try {
 						string = MopsUtils.legacyAmpersandStringToDeprecatedBukkitChatColor(inputString.trim(), legacyCodeMap, MAP_BOOLEAN_MODE.UNION);
@@ -336,7 +335,7 @@ public class AdminUtils {
 					} else {
 						Map<String, String> legacyCodeMap = new HashMap<String, String>();
 						legacyCodeMap.put("&s", " ");
-						String inputString = MopsUtils.combineStrings(args, CHARACTER.SPACE);
+						String inputString = MopsUtils.combineStrings(args, " ");
 						String string = "<error>";
 						try {
 							string = MopsUtils.legacyAmpersandStringToDeprecatedBukkitChatColor(inputString.trim(), legacyCodeMap, MAP_BOOLEAN_MODE.UNION);

@@ -136,21 +136,6 @@ public class MopsUtils {
 		return joiner.toString();
 	}
 
-	static public String combineStrings(String[] strings, CHARACTER character) {
-		StringJoiner joiner = new StringJoiner(character.getString());
-		for (String string : strings) {
-			joiner.add(string);
-		}
-		return joiner.toString();
-	}
-	static public String combineStrings(CharSequence[] strings, CHARACTER character) {
-		StringJoiner joiner = new StringJoiner(character.getString());
-		for (CharSequence string : strings) {
-			joiner.add(string);
-		}
-		return joiner.toString();
-	}
-
 	static public String combineStrings(String[] strings, String character, Integer[] excludes) {
 		StringJoiner joiner = new StringJoiner(character);
 		for (int i = 0; i<strings.length; i++) {
@@ -161,16 +146,6 @@ public class MopsUtils {
 		}
 		return joiner.toString();
 
-	}
-	static public String combineStrings(CharSequence[] strings, CHARACTER character, Integer[] excludes) {
-		StringJoiner joiner = new StringJoiner(character.getString());
-		for (int i = 0; i<strings.length; i++) {
-			final int j = i;
-			if (!Arrays.stream(excludes).anyMatch(x -> x == j)) {
-				joiner.add(strings[j]);
-			}
-		}
-		return joiner.toString();
 	}
 
 	static public void updateDisplayName(Player target) {
