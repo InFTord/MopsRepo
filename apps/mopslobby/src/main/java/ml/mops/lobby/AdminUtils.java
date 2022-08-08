@@ -358,6 +358,7 @@ public class AdminUtils {
 				}
 			}
 
+
 			if (commandName.equals("name")) {
 				if (args.length == 0 || args[0].equals("")) {
 //						Dependencies.putMopsName(player, player.getName());
