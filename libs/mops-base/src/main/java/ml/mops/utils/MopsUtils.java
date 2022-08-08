@@ -140,7 +140,7 @@ public class MopsUtils {
 		StringJoiner joiner = new StringJoiner(character);
 		for (int i = 0; i<strings.length; i++) {
 			final int j = i;
-			if (!Arrays.stream(excludes).anyMatch(x -> x == j)) {
+			if (Arrays.stream(excludes).noneMatch(x -> x == j)) {
 				joiner.add(strings[j]);
 			}
 		}
