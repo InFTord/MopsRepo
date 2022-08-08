@@ -51,7 +51,7 @@
         <dependency>
             <groupId>ml.mops.base</groupId>
             <artifactId>mops-base</artifactId>
-            <version>${project.version}</version>
+            <version>IN_DEV</version>
         </dependency>
 <!--        <dependency>-->
 <!--            <groupId>com.fasterxml.jackson.core</groupId>-->
