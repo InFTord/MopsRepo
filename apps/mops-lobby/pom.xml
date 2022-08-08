@@ -85,7 +85,7 @@
                         <configuration>
                             <artifactSet>
                                 <includes>
-                                    <include>ml.monorepo:*</include>
+                                    <include>ml.mops.base:*</include>
                                 </includes>
                             </artifactSet>
                         </configuration>

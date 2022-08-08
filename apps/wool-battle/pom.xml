@@ -82,6 +82,7 @@
                             <artifactSet>
                                 <includes>
                                     <include>ml.mops:*</include>
+                                    <include>ml.mops.base:*</include>
                                     <include>com.fasterxml.jackson.core:*</include>
                                     <include>com.fasterxml.jackson.dataformat:jackson-dataformat-yaml</include>
                                 </includes>
