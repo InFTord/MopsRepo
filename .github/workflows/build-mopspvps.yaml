@@ -6,13 +6,13 @@ on:
       - 'main'
       - 'dev/*'
     paths:
-      - 'apps/mops-pvps/**'
+      - 'apps/mopspvps/**'
   pull_request:
     branches:
       - 'main'
       - 'dev/*'
     paths:
-      - 'apps/mops-pvps/**'
+      - 'apps/mopspvps/**'
       - '.github/workflows/build-mopspvps.yaml'
 
 jobs:
