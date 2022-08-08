@@ -1,0 +1,76 @@
+name: MopsLobby
+main: ml.mops.lobby.Plugin
+version: "'indev-SNAPSHOT-1.0"
+api-version: 1.19
+author: MopsCorporation
+description: Plugin for MopsNetworks lobby
+commands:
+  slimetest:
+    description: ""
+    usage: /slimetest
+  name:
+    description: ""
+    usage: /name
+  rank:
+    description: ""
+    usage: /rank
+  kickall:
+    description: ""
+    usage: /kickall
+  customgive:
+    description: ""
+    usage: /customgive
+  loreadd:
+    description: ""
+    usage: /loreadd
+  loreclear:
+    description: ""
+    usage: /loreclear
+  loreremove:
+    description: ""
+    usage: /loreremove
+  nameitem:
+    description: ""
+    usage: /nameitem
+  fly:
+    description: ""
+    usage: /fly
+  announce:
+    description: ""
+    usage: /announce
+  enchantitem:
+    description: ""
+    usage: /enchantitem
+  enchantclear:
+    description: ""
+    usage: /enchantclear
+  kit:
+    description: ""
+    usage: /kit
+  lobby:
+    description: ""
+    usage: /lobby
+  hub:
+    description: ""
+    usage: /hub
+  l:
+    description: ""
+    usage: /l
+  test:
+    description: ""
+    usage: /test
+  vector:
+    description: ""
+    usage: /vector
+  calc:
+    description: ""
+    usage: /calc
+  unbreak:
+    description: ""
+    usage: /unbreak
+  food:
+    description: ""
+    usage: /food
+  color:
+    description: ""
+    usage: "/color #11ccee"
