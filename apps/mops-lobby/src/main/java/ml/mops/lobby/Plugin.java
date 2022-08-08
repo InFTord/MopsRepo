@@ -24,7 +24,6 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         Bukkit.getServer().getPluginManager().registerEvents(this, this);
     }
 
-
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         return new Commands().commandsExecutor(sender, command, label, args, this);
