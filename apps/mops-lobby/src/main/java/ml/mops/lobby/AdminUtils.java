@@ -400,8 +400,6 @@ public class AdminUtils {
 				return true;
 			}
 
-
-
 			return false;
 		} else if (sender instanceof Player player) {
 			player.sendMessage(ChatColor.RED + "У вас нет OP!");
