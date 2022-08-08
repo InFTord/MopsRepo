@@ -187,7 +187,7 @@ public class AdminUtils {
 					return true;
 				}
 				case "nameitem" -> {
-					Map<String, String> legacyCodeMap = new HashMap<String, String>();
+					Map<String, String> legacyCodeMap = new HashMap<>();
 					legacyCodeMap.put("&s", " ");
 					String inputString = MopsUtils.combineStrings(args, CHARACTER.SPACE);
 					String string = "<error>";
