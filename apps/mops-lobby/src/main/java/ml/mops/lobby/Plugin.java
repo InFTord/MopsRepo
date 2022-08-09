@@ -37,6 +37,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         }
     }
 
+
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
         Player player = event.getPlayer();
@@ -44,6 +45,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             event.setCancelled(true);
         }
     }
+    
 
     @EventHandler
     public void onInteract(PlayerInteractEvent event) {

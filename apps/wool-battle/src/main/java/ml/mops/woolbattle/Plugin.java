@@ -105,6 +105,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 	List<ItemStack> shears = new ArrayList<>();
 
 
+
 	@Override
 	public void onEnable() {
 		Bukkit.getServer().getPluginManager().registerEvents(this, this);
