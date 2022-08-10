@@ -25,7 +25,7 @@ public class AdminUtils {
      * @author Kofiy
      */
 
-    public boolean execCommands(CommandSender sender, Command command, String label, String[] args, Plugin plugin) {
+    public boolean executeCommands(CommandSender sender, Command command, String label, String[] args, Plugin plugin) {
         boolean perms = sender.isOp(); //проверка прав
         if (args == null) { //проверка аргументов на нуль
             args = new String[] {""};
