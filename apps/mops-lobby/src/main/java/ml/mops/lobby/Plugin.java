@@ -50,5 +50,4 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             event.setCancelled(true);
         }
     }
-
 }
