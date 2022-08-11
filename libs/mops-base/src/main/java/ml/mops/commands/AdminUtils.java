@@ -1,7 +1,6 @@
 package ml.mops.commands;
 
-import ml.mops.inventories.ItemEditor;
-import ml.mops.utils.MAP_BOOLEAN_MODE;
+import ml.mops.inventories.KitGUI;
 import ml.mops.utils.MopsUtils;
 import org.bukkit.*;
 import org.bukkit.command.Command;
@@ -38,13 +37,9 @@ public class AdminUtils {
             switch (commandName) { //Проверка команды
                 case "test" -> {
                     try {
-                        if(args[0].equals("editor")) {
-                            try {
-                                ItemEditor editor = new ItemEditor(player.getItemInHand());
-                                editor.openInventory(player);
-                            } catch (NullPointerException shit) {
-                                player.sendMessage("У ТЕБЯ В РУКЕ НЕТ ПРЕДМЕТА ШИЗИК");
-                            }
+                        if(args[0].equals("kits")) {
+                            KitGUI editor = new KitGUI();
+                            editor.openInventory(player);
                         }
                     } catch (ArrayIndexOutOfBoundsException event) {
                         player.sendMessage("ало ты какой то там эррей не написал");
@@ -113,7 +108,7 @@ public class AdminUtils {
                         if(meta.hasLore()) lore = meta.getLore();
 
                         assert lore != null;
-                        lore.add(string);
+                        lore.add(ChatColor.RESET + string);
 
                         meta.setLore(lore);
 
@@ -180,7 +175,7 @@ public class AdminUtils {
                         ItemStack item = player.getInventory().getItemInMainHand();
                         ItemMeta meta = item.getItemMeta();
                         assert meta != null;
-                        meta.setDisplayName(string);
+                        meta.setDisplayName(ChatColor.RESET + string);
                         item.setItemMeta(meta);
                         player.sendMessage(ChatColor.GREEN + "Вы назвали предмет " + ChatColor.RESET + string + ChatColor.GREEN + ".");
                         player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);

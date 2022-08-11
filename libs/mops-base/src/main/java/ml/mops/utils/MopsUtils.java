@@ -11,6 +11,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scoreboard.Objective;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -222,5 +223,42 @@ public class MopsUtils {
 
 			i++;
 		}
+	}
+
+	static public ItemStack renameItem(ItemStack item, String name) {
+		ItemMeta meta = item.getItemMeta();
+		meta.setDisplayName(name);
+		item.setItemMeta(meta);
+		return item;
+	}
+
+	static public ItemStack addItemLore(ItemStack item, String lore1, String lore2, String lore3) {
+		ItemMeta meta = item.getItemMeta();
+		List<String> lore = new ArrayList<>();
+		lore.add(lore1);
+		lore.add(lore2);
+		lore.add(lore3);
+		meta.setLore(lore);
+		item.setItemMeta(meta);
+		return item;
+	}
+
+	static public ItemStack addItemLore(ItemStack item, String lore1, String lore2) {
+		ItemMeta meta = item.getItemMeta();
+		List<String> lore = new ArrayList<>();
+		lore.add(lore1);
+		lore.add(lore2);
+		meta.setLore(lore);
+		item.setItemMeta(meta);
+		return item;
+	}
+
+	static public ItemStack addItemLore(ItemStack item, String lore1) {
+		ItemMeta meta = item.getItemMeta();
+		List<String> lore = new ArrayList<>();
+		lore.add(lore1);
+		meta.setLore(lore);
+		item.setItemMeta(meta);
+		return item;
 	}
 }
