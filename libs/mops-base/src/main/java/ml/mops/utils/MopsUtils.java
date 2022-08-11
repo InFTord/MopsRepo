@@ -7,7 +7,10 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.title.Title;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scoreboard.Objective;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -167,51 +170,57 @@ public class MopsUtils {
 		objective.getScore(legacyAmpersand().serialize(displayContent)).setScore(number);
 	}
 
-	@Deprecated
-	static public String legacyAmpersandStringToDeprecatedBukkitChatColor(String string, Map<String, String> customMapping, MAP_BOOLEAN_MODE customMappingOption) throws UnsoportedYetFeature {
-		Map<String, String> defaultMapping = new HashMap<String, String>();
-		defaultMapping.put("&0", ChatColor.BLACK + "");
-		defaultMapping.put("&1", ChatColor.DARK_BLUE + "");
-		defaultMapping.put("&2", ChatColor.DARK_GREEN + "");
-		defaultMapping.put("&3", ChatColor.DARK_AQUA + "");
-		defaultMapping.put("&4", ChatColor.DARK_RED + "");
-		defaultMapping.put("&5", ChatColor.DARK_PURPLE + "");
-		defaultMapping.put("&6", ChatColor.GOLD + "");
-		defaultMapping.put("&7", ChatColor.GRAY + "");
-		defaultMapping.put("&8", ChatColor.DARK_GRAY + "");
-		defaultMapping.put("&9", ChatColor.BLUE + "");
-		defaultMapping.put("&a", ChatColor.GREEN + "");
-		defaultMapping.put("&b", ChatColor.AQUA + "");
-		defaultMapping.put("&c", ChatColor.RED + "");
-		defaultMapping.put("&d", ChatColor.LIGHT_PURPLE + "");
-		defaultMapping.put("&e", ChatColor.YELLOW + "");
-		defaultMapping.put("&f", ChatColor.WHITE + "");
-		defaultMapping.put("&k", ChatColor.MAGIC + "");
-		defaultMapping.put("&l", ChatColor.BOLD + "");
-		defaultMapping.put("&m", ChatColor.STRIKETHROUGH + "");
-		defaultMapping.put("&n", ChatColor.UNDERLINE + "");
-		defaultMapping.put("&o", ChatColor.ITALIC + "");
-		defaultMapping.put("&r", ChatColor.RESET + "" + ChatColor.WHITE);
+	static public String convertColorCodes(String string) {
+		string = string.replaceAll("&0", ChatColor.BLACK + "");
+		string = string.replaceAll("&1", ChatColor.DARK_BLUE + "");
+		string = string.replaceAll("&2", ChatColor.DARK_GREEN + "");
+		string = string.replaceAll("&3", ChatColor.DARK_AQUA + "");
+		string = string.replaceAll("&4", ChatColor.DARK_RED + "");
+		string = string.replaceAll("&5", ChatColor.DARK_PURPLE + "");
+		string = string.replaceAll("&6", ChatColor.GOLD + "");
+		string = string.replaceAll("&7", ChatColor.GRAY + "");
+		string = string.replaceAll("&8", ChatColor.DARK_GRAY + "");
+		string = string.replaceAll("&9", ChatColor.BLUE + "");
+		string = string.replaceAll("&a", ChatColor.GREEN + "");
+		string = string.replaceAll("&b", ChatColor.AQUA + "");
+		string = string.replaceAll("&c", ChatColor.RED + "");
+		string = string.replaceAll("&d", ChatColor.LIGHT_PURPLE + "");
+		string = string.replaceAll("&e", ChatColor.YELLOW + "");
+		string = string.replaceAll("&f", ChatColor.WHITE + "");
+		string = string.replaceAll("&k", ChatColor.MAGIC + "");
+		string = string.replaceAll("&l", ChatColor.BOLD + "");
+		string = string.replaceAll("&m", ChatColor.STRIKETHROUGH + "");
+		string = string.replaceAll("&n", ChatColor.UNDERLINE + "");
+		string = string.replaceAll("&o", ChatColor.ITALIC + "");
+		string = string.replaceAll("&r", ChatColor.RESET + "");
 
-		Map<String, String> mapping = new LinkedHashMap<String, String>();
+		string = string.replaceAll("&s", " ");
 
-		switch (customMappingOption) {
-			case IGNORE -> {
-				mapping.putAll(defaultMapping);
-			}
-			case UNION -> {
-				mapping.putAll(defaultMapping);
-				mapping.putAll(customMapping);
-			}
-			case DIFFERENCE,SUBTRACTION,INTERSECTION -> {
-				mapping.putAll(defaultMapping);
-				throw new UnsoportedYetFeature("DIFFERENCE, SUBSRACTION and INTERSECTION in legacyAmpersandStringToDeprecatedBukkitChatColor()");
+		return string;
+	}
+
+	static public List<Material> leatherItems() {
+		List<Material> list = new ArrayList<>();
+
+		list.add(Material.LEATHER_HELMET);
+		list.add(Material.LEATHER_CHESTPLATE);
+		list.add(Material.LEATHER_LEGGINGS);
+		list.add(Material.LEATHER_BOOTS);
+		list.add(Material.LEATHER_HORSE_ARMOR);
+
+		return list;
+	}
+
+	static public void fillInventory(Inventory inv, ItemStack item) {
+		int i = 0;
+
+		while (i < inv.getSize()) {
+			ItemStack itemstack = inv.getItem(i);
+			if(itemstack == null || itemstack.getType() == Material.AIR) {
+				inv.setItem(i, item);
 			}
 
+			i++;
 		}
-		int size = mapping.size();
-		String[] keys = mapping.keySet().toArray(new String[size]);
-		String[] values = mapping.values().toArray(new String[size]);
-		return StringUtils.replaceEach(string, keys, values);
 	}
 }

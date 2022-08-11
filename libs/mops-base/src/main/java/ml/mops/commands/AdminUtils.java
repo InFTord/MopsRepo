@@ -1,5 +1,6 @@
 package ml.mops.commands;
 
+import ml.mops.inventories.ItemEditor;
 import ml.mops.utils.MAP_BOOLEAN_MODE;
 import ml.mops.utils.MopsUtils;
 import org.bukkit.*;
@@ -37,7 +38,14 @@ public class AdminUtils {
             switch (commandName) { //Проверка команды
                 case "test" -> {
                     try {
-                        player.sendMessage("тут мнооого тестинга");
+                        if(args[0].equals("editor")) {
+                            try {
+                                ItemEditor editor = new ItemEditor(player.getItemInHand());
+                                editor.openInventory(player);
+                            } catch (NullPointerException shit) {
+                                player.sendMessage("У ТЕБЯ В РУКЕ НЕТ ПРЕДМЕТА ШИЗИК");
+                            }
+                        }
                     } catch (ArrayIndexOutOfBoundsException event) {
                         player.sendMessage("ало ты какой то там эррей не написал");
                     }
@@ -81,15 +89,7 @@ public class AdminUtils {
                     return true;
                 }
                 case "kickall" -> {
-                    Map<String, String> legacyCodeMap = new HashMap<String, String>();
-                    legacyCodeMap.put("&s", " ");
-                    String inputString = MopsUtils.combineStrings(args, " ");
-                    String string = "<error>";
-                    try {
-                        string = MopsUtils.legacyAmpersandStringToDeprecatedBukkitChatColor(inputString.trim(), legacyCodeMap, MAP_BOOLEAN_MODE.UNION);
-                    } catch (Exception e) {
-                        plugin.getLogger().warning("<AU> " + e.getMessage());
-                    }
+                    String string = MopsUtils.convertColorCodes(MopsUtils.combineStrings(args, " "));
 
                     for (Player player1 : Bukkit.getServer().getOnlinePlayers()) {
                         if (!player1.isOp()) {
@@ -101,15 +101,7 @@ public class AdminUtils {
                     return true;
                 }
                 case "loreadd" -> {
-                    Map<String, String> legacyCodeMap = new HashMap<String, String>();
-                    legacyCodeMap.put("&s", " ");
-                    String inputString = MopsUtils.combineStrings(args, " ");
-                    String string = "<error>";
-                    try {
-                        string = MopsUtils.legacyAmpersandStringToDeprecatedBukkitChatColor(inputString.trim(), legacyCodeMap, MAP_BOOLEAN_MODE.UNION);
-                    } catch (Exception e) {
-                        plugin.getLogger().warning("<AU> " + e.getMessage());
-                    }
+                    String string = MopsUtils.convertColorCodes(MopsUtils.combineStrings(args, " "));
 
                     try {
                         ItemStack item = player.getInventory().getItemInMainHand();
@@ -182,15 +174,7 @@ public class AdminUtils {
                     return true;
                 }
                 case "nameitem" -> {
-                    Map<String, String> legacyCodeMap = new HashMap<>();
-                    legacyCodeMap.put("&s", " ");
-                    String inputString = MopsUtils.combineStrings(args, " ");
-                    String string = "<error>";
-                    try {
-                        string = MopsUtils.legacyAmpersandStringToDeprecatedBukkitChatColor(inputString.trim(), legacyCodeMap, MAP_BOOLEAN_MODE.UNION);
-                    } catch (Exception e) {
-                        plugin.getLogger().warning("<AU> " + e.getMessage());
-                    }
+                    String string = MopsUtils.convertColorCodes(MopsUtils.combineStrings(args, " "));
 
                     try {
                         ItemStack item = player.getInventory().getItemInMainHand();
@@ -230,8 +214,15 @@ public class AdminUtils {
                                 player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 2);
                             }
                         } catch (NumberFormatException event) {
-                            player.sendMessage(ChatColor.RED + "Комманду нужно использовать как: /enchantitem " + ChatColor.AQUA + rawLevel + ench);
-                            player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 2);
+                            int lvl = Integer.parseInt(ench);
+
+                            ItemStack item = player.getInventory().getItemInMainHand();
+                            ItemMeta meta = item.getItemMeta();
+                            assert meta != null;
+                            meta.addEnchant(Objects.requireNonNull(Enchantment.getByKey(NamespacedKey.minecraft(rawLevel))), lvl, true);
+                            item.setItemMeta(meta);
+                            player.sendMessage(ChatColor.GREEN + "Вы дали предмету зачарование " + ChatColor.RESET + lvl + " " + rawLevel + ChatColor.GREEN + " уровня.");
+                            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
                         }
                     } catch (ArrayIndexOutOfBoundsException event) {
                         player.sendMessage(ChatColor.RED + "Комманду нужно использовать как: /enchantitem " + ChatColor.AQUA + "<ЗАЧАРОВАНИЕ> " + "<УРОЕНЬ>");
@@ -285,9 +276,6 @@ public class AdminUtils {
                             LeatherArmorMeta leatherArmorMeta = (LeatherArmorMeta) meta;
                             String rgbBase16 = args[0].trim().replace("#", "");
                             int rgbBase10 = Integer.parseInt(rgbBase16, 16);
-                            plugin.getLogger().info("ARGUMENT #0:       " + args[0]);
-                            plugin.getLogger().info("RGB BASE 16 (HEX): " + rgbBase16);
-                            plugin.getLogger().info("RGB BASE 10:       " + rgbBase10);
                             leatherArmorMeta.setColor(Color.fromRGB(rgbBase10));
 
                             item.setItemMeta(leatherArmorMeta);
@@ -329,15 +317,7 @@ public class AdminUtils {
                         player.sendMessage(ChatColor.RED + "Вам нужно написать хоть что то.");
                         player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 2);
                     } else {
-                        Map<String, String> legacyCodeMap = new HashMap<String, String>();
-                        legacyCodeMap.put("&s", " ");
-                        String inputString = MopsUtils.combineStrings(args, " ");
-                        String string = "<error>";
-                        try {
-                            string = MopsUtils.legacyAmpersandStringToDeprecatedBukkitChatColor(inputString.trim(), legacyCodeMap, MAP_BOOLEAN_MODE.UNION);
-                        } catch (Exception e) {
-                            plugin.getLogger().warning("<AU> " + e.getMessage());
-                        }
+                        String string = MopsUtils.convertColorCodes(MopsUtils.combineStrings(args, " "));
 
                         for (Player player1 : Bukkit.getServer().getOnlinePlayers()) {
                             player1.sendMessage(string);
