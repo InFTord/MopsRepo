@@ -6,6 +6,7 @@ import ml.mops.exception.UnsoportedYetFeature;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.title.Title;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -252,6 +253,7 @@ public class MopsUtils {
 		item.setItemMeta(meta);
 		return item;
 	}
+
 
 	static public ItemStack addItemLore(ItemStack item, String lore1) {
 		ItemMeta meta = item.getItemMeta();

@@ -10,6 +10,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.checkerframework.common.value.qual.StaticallyExecutable;
+import org.jetbrains.annotations.Contract;
 
 import java.util.Objects;
 
@@ -39,13 +41,13 @@ public class KitGUI implements Listener {
         inv.setItem(6, item(Material.BLUE_SHULKER_BOX));
         inv.setItem(7, item(Material.MAGENTA_SHULKER_BOX));
         inv.setItem(8, item(Material.LIME_SHULKER_BOX));
-        inv.setItem(9, item(Material.WHITE_SHULKER_BOX));
-        inv.setItem(10, item(Material.CYAN_SHULKER_BOX));
-        inv.setItem(11, item(Material.BROWN_SHULKER_BOX));
-        inv.setItem(12, item(Material.GREEN_SHULKER_BOX));
-        inv.setItem(13, item(Material.GRAY_SHULKER_BOX));
-        inv.setItem(14, item(Material.YELLOW_SHULKER_BOX));
-        inv.setItem(15, item(Material.PINK_SHULKER_BOX));
+        inv.setItem(10, item(Material.WHITE_SHULKER_BOX));
+        inv.setItem(11, item(Material.CYAN_SHULKER_BOX));
+        inv.setItem(12, item(Material.BROWN_SHULKER_BOX));
+        inv.setItem(13, item(Material.GREEN_SHULKER_BOX));
+        inv.setItem(14, item(Material.GRAY_SHULKER_BOX));
+        inv.setItem(15, item(Material.YELLOW_SHULKER_BOX));
+        inv.setItem(16, item(Material.PINK_SHULKER_BOX));
     }
 
     public void openInventory(Player player) {

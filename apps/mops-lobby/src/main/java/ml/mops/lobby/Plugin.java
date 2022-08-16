@@ -14,6 +14,8 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.UUID;
+
 public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     @Override
     public void onEnable() {
@@ -50,5 +52,10 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         if(!player.getScoreboardTags().contains("admin")) {
             event.setCancelled(true);
         }
+    }
+
+
+    public void createNPC() {
+
     }
 }
