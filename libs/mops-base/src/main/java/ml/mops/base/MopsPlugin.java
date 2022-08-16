@@ -10,9 +10,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import javax.annotation.Nullable;
 import java.lang.reflect.Method;
-import java.util.*;
-
-import ml.mops.utils.Option;
+import java.util.*;;
 
 import java.util.logging.Logger;
 
@@ -22,8 +20,6 @@ public class MopsPlugin extends JavaPlugin {
 	public final FileConfiguration translation = new YamlConfiguration();
 	protected List<Method> doOnEnable = new LinkedList<>();
 	public Logger logger;
-	protected Map<String, Object> asjfdkafj;
-	protected Map<String, Option> hardcodedSettings = new HashMap<String, Option>();
 
 	@Override
 	public void onEnable() {
