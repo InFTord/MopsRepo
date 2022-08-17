@@ -14,6 +14,7 @@ on:
     paths:
       - 'apps/mops-pvps/**'
       - '.github/workflows/build-mopspvps.yaml'
+      - 'libs/mops-base/**'
 
 jobs:
   build-plugin:
