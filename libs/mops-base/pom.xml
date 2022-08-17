@@ -32,10 +32,6 @@
             <url>https://repo.bg-software.com/repository/nms/</url>
         </repository>
         <repository>
-            <id>velocity</id>
-            <url>>https://nexus.velocitypowered.com/repository/maven-public/</url>
-        </repository>
-        <repository>
             <id>central</id>
             <name>Default Repository</name>
             <layout>default</layout>
