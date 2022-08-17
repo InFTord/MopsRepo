@@ -277,7 +277,7 @@ public class MopsUtils {
 		MinecraftServer server = ((CraftServer) Bukkit.getServer()).getServer();
 		WorldServer world = ((CraftWorld) Objects.requireNonNull(location.getWorld())).getHandle();
 		GameProfile gameProfile = new GameProfile(UUID.randomUUID(), name);
-		EntityPlayer npcPlayer = new EntityPlayer(server, world, gameProfile);
+		EntityPlayer npcPlayer = new EntityPlayer(server, world, gameProfile, null);
 
 		npcPlayer.b(location.getX(), location.getY(), location.getZ(), 180, 0);
 		return npcPlayer;
