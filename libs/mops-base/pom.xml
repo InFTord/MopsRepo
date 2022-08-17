@@ -36,6 +36,10 @@
             <id>purpur</id>
             <url>https://repo.purpurmc.org/snapshots</url>
         </repository>
+        <repository>
+            <id>spigot-repo</id>
+            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -44,6 +48,11 @@
             <artifactId>purpur-api</artifactId>
             <version>1.19-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot</artifactId>
+            <version>1.18.2-R0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>

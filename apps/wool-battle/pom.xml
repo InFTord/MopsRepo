@@ -30,6 +30,10 @@
             <url>https://repo.purpurmc.org/snapshots</url>
         </repository>
         <repository>
+            <id>spigot-repo</id>
+            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+        </repository>
+        <repository>
             <id>MavenCentral</id>
             <name>Maven repository</name>
             <url>https://repo1.maven.org/maven2</url>
@@ -48,6 +52,11 @@
             <artifactId>purpur-api</artifactId>
             <version>1.19-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot</artifactId>
+            <version>1.18.2-R0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>ml.mops.base</groupId>

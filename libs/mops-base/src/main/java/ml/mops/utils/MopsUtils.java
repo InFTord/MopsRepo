@@ -1,5 +1,10 @@
 package ml.mops.utils;
 
+import com.mojang.authlib.GameProfile;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.EntityPlayer;
+import net.minecraft.server.level.PlayerInteractManager;
+import net.minecraft.server.level.WorldServer;
 import org.apache.commons.lang3.StringUtils;
 import ml.mops.base.MopsPlugin;
 import ml.mops.exception.UnsoportedYetFeature;
@@ -8,7 +13,10 @@ import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.title.Title;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.craftbukkit.v1_18_R2.CraftServer;
+import org.bukkit.craftbukkit.v1_18_R2.CraftWorld;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -262,5 +270,15 @@ public class MopsUtils {
 		meta.setLore(lore);
 		item.setItemMeta(meta);
 		return item;
+	}
+
+	static public EntityPlayer createNPC(Location location, String name) {
+		MinecraftServer server = ((CraftServer) Bukkit.getServer()).getServer();
+		WorldServer world = ((CraftWorld) Objects.requireNonNull(location.getWorld())).getHandle();
+		GameProfile gameProfile = new GameProfile(UUID.randomUUID(), name);
+		EntityPlayer npcPlayer = new EntityPlayer(server, world, gameProfile);
+
+		npcPlayer.b(location.getX(), location.getY(), location.getZ(), 180, 0);
+		return npcPlayer;
 	}
 }

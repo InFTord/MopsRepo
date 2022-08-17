@@ -110,32 +110,6 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 	public void onEnable() {
 		Bukkit.getServer().getPluginManager().registerEvents(this, this);
 
-		Logger logger = getLogger();
-		logger.info("1");
-		this.saveDefaultConfig();
-		this.config = this.getConfig();
-		logger.info("config: \n" + config.saveToString() );
-		logger.info("default config: \n" + ((FileConfiguration) Objects.requireNonNull(config.getDefaults())).saveToString());
-		logger.info("2");
-		StringBuilder data;
-
-		try (Scanner reader = new Scanner(Objects.requireNonNull(getResource("translations.yml")))) {
-			logger.info("3");
-			data = new StringBuilder();
-			while (reader.hasNextLine()) {
-				data.append("\n").append(reader.nextLine());
-				logger.info("4");
-			}
-		//	logger.info(data.toString());
-		}
-
-		try {
-			logger.info("5");
-			this.translation.loadFromString(data.toString());
-		} catch (InvalidConfigurationException e) {
-			logger.warning(Arrays.toString(e.getStackTrace()));
-		}
-
 		logger.info("Loaded translations: \n" + translation.saveToString());
 		logger.info("6");
 
