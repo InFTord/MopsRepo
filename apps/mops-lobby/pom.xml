@@ -69,6 +69,12 @@
             <version>RELEASE</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>com.mojang</groupId>
+            <artifactId>authlib</artifactId>
+            <version>3.11.49</version>
+            <scope>provided</scope>
+        </dependency>
         <!--        <dependency>-->
 <!--            <groupId>com.fasterxml.jackson.core</groupId>-->
 <!--            <artifactId>jackson-databind</artifactId>-->
