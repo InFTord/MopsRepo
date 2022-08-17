@@ -293,7 +293,6 @@ public class MopsUtils {
 		EntityPlayer npcPlayer = new EntityPlayer(server, world, gameProfile, null);
 
 		npcPlayer.b(location.getX(), location.getY(), location.getZ(), 180, 0);
-		npcPlayer.ai().b(new DataWatcherObject<>(16, DataWatcherRegistry.a), (byte)127);
 
 		String[] skinKey = getSkin(skin);
 		gameProfile.getProperties().put("textures", new Property("textures", skinKey[0], skinKey[1]));
