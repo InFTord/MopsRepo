@@ -28,8 +28,8 @@
             <url>https://repo.purpurmc.org/snapshots</url>
         </repository>
         <repository>
-            <id>spigot-repo</id>
-            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+            <id>bg-software</id>
+            <url>https://repo.bg-software.com/repository/nms/</url>
         </repository>
         <repository>
             <id>central</id>
@@ -51,8 +51,8 @@
         </dependency>
         <dependency>
             <groupId>org.spigotmc</groupId>
-            <artifactId>spigot</artifactId>
-            <version>1.18.2-R0.1-SNAPSHOT</version>
+            <artifactId>v1_19_R1</artifactId>
+            <version>b3513</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
