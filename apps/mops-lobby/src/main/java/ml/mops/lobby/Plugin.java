@@ -4,6 +4,7 @@ import com.mojang.authlib.GameProfile;
 import ml.mops.commands.Commands;
 import ml.mops.utils.MopsUtils;
 import net.minecraft.network.protocol.game.PacketPlayOutEntityHeadRotation;
+import net.minecraft.network.protocol.game.PacketPlayOutEntityMetadata;
 import net.minecraft.network.protocol.game.PacketPlayOutNamedEntitySpawn;
 import net.minecraft.network.protocol.game.PacketPlayOutPlayerInfo;
 import net.minecraft.server.MinecraftServer;
@@ -89,6 +90,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             connection.a(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.a, NPC));
             connection.a(new PacketPlayOutNamedEntitySpawn(NPC));
             connection.a(new PacketPlayOutEntityHeadRotation(NPC, (byte) (NPC.getBukkitEntity().getLocation().getYaw() * 256 / 360)));
+            connection.a(new PacketPlayOutEntityMetadata(NPC.aH, NPC.ai(), true));
         }
     }
 }
