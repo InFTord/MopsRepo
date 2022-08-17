@@ -1,6 +1,5 @@
 package ml.mops.lobby;
 
-import com.mojang.authlib.GameProfile;
 import ml.mops.commands.Commands;
 import ml.mops.utils.MopsUtils;
 import net.minecraft.network.protocol.game.PacketPlayOutEntityHeadRotation;
@@ -9,8 +8,6 @@ import net.minecraft.network.protocol.game.PacketPlayOutNamedEntitySpawn;
 import net.minecraft.network.protocol.game.PacketPlayOutPlayerInfo;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.EntityPlayer;
-import net.minecraft.server.level.PlayerInteractManager;
-import net.minecraft.server.level.WorldServer;
 import net.minecraft.server.network.PlayerConnection;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -90,7 +87,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             connection.a(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.a, NPC));
             connection.a(new PacketPlayOutNamedEntitySpawn(NPC));
             connection.a(new PacketPlayOutEntityHeadRotation(NPC, (byte) (NPC.getBukkitEntity().getLocation().getYaw() * 256 / 360)));
-            connection.a(new PacketPlayOutEntityMetadata(NPC.aH, NPC.ai(), true));
+            connection.a(new PacketPlayOutEntityMetadata(NPC.getBukkitEntity().getEntityId(), NPC.ai(), true));
         }
     }
 }
