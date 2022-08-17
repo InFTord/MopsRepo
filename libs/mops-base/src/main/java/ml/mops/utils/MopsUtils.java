@@ -272,6 +272,7 @@ public class MopsUtils {
 		return item;
 	}
 
+
 	static public EntityPlayer createNPC(Location location, String name) {
 		MinecraftServer server = ((CraftServer) Bukkit.getServer()).getServer();
 		WorldServer world = ((CraftWorld) Objects.requireNonNull(location.getWorld())).getHandle();
