@@ -79,7 +79,6 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         }
     }
 
-
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();

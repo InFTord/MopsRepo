@@ -27,6 +27,10 @@
             <url>https://repo.purpurmc.org/snapshots</url>
         </repository>
         <repository>
+            <id>minebench</id>
+            <url>https://repo.minebench.de/</url>
+        </repository>
+        <repository>
             <id>spigot-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
@@ -75,6 +79,12 @@
             <version>3.11.49</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>com.mojang</groupId>
+            <artifactId>brigadier</artifactId>
+            <version>1.0.18</version>
+        </dependency>
+
         <!--        <dependency>-->
 <!--            <groupId>com.fasterxml.jackson.core</groupId>-->
 <!--            <artifactId>jackson-databind</artifactId>-->
