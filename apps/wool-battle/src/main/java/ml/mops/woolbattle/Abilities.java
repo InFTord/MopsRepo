@@ -34,6 +34,7 @@ public class Abilities {
 		//meta1.lore(lore1);
 
 
+
 		List<String> lore1 = new ArrayList<>();
 		lore1.add(ChatColor.GRAY + "Ножницы для копания шерсти и");
 		lore1.add(ChatColor.GRAY + "скидывания игроков в бездну.");
