@@ -85,8 +85,6 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         Player player = event.getPlayer();
 
         for(EntityPlayer NPC : hubNPCs) {
-            player.hidePlayer(NPC.getBukkitEntity());
-
             PlayerConnection connection = ((CraftPlayer) player).getHandle().b;
             connection.a(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.a, NPC));
             connection.a(new PacketPlayOutNamedEntitySpawn(NPC));

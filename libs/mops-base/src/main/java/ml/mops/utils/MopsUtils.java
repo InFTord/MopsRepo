@@ -294,7 +294,7 @@ public class MopsUtils {
 
 		npcPlayer.b(location.getX(), location.getY(), location.getZ(), 180, 0);
 
-		String[] skinKey = getSkin("SirCat07");
+		String[] skinKey = getSkin(skin);
 		gameProfile.getProperties().put("textures", new Property("textures", skinKey[0], skinKey[1]));
 
 		return npcPlayer;
@@ -308,7 +308,7 @@ public class MopsUtils {
 			InputStreamReader reader = new InputStreamReader(url.openStream());
 			String uuid = new JsonParser().parse(reader).getAsJsonObject().get("id").getAsString();
 
-			URL url2 = new URL("https://sessionserver.mojang.com/sess..." + uuid + "?unsigned=false");
+			URL url2 = new URL("https://sessionserver.mojang.com/session/minecraft/profile/" + uuid + "?unsigned=false");
 			InputStreamReader reader2 = new InputStreamReader(url2.openStream());
 			JsonObject property = new JsonParser().parse(reader2).getAsJsonObject().get("properties").getAsJsonArray().get(0).getAsJsonObject();
 			String texture = property.get("value").getAsString();
