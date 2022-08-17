@@ -32,6 +32,10 @@
             <url>https://repo.bg-software.com/repository/nms/</url>
         </repository>
         <repository>
+            <id>velocity</id>
+            <url>>https://nexus.velocitypowered.com/repository/maven-public/</url>
+        </repository>
+        <repository>
             <id>central</id>
             <name>Default Repository</name>
             <layout>default</layout>
@@ -68,6 +72,12 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>3.12.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.mojang</groupId>
+            <artifactId>authlib</artifactId>
+            <version>3.11.49</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 
