@@ -319,11 +319,14 @@ public class MopsUtils {
 		}
 	}
 
-	static public ArmorStand createNewArmorStand(String string, Location location) {
+	static public ArmorStand createNewNameStand(String string, Location location) {
 		ArmorStand stand = (ArmorStand) location.getWorld().spawnEntity(location, EntityType.ARMOR_STAND);
 		stand.setVisible(false);
 		stand.setCustomName(string);
 		stand.setMarker(true);
+		stand.setCustomNameVisible(true);
+		stand.setSmall(true);
+		stand.addScoreboardTag("killOnDisable");
 		return stand;
 	}
 

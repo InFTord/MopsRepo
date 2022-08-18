@@ -43,11 +43,22 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         World mainworld = Bukkit.getServer().getWorlds().get(0);
 
         EntityPlayer woolbattleNPC = MopsUtils.createNPC(new Location(mainworld, -70.500, 7, -180.500), "", "SirCat07");
-        ArmorStand stand = MopsUtils.createNewArmorStand(ChatColor.GRAY + "Click to play 4x4!", woolbattleNPC.getBukkitEntity().getLocation());
-        ArmorStand stand2 = MopsUtils.createNewArmorStand(ChatColor.YELLOW + "" + ChatColor.BOLD + "WoolBattle", woolbattleNPC.getBukkitEntity().getLocation());
+        ArmorStand stand = MopsUtils.createNewNameStand(ChatColor.GRAY + "Click to play 4x4!", woolbattleNPC.getBukkitEntity().getLocation());
+        ArmorStand stand2 = MopsUtils.createNewNameStand(ChatColor.YELLOW + "" + ChatColor.BOLD + "WoolBattle", woolbattleNPC.getBukkitEntity().getLocation());
         stand.setPassenger(stand2);
         woolbattleNPC.getBukkitEntity().setPassenger(stand);
+        woolbattleNPC.getBukkitEntity().setCustomNameVisible(false);
         hubNPCs.add(woolbattleNPC);
+    }
+
+    @Override
+    public void onDisable() {
+        World mainworld = Bukkit.getServer().getWorlds().get(0);
+        for(Entity entity : mainworld.getEntities()) {
+            if(entity.getScoreboardTags().contains("killOnDisable")) {
+                entity.teleport(new Location(mainworld, 0, -1000, 0));
+            }
+        }
     }
 
     @Override
