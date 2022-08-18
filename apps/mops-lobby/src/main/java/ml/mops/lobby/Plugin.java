@@ -54,6 +54,9 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 entity.teleport(new Location(mainworld, 0, -1000, 0));
             }
         }
+        for(Player player : Bukkit.getOnlinePlayers()) {
+            player.kickPlayer(ChatColor.YELLOW + "всем привет с вами сиркет \n мопс ппвп закрылся");
+        }
     }
 
 
