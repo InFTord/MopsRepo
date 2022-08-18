@@ -297,8 +297,6 @@ public class MopsUtils {
 		String[] skinKey = getSkin(skin);
 		gameProfile.getProperties().put("textures", new Property("textures", skinKey[0], skinKey[1]));
 
-		npcPlayer.ai().a(new DataWatcherObject<>(17, DataWatcherRegistry.a), (byte)127);
-
 		return npcPlayer;
 	}
 
