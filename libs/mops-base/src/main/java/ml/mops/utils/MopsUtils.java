@@ -25,6 +25,7 @@ import org.bukkit.craftbukkit.v1_19_R1.entity.CraftPlayer;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Slime;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -319,14 +320,16 @@ public class MopsUtils {
 		}
 	}
 
-	static public ArmorStand createNewNameStand(String string, Location location) {
-		ArmorStand stand = (ArmorStand) location.getWorld().spawnEntity(location, EntityType.ARMOR_STAND);
-		stand.setVisible(false);
-		stand.setCustomName(string);
-		stand.setMarker(true);
-		stand.setCustomNameVisible(true);
-		stand.addScoreboardTag("killOnDisable");
-		return stand;
+	static public Slime createNewNameSlime(String string, Location location) {
+		Slime slime = (Slime) location.getWorld().spawnEntity(location, EntityType.SLIME);
+		slime.setCustomName(string);
+		slime.setInvisible(true);
+		slime.setInvulnerable(true);
+		slime.setCustomNameVisible(true);
+		slime.setAI(false);
+		slime.setSize(0);
+		slime.addScoreboardTag("killOnDisable");
+		return slime;
 	}
 
 
