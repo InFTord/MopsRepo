@@ -320,17 +320,5 @@ public class MopsUtils {
 		}
 	}
 
-	static public Slime createNewNameSlime(String string, Location location) {
-		Slime slime = (Slime) location.getWorld().spawnEntity(location, EntityType.SLIME);
-		slime.setCustomName(string);
-		slime.setInvisible(true);
-		slime.setInvulnerable(true);
-		slime.setCustomNameVisible(true);
-		slime.setAI(false);
-		slime.setSize(0);
-		slime.addScoreboardTag("killOnDisable");
-		return slime;
-	}
-
 
 }
