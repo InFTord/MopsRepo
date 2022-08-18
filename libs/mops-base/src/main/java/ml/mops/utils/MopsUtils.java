@@ -18,13 +18,12 @@ import ml.mops.exception.UnsoportedYetFeature;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.title.Title;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.craftbukkit.v1_19_R1.CraftServer;
 import org.bukkit.craftbukkit.v1_19_R1.CraftWorld;
 import org.bukkit.craftbukkit.v1_19_R1.entity.CraftPlayer;
+import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -318,6 +317,14 @@ public class MopsUtils {
 		} catch (Exception e) {
 			return new String[] {"ewogICJ0aW1lc3RhbXAiIDogMTY0MzE3MDI3Mjg4NywKICAicHJvZmlsZUlkIiA6ICIzZmM3ZmRmOTM5NjM0YzQxOTExOTliYTNmN2NjM2ZlZCIsCiAgInByb2ZpbGVOYW1lIiA6ICJZZWxlaGEiLAogICJzaWduYXR1cmVSZXF1aXJlZCIgOiB0cnVlLAogICJ0ZXh0dXJlcyIgOiB7CiAgICAiU0tJTiIgOiB7CiAgICAgICJ1cmwiIDogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZTQ5MWUyZDMwNzFmNmYxNGQ5MTY3OGU4YTRjZWE2ZGIyMzUxMDI4MTVjNmZmM2QxOWIwYmI5ZTE2ZjlhYjUyZCIsCiAgICAgICJtZXRhZGF0YSIgOiB7CiAgICAgICAgIm1vZGVsIiA6ICJzbGltIgogICAgICB9CiAgICB9CiAgfQp9", "GAzwBm8gcNYhxIadPeraOb+5r8InZ64T5NjUdv8WCHyXTmYjYkY8MycQTAWwg2TVUL+sMYvYcb2nYK6AMYRRwwSjpSS/w6xPZn8XxdlnO3qeouBH86A/pstHuRHtEtVnbpBfibsYmhsiVgz7P6SD2dMY42DN34SRc7+R/zEYcd7CyZoOtRx8Fc4kMmI/G+w4QxawJBwsStP/Eig1JLaYW8Ux4muLwRp9KkPepQV75HE8jRp7Y9D3+qOGBdC6yjprB2Mhm2/cCgtvVfrPPu1d7NGf15+tcdkLHoY9h6GHg55PBIaP5QwDJC8aAcKDYc5FvbKVD+x/FQms5Z7S29JZIaAKZjdyscYKUUoQwCNjNlVMZZPJpFaYKp83SeEsqbsIZwl6JMb7qlubuWiDzbEyAeDt3aAxrH5pMueyo1bGV/UIIXsUL4N5isB5VLgQ5t7/Mypuy8vJvr+Q/BtB/YW+nLH1UIKgwFQv+AX3CgbdIgCAsXDFhLNL9aXAKRvN3nUk9JbWStqfaS6gj8Noxf7ndoV/oBC0NXdTJTBaAt1UQGT3Lh6JKjzckM2blxb9XOlQJx3Gn0naPo5Q9hLVBY6H+DT8RRv/dvHcAc0sIKXu9/7rhGNJUSFxEBdzd7viLQHQdS+3P+t3qP6u2ZufxokVZA6g+C5dWwm1n8D0xRWZbi8="};
 		}
+	}
+
+	static public ArmorStand createNewArmorStand(String string, Location location) {
+		ArmorStand stand = (ArmorStand) location.getWorld().spawnEntity(location, EntityType.ARMOR_STAND);
+		stand.setVisible(false);
+		stand.setCustomName(string);
+		stand.setMarker(true);
+		return stand;
 	}
 
 

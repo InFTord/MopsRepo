@@ -42,11 +42,10 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         Bukkit.getServer().getPluginManager().registerEvents(this, this);
         World mainworld = Bukkit.getServer().getWorlds().get(0);
 
-        EntityPlayer woolbattleNPC = MopsUtils.createNPC(new Location(mainworld, -70.500, 7, -180.500), ChatColor.GRAY + " Click to play 4x4", "SirCat07");
-        ArmorStand stand = (ArmorStand) mainworld.spawnEntity(woolbattleNPC.getBukkitEntity().getLocation(), EntityType.ARMOR_STAND);
-        stand.setVisible(false);
-        stand.setCustomName(ChatColor.YELLOW + "" + ChatColor.BOLD + "WoolBattle");
-        stand.setMarker(true);
+        EntityPlayer woolbattleNPC = MopsUtils.createNPC(new Location(mainworld, -70.500, 7, -180.500), "", "SirCat07");
+        ArmorStand stand = MopsUtils.createNewArmorStand(ChatColor.GRAY + "Click to play 4x4!", woolbattleNPC.getBukkitEntity().getLocation());
+        ArmorStand stand2 = MopsUtils.createNewArmorStand(ChatColor.YELLOW + "" + ChatColor.BOLD + "WoolBattle", woolbattleNPC.getBukkitEntity().getLocation());
+        stand.setPassenger(stand2);
         woolbattleNPC.getBukkitEntity().setPassenger(stand);
         hubNPCs.add(woolbattleNPC);
     }
