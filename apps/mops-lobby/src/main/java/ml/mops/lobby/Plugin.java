@@ -61,6 +61,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         }
     }
 
+
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         return new Commands().commandsExecutor(sender, command, label, args, this);
