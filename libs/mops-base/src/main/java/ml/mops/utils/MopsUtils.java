@@ -325,7 +325,6 @@ public class MopsUtils {
 		stand.setCustomName(string);
 		stand.setMarker(true);
 		stand.setCustomNameVisible(true);
-		stand.setSmall(true);
 		stand.addScoreboardTag("killOnDisable");
 		return stand;
 	}
