@@ -1,5 +1,9 @@
 package ml.mops.lobby;
 
+import club.minnced.discord.webhook.WebhookClient;
+import club.minnced.discord.webhook.send.WebhookEmbed;
+import club.minnced.discord.webhook.send.WebhookEmbedBuilder;
+import club.minnced.discord.webhook.send.WebhookMessageBuilder;
 import ml.mops.commands.Commands;
 import ml.mops.utils.MopsUtils;
 import net.minecraft.network.protocol.game.PacketPlayOutEntityHeadRotation;
@@ -23,6 +27,8 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scoreboard.Scoreboard;
 import org.jetbrains.annotations.NotNull;
+
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -45,6 +51,15 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 player.setScoreboard(lobbyscoreboard);
             }
         }, 10L, 10L);
+
+
+        WebhookClient client = WebhookClient.withUrl("https://discord.com/api/webhooks/983390269665865778/DzC0nsW5ge9Zl4mgoQQseOM26KMSfmgX-_gFlCLTMfOpLwxrK-5QbpFvEdQhVxY0GZ4x");
+
+        WebhookEmbed embed = new WebhookEmbedBuilder()
+                .setColor(Color.GREEN.getRGB())
+                .setDescription("MOPS_LOBBY запущено на айпи: " + Bukkit.getServer().getIp())
+                .build();
+        client.send(embed);
     }
 
     @Override
@@ -58,6 +73,15 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         for(Player player : Bukkit.getOnlinePlayers()) {
             player.kickPlayer(ChatColor.YELLOW + "всем привет с вами сиркет \n мопс ппвп закрылся");
         }
+
+
+        WebhookClient client = WebhookClient.withUrl("https://discord.com/api/webhooks/983390269665865778/DzC0nsW5ge9Zl4mgoQQseOM26KMSfmgX-_gFlCLTMfOpLwxrK-5QbpFvEdQhVxY0GZ4x");
+
+        WebhookEmbed embed = new WebhookEmbedBuilder()
+                .setColor(Color.RED.getRGB())
+                .setDescription("MOPS_LOBBY выключено ")
+                .build();
+        client.send(embed);
     }
 
 
