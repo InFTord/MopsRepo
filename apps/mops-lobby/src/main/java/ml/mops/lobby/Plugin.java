@@ -9,10 +9,7 @@ import net.minecraft.network.protocol.game.PacketPlayOutPlayerInfo;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.EntityPlayer;
 import net.minecraft.server.network.PlayerConnection;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -99,10 +96,23 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         try {
             if (isRightClick) {
                 if (player.getItemInHand().getItemMeta().getDisplayName().equals(ChatColor.GOLD + "Cat Detector")) {
-                    if (player.getName().toLowerCase(Locale.ROOT).contains("cat")) {
-                        player.sendTitle("You are:", ChatColor.GREEN + "CAT", 40, 40, 40);
+                    if(MopsUtils.getLookingAt(player, (LivingEntity) MopsUtils.getEntityLookingAt(player)) && MopsUtils.getEntityLookingAt(player) instanceof Player lookingAt) {
+
+                        if (lookingAt.getName().toLowerCase(Locale.ROOT).contains("cat")) {
+                            player.sendTitle("This is a:", ChatColor.GREEN + "CAT", 40, 30, 20);
+                            player.playSound(player.getLocation(), Sound.ITEM_GOAT_HORN_SOUND_5, 1, 1);
+                        } else {
+                            player.sendTitle("This is:", ChatColor.RED + "NOT A CAT", 40, 30, 20);
+                            player.playSound(player.getLocation(), Sound.ITEM_GOAT_HORN_SOUND_3, 1, 1);
+                        }
                     } else {
-                        player.sendTitle("You are:", ChatColor.RED + "NOT CAT", 40, 40, 40);
+                        if (player.getName().toLowerCase(Locale.ROOT).contains("cat")) {
+                            player.sendTitle("You are:", ChatColor.GREEN + "CAT", 40, 30, 20);
+                            player.playSound(player.getLocation(), Sound.ITEM_GOAT_HORN_SOUND_5, 1, 1);
+                        } else {
+                            player.sendTitle("You are:", ChatColor.RED + "NOT CAT", 40, 30, 20);
+                            player.playSound(player.getLocation(), Sound.ITEM_GOAT_HORN_SOUND_3, 1, 1);
+                        }
                     }
                 }
             }
@@ -118,6 +128,10 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             connection.a(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.a, NPC));
             connection.a(new PacketPlayOutNamedEntitySpawn(NPC));
             connection.a(new PacketPlayOutEntityHeadRotation(NPC, (byte) (NPC.getBukkitEntity().getLocation().getYaw() * 256 / 360)));
+
+            Bukkit.getScheduler().runTaskLater(this, () -> {
+                connection.a(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.e, NPC));
+            }, 10);
         }
     }
 }
