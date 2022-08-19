@@ -116,5 +116,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             connection.a(new PacketPlayOutNamedEntitySpawn(NPC));
             connection.a(new PacketPlayOutEntityHeadRotation(NPC, (byte) (NPC.getBukkitEntity().getLocation().getYaw() * 256 / 360)));
         }
+
+        new LobbyScoreboard().generateLobbyScoreboard(player);
     }
 }
