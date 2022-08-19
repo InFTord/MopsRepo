@@ -21,6 +21,7 @@ public class LobbyScoreboard {
         String score6 = ChatColor.WHITE + "Вы в " + ChatColor.YELLOW + "Лобби";
 
         Objective obj = board.registerNewObjective("MopsPVPs", "dummy", ChatColor.YELLOW + "" + ChatColor.BOLD + "MopsPVPs");
+        obj.setDisplaySlot(DisplaySlot.SIDEBAR);
 
         obj.getScore(score1).setScore(10);
         obj.getScore(score2).setScore(9);
