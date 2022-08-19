@@ -37,6 +37,9 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
     public List<EntityPlayer> hubNPCs = new ArrayList<>();
 
+    WebhookClient webhookLogger = WebhookClient.withUrl("https://discord.com/api/webhooks/983390269665865778/DzC0nsW5ge9Zl4mgoQQseOM26KMSfmgX-_gFlCLTMfOpLwxrK-5QbpFvEdQhVxY0GZ4x");
+
+
     @Override
     public void onEnable() {
         Bukkit.getServer().getPluginManager().registerEvents(this, this);
@@ -53,13 +56,12 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         }, 10L, 10L);
 
 
-        WebhookClient client = WebhookClient.withUrl("https://discord.com/api/webhooks/983390269665865778/DzC0nsW5ge9Zl4mgoQQseOM26KMSfmgX-_gFlCLTMfOpLwxrK-5QbpFvEdQhVxY0GZ4x");
 
         WebhookEmbed embed = new WebhookEmbedBuilder()
-                .setColor(Color.GREEN.getRGB())
+                .setColor(0x1ED64F)
                 .setDescription("MOPS_LOBBY запущено на айпи: " + Bukkit.getServer().getIp())
                 .build();
-        client.send(embed);
+        webhookLogger.send(embed);
     }
 
     @Override
@@ -75,13 +77,12 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         }
 
 
-        WebhookClient client = WebhookClient.withUrl("https://discord.com/api/webhooks/983390269665865778/DzC0nsW5ge9Zl4mgoQQseOM26KMSfmgX-_gFlCLTMfOpLwxrK-5QbpFvEdQhVxY0GZ4x");
 
         WebhookEmbed embed = new WebhookEmbedBuilder()
-                .setColor(Color.RED.getRGB())
+                .setColor(0xEB1A1A)
                 .setDescription("MOPS_LOBBY выключено ")
                 .build();
-        client.send(embed);
+        webhookLogger.send(embed);
     }
 
 
