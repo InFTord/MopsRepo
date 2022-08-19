@@ -51,11 +51,6 @@
 
     <dependencies>
         <dependency>
-            <groupId>club.minnced</groupId>
-            <artifactId>discord-webhooks</artifactId>
-            <version>0.8.2</version>
-        </dependency>
-        <dependency>
             <groupId>org.purpurmc.purpur</groupId>
             <artifactId>purpur-api</artifactId>
             <version>1.19-R0.1-SNAPSHOT</version>
@@ -89,7 +84,11 @@
             <artifactId>brigadier</artifactId>
             <version>1.0.18</version>
         </dependency>
-
+<!--        <dependency>-->
+<!--            <groupId>club.minnced</groupId>-->
+<!--            <artifactId>discord-webhooks</artifactId>-->
+<!--            <version>0.8.2</version>-->
+<!--        </dependency>-->
     </dependencies>
 
     <build>

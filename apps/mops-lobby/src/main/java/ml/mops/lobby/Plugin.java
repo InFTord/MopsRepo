@@ -1,9 +1,9 @@
 package ml.mops.lobby;
 
-import club.minnced.discord.webhook.WebhookClient;
-import club.minnced.discord.webhook.send.WebhookEmbed;
-import club.minnced.discord.webhook.send.WebhookEmbedBuilder;
-import club.minnced.discord.webhook.send.WebhookMessageBuilder;
+//import club.minnced.discord.webhook.WebhookClient;
+//import club.minnced.discord.webhook.send.WebhookEmbed;
+//import club.minnced.discord.webhook.send.WebhookEmbedBuilder;
+//import club.minnced.discord.webhook.send.WebhookMessageBuilder;
 import ml.mops.commands.Commands;
 import ml.mops.utils.MopsUtils;
 import net.minecraft.network.protocol.game.PacketPlayOutEntityHeadRotation;
@@ -37,7 +37,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
     public List<EntityPlayer> hubNPCs = new ArrayList<>();
 
-    WebhookClient webhookLogger = WebhookClient.withUrl("https://discord.com/api/webhooks/983390269665865778/DzC0nsW5ge9Zl4mgoQQseOM26KMSfmgX-_gFlCLTMfOpLwxrK-5QbpFvEdQhVxY0GZ4x");
+//    WebhookClient webhookLogger = WebhookClient.withUrl("https://discord.com/api/webhooks/983390269665865778/DzC0nsW5ge9Zl4mgoQQseOM26KMSfmgX-_gFlCLTMfOpLwxrK-5QbpFvEdQhVxY0GZ4x");
 
 
     @Override
@@ -57,11 +57,11 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
 
 
-        WebhookEmbed embed = new WebhookEmbedBuilder()
-                .setColor(0x1ED64F)
-                .setDescription("MOPS_LOBBY запущено на айпи: " + Bukkit.getServer().getIp())
-                .build();
-        webhookLogger.send(embed);
+//        WebhookEmbed embed = new WebhookEmbedBuilder()
+//                .setColor(0x1ED64F)
+//                .setDescription("MOPS_LOBBY запущено на айпи: " + Bukkit.getServer().getIp())
+//                .build();
+//        webhookLogger.send(embed);
     }
 
     @Override
@@ -78,11 +78,11 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
 
 
-        WebhookEmbed embed = new WebhookEmbedBuilder()
-                .setColor(0xEB1A1A)
-                .setDescription("MOPS_LOBBY выключено ")
-                .build();
-        webhookLogger.send(embed);
+//        WebhookEmbed embed = new WebhookEmbedBuilder()
+//                .setColor(0xEB1A1A)
+//                .setDescription("MOPS_LOBBY выключено ")
+//                .build();
+//        webhookLogger.send(embed);
     }
 
 
