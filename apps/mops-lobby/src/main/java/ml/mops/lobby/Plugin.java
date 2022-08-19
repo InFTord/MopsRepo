@@ -3,10 +3,8 @@ package ml.mops.lobby;
 import ml.mops.commands.Commands;
 import ml.mops.utils.MopsUtils;
 import net.minecraft.network.protocol.game.PacketPlayOutEntityHeadRotation;
-import net.minecraft.network.protocol.game.PacketPlayOutEntityMetadata;
 import net.minecraft.network.protocol.game.PacketPlayOutNamedEntitySpawn;
 import net.minecraft.network.protocol.game.PacketPlayOutPlayerInfo;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.EntityPlayer;
 import net.minecraft.server.network.PlayerConnection;
 import org.bukkit.*;
@@ -14,13 +12,10 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
-import org.bukkit.craftbukkit.v1_19_R1.CraftServer;
-import org.bukkit.craftbukkit.v1_19_R1.CraftWorld;
 import org.bukkit.craftbukkit.v1_19_R1.entity.CraftPlayer;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -30,7 +25,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
-import java.util.UUID;
 
 public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
@@ -117,6 +111,6 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             connection.a(new PacketPlayOutEntityHeadRotation(NPC, (byte) (NPC.getBukkitEntity().getLocation().getYaw() * 256 / 360)));
         }
 
-        new LobbyScoreboard().generateLobbyScoreboard(player);
+        player.setScoreboard(new LobbyScoreboard().generateLobbyScoreboard(player));
     }
 }
