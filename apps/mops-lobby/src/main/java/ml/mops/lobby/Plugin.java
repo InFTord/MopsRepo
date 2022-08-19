@@ -95,11 +95,10 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         try {
             if (event.getAction().isRightClick()) {
                 if (player.getItemInHand().getItemMeta().getDisplayName().equals(ChatColor.GOLD + "Cat Detector")) {
-                    System.out.println(player.getName().toLowerCase(Locale.ROOT));
                     if (player.getName().toLowerCase(Locale.ROOT).contains("cat")) {
-                        player.sendTitle("You are:", ChatColor.GREEN + "CAT", 10, 10, 10);
+                        player.sendTitle("You are:", ChatColor.GREEN + "CAT", 40, 40, 40);
                     } else {
-                        player.sendTitle("You are:", ChatColor.RED + "NOT CAT", 10, 10, 10);
+                        player.sendTitle("You are:", ChatColor.RED + "NOT CAT", 40, 40, 40);
                     }
                 }
             }
