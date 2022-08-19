@@ -31,6 +31,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 
 public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
@@ -90,6 +91,18 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         if(!player.getScoreboardTags().contains("admin")) {
             event.setCancelled(true);
         }
+
+        try {
+            if (event.getAction().isRightClick()) {
+                if (player.getItemInHand().getItemMeta().getDisplayName().equals(ChatColor.GOLD + "Cat Detector")) {
+                    if(player.getName().toLowerCase(Locale.ROOT).contains("cat")) {
+                        player.sendTitle("You are:", ChatColor.GREEN + "CAT", 10, 10, 10);
+                    } else {
+                        player.sendTitle("You are:", ChatColor.RED + "NOT CAT", 10, 10, 10);
+                    }
+                }
+            }
+        } catch (Exception ignored) {}
     }
 
     @EventHandler
