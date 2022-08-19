@@ -3,16 +3,15 @@ package ml.mops.lobby;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.format.NamedTextColor;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.*;
 
 public class LobbyScoreboard {
     public Scoreboard generateLobbyScoreboard(Player player) {
-        ScoreboardManager manager = player.getServer().getScoreboardManager();
+        ScoreboardManager manager = Bukkit.getScoreboardManager();
         Scoreboard board = manager.getNewScoreboard();
-
-        TextComponent title = Component.text("MopsPVPs", NamedTextColor.YELLOW);
 
         String score1 = ChatColor.GRAY + "Добро пожаловать!";
         String score2 = ChatColor.RED + " ";
@@ -21,7 +20,7 @@ public class LobbyScoreboard {
         String score5 = ChatColor.GOLD + " ";
         String score6 = ChatColor.WHITE + "Вы в " + ChatColor.YELLOW + "Лобби";
 
-        Objective obj = board.registerNewObjective("MopsPVPs", "dummy", title);
+        Objective obj = board.registerNewObjective("MopsPVPs", "dummy", ChatColor.YELLOW + "" + ChatColor.BOLD + "MopsPVPs");
 
         obj.getScore(score1).setScore(10);
         obj.getScore(score2).setScore(9);
