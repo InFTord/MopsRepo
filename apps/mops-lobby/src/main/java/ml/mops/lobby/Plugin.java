@@ -21,6 +21,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scoreboard.Scoreboard;
 import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +38,13 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
         EntityPlayer woolbattleNPC = MopsUtils.createNPC(new Location(mainworld, -70.500, 7, -180.500), ChatColor.YELLOW + "" + ChatColor.BOLD + "WoolBattle", "SirCat07");
         hubNPCs.add(woolbattleNPC);
+
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
+            for(Player player : Bukkit.getServer().getOnlinePlayers()) {
+                Scoreboard lobbyscoreboard = new LobbyScoreboard().generateLobbyScoreboard(player);
+                player.setScoreboard(lobbyscoreboard);
+            }
+        }, 10L, 10L);
     }
 
     @Override
@@ -110,7 +118,5 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             connection.a(new PacketPlayOutNamedEntitySpawn(NPC));
             connection.a(new PacketPlayOutEntityHeadRotation(NPC, (byte) (NPC.getBukkitEntity().getLocation().getYaw() * 256 / 360)));
         }
-
-        player.setScoreboard(new LobbyScoreboard().generateLobbyScoreboard(player));
     }
 }
