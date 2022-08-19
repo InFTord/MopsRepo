@@ -115,10 +115,6 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             connection.a(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.a, NPC));
             connection.a(new PacketPlayOutNamedEntitySpawn(NPC));
             connection.a(new PacketPlayOutEntityHeadRotation(NPC, (byte) (NPC.getBukkitEntity().getLocation().getYaw() * 256 / 360)));
-
-            Bukkit.getScheduler().runTaskLater(this, () -> {
-                connection.a(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.e, NPC));
-            }, 10);
         }
     }
 }
