@@ -86,33 +86,20 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     @EventHandler
     public void onInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
-        boolean isLeftClick = event.getAction().equals(Action.LEFT_CLICK_AIR) || event.getAction().equals(Action.LEFT_CLICK_BLOCK);
-        boolean isRightClick = event.getAction().equals(Action.RIGHT_CLICK_AIR) || event.getAction().equals(Action.RIGHT_CLICK_BLOCK);
 
         if(!player.getScoreboardTags().contains("admin")) {
             event.setCancelled(true);
         }
 
         try {
-            if (isRightClick) {
+            if (event.getAction().isRightClick()) {
                 if (player.getItemInHand().getItemMeta().getDisplayName().equals(ChatColor.GOLD + "Cat Detector")) {
-                    if(MopsUtils.getLookingAt(player, (LivingEntity) MopsUtils.getEntityLookingAt(player)) && MopsUtils.getEntityLookingAt(player) instanceof Player lookingAt) {
-
-                        if (lookingAt.getName().toLowerCase(Locale.ROOT).contains("cat")) {
-                            player.sendTitle("This is a:", ChatColor.GREEN + "CAT", 40, 30, 20);
-                            player.playSound(player.getLocation(), Sound.ITEM_GOAT_HORN_SOUND_5, 1, 1);
-                        } else {
-                            player.sendTitle("This is:", ChatColor.RED + "NOT A CAT", 40, 30, 20);
-                            player.playSound(player.getLocation(), Sound.ITEM_GOAT_HORN_SOUND_3, 1, 1);
-                        }
+                    if (player.getName().toLowerCase(Locale.ROOT).contains("cat")) {
+                        player.sendTitle("You are:", ChatColor.GREEN + "CAT", 40, 30, 20);
+                        player.playSound(player.getLocation(), Sound.ITEM_GOAT_HORN_SOUND_5, 1, 1);
                     } else {
-                        if (player.getName().toLowerCase(Locale.ROOT).contains("cat")) {
-                            player.sendTitle("You are:", ChatColor.GREEN + "CAT", 40, 30, 20);
-                            player.playSound(player.getLocation(), Sound.ITEM_GOAT_HORN_SOUND_5, 1, 1);
-                        } else {
-                            player.sendTitle("You are:", ChatColor.RED + "NOT CAT", 40, 30, 20);
-                            player.playSound(player.getLocation(), Sound.ITEM_GOAT_HORN_SOUND_3, 1, 1);
-                        }
+                        player.sendTitle("You are:", ChatColor.RED + "NOT CAT", 40, 30, 20);
+                        player.playSound(player.getLocation(), Sound.ITEM_GOAT_HORN_SOUND_3, 1, 1);
                     }
                 }
             }
