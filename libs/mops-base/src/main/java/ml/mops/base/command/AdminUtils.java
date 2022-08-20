@@ -27,15 +27,15 @@ public class AdminUtils {
      */
 
     public boolean executeCommands(CommandSender sender, Command command, String label, String[] args, Plugin plugin) {
-        boolean perms = sender.isOp(); //проверка прав
-        if (args == null) { //проверка аргументов на нуль
+        boolean perms = sender.isOp();
+        if (args == null) {
             args = new String[] {""};
         }
 
-        String commandName = command.getName().toLowerCase(Locale.ROOT); //Получение названия команды
+        String commandName = command.getName().toLowerCase(Locale.ROOT);
 
-        if (sender instanceof Player player && perms) { //Проверка на права и игрока
-            switch (commandName) { //Проверка команды
+        if (sender instanceof Player player && perms) {
+            switch (commandName) {
                 case "test" -> {
                     try {
                         if(args[0].equals("kits")) {

@@ -14,11 +14,12 @@ public class Value {
     private int currentAmount = 4;
 
 
-    public void setValues(String character, String[] border, int count, ChatColor color, ChatColor usedcolor) {
-        fillerChar = character;
-        borderChar = border;
+    public void setValues(String leftBorder, String rightBorder, String fill, int count, ChatColor color, ChatColor usedcolor) {
+        fillerChar = fill;
+        borderChar = new String[] {leftBorder, rightBorder};
         fillerCount = count;
         fillerColor = color;
+        borderColor = color;
         usedColor = usedcolor;
     }
 
