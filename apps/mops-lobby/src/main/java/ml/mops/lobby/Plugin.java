@@ -4,7 +4,7 @@ package ml.mops.lobby;
 //import club.minnced.discord.webhook.send.WebhookEmbed;
 //import club.minnced.discord.webhook.send.WebhookEmbedBuilder;
 //import club.minnced.discord.webhook.send.WebhookMessageBuilder;
-import ml.mops.commands.Commands;
+import ml.mops.base.command.Commands;
 import ml.mops.utils.MopsUtils;
 import net.minecraft.network.protocol.game.PacketPlayOutEntityHeadRotation;
 import net.minecraft.network.protocol.game.PacketPlayOutNamedEntitySpawn;
@@ -28,7 +28,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scoreboard.Scoreboard;
 import org.jetbrains.annotations.NotNull;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;

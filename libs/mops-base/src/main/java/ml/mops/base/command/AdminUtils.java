@@ -1,6 +1,6 @@
-package ml.mops.commands;
+package ml.mops.base.command;
 
-import ml.mops.inventories.KitGUI;
+import ml.mops.base.inventory.KitGUI;
 import ml.mops.utils.MopsUtils;
 import org.bukkit.*;
 import org.bukkit.command.Command;

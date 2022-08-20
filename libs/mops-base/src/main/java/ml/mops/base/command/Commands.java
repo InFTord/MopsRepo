@@ -1,4 +1,4 @@
-package ml.mops.commands;
+package ml.mops.base.command;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;

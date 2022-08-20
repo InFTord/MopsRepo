@@ -1,4 +1,4 @@
-package ml.mops.inventories;
+package ml.mops.base.inventory;
 
 import ml.mops.utils.MopsUtils;
 import org.bukkit.Bukkit;
@@ -10,8 +10,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.checkerframework.common.value.qual.StaticallyExecutable;
-import org.jetbrains.annotations.Contract;
 
 import java.util.Objects;
 

@@ -1,4 +1,4 @@
-package ml.mops.commands;
+package ml.mops.base.command;
 
 
 
