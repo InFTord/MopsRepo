@@ -1,4 +1,4 @@
-package ml.mops.base.value;
+package ml.mops.base;
 
 import org.bukkit.ChatColor;
 
@@ -8,10 +8,19 @@ public class Value {
     private String[] borderChar = new String[] {"[", "]"};
     private ChatColor borderColor = ChatColor.GOLD;
     private ChatColor fillerColor = ChatColor.YELLOW;
-    private ChatColor usedFillerColor = ChatColor.GRAY;
+    private ChatColor usedColor = ChatColor.GRAY;
 
     private int maxAmount = 5;
     private int currentAmount = 4;
+
+
+    public void setValues(String character, String[] border, int count, ChatColor color, ChatColor usedcolor) {
+        fillerChar = character;
+        borderChar = border;
+        fillerCount = count;
+        fillerColor = color;
+        usedColor = usedcolor;
+    }
 
     public String getIndicator() {
         ChatColor realBorderColor = borderColor;
@@ -30,7 +39,7 @@ public class Value {
         int margin = fillerCount - currentIndicatorCells;
 
         String filler = (realFillerColor + fillerChar).repeat(Math.max(0, currentIndicatorCells)) +
-                        (usedFillerColor + fillerChar).repeat(Math.max(0, margin));
+                        (usedColor + fillerChar).repeat(Math.max(0, margin));
 
         return firstBorder + filler + secondBorder;
     }
@@ -62,7 +71,7 @@ public class Value {
     public void setFillerColor(ChatColor color) {
         fillerColor = color;
     }
-    public void setUsedFillerColor(ChatColor color) {
-        usedFillerColor = color;
+    public void setUsedColor(ChatColor color) {
+        usedColor = color;
     }
 }

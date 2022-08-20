@@ -54,8 +54,6 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             }
         }, 10L, 10L);
 
-
-
 //        WebhookEmbed embed = new WebhookEmbedBuilder()
 //                .setColor(0x1ED64F)
 //                .setDescription("MOPS_LOBBY запущено на айпи: " + Bukkit.getServer().getIp())
@@ -74,8 +72,6 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         for(Player player : Bukkit.getOnlinePlayers()) {
             player.kickPlayer(ChatColor.YELLOW + "всем привет с вами сиркет \n мопс ппвп закрылся");
         }
-
-
 
 //        WebhookEmbed embed = new WebhookEmbedBuilder()
 //                .setColor(0xEB1A1A)
