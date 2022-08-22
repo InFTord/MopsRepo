@@ -56,7 +56,10 @@ public class AdminUtils {
                     } else {
                         try {
                             integer = Integer.parseInt(args[0]);
-                        } catch (Exception e) { player.sendMessage("я выебал кастомные ошибки"); }
+                        } catch (NumberFormatException e) {
+                            player.sendMessage(ChatColor.RED + "Вы написали не цифру!");
+                            player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 2);
+                        }
 
                         slime.setSize(integer);
                     }
