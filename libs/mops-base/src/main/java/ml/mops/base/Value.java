@@ -9,6 +9,7 @@ public class Value {
     private ChatColor borderColor = ChatColor.GOLD;
     private ChatColor fillerColor = ChatColor.YELLOW;
     private ChatColor usedColor = ChatColor.GRAY;
+    private String usedChar = "X";
 
     private int maxAmount = 5;
     private int currentAmount = 4;
@@ -26,11 +27,16 @@ public class Value {
     public String getIndicator() {
         ChatColor realBorderColor = borderColor;
         ChatColor realFillerColor = fillerColor;
+        String realUsedChar = usedChar;
 
         if(realBorderColor == null) {
             realBorderColor = fillerColor;
         } else if(realFillerColor == null) {
             realFillerColor = borderColor;
+        }
+
+        if(realUsedChar == null) {
+            realUsedChar = fillerChar;
         }
 
         String firstBorder = realBorderColor + borderChar[0];
@@ -40,7 +46,7 @@ public class Value {
         int margin = fillerCount - currentIndicatorCells;
 
         String filler = (realFillerColor + fillerChar).repeat(Math.max(0, currentIndicatorCells)) +
-                        (usedColor + fillerChar).repeat(Math.max(0, margin));
+                        (usedColor + realUsedChar).repeat(Math.max(0, margin));
 
         return firstBorder + filler + secondBorder;
     }
@@ -60,6 +66,9 @@ public class Value {
 
     public void setFillerChar(String character) {
         fillerChar = character;
+    }
+    public void setUsedChar(String character) {
+        usedChar = character;
     }
     public void setBorderChar(String[] array) {
         borderChar = array;
