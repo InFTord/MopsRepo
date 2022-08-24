@@ -51,6 +51,35 @@ public class Value {
         return firstBorder + filler + secondBorder;
     }
 
+    public String getIndicator(int value) {
+        ChatColor realBorderColor = borderColor;
+        ChatColor realFillerColor = fillerColor;
+        String realUsedChar = usedChar;
+
+        currentAmount = value;
+
+        if(realBorderColor == null) {
+            realBorderColor = fillerColor;
+        } else if(realFillerColor == null) {
+            realFillerColor = borderColor;
+        }
+
+        if(realUsedChar == null) {
+            realUsedChar = fillerChar;
+        }
+
+        String firstBorder = realBorderColor + borderChar[0];
+        String secondBorder = realBorderColor + borderChar[1];
+
+        int currentIndicatorCells = Math.round(currentAmount/maxAmount*fillerCount);
+        int margin = fillerCount - currentIndicatorCells;
+
+        String filler = (realFillerColor + fillerChar).repeat(Math.max(0, currentIndicatorCells)) +
+                (usedColor + realUsedChar).repeat(Math.max(0, margin));
+
+        return firstBorder + filler + secondBorder;
+    }
+
 
 
     public void setCurrentAmount(int value) {
