@@ -38,6 +38,8 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.time.Duration;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacyAmpersand;
 
@@ -59,7 +61,7 @@ public class MopsUtils {
 		}
 		return fc;
 	}
-	
+
 
 	public Title createTitle(@NotNull String lang, @Nullable String id, @Nullable String id2nd, int i, int j, int k) {
 		TextComponent c1;
@@ -99,6 +101,7 @@ public class MopsUtils {
 		}
 		return strings.toString();
 	}
+
 	static public String textComponentsToSingularString(List<TextComponent> textComponents) {
 		List<String> strings = null;
 		for (TextComponent textComponent : textComponents) {
@@ -114,6 +117,7 @@ public class MopsUtils {
 		}
 		return strings;
 	}
+
 	static public List<String> textComponentsToStrings(List<TextComponent> textComponents) {
 		List<String> strings = null;
 		for (TextComponent textComponent : textComponents) {
@@ -137,6 +141,7 @@ public class MopsUtils {
 		}
 		return joiner.toString();
 	}
+
 	static public String combineStrings(CharSequence[] strings) {
 		StringJoiner joiner = new StringJoiner("");
 		for (CharSequence string : strings) {
@@ -152,6 +157,7 @@ public class MopsUtils {
 		}
 		return joiner.toString();
 	}
+
 	static public String combineStrings(CharSequence[] strings, String character) {
 		StringJoiner joiner = new StringJoiner(character);
 		for (CharSequence string : strings) {
@@ -162,7 +168,7 @@ public class MopsUtils {
 
 	static public String combineStrings(String[] strings, String character, Integer[] excludes) {
 		StringJoiner joiner = new StringJoiner(character);
-		for (int i = 0; i<strings.length; i++) {
+		for (int i = 0; i < strings.length; i++) {
 			final int j = i;
 			if (Arrays.stream(excludes).noneMatch(x -> x == j)) {
 				joiner.add(strings[j]);
@@ -208,12 +214,17 @@ public class MopsUtils {
 		string = string.replaceAll("&d", ChatColor.LIGHT_PURPLE + "");
 		string = string.replaceAll("&e", ChatColor.YELLOW + "");
 		string = string.replaceAll("&f", ChatColor.WHITE + "");
+
+		string = string.replaceAll("&g", net.md_5.bungee.api.ChatColor.of("#9e6841") + "");
+		string = string.replaceAll("&h", net.md_5.bungee.api.ChatColor.of("#ffadc6") + "");
+
 		string = string.replaceAll("&k", ChatColor.MAGIC + "");
 		string = string.replaceAll("&l", ChatColor.BOLD + "");
 		string = string.replaceAll("&m", ChatColor.STRIKETHROUGH + "");
 		string = string.replaceAll("&n", ChatColor.UNDERLINE + "");
 		string = string.replaceAll("&o", ChatColor.ITALIC + "");
 		string = string.replaceAll("&r", ChatColor.RESET + "");
+
 
 		string = string.replaceAll("&s", " ");
 
@@ -237,7 +248,7 @@ public class MopsUtils {
 
 		while (i < inv.getSize()) {
 			ItemStack itemstack = inv.getItem(i);
-			if(itemstack == null || itemstack.getType() == Material.AIR) {
+			if (itemstack == null || itemstack.getType() == Material.AIR) {
 				inv.setItem(i, item);
 			}
 
@@ -311,9 +322,9 @@ public class MopsUtils {
 			String texture = property.get("value").getAsString();
 			String signature = property.get("signature").getAsString();
 
-			return new String[] {texture, signature};
+			return new String[]{texture, signature};
 		} catch (Exception e) {
-			return new String[] {"ewogICJ0aW1lc3RhbXAiIDogMTY0MzE3MDI3Mjg4NywKICAicHJvZmlsZUlkIiA6ICIzZmM3ZmRmOTM5NjM0YzQxOTExOTliYTNmN2NjM2ZlZCIsCiAgInByb2ZpbGVOYW1lIiA6ICJZZWxlaGEiLAogICJzaWduYXR1cmVSZXF1aXJlZCIgOiB0cnVlLAogICJ0ZXh0dXJlcyIgOiB7CiAgICAiU0tJTiIgOiB7CiAgICAgICJ1cmwiIDogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZTQ5MWUyZDMwNzFmNmYxNGQ5MTY3OGU4YTRjZWE2ZGIyMzUxMDI4MTVjNmZmM2QxOWIwYmI5ZTE2ZjlhYjUyZCIsCiAgICAgICJtZXRhZGF0YSIgOiB7CiAgICAgICAgIm1vZGVsIiA6ICJzbGltIgogICAgICB9CiAgICB9CiAgfQp9", "GAzwBm8gcNYhxIadPeraOb+5r8InZ64T5NjUdv8WCHyXTmYjYkY8MycQTAWwg2TVUL+sMYvYcb2nYK6AMYRRwwSjpSS/w6xPZn8XxdlnO3qeouBH86A/pstHuRHtEtVnbpBfibsYmhsiVgz7P6SD2dMY42DN34SRc7+R/zEYcd7CyZoOtRx8Fc4kMmI/G+w4QxawJBwsStP/Eig1JLaYW8Ux4muLwRp9KkPepQV75HE8jRp7Y9D3+qOGBdC6yjprB2Mhm2/cCgtvVfrPPu1d7NGf15+tcdkLHoY9h6GHg55PBIaP5QwDJC8aAcKDYc5FvbKVD+x/FQms5Z7S29JZIaAKZjdyscYKUUoQwCNjNlVMZZPJpFaYKp83SeEsqbsIZwl6JMb7qlubuWiDzbEyAeDt3aAxrH5pMueyo1bGV/UIIXsUL4N5isB5VLgQ5t7/Mypuy8vJvr+Q/BtB/YW+nLH1UIKgwFQv+AX3CgbdIgCAsXDFhLNL9aXAKRvN3nUk9JbWStqfaS6gj8Noxf7ndoV/oBC0NXdTJTBaAt1UQGT3Lh6JKjzckM2blxb9XOlQJx3Gn0naPo5Q9hLVBY6H+DT8RRv/dvHcAc0sIKXu9/7rhGNJUSFxEBdzd7viLQHQdS+3P+t3qP6u2ZufxokVZA6g+C5dWwm1n8D0xRWZbi8="};
+			return new String[]{"ewogICJ0aW1lc3RhbXAiIDogMTY0MzE3MDI3Mjg4NywKICAicHJvZmlsZUlkIiA6ICIzZmM3ZmRmOTM5NjM0YzQxOTExOTliYTNmN2NjM2ZlZCIsCiAgInByb2ZpbGVOYW1lIiA6ICJZZWxlaGEiLAogICJzaWduYXR1cmVSZXF1aXJlZCIgOiB0cnVlLAogICJ0ZXh0dXJlcyIgOiB7CiAgICAiU0tJTiIgOiB7CiAgICAgICJ1cmwiIDogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZTQ5MWUyZDMwNzFmNmYxNGQ5MTY3OGU4YTRjZWE2ZGIyMzUxMDI4MTVjNmZmM2QxOWIwYmI5ZTE2ZjlhYjUyZCIsCiAgICAgICJtZXRhZGF0YSIgOiB7CiAgICAgICAgIm1vZGVsIiA6ICJzbGltIgogICAgICB9CiAgICB9CiAgfQp9", "GAzwBm8gcNYhxIadPeraOb+5r8InZ64T5NjUdv8WCHyXTmYjYkY8MycQTAWwg2TVUL+sMYvYcb2nYK6AMYRRwwSjpSS/w6xPZn8XxdlnO3qeouBH86A/pstHuRHtEtVnbpBfibsYmhsiVgz7P6SD2dMY42DN34SRc7+R/zEYcd7CyZoOtRx8Fc4kMmI/G+w4QxawJBwsStP/Eig1JLaYW8Ux4muLwRp9KkPepQV75HE8jRp7Y9D3+qOGBdC6yjprB2Mhm2/cCgtvVfrPPu1d7NGf15+tcdkLHoY9h6GHg55PBIaP5QwDJC8aAcKDYc5FvbKVD+x/FQms5Z7S29JZIaAKZjdyscYKUUoQwCNjNlVMZZPJpFaYKp83SeEsqbsIZwl6JMb7qlubuWiDzbEyAeDt3aAxrH5pMueyo1bGV/UIIXsUL4N5isB5VLgQ5t7/Mypuy8vJvr+Q/BtB/YW+nLH1UIKgwFQv+AX3CgbdIgCAsXDFhLNL9aXAKRvN3nUk9JbWStqfaS6gj8Noxf7ndoV/oBC0NXdTJTBaAt1UQGT3Lh6JKjzckM2blxb9XOlQJx3Gn0naPo5Q9hLVBY6H+DT8RRv/dvHcAc0sIKXu9/7rhGNJUSFxEBdzd7viLQHQdS+3P+t3qP6u2ZufxokVZA6g+C5dWwm1n8D0xRWZbi8="};
 		}
 	}
 
@@ -328,9 +339,9 @@ public class MopsUtils {
 
 	static public Entity getEntityLookingAt(Player player) {
 		List<Entity> entities = new ArrayList<Entity>();
-		for(Entity entity : player.getNearbyEntities(30, 30, 30)){
-			if(entity instanceof LivingEntity){
-				if(getLookingAt(player, (LivingEntity) entities)){
+		for (Entity entity : player.getNearbyEntities(30, 30, 30)) {
+			if (entity instanceof LivingEntity) {
+				if (getLookingAt(player, (LivingEntity) entities)) {
 					entities.add(entity);
 				}
 			}
@@ -338,6 +349,4 @@ public class MopsUtils {
 
 		return entities.get(0);
 	}
-
-
 }

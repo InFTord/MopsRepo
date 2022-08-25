@@ -15,11 +15,11 @@ public enum Kit {
     PIG(ChatColor.GREEN + "Pig"),
     HEALER(ChatColor.WHITE + "Healer"),
     STRAY(ChatColor.DARK_AQUA + "Stray"),
-    GOLEM(ChatColor.GOLD + "Dirt Golem"),
+    GOLEM(net.md_5.bungee.api.ChatColor.of("#9e6841") + "Dirt Golem"),
     ARCHER(ChatColor.DARK_GREEN + "Archer"),
     WEREWOLF(ChatColor.DARK_GRAY + "Werewolf"),
     PALADIN(ChatColor.YELLOW + "Paladin"),
-    BLOODY(ChatColor.LIGHT_PURPLE + "Bloody");
+    BLOODY(net.md_5.bungee.api.ChatColor.of("#ffadc6") + "Bloody");
 
     final String name;
 
