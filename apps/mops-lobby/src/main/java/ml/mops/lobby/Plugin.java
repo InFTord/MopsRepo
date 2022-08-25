@@ -61,6 +61,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 //        webhookLogger.send(embed);
     }
 
+
     @Override
     public void onDisable() {
         World mainworld = Bukkit.getServer().getWorlds().get(0);
