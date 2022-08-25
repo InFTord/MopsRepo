@@ -1,5 +1,6 @@
 package ml.mops.woolbattle;
 
+import ml.mops.utils.MopsUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Material;
@@ -10,9 +11,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Abilities {
 	final Plugin plugin;
@@ -29,20 +28,9 @@ public class Abilities {
 		meta1.addEnchant(Enchantment.KNOCKBACK, 2, true);
 		meta1.setUnbreakable(true);
 
-		//List<Component> lore1 = new ArrayList<>();
-		//lore1.add(plugin.getByLang(lang, "shears.lore"));
-		//meta1.lore(lore1);
-
-
-
-		List<String> lore1 = new ArrayList<>();
-		lore1.add(ChatColor.GRAY + "Ножницы для копания шерсти и");
-		lore1.add(ChatColor.GRAY + "скидывания игроков в бездну.");
-		lore1.add("");
-		lore1.add(ChatColor.AQUA + "Способность: " + ChatColor.GRAY + "Убирает блоки");
-		lore1.add(ChatColor.GRAY + "своего цвета на генераторах." + ChatColor.YELLOW + "" + ChatColor.BOLD + " ПКМ");
-		lore1.add(ChatColor.AQUA + "Стоимость: 6 шерсти");
+		List<String> lore1 = new ArrayList<>(Arrays.asList(MopsUtils.textComponentToString(plugin.getByLang(lang, "shears.lore")).split("\n")));
 		meta1.setLore(lore1);
+
 
 		item1.setItemMeta(meta1);
 		player1.getInventory().setItem(0, item1);

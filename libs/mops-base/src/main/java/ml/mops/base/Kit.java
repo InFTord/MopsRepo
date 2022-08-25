@@ -1,29 +1,35 @@
 package ml.mops.base;
 
+import ml.mops.utils.MopsColor;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
+import org.bukkit.Material;
 
 public enum Kit {
-    MAGE(ChatColor.DARK_PURPLE + "Mage"),
-    BOMBER(ChatColor.BLACK + "Bomber"),
-    PHOENIX(ChatColor.GOLD + "Phoenix"),
-    DIVER(ChatColor.AQUA + "Diver"),
-    ASSASSIN(ChatColor.GRAY + "Assassin"),
-    WITHERLORD(ChatColor.RED + "Witherlord"),
-    ILLUSIONER(ChatColor.DARK_BLUE + "Illusioner"),
-    NECROMANCER(ChatColor.LIGHT_PURPLE + "Necromancer"),
-    PIG(ChatColor.GREEN + "Pig"),
-    HEALER(ChatColor.WHITE + "Healer"),
-    STRAY(ChatColor.DARK_AQUA + "Stray"),
-    GOLEM(net.md_5.bungee.api.ChatColor.of("#9e6841") + "Dirt Golem"),
-    ARCHER(ChatColor.DARK_GREEN + "Archer"),
-    WEREWOLF(ChatColor.DARK_GRAY + "Werewolf"),
-    PALADIN(ChatColor.YELLOW + "Paladin"),
-    BLOODY(net.md_5.bungee.api.ChatColor.of("#ffadc6") + "Bloody");
+    MAGE("Mage", MopsColor.PURPLE),
+    BOMBER("Bomber", MopsColor.BLACK),
+    PHOENIX("Phoenix", MopsColor.GOLD),
+    DIVER("Diver", MopsColor.AQUA),
+    ASSASSIN("Assassin", MopsColor.LIGHT_GRAY),
+    WITHERLORD("Witherlord", MopsColor.RED),
+    ILLUSIONER("Illusioner", MopsColor.BLUE),
+    NECROMANCER("Necromancer", MopsColor.MAGENTA),
+    PIG("Pig", MopsColor.LIME),
+    HEALER("Healer", MopsColor.WHITE),
+    STRAY("Stray", MopsColor.CYAN),
+    GOLEM( "Dirt Golem", MopsColor.BROWN),
+    ARCHER("Archer", MopsColor.GREEN),
+    WEREWOLF("Werewolf", MopsColor.DARK_GRAY),
+    PALADIN("Paladin", MopsColor.YELLOW),
+    BLOODY("Bloody", MopsColor.PINK),
+
+    PLACEHOLDER("Placeholder Kit Name!", MopsColor.PLAIN);
 
     final String name;
+    final Material shulker;
 
-    Kit (String name) {
-        this.name = name;
+    Kit (String name, MopsColor mopsColor) {
+        this.name = mopsColor.getColor() + name;
+        this.shulker = mopsColor.getShulker();
     }
 }

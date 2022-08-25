@@ -4,24 +4,16 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
-import net.minecraft.network.protocol.game.PacketPlayOutEntityMetadata;
-import net.minecraft.network.syncher.DataWatcher;
-import net.minecraft.network.syncher.DataWatcherObject;
-import net.minecraft.network.syncher.DataWatcherRegistry;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.EntityPlayer;
-import net.minecraft.server.level.PlayerInteractManager;
 import net.minecraft.server.level.WorldServer;
-import org.apache.commons.lang3.StringUtils;
 import ml.mops.base.MopsPlugin;
-import ml.mops.exception.UnsoportedYetFeature;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.title.Title;
 import org.bukkit.*;
 import org.bukkit.craftbukkit.v1_19_R1.CraftServer;
 import org.bukkit.craftbukkit.v1_19_R1.CraftWorld;
-import org.bukkit.craftbukkit.v1_19_R1.entity.CraftPlayer;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -31,15 +23,10 @@ import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import javax.net.ssl.HttpsURLConnection;
-import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.time.Duration;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import static net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacyAmpersand;
 
@@ -178,6 +165,10 @@ public class MopsUtils {
 
 	}
 
+	static public @NotNull String textComponentToString(TextComponent component) {
+		return legacyAmpersand().serialize(component);
+	}
+
 	static public void updateDisplayName(Player target) {
 //		String rank = Dependencies.getMopsRank(target);
 //		String name = Dependencies.getMopsName(target);
@@ -226,10 +217,13 @@ public class MopsUtils {
 		string = string.replaceAll("&r", ChatColor.RESET + "");
 
 
+
 		string = string.replaceAll("&s", " ");
 
 		return string;
 	}
+
+
 
 	static public List<Material> leatherItems() {
 		List<Material> list = new ArrayList<>();

@@ -2278,6 +2278,8 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		return color;
 	}
 
+
+
 	@Override
 	public TextComponent getByLang(String lang, String string) {
 		getLogger().info("WoolBattle:Plugin | getByLang: \n" + lang + "\n" + string);
