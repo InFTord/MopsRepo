@@ -255,9 +255,11 @@ public class AdminUtils {
                         assert meta != null;
                         if (meta.isUnbreakable()) {
                             player.sendMessage(ChatColor.YELLOW + "Вы " + ChatColor.RED + ChatColor.BOLD + "ВЫКЛЮЧИЛИ" + ChatColor.RESET + ChatColor.YELLOW + " неломаемость");
+                            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
                             meta.setUnbreakable(false);
                         } else {
                             player.sendMessage(ChatColor.YELLOW + "Вы " + ChatColor.GREEN + ChatColor.BOLD + "ВКЛЮЧИЛИ" + ChatColor.RESET + ChatColor.YELLOW + " неломаемость");
+                            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
                             meta.setUnbreakable(true);
                         }
                         item.setItemMeta(meta);

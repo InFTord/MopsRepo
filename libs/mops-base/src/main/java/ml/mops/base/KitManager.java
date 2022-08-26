@@ -15,7 +15,7 @@ public class KitManager {
 
         int i = 0;
         while (i < 27) {
-            ItemStack item = map.get(MopsUtils.combineStrings(itemArray).charAt(i));
+            ItemStack item = map.get(MopsUtils.combineStrings(itemArray).replaceAll(" ", "").charAt(i));
             inv.setItem(i, item);
 
             i++;

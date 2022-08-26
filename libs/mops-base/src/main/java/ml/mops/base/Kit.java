@@ -17,11 +17,11 @@ public enum Kit {
     PIG("Pig", MopsColor.LIME),
     HEALER("Healer", MopsColor.WHITE),
     STRAY("Stray", MopsColor.CYAN),
-    GOLEM( "Dirt Golem", MopsColor.BROWN),
+    PUG( "Pug", MopsColor.BROWN),
     ARCHER("Archer", MopsColor.GREEN),
     WEREWOLF("Werewolf", MopsColor.DARK_GRAY),
     PALADIN("Paladin", MopsColor.YELLOW),
-    BLOODY("Bloody", MopsColor.PINK),
+    SAKURA("Sakura", MopsColor.PINK),
 
     PLACEHOLDER("Placeholder Kit Name!", MopsColor.PLAIN);
 
