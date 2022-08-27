@@ -17,7 +17,7 @@ public abstract class KitManager {
 
         int i = 0;
         while (i < 27) {
-            ItemStack item = map.get(MopsUtils.combineStrings(itemArray).replaceAll(" ", "").charAt(i));
+            ItemStack item = map.get(MopsUtils.combineStrings(itemArray, " ").split(" ")[i]);
             inv.setItem(i, item);
             i++;
         }
@@ -29,11 +29,13 @@ public abstract class KitManager {
         HashMap<String, ItemStack> map = new HashMap<>();
         map.put("0", new ItemStack(Material.AIR));
 
-        map.put("z", MopsUtils.createItem(Material.NETHERITE_HOE, 1,  ChatColor.RED +"Phlogistinator"));
-        map.put("x", MopsUtils.createItem(Material.IRON_HORSE_ARMOR, 1, ChatColor.GRAY + "Scorch" + ChatColor.GOLD + "Shot"));
-        map.put("c", MopsUtils.createItem(Material.NETHERITE_AXE, 1,  ChatColor.GRAY + "Powerjack"));
+        map.put("phlog", MopsUtils.createItem(Material.NETHERITE_HOE, 1,  ChatColor.RED +"Phlogistinator"));
+        map.put("scorch", MopsUtils.createItem(Material.IRON_HORSE_ARMOR, 1, ChatColor.GRAY + "Scorch" + ChatColor.GOLD + "Shot"));
+        map.put("powerjack", MopsUtils.createItem(Material.NETHERITE_AXE, 1,  ChatColor.GRAY + "Powerjack"));
 
-
+        map.put("pyrochest", MopsUtils.colorItem(MopsUtils.createItem(Material.LEATHER_CHESTPLATE, 1, ChatColor.RED + "Pyro Chestplate"), "#d14226"));
+        map.put("pyroleggings", MopsUtils.colorItem(MopsUtils.createItem(Material.LEATHER_LEGGINGS, 1, ChatColor.RED + "Pyro Leggings"), "#a64835"));
+        map.put("pyroboots", MopsUtils.colorItem(MopsUtils.createItem(Material.LEATHER_BOOTS, 1, ChatColor.RED + "Pyro Boots"), "#73392e"));
 
         return map;
     }

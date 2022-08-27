@@ -18,6 +18,7 @@ import org.bukkit.entity.*;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
@@ -254,6 +255,7 @@ public class MopsUtils {
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName(name);
 		item.setItemMeta(meta);
+
 		return item;
 	}
 
@@ -265,6 +267,7 @@ public class MopsUtils {
 		lore.add(lore3);
 		meta.setLore(lore);
 		item.setItemMeta(meta);
+
 		return item;
 	}
 
@@ -275,6 +278,20 @@ public class MopsUtils {
 		lore.add(lore1);
 		meta.setLore(lore);
 		item.setItemMeta(meta);
+
+		return item;
+	}
+
+	static public ItemStack colorItem(ItemStack item, String hex) {
+		if(leatherItems().contains(item.getType())) {
+			ItemMeta meta = item.hasItemMeta() ? item.getItemMeta() : Bukkit.getItemFactory().getItemMeta(item.getType());
+			LeatherArmorMeta leatherArmorMeta = (LeatherArmorMeta) meta;
+			String rgbBase16 = hex.trim().replace("#", "");
+			int rgbBase10 = Integer.parseInt(rgbBase16, 16);
+			leatherArmorMeta.setColor(Color.fromRGB(rgbBase10));
+
+			item.setItemMeta(leatherArmorMeta);
+		}
 		return item;
 	}
 
