@@ -257,7 +257,7 @@ public class MopsUtils {
 		return item;
 	}
 
-	static public ItemStack addItemLore(ItemStack item, String lore1, String lore2, String lore3) {
+	static public ItemStack addLore(ItemStack item, String lore1, String lore2, String lore3) {
 		ItemMeta meta = item.getItemMeta();
 		List<String> lore = new ArrayList<>();
 		lore.add(lore1);
@@ -268,25 +268,23 @@ public class MopsUtils {
 		return item;
 	}
 
-	static public ItemStack addItemLore(ItemStack item, String lore1, String lore2) {
+	static public ItemStack addLore(ItemStack item, String lore1) {
 		ItemMeta meta = item.getItemMeta();
-		List<String> lore = new ArrayList<>();
-		lore.add(lore1);
-		lore.add(lore2);
-		meta.setLore(lore);
-		item.setItemMeta(meta);
-		return item;
-	}
-
-
-	static public ItemStack addItemLore(ItemStack item, String lore1) {
-		ItemMeta meta = item.getItemMeta();
-		List<String> lore = new ArrayList<>();
+		List<String> lore = item.getLore();
+		assert lore != null;
 		lore.add(lore1);
 		meta.setLore(lore);
 		item.setItemMeta(meta);
 		return item;
 	}
+
+	static public ItemStack createItem(Material mat, int count, String name) {
+		ItemStack item = new ItemStack(mat, count);
+		renameItem(item, name);
+		return item;
+	}
+
+
 
 
 	static public EntityPlayer createNPC(Location location, String name, String skin) {

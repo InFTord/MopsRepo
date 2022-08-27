@@ -1,35 +1,43 @@
 package ml.mops.base;
 
 import ml.mops.utils.MopsColor;
-import org.bukkit.ChatColor;
-import org.bukkit.Color;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.inventory.Inventory;
 
 public enum Kit {
-    MAGE("Mage", MopsColor.PURPLE),
-    BOMBER("Bomber", MopsColor.BLACK),
-    PHOENIX("Phoenix", MopsColor.GOLD),
-    DIVER("Diver", MopsColor.AQUA),
-    ASSASSIN("Assassin", MopsColor.LIGHT_GRAY),
-    WITHERLORD("Witherlord", MopsColor.RED),
-    ILLUSIONER("Illusioner", MopsColor.BLUE),
-    NECROMANCER("Necromancer", MopsColor.MAGENTA),
-    PIG("Pig", MopsColor.LIME),
-    HEALER("Healer", MopsColor.WHITE),
-    STRAY("Stray", MopsColor.CYAN),
-    PUG( "Pug", MopsColor.BROWN),
-    ARCHER("Archer", MopsColor.GREEN),
-    WEREWOLF("Werewolf", MopsColor.DARK_GRAY),
-    PALADIN("Paladin", MopsColor.YELLOW),
-    SAKURA("Sakura", MopsColor.PINK),
+    MAGE("Mage", MopsColor.PURPLE, KitType.BASE, KitManager.createKit(new String[] {"0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0"}, KitManager.baseMapping())),
+    BOMBER("Bomber", MopsColor.BLACK, KitType.BASE, KitManager.createKit(new String[] {"0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0"}, KitManager.baseMapping())),
+    PHOENIX("Phoenix", MopsColor.GOLD, KitType.BASE, KitManager.createKit(new String[] {"0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0"}, KitManager.baseMapping())),
+    DIVER("Diver", MopsColor.AQUA, KitType.BASE, KitManager.createKit(new String[] {"0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0"}, KitManager.baseMapping())),
+    ASSASSIN("Assassin", MopsColor.LIGHT_GRAY, KitType.BASE, KitManager.createKit(new String[] {"0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0"}, KitManager.baseMapping())),
+    WITHERLORD("Witherlord", MopsColor.RED, KitType.BASE, KitManager.createKit(new String[] {"0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0"}, KitManager.baseMapping())),
+    ILLUSIONER("Illusioner", MopsColor.BLUE, KitType.BASE, KitManager.createKit(new String[] {"0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0"}, KitManager.baseMapping())),
+    NECROMANCER("Necromancer", MopsColor.MAGENTA, KitType.BASE, KitManager.createKit(new String[] {"0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0"}, KitManager.baseMapping())),
+    PIG("Pig", MopsColor.LIME, KitType.BASE, KitManager.createKit(new String[] {"0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0"}, KitManager.baseMapping())),
+    HEALER("Healer", MopsColor.WHITE, KitType.BASE, KitManager.createKit(new String[] {"0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0"}, KitManager.baseMapping())),
+    STRAY("Stray", MopsColor.CYAN, KitType.BASE, KitManager.createKit(new String[] {"0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0"}, KitManager.baseMapping())),
+    PUG( "Pug", MopsColor.BROWN, KitType.BASE, KitManager.createKit(new String[] {"0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0"}, KitManager.baseMapping())),
+    ARCHER("Archer", MopsColor.GREEN, KitType.BASE, KitManager.createKit(new String[] {"0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0"}, KitManager.baseMapping())),
+    WEREWOLF("Werewolf", MopsColor.DARK_GRAY, KitType.BASE, KitManager.createKit(new String[] {"0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0"}, KitManager.baseMapping())),
+    PALADIN("Paladin", MopsColor.YELLOW, KitType.BASE, KitManager.createKit(new String[] {"0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0"}, KitManager.baseMapping())),
+    SAKURA("Sakura", MopsColor.PINK, KitType.BASE, KitManager.createKit(new String[] {"0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0"}, KitManager.baseMapping())),
 
-    PLACEHOLDER("Placeholder Kit Name!", MopsColor.PLAIN);
+    PYRO("Pyro", MopsColor.RED, KitType.ADMIN_TEST_ONLY, KitManager.createKit(new String[] {"0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0"}, KitManager.baseMapping()));
+
 
     final String name;
     final Material shulker;
+    final KitType type;
+    final Inventory inventory;
 
-    Kit (String name, MopsColor mopsColor) {
+    Kit (String name, MopsColor mopsColor, KitType type, Inventory inventory) {
         this.name = mopsColor.getColor() + name;
         this.shulker = mopsColor.getShulker();
+        this.type = type;
+
+        Inventory inv = Bukkit.createInventory(null, 27, this.name);
+        inv.setContents(inventory.getContents());
+        this.inventory = inv;
     }
 }
