@@ -13,12 +13,12 @@ public class LobbyScoreboard {
         ScoreboardManager manager = Bukkit.getScoreboardManager();
         Scoreboard board = manager.getNewScoreboard();
 
-        String score1 = ChatColor.GRAY + "Добро пожаловать!";
+        String score1 = ChatColor.GRAY + "Welcome!";
         String score2 = ChatColor.RED + " ";
-        String score3 = ChatColor.WHITE + "Твои коины: " + ChatColor.GOLD + "" + ChatColor.BOLD + "420";
-        String score4 = ChatColor.WHITE + "Твой ранг: " + ChatColor.DARK_PURPLE + "[МЯУ]";
+        String score3 = ChatColor.WHITE + "Your coins: " + ChatColor.GOLD + "" + ChatColor.BOLD + "420";
+        String score4 = ChatColor.WHITE + "Your rank: " + ChatColor.GREEN + "[DEV]";
         String score5 = ChatColor.GOLD + " ";
-        String score6 = ChatColor.WHITE + "Вы в " + ChatColor.YELLOW + "Лобби";
+        String score6 = ChatColor.WHITE + "You are in: " + ChatColor.YELLOW + "Lobby";
 
         Objective obj = board.registerNewObjective("MopsPVPs", "dummy", ChatColor.YELLOW + "" + ChatColor.BOLD + "MopsPVPs");
         obj.setDisplaySlot(DisplaySlot.SIDEBAR);
