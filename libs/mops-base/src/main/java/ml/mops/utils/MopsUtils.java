@@ -19,12 +19,14 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.InputStreamReader;
+import java.lang.reflect.Field;
 import java.net.URL;
 import java.time.Duration;
 import java.util.*;
@@ -295,10 +297,50 @@ public class MopsUtils {
 		return item;
 	}
 
-	static public ItemStack createItem(Material mat, int count, String name) {
+	static public ItemStack unbreak(ItemStack item) {
+		item.setUnbreakable(true);
+		return item;
+	}
+
+	static public ItemStack unbreak(ItemStack item, boolean bool) {
+		item.setUnbreakable(bool);
+		return item;
+	}
+
+	static public ItemStack createItem(Material mat, int count, String name, boolean unbreakable) {
 		ItemStack item = new ItemStack(mat, count);
 		renameItem(item, name);
 		return item;
+	}
+
+	public static ItemStack createCustomHead(String texture) {
+		texture = "http://textures.minecraft.net/texture/" + texture;
+
+		ItemStack skull = new ItemStack(Material.PLAYER_HEAD, 1, (short) 3);
+
+		SkullMeta skullMeta = (SkullMeta)skull.getItemMeta();
+		skullMeta.setDisplayName(ChatColor.RESET + "custom player head wow omg real");
+
+		GameProfile profile = new GameProfile(UUID.randomUUID(), null);
+		byte[] encodedData = Base64.getEncoder().encode(String.format("{textures:{SKIN:{url:\"%s\"}}}", texture).getBytes());
+		profile.getProperties().put("textures", new Property("textures", new String(encodedData)));
+		Field profileField = null;
+		try {
+			profileField = skullMeta.getClass().getDeclaredField("profile");
+		}
+		catch (NoSuchFieldException | SecurityException e) {
+			e.printStackTrace();
+		}
+		assert profileField != null;
+		profileField.setAccessible(true);
+		try {
+			profileField.set(skullMeta, profile);
+		}
+		catch (IllegalArgumentException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		skull.setItemMeta(skullMeta);
+		return skull;
 	}
 
 

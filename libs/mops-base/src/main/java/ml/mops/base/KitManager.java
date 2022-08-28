@@ -12,6 +12,9 @@ import java.util.Collections;
 import java.util.HashMap;
 
 public abstract class KitManager {
+
+
+
     public static Inventory createKit(String[] itemArray, HashMap<String, ItemStack> map) {
         Inventory inv = Bukkit.createInventory(null, 27, "placeholder name ignore");
 
@@ -29,13 +32,14 @@ public abstract class KitManager {
         HashMap<String, ItemStack> map = new HashMap<>();
         map.put("0", new ItemStack(Material.AIR));
 
-        map.put("phlog", MopsUtils.createItem(Material.NETHERITE_HOE, 1,  ChatColor.RED +"Phlogistinator"));
-        map.put("scorch", MopsUtils.createItem(Material.IRON_HORSE_ARMOR, 1, ChatColor.GRAY + "Scorch" + ChatColor.GOLD + "Shot"));
-        map.put("powerjack", MopsUtils.createItem(Material.NETHERITE_AXE, 1,  ChatColor.GRAY + "Powerjack"));
+        map.put("backburner", MopsUtils.createItem(Material.GOLDEN_HOE, 1,  ChatColor.RED + "Backburner", true));
+        map.put("scorch", MopsUtils.createItem(Material.IRON_HORSE_ARMOR, 1, ChatColor.GRAY + "Scorch" + ChatColor.GOLD + "Shot", true));
+        map.put("powerjack", MopsUtils.createItem(Material.NETHERITE_AXE, 1,  ChatColor.GRAY + "Powerjack", true));
 
-        map.put("pyrochest", MopsUtils.colorItem(MopsUtils.createItem(Material.LEATHER_CHESTPLATE, 1, ChatColor.RED + "Pyro Chestplate"), "#d14226"));
-        map.put("pyroleggings", MopsUtils.colorItem(MopsUtils.createItem(Material.LEATHER_LEGGINGS, 1, ChatColor.RED + "Pyro Leggings"), "#a64835"));
-        map.put("pyroboots", MopsUtils.colorItem(MopsUtils.createItem(Material.LEATHER_BOOTS, 1, ChatColor.RED + "Pyro Boots"), "#73392e"));
+        map.put("pyrohelmet", MopsUtils.renameItem(MopsUtils.createCustomHead("41735ca024b86e1ee5664b2bf3eaaaa8257701051c8517b88098209df9e84072"), ChatColor.DARK_GRAY + "Pyro's Gas Mask"));
+        map.put("pyrochest", MopsUtils.colorItem(MopsUtils.createItem(Material.LEATHER_CHESTPLATE, 1, ChatColor.RED + "Pyro Chestplate", true), "#d14226"));
+        map.put("pyroleggings", MopsUtils.colorItem(MopsUtils.createItem(Material.LEATHER_LEGGINGS, 1, ChatColor.RED + "Pyro Leggings", true), "#a64835"));
+        map.put("pyroboots", MopsUtils.colorItem(MopsUtils.createItem(Material.LEATHER_BOOTS, 1, ChatColor.RED + "Pyro Boots", true), "#73392e"));
 
         return map;
     }

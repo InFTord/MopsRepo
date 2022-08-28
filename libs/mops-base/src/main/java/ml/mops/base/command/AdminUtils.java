@@ -1,5 +1,6 @@
 package ml.mops.base.command;
 
+import ml.mops.base.Kit;
 import ml.mops.base.Value;
 import ml.mops.base.inventory.KitGUI;
 import ml.mops.utils.MopsUtils;
@@ -41,6 +42,12 @@ public class AdminUtils {
                         if(args[0].equals("kits")) {
                             KitGUI editor = new KitGUI();
                             editor.openInventory(player);
+                        }
+                        if(args[0].equals("givehead")) {
+                            player.getInventory().addItem(MopsUtils.createCustomHead(args[1]));
+                        }
+                        if(args[0].equals("accesskit")) {
+                            player.openInventory(Kit.valueOf(args[1]).getInventory());
                         }
                     } catch (ArrayIndexOutOfBoundsException event) {
                         player.sendMessage("ало ты какой то там эррей не написал");

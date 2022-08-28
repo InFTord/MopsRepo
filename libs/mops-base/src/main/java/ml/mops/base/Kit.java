@@ -40,4 +40,17 @@ public enum Kit {
         inv.setContents(inventory.getContents());
         this.inventory = inv;
     }
+
+    public String getName() {
+        return name;
+    }
+    public Material getShulker() {
+        return shulker;
+    }
+    public KitType getType() {
+        return type;
+    }
+    public Inventory getInventory() {
+        return inventory;
+    }
 }
