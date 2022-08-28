@@ -45,6 +45,7 @@ public class AdminUtils {
                         }
                         if(args[0].equals("givehead")) {
                             player.getInventory().addItem(MopsUtils.createCustomHead(args[1]));
+                            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
                         }
                         if(args[0].equals("accesskit")) {
                             player.openInventory(Kit.valueOf(args[1]).getInventory());

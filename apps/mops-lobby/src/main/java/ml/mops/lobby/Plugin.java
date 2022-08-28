@@ -36,6 +36,8 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
     public List<EntityPlayer> hubNPCs = new ArrayList<>();
 
+    EntityPlayer woolbattleNPC1;
+
     @Override
     public void onEnable() {
         Bukkit.getServer().getPluginManager().registerEvents(this, this);
@@ -43,6 +45,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
         EntityPlayer woolbattleNPC = MopsUtils.createNPC(new Location(mainworld, -70.500, 7, -180.500), ChatColor.YELLOW + "" + ChatColor.BOLD + "WoolBattle", "SirCat07");
         hubNPCs.add(woolbattleNPC);
+        woolbattleNPC1 = woolbattleNPC;
 
         Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
             for(Player player : Bukkit.getServer().getOnlinePlayers()) {
@@ -102,19 +105,14 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         }
 
         try {
-            if (event.getAction().isRightClick()) {
-                if (player.getItemInHand().getItemMeta().getDisplayName().equals(ChatColor.GOLD + "Cat Detector")) {
-                    if (player.getName().toLowerCase(Locale.ROOT).contains("cat")) {
-                        player.sendTitle("You are:", ChatColor.GREEN + "CAT", 40, 30, 20);
-                        player.playSound(player.getLocation(), Sound.ITEM_GOAT_HORN_SOUND_5, 1, 1);
-                    } else {
-                        player.sendTitle("You are:", ChatColor.RED + "NOT CAT", 40, 30, 20);
-                        player.playSound(player.getLocation(), Sound.ITEM_GOAT_HORN_SOUND_3, 1, 1);
-                    }
+            if(event.getAction().isRightClick()) {
+                if(MopsUtils.getLookingAt(player, woolbattleNPC1.getBukkitEntity())) {
+                    player.sendMessage("bebro444ka");
                 }
             }
         } catch (Exception ignored) { }
     }
+
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
