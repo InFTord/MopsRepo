@@ -104,13 +104,11 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             event.setCancelled(true);
         }
 
-        try {
-            if(event.getAction().isRightClick()) {
-                if(MopsUtils.getLookingAt(player, woolbattleNPC1.getBukkitEntity(), 3)) {
-                    player.sendMessage("bebro444ka");
-                }
+        if(event.getAction().isRightClick()) {
+            if(MopsUtils.getLookingAt(player, woolbattleNPC1.getBukkitEntity(), 3)) {
+                player.sendMessage("bebro444ka");
             }
-        } catch (Exception ignored) { }
+        }
     }
 
 

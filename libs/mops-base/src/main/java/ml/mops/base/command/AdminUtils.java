@@ -246,7 +246,9 @@ public class AdminUtils {
                             player.sendMessage(ChatColor.RED + "На предмете нет зачарований.");
                             player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 2);
                         } else {
-                            item.getEnchantments().keySet().clear();
+                            for(Enchantment ench : item.getEnchantments().keySet()) {
+                                item.removeEnchantment(ench);
+                            }
                             player.sendMessage(ChatColor.GREEN + "Вы стёрли зачарования предмета.");
                             player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
                         }

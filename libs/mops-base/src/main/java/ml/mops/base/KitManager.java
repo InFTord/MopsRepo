@@ -46,28 +46,4 @@ public abstract class KitManager {
 
         return map;
     }
-
-    public static HashMap<String, ItemStack> pyroMapping() {
-        HashMap<String, ItemStack> map = new HashMap<>();
-        map.put("0", new ItemStack(Material.AIR));
-
-        map.put("x", MopsUtils.createItem(Material.GOLDEN_HOE, 1,  ChatColor.RED + "Backburner", true));
-        map.put("y", MopsUtils.createItem(Material.IRON_HORSE_ARMOR, 1, ChatColor.GRAY + "Scorch" + ChatColor.GOLD + "Shot", true));
-
-        ItemStack powerjack = MopsUtils.createItem(Material.NETHERITE_AXE, 1,  ChatColor.GRAY + "Powerjack", true);
-        ItemMeta powermeta = powerjack.getItemMeta();
-        AttributeModifier modifier = new AttributeModifier(UUID.randomUUID(), "generic.movement_speed", 0.15, AttributeModifier.Operation.MULTIPLY_SCALAR_1, EquipmentSlot.HAND);
-        powermeta.addAttributeModifier(Attribute.GENERIC_MOVEMENT_SPEED, modifier);
-        powerjack.setItemMeta(powermeta);
-        map.put("z", powerjack);
-
-        ItemStack gasmask = MopsUtils.renameItem(MopsUtils.createCustomHead("41735ca024b86e1ee5664b2bf3eaaaa8257701051c8517b88098209df9e84072"), ChatColor.DARK_GRAY + "Gas Mask");
-        gasmask.addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 4, true);
-        map.put("a", gasmask);
-        map.put("b", MopsUtils.colorItem(MopsUtils.createItem(Material.LEATHER_CHESTPLATE, 1, ChatColor.RED + "Pyro Chestplate", true), "#d14226"));
-        map.put("c", MopsUtils.colorItem(MopsUtils.createItem(Material.LEATHER_LEGGINGS, 1, ChatColor.RED + "Pyro Leggings", true), "#a64835"));
-        map.put("d", MopsUtils.colorItem(MopsUtils.createItem(Material.LEATHER_BOOTS, 1, ChatColor.RED + "Pyro Boots", true), "#73392e"));
-
-        return map;
-    }
 }

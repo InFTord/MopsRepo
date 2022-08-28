@@ -23,8 +23,8 @@ public enum Kit {
     PALADIN("Paladin", MopsColor.YELLOW, KitType.BASE, KitManager.createKit(new String[] {"0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0"}, KitManager.baseMapping())),
     SAKURA("Sakura", MopsColor.PINK, KitType.BASE, KitManager.createKit(new String[] {"0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0"}, KitManager.baseMapping())),
 
-    PYRO("Pyro", MopsColor.RED, KitType.ADMIN_TEST_ONLY, KitManager.createKit(new String[] {"x 0 0 0 0 0 0 0 0", "y 0 0 0 a b c d 0", "z 0 0 0 0 0 0 0 0"}, KitManager.pyroMapping()));
 
+    PLACEHOLDERSHITIDKJUSTIGNORETHIS("PLACEHOLDERSHITIDKJUSTIGNORETHIS", MopsColor.PLAIN, KitType.ADMIN_TEST_ONLY, KitManager.createKit(new String[] {"0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0"}, KitManager.baseMapping()));
 
     final String name;
     final Material shulker;
@@ -53,4 +53,5 @@ public enum Kit {
     public Inventory getInventory() {
         return inventory;
     }
+
 }
