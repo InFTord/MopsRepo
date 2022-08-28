@@ -56,7 +56,7 @@ public abstract class KitManager {
 
         ItemStack powerjack = MopsUtils.createItem(Material.NETHERITE_AXE, 1,  ChatColor.GRAY + "Powerjack", true);
         ItemMeta powermeta = powerjack.getItemMeta();
-        AttributeModifier modifier = new AttributeModifier(UUID.randomUUID(), "generic.movement_speed", 15, AttributeModifier.Operation.MULTIPLY_SCALAR_1, EquipmentSlot.HAND);
+        AttributeModifier modifier = new AttributeModifier(UUID.randomUUID(), "generic.movement_speed", 0.15, AttributeModifier.Operation.MULTIPLY_SCALAR_1, EquipmentSlot.HAND);
         powermeta.addAttributeModifier(Attribute.GENERIC_MOVEMENT_SPEED, modifier);
         powerjack.setItemMeta(powermeta);
         map.put("z", powerjack);

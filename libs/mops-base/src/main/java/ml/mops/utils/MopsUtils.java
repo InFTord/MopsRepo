@@ -388,6 +388,18 @@ public class MopsUtils {
 		return dot > 0.99D;
 	}
 
+	static public boolean getLookingAt(Player player, LivingEntity livingEntity, int radius) {
+		if(player.getNearbyEntities(radius, radius, radius).contains(livingEntity)) {
+			Location eye = player.getEyeLocation();
+			Vector toEntity = livingEntity.getEyeLocation().toVector().subtract(eye.toVector());
+			double dot = toEntity.normalize().dot(eye.getDirection());
+
+			return dot > 0.99D;
+		} else {
+			return false;
+		}
+	}
+
 	static public Entity getEntityLookingAt(Player player) {
 		List<Entity> entities = new ArrayList<Entity>();
 		for (Entity entity : player.getNearbyEntities(30, 30, 30)) {
