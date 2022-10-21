@@ -32,7 +32,7 @@ jobs:
           cp apps/mops-lobby/target/*.jar staging
           cp libs/mops-base/target/*.jar staging
       - name: 'Upload .jar artefacts of plugin'
-        uses: actions/upload-artifact@v3.1.0
+        uses: actions/upload-artifact@v3.1.1
         with:
           name: Mops Plugins
           path: staging/
