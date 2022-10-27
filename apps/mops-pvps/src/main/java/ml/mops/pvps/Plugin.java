@@ -119,7 +119,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 	 */
 	@Override
 	public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
-		return Dependencies.getCommands().commandsExecutor(sender, command, label, args);
+		return Dependencies.getCommands().commandsExecutor(sender, command, label, this, args);
 	}
 
 }

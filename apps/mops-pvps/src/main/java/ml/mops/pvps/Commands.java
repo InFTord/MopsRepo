@@ -1,6 +1,6 @@
 package ml.mops.pvps;
 
-import ml.mops.pvps.commands.AdminUtils;
+import ml.mops.base.commands.AdminUtils;
 import ml.mops.pvps.commands.PlayerEssentials;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -13,11 +13,11 @@ import org.bukkit.command.CommandSender;
  
 public class Commands {
 	// Хандлер команд
-	public boolean commandsExecutor(CommandSender sender, Command command, String label, String[] args) {
-		if (new AdminUtils().commandsExecutor(sender, command, label, args)) {
+	public boolean commandsExecutor(CommandSender sender, Command command, String label, Plugin plugin, String[] args) {
+		if (new AdminUtils().executeCommands(sender, command, label, args, plugin)) {
 			return true;
 		} else {
-			return new PlayerEssentials().commandsExecutor(sender, command, label, args);
+			return new PlayerEssentials().commandsExecutor(sender, command, label, plugin, args);
 		}
 	}
 }

@@ -4,7 +4,7 @@ package ml.mops.lobby;
 //import club.minnced.discord.webhook.send.WebhookEmbed;
 //import club.minnced.discord.webhook.send.WebhookEmbedBuilder;
 //import club.minnced.discord.webhook.send.WebhookMessageBuilder;
-import ml.mops.base.command.Commands;
+import ml.mops.base.commands.Commands;
 import ml.mops.utils.MopsUtils;
 import net.minecraft.network.protocol.game.PacketPlayOutEntityHeadRotation;
 import net.minecraft.network.protocol.game.PacketPlayOutNamedEntitySpawn;
@@ -30,7 +30,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 

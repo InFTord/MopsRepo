@@ -1,4 +1,4 @@
-package ml.mops.base.command;
+package ml.mops.base.commands;
 
 import ml.mops.base.Kit;
 import ml.mops.base.Value;
