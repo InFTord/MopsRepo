@@ -27,7 +27,7 @@ jobs:
       - name: 'Install libs and build plugin for WoolBattle'
         run: mvn install --projects :mops-base,:wool-battle
       - name: 'Ахуеть как похуй блять какая нахуй разница ёбаный насрал'
-        run: rm apps/wool-battle/target/*-original.jar
+        run: rm apps/wool-battle/target/original-*.jar
       - name: 'Upload .jar artefact of plugin'
         uses: actions/upload-artifact@v3.1.1
         with:
