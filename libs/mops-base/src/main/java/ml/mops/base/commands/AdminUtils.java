@@ -3,6 +3,7 @@ package ml.mops.base.commands;
 import ml.mops.base.Kit;
 import ml.mops.base.Value;
 import ml.mops.base.inventory.KitGUI;
+import ml.mops.utils.MopsColor;
 import ml.mops.utils.MopsUtils;
 import org.bukkit.*;
 import org.bukkit.command.Command;
@@ -46,6 +47,9 @@ public class AdminUtils {
                         if(args[0].equals("givehead")) {
                             player.getInventory().addItem(MopsUtils.createCustomHead(args[1]));
                             player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
+                        }
+                        if(args[0].equals("lookingat")) {
+                            player.sendMessage(MopsUtils.getEntityLookingAt(player).getName());
                         }
                         if(args[0].equals("accesskit")) {
                             player.openInventory(Kit.valueOf(args[1]).getInventory());
@@ -300,6 +304,39 @@ public class AdminUtils {
                     }
                     return true;
                 }
+                case "colorcodes" -> {
+                    player.sendMessage(
+                            ChatColor.GRAY + "--------------------------- \n" +
+                            ChatColor.BLACK + "&0   " + ChatColor.DARK_BLUE + "&1   " + ChatColor.DARK_GREEN + "&2   " + ChatColor.DARK_AQUA + "&3 \n" +
+                            ChatColor.DARK_RED + "&4   " + ChatColor.DARK_PURPLE + "&5   " + ChatColor.GOLD + "&6   " + ChatColor.GRAY + "&7 \n" +
+                            ChatColor.DARK_GRAY + "&8   " + ChatColor.BLUE + "&9   " + ChatColor.GREEN + "&a   " + ChatColor.AQUA + "&b \n" +
+                            ChatColor.RED + "&c   " + ChatColor.LIGHT_PURPLE + "&e   " + ChatColor.YELLOW + "&a   " + ChatColor.WHITE + "&f \n" +
+                            MopsColor.BROWN.getColor() + "&g   " + MopsColor.PINK.getColor() + "&h \n" +
+                            ChatColor.GRAY + "--------------------------- \n" +
+                            ChatColor.RESET + "&k - " + ChatColor.MAGIC + "MopsPVPs" + ChatColor.RESET + "   " + "&l - " + ChatColor.BOLD + "MopsPVPs \n" +
+                            ChatColor.RESET + "&m - " + ChatColor.STRIKETHROUGH + "MopsPVPs" + ChatColor.RESET + "   " + "&n - " + ChatColor.UNDERLINE + "MopsPVPs \n" +
+                            ChatColor.RESET + "&o - " + ChatColor.ITALIC + "MopsPVPs" + ChatColor.RESET + "   " + "&r - очищает все эффекты \n" +
+                            ChatColor.GRAY + "---------------------------");
+                    return true;
+                }
+                case "deconstructlore" -> {
+                    try {
+                        ItemStack item = player.getInventory().getItemInMainHand();
+                        ItemMeta meta = item.getItemMeta();
+                        assert meta != null;
+                        if(meta.hasLore()) {
+                            List<String> lore = meta.getLore();
+                            assert lore != null;
+                            for(String loreString : lore) {
+                                player.getInventory().addItem(MopsUtils.createItem(item.getType(), loreString));
+                            }
+                        }
+                    } catch (NullPointerException event) {
+                        player.sendMessage(ChatColor.RED + "Вы не имеете предмета в руке!");
+                        player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 2);
+                    }
+                return true;
+                }
                 case "fly" -> {
                     if (player.getAllowFlight()) {
                         player.setAllowFlight(false);
@@ -384,7 +421,7 @@ public class AdminUtils {
 
             return false;
         } else if (sender instanceof Player player) {
-            player.sendMessage(ChatColor.RED + "У вас нет OP!");
+            player.sendMessage(ChatColor.RED + "You dont have the permission to use this!");
             player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 2);
         }
         return false;

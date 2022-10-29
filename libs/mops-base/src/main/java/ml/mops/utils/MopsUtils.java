@@ -209,8 +209,8 @@ public class MopsUtils {
 		string = string.replaceAll("&e", ChatColor.YELLOW + "");
 		string = string.replaceAll("&f", ChatColor.WHITE + "");
 
-		string = string.replaceAll("&g", net.md_5.bungee.api.ChatColor.of("#9e6841") + "");
-		string = string.replaceAll("&h", net.md_5.bungee.api.ChatColor.of("#ffadc6") + "");
+		string = string.replaceAll("&g", MopsColor.BROWN.color + "");
+		string = string.replaceAll("&h", MopsColor.PINK.color + "");
 
 		string = string.replaceAll("&k", ChatColor.MAGIC + "");
 		string = string.replaceAll("&l", ChatColor.BOLD + "");
@@ -307,9 +307,22 @@ public class MopsUtils {
 		return item;
 	}
 
-	static public ItemStack createItem(Material mat, int count, String name, boolean unbreakable) {
+	static public ItemStack createItem(Material mat, String name) {
+		ItemStack item = new ItemStack(mat, 1);
+		renameItem(item, name);
+		return item;
+	}
+
+	static public ItemStack createItem(Material mat, String name, int count) {
 		ItemStack item = new ItemStack(mat, count);
 		renameItem(item, name);
+		return item;
+	}
+
+	static public ItemStack createItem(Material mat, String name, int count, boolean unbreakable) {
+		ItemStack item = new ItemStack(mat, count);
+		renameItem(item, name);
+		item.setUnbreakable(unbreakable);
 		return item;
 	}
 
@@ -380,33 +393,31 @@ public class MopsUtils {
 	}
 
 
-	static public boolean getLookingAt(Player player, LivingEntity livingEntity) {
-		Location eye = player.getEyeLocation();
-		Vector toEntity = livingEntity.getEyeLocation().toVector().subtract(eye.toVector());
-		double dot = toEntity.normalize().dot(eye.getDirection());
+	static public boolean getLookingAt(Player player, Entity entity) {
+		Vector direction = player.getLocation().getDirection();
+		Vector toEntity = entity.getLocation().toVector().subtract(player.getLocation().toVector());
+		double dot = toEntity.normalize().dot(direction);
 
-		return dot > 0.99D;
+		return dot > 0.98D;
 	}
 
-	static public boolean getLookingAt(Player player, LivingEntity livingEntity, int radius) {
-		if(player.getNearbyEntities(radius, radius, radius).contains(livingEntity)) {
-			Location eye = player.getEyeLocation();
-			Vector toEntity = livingEntity.getEyeLocation().toVector().subtract(eye.toVector());
-			double dot = toEntity.normalize().dot(eye.getDirection());
+	static public boolean getLookingAt(Player player, Entity entity, int radius) {
+		if(player.getNearbyEntities(radius, radius, radius).contains(entity)) {
+			Vector direction = player.getLocation().getDirection();
+			Vector toEntity = entity.getLocation().toVector().subtract(player.getLocation().toVector());
+			double dot = toEntity.normalize().dot(direction);
 
-			return dot > 0.99D;
+			return dot > 0.98D;
 		} else {
 			return false;
 		}
 	}
 
 	static public Entity getEntityLookingAt(Player player) {
-		List<Entity> entities = new ArrayList<Entity>();
+		List<Entity> entities = new ArrayList<>();
 		for (Entity entity : player.getNearbyEntities(30, 30, 30)) {
-			if (entity instanceof LivingEntity) {
-				if (getLookingAt(player, (LivingEntity) entities)) {
-					entities.add(entity);
-				}
+			if (getLookingAt(player, entity)) {
+				entities.add(entity);
 			}
 		}
 
