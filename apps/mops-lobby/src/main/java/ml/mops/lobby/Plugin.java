@@ -105,10 +105,6 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     public void onInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
 
-        if(!player.getScoreboardTags().contains("admin")) {
-            event.setCancelled(true);
-        }
-
         if(event.getAction().isRightClick()) {
             if(MopsUtils.getLookingAt(player, woolbattleNPC1.getBukkitEntity(), 3)) {
                 player.sendMessage("я тебя кину в вулбатл");
@@ -122,6 +118,10 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 }
                 Bukkit.getPlayer(String.valueOf(player)).sendPluginMessage(this, "BungeeCord", b.toByteArray());
             }
+        }
+
+        if(!player.getScoreboardTags().contains("admin")) {
+            event.setCancelled(true);
         }
     }
 

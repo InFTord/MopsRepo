@@ -48,6 +48,9 @@ public class AdminUtils {
                             player.getInventory().addItem(MopsUtils.createCustomHead(args[1]));
                             player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
                         }
+                        if(args[0].equals("lookingat")) {
+                            player.sendMessage(MopsUtils.getEntityLookingAt(player).getName());
+                        }
                         if(args[0].equals("accesskit")) {
                             player.openInventory(Kit.valueOf(args[1]).getInventory());
                         }
@@ -303,15 +306,17 @@ public class AdminUtils {
                 }
                 case "colorcodes" -> {
                     player.sendMessage(
+                            ChatColor.GRAY + "--------------------------- \n" +
                             ChatColor.BLACK + "&0   " + ChatColor.DARK_BLUE + "&1   " + ChatColor.DARK_GREEN + "&2   " + ChatColor.DARK_AQUA + "&3 \n" +
                             ChatColor.DARK_RED + "&4   " + ChatColor.DARK_PURPLE + "&5   " + ChatColor.GOLD + "&6   " + ChatColor.GRAY + "&7 \n" +
                             ChatColor.DARK_GRAY + "&8   " + ChatColor.BLUE + "&9   " + ChatColor.GREEN + "&a   " + ChatColor.AQUA + "&b \n" +
                             ChatColor.RED + "&c   " + ChatColor.LIGHT_PURPLE + "&e   " + ChatColor.YELLOW + "&a   " + ChatColor.WHITE + "&f \n" +
-                            MopsColor.BROWN + "&g   " + MopsColor.PINK + "&h \n" +
+                            MopsColor.BROWN.getColor() + "&g   " + MopsColor.PINK.getColor() + "&h \n" +
                             ChatColor.GRAY + "--------------------------- \n" +
-                            ChatColor.RESET + "&k -" + ChatColor.MAGIC + "MopsPVPs" + "   " + ChatColor.RESET + "&l -" + ChatColor.BOLD + "MopsPVPs \n" +
-                            ChatColor.RESET + "&m -" + ChatColor.STRIKETHROUGH + "MopsPVPs" + "   " + ChatColor.RESET + "&n -" + ChatColor.UNDERLINE + "MopsPVPs \n" +
-                            ChatColor.RESET + "&o -" + ChatColor.ITALIC + "MopsPVPs" + "   " + ChatColor.RESET + "&r - очищает все эффекты");
+                            ChatColor.RESET + "&k - " + ChatColor.MAGIC + "MopsPVPs" + ChatColor.RESET + "   " + "&l - " + ChatColor.BOLD + "MopsPVPs \n" +
+                            ChatColor.RESET + "&m - " + ChatColor.STRIKETHROUGH + "MopsPVPs" + ChatColor.RESET + "   " + "&n - " + ChatColor.UNDERLINE + "MopsPVPs \n" +
+                            ChatColor.RESET + "&o - " + ChatColor.ITALIC + "MopsPVPs" + ChatColor.RESET + "   " + "&r - очищает все эффекты \n" +
+                            ChatColor.GRAY + "---------------------------");
                     return true;
                 }
                 case "deconstructlore" -> {
