@@ -25,7 +25,7 @@ jobs:
           distribution: 'zulu'
           cache: maven
       - name: 'Install libs and build plugin for WoolBattle'
-        run: mvn install --projects :mops-base,:wool-battle
+        run: mvn install --projects :mops-base,:wool-battle -X
       - name: 'Ахуеть как похуй блять какая нахуй разница ёбаный насрал'
         run: rm apps/wool-battle/target/original-*.jar
       - name: 'Upload .jar artefact of plugin'

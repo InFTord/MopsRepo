@@ -26,7 +26,7 @@ jobs:
           distribution: 'zulu'
           cache: maven
       - name: 'Install libs and build PVP'
-        run: mvn install --projects :mops-base,:mops-lobby
+        run: mvn -X install --projects :mops-base,:mops-lobby
       - name: 'Ахуеть как похуй блять какая нахуй разница ёбаный насрал'
         run: rm apps/mops-lobby/target/original-*.jar
       - name: 'Upload .jar artefact of plugin'

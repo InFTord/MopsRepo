@@ -41,5 +41,3 @@ install_build_tools() {
 git config --global --unset core.autocrlf
 java -jar ./scripts/build-tools/BuildTools.jar --rev $REVISION
 
-read -s -p "Press any key to resume ..."
-
