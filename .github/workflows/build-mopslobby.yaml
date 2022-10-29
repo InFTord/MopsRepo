@@ -25,6 +25,13 @@ jobs:
           java-version: '18'
           distribution: 'zulu'
           cache: maven
+      - name: Cache local Maven repository
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
       - name: 'Install libs and build PVP'
         run: mvn -X install --projects :mops-base,:mops-lobby
       - name: 'Ахуеть как похуй блять какая нахуй разница ёбаный насрал'
