@@ -398,7 +398,7 @@ public class MopsUtils {
 		Vector toEntity = entity.getLocation().toVector().subtract(player.getLocation().toVector());
 		double dot = toEntity.normalize().dot(direction);
 
-		return dot > 0.97D;
+		return dot > 0.98D;
 	}
 
 	static public boolean getLookingAt(Player player, Entity entity, int radius) {
@@ -407,7 +407,7 @@ public class MopsUtils {
 			Vector toEntity = entity.getLocation().toVector().subtract(player.getLocation().toVector());
 			double dot = toEntity.normalize().dot(direction);
 
-			return dot > 0.97D;
+			return dot > 0.98D;
 		} else {
 			return false;
 		}
