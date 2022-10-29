@@ -30,21 +30,19 @@ jobs:
         uses: actions/cache@v3
         with:
           path: libs/mops-base/scripts/work
-          key: ${{ runner.os }}-primes
+          key: ${{ runner.os }}-nms-1_19
           restore-keys: |
-            nps-${{ hashFiles('libs/mops-base/scripts/build-tools.sh') }}-${{ hashFiles('libs/mops-base/scripts/mvn-install-1_19.sh') }}
+            nps-${{ hashFiles('libs/mops-base/scripts/build-tools.sh') }}-${{ hashFiles('libs/mops-base/scripts/mvn-install-1_19.sh') }}-1_19
       - name: Restore Maven cache
         uses: skjolber/maven-cache-github-action@v1
         with:
           step: restore
       - name: SOS
+        if: steps.cache-nms.outputs.cache-hit != 'true'
         run: |
           cd ./libs/mops-base/scripts/
-          pwd
           ./mvn-install-1_19.sh
-          ls
           cd /
-          pwd
       - name: 'Install libs and build PVP'
         run: mvn -X install --projects :mops-base,:mops-lobby
       - name: 'Ахуеть как похуй блять какая нахуй разница ёбаный насрал'
