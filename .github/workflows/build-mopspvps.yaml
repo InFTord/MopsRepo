@@ -31,7 +31,7 @@ jobs:
           step: restore
       - name: 'Install libs and build PVP'
         run: mvn install -X --projects :mops-base,:mops-pvps
-      - name: 'Ахуеть как похуй блять какая нахуй разница ёбаный насрал'
+      - name: 'Remove unnecessary jar'
         run: rm apps/mops-pvps/target/original-*.jar
       - name: 'Upload .jar artefact of plugin'
         uses: actions/upload-artifact@v3.1.1

@@ -43,14 +43,14 @@ jobs:
           cd ./libs/mops-base/scripts/
           ./mvn-install-1_19.sh
           cd /
-      - name: 'Install libs and build PVP'
+      - name: 'Install libs and build Lobby'
         run: mvn -X install --projects :mops-base,:mops-lobby
-      - name: 'Ахуеть как похуй блять какая нахуй разница ёбаный насрал'
+      - name: 'Remove unnecessary jar'
         run: rm apps/mops-lobby/target/original-*.jar
       - name: 'Upload .jar artefact of plugin'
         uses: actions/upload-artifact@v3.1.1
         with:
-          name: MopsPVP Plugin JAR
+          name: Lobby Plugin JAR
           path: apps/mops-lobby/target/*.jar
       - name: Save Maven cache
         uses: skjolber/maven-cache-github-action@v1
