@@ -14,7 +14,7 @@ install_build_tools() {
 ⠀⠀⠀⡟⡾⣿⢿⢿⢵⣽⣾⣼⣘⢸⢸⣞⡟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠁⠇⠡⠩⡫⢿⣝⡻⡮⣒⢽⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 —————————————————————————————"
-  curl -o ./scripts/build-tools/BuildTools.jar https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar
+  curl -o ./build-tools/BuildTools.jar https://hub.spigotmc.org/jenkins/job/BuildTools/lastSuccessfulBuild/artifact/target/BuildTools.jar
 }
 
 if [ -z $REVISION ]
@@ -25,9 +25,9 @@ else
   echo "\$REVISION is set to $REVISION"
 fi
 
-if [ -e ./scripts/build-tools ]
+if [ -e ./build-tools ]
 then
-  if [ -e ./scripts/build-tools/BuildTools.jar ]
+  if [ -e ./build-tools/BuildTools.jar ]
   then
     echo "BuildTools.jar is already present"
   else
@@ -39,5 +39,5 @@ else
 fi
 
 git config --global --unset core.autocrlf
-java -jar ./scripts/build-tools/BuildTools.jar --rev $REVISION
+java -jar ./build-tools/BuildTools.jar --rev $REVISION
 
