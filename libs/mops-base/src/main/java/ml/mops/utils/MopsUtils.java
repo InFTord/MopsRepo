@@ -393,21 +393,21 @@ public class MopsUtils {
 	}
 
 
-	static public boolean getLookingAt(Player player, LivingEntity livingEntity) {
-		Location eye = player.getEyeLocation();
-		Vector toEntity = livingEntity.getEyeLocation().toVector().subtract(eye.toVector());
-		double dot = toEntity.normalize().dot(eye.getDirection());
+	static public boolean getLookingAt(Player player, Entity entity) {
+		Vector direction = player.getLocation().getDirection();
+		Vector toEntity = entity.getLocation().toVector().subtract(player.getLocation().toVector());
+		double dot = toEntity.normalize().dot(direction);
 
-		return dot > 0.99D;
+		return dot > 0.97D;
 	}
 
-	static public boolean getLookingAt(Player player, LivingEntity livingEntity, int radius) {
-		if(player.getNearbyEntities(radius, radius, radius).contains(livingEntity)) {
-			Location eye = player.getEyeLocation();
-			Vector toEntity = livingEntity.getEyeLocation().toVector().subtract(eye.toVector());
-			double dot = toEntity.normalize().dot(eye.getDirection());
+	static public boolean getLookingAt(Player player, Entity entity, int radius) {
+		if(player.getNearbyEntities(radius, radius, radius).contains(entity)) {
+			Vector direction = player.getLocation().getDirection();
+			Vector toEntity = entity.getLocation().toVector().subtract(player.getLocation().toVector());
+			double dot = toEntity.normalize().dot(direction);
 
-			return dot > 0.99D;
+			return dot > 0.97D;
 		} else {
 			return false;
 		}
@@ -416,10 +416,8 @@ public class MopsUtils {
 	static public Entity getEntityLookingAt(Player player) {
 		List<Entity> entities = new ArrayList<>();
 		for (Entity entity : player.getNearbyEntities(30, 30, 30)) {
-			if (entity instanceof LivingEntity) {
-				if (getLookingAt(player, (LivingEntity) entity)) {
-					entities.add(entity);
-				}
+			if (getLookingAt(player, entity)) {
+				entities.add(entity);
 			}
 		}
 
