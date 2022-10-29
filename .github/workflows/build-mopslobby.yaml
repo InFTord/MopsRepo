@@ -32,6 +32,8 @@ jobs:
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
             ${{ runner.os }}-maven-
+      - name: SOS
+        run: ./libs/mops-base/scripts/mvn-install-1_19.sh
       - name: 'Install libs and build PVP'
         run: mvn -X install --projects :mops-base,:mops-lobby
       - name: 'Ахуеть как похуй блять какая нахуй разница ёбаный насрал'

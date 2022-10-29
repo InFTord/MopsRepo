@@ -22,76 +22,41 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
 
-    <profiles>
-        <profile>
-            <id>windows</id>
-            <activation>
-                <os>
-                    <family>Windows</family>
-                </os>
-            </activation>
-            <properties>
-                <script.executor>powershell.exe</script.executor>
-                <script.to.execute>Get-Process | Sort CPU -descending | Select -first 5 -Property ID,ProcessName,CPU</script.to.execute>
-            </properties>
-        </profile>
-        <profile>
-            <id>unix</id>
-            <activation>
-                <os>
-                    <family>unix</family>
-                </os>
-            </activation>
-            <properties>
-                <script.executor>bash</script.executor>
-                <script.to.execute>${basedir}/scripts/nvn-install-1_19.sh</script.to.execute>
-            </properties>
-        </profile>
-        <profile>
-            <id>auto</id>
-            <activation>
-                <property>
-                    <name>!unsetDefaultProfile</name>
-                </property>
-            </activation>
-            <build>
-                <finalName>mops-base</finalName>
-                <plugins>
-                    <plugin>
-                        <groupId>org.codehaus.mojo</groupId>
-                        <artifactId>exec-maven-plugin</artifactId>
-                        <version>3.1.0</version>
-                        <executions>
-                            <execution>
-                                <id>minecraft_server</id>
-                                <phase>initialize</phase>
-                                <configuration>
-                                    <executable>${script.executor}</executable>
-                                    <commandlineArgs>${script.to.execute}</commandlineArgs>
-                                </configuration>
-                                <goals>
-                                    <goal>exec</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                        <configuration>
-                            <executable>${basedir}\scripts\mvn-install-1_19.sh</executable>
-                            <workingDirectory>${basedir}</workingDirectory>
-                        </configuration>
-                    </plugin>
-                    <plugin>
-                        <version>3.10.1</version>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-compiler-plugin</artifactId>
-                        <configuration>
-                            <source>18</source>
-                            <target>18</target>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
+<!--    <profiles>-->
+<!--        <profile>-->
+<!--            <id>windows</id>-->
+<!--            <activation>-->
+<!--                <os>-->
+<!--                    <family>Windows</family>-->
+<!--                </os>-->
+<!--            </activation>-->
+<!--            <properties>-->
+<!--                <script.executor>powershell.exe</script.executor>-->
+<!--                <script.to.execute>Get-Process | Sort CPU -descending | Select -first 5 -Property ID,ProcessName,CPU</script.to.execute>-->
+<!--            </properties>-->
+<!--        </profile>-->
+<!--        <profile>-->
+<!--            <id>unix</id>-->
+<!--            <activation>-->
+<!--                <os>-->
+<!--                    <family>unix</family>-->
+<!--                </os>-->
+<!--            </activation>-->
+<!--            <properties>-->
+<!--                <script.executor>bash</script.executor>-->
+<!--                <script.to.execute>${basedir}/scripts/nvn-install-1_19.sh</script.to.execute>-->
+<!--            </properties>-->
+<!--        </profile>-->
+<!--        <profile>-->
+<!--            <id>auto</id>-->
+<!--            <activation>-->
+<!--                <property>-->
+<!--                    <name>!unsetDefaultProfile</name>-->
+<!--                </property>-->
+<!--            </activation>-->
+
+<!--        </profile>-->
+<!--    </profiles>-->
 
     <repositories>
         <repository>
@@ -193,4 +158,40 @@
 
     </dependencies>
 
+    <build>
+        <finalName>mops-base</finalName>
+        <plugins>
+<!--            <plugin>-->
+<!--                <groupId>org.codehaus.mojo</groupId>-->
+<!--                <artifactId>exec-maven-plugin</artifactId>-->
+<!--                <version>3.1.0</version>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <id>minecraft_server</id>-->
+<!--                        <phase>initialize</phase>-->
+<!--                        <configuration>-->
+<!--                            <executable>${script.executor}</executable>-->
+<!--                            <commandlineArgs>${script.to.execute}</commandlineArgs>-->
+<!--                        </configuration>-->
+<!--                        <goals>-->
+<!--                            <goal>exec</goal>-->
+<!--                        </goals>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--                <configuration>-->
+<!--                    <executable>${basedir}\scripts\mvn-install-1_19.sh</executable>-->
+<!--                    <workingDirectory>${basedir}</workingDirectory>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
+            <plugin>
+                <version>3.10.1</version>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>18</source>
+                    <target>18</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
