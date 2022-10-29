@@ -25,13 +25,10 @@ jobs:
           java-version: '18'
           distribution: 'zulu'
           cache: maven
-      - name: Cache local Maven repository
-        uses: actions/cache@v3.0.11
+      - name: Restore Maven cache
+        uses: skjolber/maven-cache-github-action@v1
         with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
+          step: restore
       - name: SOS
         run: |
           cd ./libs/mops-base/scripts/
@@ -49,3 +46,7 @@ jobs:
         with:
           name: MopsPVP Plugin JAR
           path: apps/mops-lobby/target/*.jar
+      - name: Save Maven cache
+        uses: skjolber/maven-cache-github-action@v1
+        with:
+          step: save
