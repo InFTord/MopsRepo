@@ -18,6 +18,18 @@
 *.tar.gz
 *.rar
 
+# just ignore it #
+**/scripts/apache-maven-*
+**/scripts/build-tools
+**/scripts/BuildData
+**/scripts/Bukkit
+**/scripts/CraftBukkit
+**/scripts/Spigot
+**/scripts/work
+**/scripts/BuildTools.log.txt
+**/scripts/*.jar
+
 # i forgot what it is :skull: #
 *.DS_Store
+
 
