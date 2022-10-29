@@ -209,8 +209,8 @@ public class MopsUtils {
 		string = string.replaceAll("&e", ChatColor.YELLOW + "");
 		string = string.replaceAll("&f", ChatColor.WHITE + "");
 
-		string = string.replaceAll("&g", net.md_5.bungee.api.ChatColor.of("#9e6841") + "");
-		string = string.replaceAll("&h", net.md_5.bungee.api.ChatColor.of("#ffadc6") + "");
+		string = string.replaceAll("&g", MopsColor.BROWN.color + "");
+		string = string.replaceAll("&h", MopsColor.PINK.color + "");
 
 		string = string.replaceAll("&k", ChatColor.MAGIC + "");
 		string = string.replaceAll("&l", ChatColor.BOLD + "");
@@ -307,9 +307,22 @@ public class MopsUtils {
 		return item;
 	}
 
-	static public ItemStack createItem(Material mat, int count, String name, boolean unbreakable) {
+	static public ItemStack createItem(Material mat, String name) {
+		ItemStack item = new ItemStack(mat, 1);
+		renameItem(item, name);
+		return item;
+	}
+
+	static public ItemStack createItem(Material mat, String name, int count) {
 		ItemStack item = new ItemStack(mat, count);
 		renameItem(item, name);
+		return item;
+	}
+
+	static public ItemStack createItem(Material mat, String name, int count, boolean unbreakable) {
+		ItemStack item = new ItemStack(mat, count);
+		renameItem(item, name);
+		item.setUnbreakable(unbreakable);
 		return item;
 	}
 

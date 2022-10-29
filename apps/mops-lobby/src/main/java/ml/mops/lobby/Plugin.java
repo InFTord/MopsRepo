@@ -4,6 +4,8 @@ package ml.mops.lobby;
 //import club.minnced.discord.webhook.send.WebhookEmbed;
 //import club.minnced.discord.webhook.send.WebhookEmbedBuilder;
 //import club.minnced.discord.webhook.send.WebhookMessageBuilder;
+import com.google.common.io.ByteArrayDataOutput;
+import com.google.common.io.ByteStreams;
 import ml.mops.base.commands.Commands;
 import ml.mops.utils.MopsUtils;
 import net.minecraft.network.protocol.game.PacketPlayOutEntityHeadRotation;
@@ -29,6 +31,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scoreboard.Scoreboard;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -106,11 +111,19 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
         if(event.getAction().isRightClick()) {
             if(MopsUtils.getLookingAt(player, woolbattleNPC1.getBukkitEntity(), 3)) {
-                player.sendMessage("bebro444ka");
+                player.sendMessage("я тебя кину в вулбатл");
+                ByteArrayOutputStream b = new ByteArrayOutputStream();
+                DataOutputStream out = new DataOutputStream(b);
+                try {
+                    out.writeUTF("Connect");
+                    out.writeUTF("mopspvps");
+                } catch (IOException eee) {
+                    Bukkit.getLogger().info("You'll never see me!");
+                }
+                Bukkit.getPlayer(String.valueOf(player)).sendPluginMessage(this, "BungeeCord", b.toByteArray());
             }
         }
     }
-
 
 
     @EventHandler

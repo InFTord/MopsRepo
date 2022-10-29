@@ -74,3 +74,10 @@ commands:
   color:
     description: ""
     usage: "/color #11ccee"
+  colorcodes:
+    description: ""
+    usage: /colorcodes
+  deconstructlore:
+    description: ""
+    usage: /deconstructlore
+
