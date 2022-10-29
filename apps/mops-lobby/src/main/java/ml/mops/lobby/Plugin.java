@@ -18,7 +18,7 @@ import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-
+import org.bukkit.event.block.Action;
 import org.bukkit.craftbukkit.v1_19_R1.entity.CraftPlayer;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
@@ -106,7 +106,8 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     public void onInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
 
-        if(event.getAction().isRightClick()) {
+        Action action = event.getAction();
+        if(action.equals(Action.RIGHT_CLICK_AIR)) {
             if(MopsUtils.getLookingAt(player, woolbattleNPC1.getBukkitEntity().getPlayer(), 3)) {
                 player.sendMessage("я тебя кину в вулбатл");
                 ByteArrayOutputStream b = new ByteArrayOutputStream();
