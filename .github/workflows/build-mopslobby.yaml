@@ -25,6 +25,14 @@ jobs:
           java-version: '18'
           distribution: 'zulu'
           cache: maven
+      - name: Cache NMS
+        id: cache-nms
+        uses: actions/cache@v3
+        with:
+          path: libs/mops-base/scripts/work
+          key: ${{ runner.os }}-primes
+          restore-keys: |
+            nps-${{ hashFiles('libs/mops-base/scripts/build-tools.sh') }}-${{ hashFiles('libs/mops-base/scripts/mvn-install-1_19.sh') }}
       - name: Restore Maven cache
         uses: skjolber/maven-cache-github-action@v1
         with:

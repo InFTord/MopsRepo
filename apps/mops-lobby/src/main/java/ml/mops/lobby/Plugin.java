@@ -107,7 +107,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         Player player = event.getPlayer();
 
         Action action = event.getAction();
-        if(action.equals(Action.RIGHT_CLICK_AIR)) {
+        if(action.equals(Action.RIGHT_CLICK_AIR) || action.equals(Action.RIGHT_CLICK_BLOCK)) {
             if(MopsUtils.getLookingAt(player, woolbattleNPC1.getBukkitEntity().getPlayer(), 3)) {
                 player.sendMessage("я тебя кину в вулбатл");
                 ByteArrayOutputStream b = new ByteArrayOutputStream();

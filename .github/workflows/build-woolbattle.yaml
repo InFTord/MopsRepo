@@ -24,6 +24,10 @@ jobs:
           java-version: '18'
           distribution: 'zulu'
           cache: maven
+      - name: Restore Maven cache
+        uses: skjolber/maven-cache-github-action@v1
+        with:
+          step: restore
       - name: 'Install libs and build plugin for WoolBattle'
         run: mvn install --projects :mops-base,:wool-battle -X
       - name: 'Ахуеть как похуй блять какая нахуй разница ёбаный насрал'
@@ -33,3 +37,7 @@ jobs:
         with:
           name: WoolBattle Plugin JAR
           path: apps/wool-battle/target/*.jar
+      - name: Save Maven cache
+        uses: skjolber/maven-cache-github-action@v1
+        with:
+          step: save

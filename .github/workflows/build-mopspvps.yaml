@@ -25,6 +25,10 @@ jobs:
           java-version: '18'
           distribution: 'zulu'
           cache: maven
+      - name: Restore Maven cache
+        uses: skjolber/maven-cache-github-action@v1
+        with:
+          step: restore
       - name: 'Install libs and build PVP'
         run: mvn install -X --projects :mops-base,:mops-pvps
       - name: 'Ахуеть как похуй блять какая нахуй разница ёбаный насрал'
@@ -34,3 +38,7 @@ jobs:
         with:
           name: MopsPVP Plugin JAR
           path: apps/mops-pvps/target/*.jar
+      - name: Save Maven cache
+        uses: skjolber/maven-cache-github-action@v1
+        with:
+          step: save
