@@ -414,10 +414,10 @@ public class MopsUtils {
 	}
 
 	static public Entity getEntityLookingAt(Player player) {
-		List<Entity> entities = new ArrayList<Entity>();
+		List<Entity> entities = new ArrayList<>();
 		for (Entity entity : player.getNearbyEntities(30, 30, 30)) {
 			if (entity instanceof LivingEntity) {
-				if (getLookingAt(player, (LivingEntity) entities)) {
+				if (getLookingAt(player, (LivingEntity) entity)) {
 					entities.add(entity);
 				}
 			}
