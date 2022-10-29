@@ -26,14 +26,20 @@ jobs:
           distribution: 'zulu'
           cache: maven
       - name: Cache local Maven repository
-        uses: actions/cache@v2
+        uses: actions/cache@v3.0.11
         with:
           path: ~/.m2/repository
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
             ${{ runner.os }}-maven-
       - name: SOS
-        run: ./libs/mops-base/scripts/mvn-install-1_19.sh
+        run: |
+          chdir ./libs/mops-base/scripts/
+          pwd
+          ./mvn-install-1_19.sh
+          ls
+          chdir /
+          pwd
       - name: 'Install libs and build PVP'
         run: mvn -X install --projects :mops-base,:mops-lobby
       - name: 'Ахуеть как похуй блять какая нахуй разница ёбаный насрал'
