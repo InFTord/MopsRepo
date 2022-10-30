@@ -25,10 +25,13 @@ jobs:
           java-version: '18'
           distribution: 'zulu'
           cache: maven
-      - name: Restore Maven cache
-        uses: skjolber/maven-cache-github-action@v1
+      - name: Cache local Maven repository
+        uses: actions/cache@v2
         with:
-          step: restore
+           path: ~/.m2/repository
+           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
       - name: 'Install libs and build PVP'
         run: mvn install -X --projects :mops-base,:mops-pvps
       - name: 'Remove unnecessary jar'
@@ -38,7 +41,7 @@ jobs:
         with:
           name: MopsPVP Plugin JAR
           path: apps/mops-pvps/target/*.jar
-      - name: Save Maven cache
-        uses: skjolber/maven-cache-github-action@v1
-        with:
-          step: save
+#      - name: Save Maven cache
+#        uses: skjolber/maven-cache-github-action@v1
+#        with:
+#          step: save
