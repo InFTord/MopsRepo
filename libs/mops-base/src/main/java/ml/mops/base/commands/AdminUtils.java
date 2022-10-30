@@ -1,17 +1,21 @@
 package ml.mops.base.commands;
 
 import ml.mops.base.Kit;
+import ml.mops.base.KitManager;
+import ml.mops.base.KitType;
 import ml.mops.base.Value;
 import ml.mops.base.inventory.KitGUI;
 import ml.mops.utils.MopsColor;
 import ml.mops.utils.MopsUtils;
 import org.bukkit.*;
+import org.bukkit.block.ShulkerBox;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Slime;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
@@ -53,6 +57,13 @@ public class AdminUtils {
                         }
                         if(args[0].equals("accesskit")) {
                             player.openInventory(Kit.valueOf(args[1]).getInventory());
+                        }
+                        if(args[0].equals("createkit")) {
+                            ShulkerBox shulker = (ShulkerBox) player.getTargetBlock(100);
+                            assert shulker != null;
+                            Inventory inv = shulker.getInventory();
+
+                            player.sendMessage("несделано");
                         }
                     } catch (ArrayIndexOutOfBoundsException event) {
                         player.sendMessage("ало ты какой то там эррей не написал");
