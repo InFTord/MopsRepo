@@ -382,6 +382,11 @@ public class MopsUtils {
 		return skull;
 	}
 
+	public static String getHeadID(ItemStack skull) {
+		SkullMeta skullMeta = (SkullMeta)skull.getItemMeta();
+		return skullMeta.getAsString();
+	}
+
 	static public ItemStack createPotion(PotionEffectType type, int ticks, int level, Color color) {
 		ItemStack item = new ItemStack(Material.POTION);
 		PotionMeta meta = ((PotionMeta) item.getItemMeta());
