@@ -14,12 +14,16 @@ import net.kyori.adventure.title.Title;
 import org.bukkit.*;
 import org.bukkit.craftbukkit.v1_19_R1.CraftServer;
 import org.bukkit.craftbukkit.v1_19_R1.CraftWorld;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
+import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
@@ -261,24 +265,9 @@ public class MopsUtils {
 		return item;
 	}
 
-	static public ItemStack addLore(ItemStack item, String lore1, String lore2, String lore3) {
+	static public ItemStack addLore(ItemStack item, String[] lore) {
 		ItemMeta meta = item.getItemMeta();
-		List<String> lore = new ArrayList<>();
-		lore.add(lore1);
-		lore.add(lore2);
-		lore.add(lore3);
-		meta.setLore(lore);
-		item.setItemMeta(meta);
-
-		return item;
-	}
-
-	static public ItemStack addLore(ItemStack item, String lore1) {
-		ItemMeta meta = item.getItemMeta();
-		List<String> lore = item.getLore();
-		assert lore != null;
-		lore.add(lore1);
-		meta.setLore(lore);
+		meta.setLore(Arrays.asList(lore));
 		item.setItemMeta(meta);
 
 		return item;
@@ -326,6 +315,43 @@ public class MopsUtils {
 		return item;
 	}
 
+	static public ItemStack createItem(Material mat, String name, int count, String[] lore) {
+		ItemStack item = new ItemStack(mat, count);
+		renameItem(item, name);
+		addLore(item, lore);
+		return item;
+	}
+
+	static public ItemStack createItem(Material mat, String name, int count, String[] lore, boolean unbreakable) {
+		ItemStack item = new ItemStack(mat, count);
+		renameItem(item, name);
+		addLore(item, lore);
+		item.setUnbreakable(unbreakable);
+		return item;
+	}
+
+	static public String upperSquares(int repeat) {
+		int i = 0;
+		StringBuilder string = new StringBuilder();
+		while (i < repeat) {
+			string.append("▄");
+			i++;
+		}
+
+		return string.toString();
+	}
+
+	static public String bottomSquares(int repeat) {
+		int i = 0;
+		StringBuilder string = new StringBuilder();
+		while (i < repeat) {
+			string.append("▀");
+			i++;
+		}
+
+		return string.toString();
+	}
+
 	public static ItemStack createCustomHead(String texture) {
 		texture = "http://textures.minecraft.net/texture/" + texture;
 
@@ -356,7 +382,35 @@ public class MopsUtils {
 		return skull;
 	}
 
+	static public ItemStack createPotion(PotionEffectType type, int ticks, int level, Color color) {
+		ItemStack item = new ItemStack(Material.POTION);
+		PotionMeta meta = ((PotionMeta) item.getItemMeta());
+		meta.setColor(color);
+		meta.addCustomEffect(new PotionEffect(type, ticks, level), true);
+		item.setItemMeta(meta);
 
+		return item;
+	}
+
+	static public ItemStack createSplashPotion(PotionEffectType type, int ticks, int level, Color color) {
+		ItemStack item = new ItemStack(Material.SPLASH_POTION);
+		PotionMeta meta = ((PotionMeta) item.getItemMeta());
+		meta.setColor(color);
+		meta.addCustomEffect(new PotionEffect(type, ticks, level), true);
+		item.setItemMeta(meta);
+
+		return item;
+	}
+
+	static public ItemStack createLingeringPotion(PotionEffectType type, int ticks, int level, Color color) {
+		ItemStack item = new ItemStack(Material.LINGERING_POTION);
+		PotionMeta meta = ((PotionMeta) item.getItemMeta());
+		meta.setColor(color);
+		meta.addCustomEffect(new PotionEffect(type, ticks, level), true);
+		item.setItemMeta(meta);
+
+		return item;
+	}
 
 
 	static public EntityPlayer createNPC(Location location, String name, String skin) {
