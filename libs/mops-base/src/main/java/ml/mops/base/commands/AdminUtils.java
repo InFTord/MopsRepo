@@ -67,7 +67,9 @@ public class AdminUtils {
                         }
                         if(args[0].equals("getskullid")) {
                             ItemStack item = player.getItemInHand();
-                            player.sendMessage("https://mops.pvp/" + MopsUtils.getHeadID(item));
+                            String string = MopsUtils.getHeadID(item).replaceAll("=\"}]}}}", "");
+                            string = string.substring(0, string.indexOf('"')).replaceAll("\"", "").trim();
+                            player.sendMessage("https://mops.pvp/" + string);
                         }
                     } catch (ArrayIndexOutOfBoundsException event) {
                         player.sendMessage("ало ты какой то там эррей не написал");
