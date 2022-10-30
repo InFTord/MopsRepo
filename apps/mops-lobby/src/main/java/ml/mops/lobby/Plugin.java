@@ -39,18 +39,18 @@ import java.util.List;
 
 public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
-    public List<EntityPlayer> hubNPCs = new ArrayList<>();
-
-    EntityPlayer woolbattleNPC1;
+//    public List<EntityPlayer> hubNPCs = new ArrayList<>();
+//
+//    EntityPlayer woolbattleNPC1;
 
     @Override
     public void onEnable() {
         Bukkit.getServer().getPluginManager().registerEvents(this, this);
         World mainworld = Bukkit.getServer().getWorlds().get(0);
 
-        EntityPlayer woolbattleNPC = MopsUtils.createNPC(new Location(mainworld, -70.500, 7, -180.500), ChatColor.YELLOW + "" + ChatColor.BOLD + "WoolBattle", "SirCat07");
-        hubNPCs.add(woolbattleNPC);
-        woolbattleNPC1 = woolbattleNPC;
+//        EntityPlayer woolbattleNPC = MopsUtils.createNPC(new Location(mainworld, -70.500, 7, -180.500), ChatColor.YELLOW + "" + ChatColor.BOLD + "WoolBattle", "SirCat07");
+//        hubNPCs.add(woolbattleNPC);
+//        woolbattleNPC1 = woolbattleNPC;
 
         Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
             for(Player player : Bukkit.getServer().getOnlinePlayers()) {
@@ -107,9 +107,24 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         Player player = event.getPlayer();
 
         Action action = event.getAction();
-        if(action.equals(Action.RIGHT_CLICK_AIR) || action.equals(Action.RIGHT_CLICK_BLOCK)) {
-            if(MopsUtils.getLookingAt(player, woolbattleNPC1.getBukkitEntity().getPlayer(), 3)) {
-                player.sendMessage("я тебя кину в вулбатл");
+//        if(action.equals(Action.RIGHT_CLICK_AIR) || action.equals(Action.RIGHT_CLICK_BLOCK)) {
+//            if(MopsUtils.getLookingAt(player, woolbattleNPC1.getBukkitEntity().getPlayer(), 3)) {
+//                player.sendMessage("я тебя кину в вулбатл");
+//                ByteArrayOutputStream b = new ByteArrayOutputStream();
+//                DataOutputStream out = new DataOutputStream(b);
+//                try {
+//                    out.writeUTF("Connect");
+//                    out.writeUTF("mopspvps");
+//                } catch (IOException eee) {
+//                    Bukkit.getLogger().info("You'll never see me!");
+//                }
+//                Bukkit.getPlayer(String.valueOf(player)).sendPluginMessage(this, "BungeeCord", b.toByteArray());
+//            }
+//        }
+
+        if(action == Action.RIGHT_CLICK_BLOCK) {
+            if(event.getClickedBlock().getLocation().equals(new Location(player.getWorld(), -111, 9, -210))) {
+                player.sendMessage("вы отправляетесь в бразилию (мопс пвп)");
                 ByteArrayOutputStream b = new ByteArrayOutputStream();
                 DataOutputStream out = new DataOutputStream(b);
                 try {
@@ -131,11 +146,11 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
 
-        for(EntityPlayer NPC : hubNPCs) {
-            PlayerConnection connection = ((CraftPlayer) player).getHandle().b;
-            connection.a(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.a, NPC));
-            connection.a(new PacketPlayOutNamedEntitySpawn(NPC));
-            connection.a(new PacketPlayOutEntityHeadRotation(NPC, (byte) (NPC.getBukkitEntity().getLocation().getYaw() * 256 / 360)));
-        }
+//        for(EntityPlayer NPC : hubNPCs) {
+//            PlayerConnection connection = ((CraftPlayer) player).getHandle().b;
+//            connection.a(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.a, NPC));
+//            connection.a(new PacketPlayOutNamedEntitySpawn(NPC));
+//            connection.a(new PacketPlayOutEntityHeadRotation(NPC, (byte) (NPC.getBukkitEntity().getLocation().getYaw() * 256 / 360)));
+//        }
     }
 }
