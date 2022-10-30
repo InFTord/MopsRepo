@@ -16,7 +16,7 @@ public enum Kit {
     NECROMANCER("Necromancer", MopsColor.MAGENTA, KitType.BASE, KitManager.createKit(new String[] {"0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0"}, KitManager.baseMapping())),
     SCIENTIST("Mad Scientist", MopsColor.LIME, KitType.BASE, KitManager.createKit(new String[] {"0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0"}, KitManager.baseMapping())),
     HEALER("Healer", MopsColor.WHITE, KitType.BASE, KitManager.createKit(new String[] {"0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0"}, KitManager.baseMapping())),
-    BEAR("Ice Bear", MopsColor.CYAN, KitType.BASE, KitManager.createKit(new String[] {"b b 0 0 0 0 0 b b", "b bo l 0 s 0 c h b", "b p 0 0 0 0 0 b p"}, KitManager.kitSpecificMapping("bear"))),
+    BEAR("Ice Bear", MopsColor.CYAN, KitType.BASE, KitManager.createKit(new String[] {"b b 0 0 0 0 0 b b", "b bo l 0 s 0 c h b", "b p 0 0 0 0 0 p b"}, KitManager.kitSpecificMapping("bear"))),
     PUG( "Pug", MopsColor.BROWN, KitType.BASE, KitManager.createKit(new String[] {"0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0"}, KitManager.baseMapping())),
     ARCHER("Archer", MopsColor.GREEN, KitType.BASE, KitManager.createKit(new String[] {"0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0"}, KitManager.baseMapping())),
     WEREWOLF("Werewolf", MopsColor.DARK_GRAY, KitType.BASE, KitManager.createKit(new String[] {"0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0"}, KitManager.baseMapping())),
