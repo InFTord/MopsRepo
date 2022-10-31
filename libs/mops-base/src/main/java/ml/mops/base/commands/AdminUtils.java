@@ -327,7 +327,7 @@ public class AdminUtils {
                             ChatColor.BLACK + "&0   " + ChatColor.DARK_BLUE + "&1   " + ChatColor.DARK_GREEN + "&2   " + ChatColor.DARK_AQUA + "&3 \n" +
                             ChatColor.DARK_RED + "&4   " + ChatColor.DARK_PURPLE + "&5   " + ChatColor.GOLD + "&6   " + ChatColor.GRAY + "&7 \n" +
                             ChatColor.DARK_GRAY + "&8   " + ChatColor.BLUE + "&9   " + ChatColor.GREEN + "&a   " + ChatColor.AQUA + "&b \n" +
-                            ChatColor.RED + "&c   " + ChatColor.LIGHT_PURPLE + "&e   " + ChatColor.YELLOW + "&a   " + ChatColor.WHITE + "&f \n" +
+                            ChatColor.RED + "&c   " + ChatColor.LIGHT_PURPLE + "&d   " + ChatColor.YELLOW + "&e   " + ChatColor.WHITE + "&f \n" +
                             MopsColor.BROWN.getColor() + "&g   " + MopsColor.PINK.getColor() + "&h \n" +
                             ChatColor.GRAY + "--------------------------- \n" +
                             ChatColor.RESET + "&k - " + ChatColor.MAGIC + "MopsPVPs" + ChatColor.RESET + "   " + "&l - " + ChatColor.BOLD + "MopsPVPs \n" +
