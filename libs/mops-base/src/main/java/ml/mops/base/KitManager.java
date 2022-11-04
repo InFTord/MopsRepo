@@ -62,17 +62,17 @@ public abstract class KitManager {
 
                 ItemStack chestplate = MopsUtils.createItem(Material.CHAINMAIL_CHESTPLATE, ChatColor.AQUA + "Ice Bear's Chestplate");
                 chestplate.addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 1, true);
-                map.put("c", chestplate);
+                map.put("c", MopsUtils.unbreak(chestplate));
 
                 ItemStack leggings = MopsUtils.createItem(Material.CHAINMAIL_LEGGINGS, ChatColor.AQUA + "Ice Bear's Leggings", 1, new String[] {ChatColor.GRAY + "Protect you from knockback."});
                 leggings.addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 8, true);
-                map.put("l", leggings);
+                map.put("l", MopsUtils.unbreak(leggings));
 
                 ItemStack boots = MopsUtils.createItem(Material.DIAMOND_BOOTS, ChatColor.AQUA + "Icy Boots");
                 boots.addEnchant(Enchantment.PROTECTION_FALL, 5, true);
                 boots.addEnchant(Enchantment.FROST_WALKER, 1, true);
                 boots.addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 2, true);
-                map.put("bo", boots);
+                map.put("bo", MopsUtils.unbreak(boots));
 
                 ItemStack potion = MopsUtils.createSplashPotion(PotionEffectType.SPEED, 1800, 2, Color.AQUA);
                 MopsUtils.renameItem(potion, ChatColor.AQUA + "Splash Potion of Speed (1:30)");
