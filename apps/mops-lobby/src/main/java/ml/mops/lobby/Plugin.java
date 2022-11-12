@@ -59,6 +59,18 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             }
         }, 10L, 10L);
 
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
+            for(Entity entity : Bukkit.getServer().getWorlds().get(0).getEntities()) {
+                if(entity.getScoreboardTags().contains("afireparticle")) {
+                    entity.getWorld().spawnParticle(Particle.FLAME, entity.getLocation(), 1, 0.01, 0.01, 0.01, 0.01);
+
+                    for(Entity nearEntities : entity.getNearbyEntities(1, 1, 1)) {
+                        nearEntities.setFireTicks(nearEntities.getFireTicks() + 6);
+                    }
+                }
+            }
+        }, 4L, 4L);
+
     }
 
 
@@ -107,20 +119,23 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         Player player = event.getPlayer();
 
         Action action = event.getAction();
-//        if(action.equals(Action.RIGHT_CLICK_AIR) || action.equals(Action.RIGHT_CLICK_BLOCK)) {
-//            if(MopsUtils.getLookingAt(player, woolbattleNPC1.getBukkitEntity().getPlayer(), 3)) {
-//                player.sendMessage("я тебя кину в вулбатл");
-//                ByteArrayOutputStream b = new ByteArrayOutputStream();
-//                DataOutputStream out = new DataOutputStream(b);
-//                try {
-//                    out.writeUTF("Connect");
-//                    out.writeUTF("mopspvps");
-//                } catch (IOException eee) {
-//                    Bukkit.getLogger().info("You'll never see me!");
-//                }
-//                Bukkit.getPlayer(String.valueOf(player)).sendPluginMessage(this, "BungeeCord", b.toByteArray());
-//            }
-//        }
+
+        if(action.equals(Action.RIGHT_CLICK_AIR) || action.equals(Action.RIGHT_CLICK_BLOCK)) {
+            if(player.getItemInHand().getItemMeta().getDisplayName().contains("flamethrower")) {
+                ArmorStand fireparticle = (ArmorStand) player.getWorld().spawnEntity(player.getEyeLocation(), EntityType.ARMOR_STAND);
+                fireparticle.setSmall(true);
+                fireparticle.setInvisible(true);
+                fireparticle.setMarker(true);
+                fireparticle.setInvulnerable(true);
+                fireparticle.setGravity(false);
+                fireparticle.addScoreboardTag("afireparticle");
+                fireparticle.setVelocity(player.getEyeLocation().getDirection());
+
+                Bukkit.getScheduler().runTaskLater(this, () -> {
+                    fireparticle.getLocation().add(0, -1000, 0);
+                }, 40L);
+            }
+        }
 
         if(action == Action.RIGHT_CLICK_BLOCK) {
             if(event.getClickedBlock().getLocation().equals(new Location(player.getWorld(), -111, 9, -210))) {
