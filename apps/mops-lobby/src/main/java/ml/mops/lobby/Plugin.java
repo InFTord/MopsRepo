@@ -126,26 +126,13 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
         if(action.equals(Action.RIGHT_CLICK_AIR) || action.equals(Action.RIGHT_CLICK_BLOCK)) {
             if(player.getItemInHand().getItemMeta().getDisplayName().contains("flamethrower")) {
-                ArmorStand fireparticle = (ArmorStand) player.getWorld().spawnEntity(player.getEyeLocation(), EntityType.ARMOR_STAND);
-                fireparticle.setSmall(true);
-                fireparticle.setInvisible(true);
-                fireparticle.setInvulnerable(true);
-                fireparticle.addScoreboardTag("afireparticle");
-
-                double randomX = ThreadLocalRandom.current().nextDouble(-0.02, 0.02 + 1);
-                double randomY = ThreadLocalRandom.current().nextDouble(-0.02, 0.02 + 1);
-                double randomZ = ThreadLocalRandom.current().nextDouble(-0.02, 0.02 + 1);
-
-                fireparticle.setVelocity(player.getEyeLocation().getDirection().multiply(0.4).add(new Vector(0, 0.4, 0)).add(new Vector(randomX, randomY, randomZ)));
-
+                temporarySummonFire(player);
                 Bukkit.getScheduler().runTaskLater(this, () -> {
-                    fireparticle.setMarker(true);
-                    fireparticle.setGravity(false);
-                }, 20L);
-
-                Bukkit.getScheduler().runTaskLater(this, () -> {
-                    fireparticle.teleport(new Location(fireparticle.getWorld(), 0, 1000, 0));
-                }, 40L);
+                    temporarySummonFire(player);
+                    Bukkit.getScheduler().runTaskLater(this, () -> {
+                        temporarySummonFire(player);
+                    }, 8L);
+                }, 8L);
             }
         }
 
@@ -179,5 +166,28 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 //            connection.a(new PacketPlayOutNamedEntitySpawn(NPC));
 //            connection.a(new PacketPlayOutEntityHeadRotation(NPC, (byte) (NPC.getBukkitEntity().getLocation().getYaw() * 256 / 360)));
 //        }
+    }
+
+    public void temporarySummonFire(Player player) {
+        ArmorStand fireparticle = (ArmorStand) player.getWorld().spawnEntity(player.getEyeLocation(), EntityType.ARMOR_STAND);
+        fireparticle.setSmall(true);
+        fireparticle.setInvisible(true);
+        fireparticle.setInvulnerable(true);
+        fireparticle.addScoreboardTag("afireparticle");
+
+        double randomX = ThreadLocalRandom.current().nextDouble(-0.02, 0.02 + 1);
+        double randomY = ThreadLocalRandom.current().nextDouble(-0.02, 0.02 + 1);
+        double randomZ = ThreadLocalRandom.current().nextDouble(-0.02, 0.02 + 1);
+
+        fireparticle.setVelocity(player.getEyeLocation().getDirection().multiply(0.4).add(new Vector(0, 0.4, 0)).add(new Vector(randomX, randomY, randomZ)));
+
+        Bukkit.getScheduler().runTaskLater(this, () -> {
+            fireparticle.setMarker(true);
+            fireparticle.setGravity(false);
+        }, 20L);
+
+        Bukkit.getScheduler().runTaskLater(this, () -> {
+            fireparticle.teleport(new Location(fireparticle.getWorld(), 0, 1000, 0));
+        }, 40L);
     }
 }
