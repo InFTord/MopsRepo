@@ -126,10 +126,14 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 ArmorStand fireparticle = (ArmorStand) player.getWorld().spawnEntity(player.getEyeLocation(), EntityType.ARMOR_STAND);
                 fireparticle.setSmall(true);
                 fireparticle.setInvisible(true);
-                fireparticle.setMarker(true);
                 fireparticle.setInvulnerable(true);
                 fireparticle.addScoreboardTag("afireparticle");
                 fireparticle.setVelocity(player.getEyeLocation().getDirection().multiply(0.5).add(new Vector(0, 0.1, 0)));
+
+                Bukkit.getScheduler().runTaskLater(this, () -> {
+                    fireparticle.setMarker(true);
+                    fireparticle.setGravity(false);
+                }, 20L);
 
                 Bukkit.getScheduler().runTaskLater(this, () -> {
                     fireparticle.teleport(new Location(fireparticle.getWorld(), 0, 1000, 0));
