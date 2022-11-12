@@ -132,8 +132,8 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                     temporarySummonFire(player);
                     Bukkit.getScheduler().runTaskLater(this, () -> {
                         temporarySummonFire(player);
-                    }, 8L);
-                }, 8L);
+                    }, 2L);
+                }, 2L);
             }
         }
 
@@ -182,7 +182,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         Random random3 = new Random();
         double randomZ = -0.0012 + (0.0006 - -0.0012) * random3.nextDouble();
 
-        fireparticle.setVelocity(player.getEyeLocation().getDirection().multiply(0.3).add(new Vector(0, 0.2, 0)).add(new Vector(randomX, 0, randomZ)));
+        fireparticle.setVelocity(player.getEyeLocation().getDirection().multiply(0.4).add(new Vector(0, 0.2, 0)).add(new Vector(randomX, 0, randomZ)));
 
         Bukkit.getScheduler().runTaskLater(this, () -> {
             fireparticle.setGravity(false);
