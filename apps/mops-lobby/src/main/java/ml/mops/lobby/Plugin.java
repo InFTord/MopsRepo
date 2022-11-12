@@ -62,19 +62,19 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             }
         }, 10L, 10L);
 
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
-            for(Entity entity : Bukkit.getServer().getWorlds().get(0).getEntities()) {
-                if(entity.getScoreboardTags().contains("afireparticle")) {
-                    entity.getWorld().spawnParticle(Particle.FLAME, entity.getLocation(), 2, 0.01, 0.01, 0.01, 0.01);
-
-                    for(Entity nearEntities : entity.getNearbyEntities(2, 2, 2)) {
-                        if(!nearEntities.getScoreboardTags().contains("afireparticle")) {
-                            nearEntities.setFireTicks(nearEntities.getFireTicks() + 10);
-                        }
-                    }
-                }
-            }
-        }, 0L, 2L);
+//        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
+//            for(Entity entity : Bukkit.getServer().getWorlds().get(0).getEntities()) {
+//                if(entity.getScoreboardTags().contains("afireparticle")) {
+//                    entity.getWorld().spawnParticle(Particle.FLAME, entity.getLocation(), 2, 0.01, 0.01, 0.01, 0.01);
+//
+//                    for(Entity nearEntities : entity.getNearbyEntities(2, 2, 2)) {
+//                        if(!nearEntities.getScoreboardTags().contains("afireparticle")) {
+//                            nearEntities.setFireTicks(nearEntities.getFireTicks() + 10);
+//                        }
+//                    }
+//                }
+//            }
+//        }, 0L, 2L);
 
     }
 
@@ -125,17 +125,17 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
         Action action = event.getAction();
 
-        if(action.equals(Action.RIGHT_CLICK_AIR) || action.equals(Action.RIGHT_CLICK_BLOCK)) {
-            if(player.getItemInHand().getItemMeta().getDisplayName().contains("flamethrower")) {
-                temporarySummonFire(player);
-                Bukkit.getScheduler().runTaskLater(this, () -> {
-                    temporarySummonFire(player);
-                    Bukkit.getScheduler().runTaskLater(this, () -> {
-                        temporarySummonFire(player);
-                    }, 2L);
-                }, 2L);
-            }
-        }
+//        if(action.equals(Action.RIGHT_CLICK_AIR) || action.equals(Action.RIGHT_CLICK_BLOCK)) {
+//            if(player.getItemInHand().getItemMeta().getDisplayName().contains("flamethrower")) {
+//                temporarySummonFire(player);
+//                Bukkit.getScheduler().runTaskLater(this, () -> {
+//                    temporarySummonFire(player);
+//                    Bukkit.getScheduler().runTaskLater(this, () -> {
+//                        temporarySummonFire(player);
+//                    }, 2L);
+//                }, 2L);
+//            }
+//        }
 
         if(action == Action.RIGHT_CLICK_BLOCK) {
             if(event.getClickedBlock().getLocation().equals(new Location(player.getWorld(), -111, 9, -210))) {
@@ -169,27 +169,27 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 //        }
     }
 
-    public void temporarySummonFire(Player player) {
-        ArmorStand fireparticle = (ArmorStand) player.getWorld().spawnEntity(player.getEyeLocation(), EntityType.ARMOR_STAND);
-        fireparticle.setSmall(true);
-        fireparticle.setInvisible(true);
-        fireparticle.setInvulnerable(true);
-        fireparticle.addScoreboardTag("afireparticle");
-
-        Random random = new Random();
-        double randomX = -0.005 + (0.01 - -0.005) * random.nextDouble();
-        Random random2 = new Random();
-        double randomZ = -0.005 + (0.01 - -0.005) * random2.nextDouble();
-
-        fireparticle.setVelocity(player.getEyeLocation().getDirection().multiply(0.4).add(new Vector(0, 0.4, 0)).add(new Vector(randomX, 0, randomZ)));
-
-        Bukkit.getScheduler().runTaskLater(this, () -> {
-            fireparticle.setGravity(false);
-            fireparticle.setMarker(true);
-        }, 20L);
-
-        Bukkit.getScheduler().runTaskLater(this, () -> {
-            fireparticle.teleport(new Location(fireparticle.getWorld(), 0, 1000, 0));
-        }, 40L);
-    }
+//    public void temporarySummonFire(Player player) {
+//        ArmorStand fireparticle = (ArmorStand) player.getWorld().spawnEntity(player.getEyeLocation(), EntityType.ARMOR_STAND);
+//        fireparticle.setSmall(true);
+//        fireparticle.setInvisible(true);
+//        fireparticle.setInvulnerable(true);
+//        fireparticle.addScoreboardTag("afireparticle");
+//
+//        Random random = new Random();
+//        double randomX = -0.005 + (0.01 - -0.005) * random.nextDouble();
+//        Random random2 = new Random();
+//        double randomZ = -0.005 + (0.01 - -0.005) * random2.nextDouble();
+//
+//        fireparticle.setVelocity(player.getEyeLocation().getDirection().multiply(0.4).add(new Vector(0, 0.4, 0)).add(new Vector(randomX, 0, randomZ)));
+//
+//        Bukkit.getScheduler().runTaskLater(this, () -> {
+//            fireparticle.setGravity(false);
+//            fireparticle.setMarker(true);
+//        }, 20L);
+//
+//        Bukkit.getScheduler().runTaskLater(this, () -> {
+//            fireparticle.teleport(new Location(fireparticle.getWorld(), 0, 1000, 0));
+//        }, 40L);
+//    }
 }
