@@ -171,21 +171,21 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
     public void temporarySummonFire(Player player) {
         ArmorStand fireparticle = (ArmorStand) player.getWorld().spawnEntity(player.getEyeLocation(), EntityType.ARMOR_STAND);
-        fireparticle.setMarker(true);
         fireparticle.setSmall(true);
         fireparticle.setInvisible(true);
         fireparticle.setInvulnerable(true);
         fireparticle.addScoreboardTag("afireparticle");
 
         Random random = new Random();
-        double randomX = -0.002 + (0.002 - -0.002) * random.nextDouble();
+        double randomX = -0.0005 + (0.001 - -0.0005) * random.nextDouble();
         Random random2 = new Random();
-        double randomZ = -0.002 + (0.002 - -0.002) * random2.nextDouble();
+        double randomZ = -0.0005 + (0.001 - -0.0005) * random2.nextDouble();
 
         fireparticle.setVelocity(player.getEyeLocation().getDirection().multiply(0.3).add(new Vector(0, 0.2, 0)).add(new Vector(randomX, 0, randomZ)));
 
         Bukkit.getScheduler().runTaskLater(this, () -> {
             fireparticle.setGravity(false);
+            fireparticle.setMarker(true);
         }, 20L);
 
         Bukkit.getScheduler().runTaskLater(this, () -> {
