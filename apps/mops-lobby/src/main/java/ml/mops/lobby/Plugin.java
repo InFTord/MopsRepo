@@ -65,16 +65,16 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
             for(Entity entity : Bukkit.getServer().getWorlds().get(0).getEntities()) {
                 if(entity.getScoreboardTags().contains("afireparticle")) {
-                    entity.getWorld().spawnParticle(Particle.FLAME, entity.getLocation(), 1, 0.01, 0.01, 0.01, 0.01);
+                    entity.getWorld().spawnParticle(Particle.FLAME, entity.getLocation(), 2, 0.01, 0.01, 0.01, 0.01);
 
-                    for(Entity nearEntities : entity.getNearbyEntities(1, 1, 1)) {
+                    for(Entity nearEntities : entity.getNearbyEntities(2, 2, 2)) {
                         if(!nearEntities.getScoreboardTags().contains("afireparticle")) {
                             nearEntities.setFireTicks(nearEntities.getFireTicks() + 10);
                         }
                     }
                 }
             }
-        }, 0L, 1L);
+        }, 0L, 2L);
 
     }
 
