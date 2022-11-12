@@ -37,6 +37,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
@@ -170,19 +171,22 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
     public void temporarySummonFire(Player player) {
         ArmorStand fireparticle = (ArmorStand) player.getWorld().spawnEntity(player.getEyeLocation(), EntityType.ARMOR_STAND);
+        fireparticle.setMarker(true);
         fireparticle.setSmall(true);
         fireparticle.setInvisible(true);
         fireparticle.setInvulnerable(true);
         fireparticle.addScoreboardTag("afireparticle");
 
-        double randomX = ThreadLocalRandom.current().nextDouble(-0.02, 0.02 + 1);
-        double randomY = ThreadLocalRandom.current().nextDouble(-0.02, 0.02 + 1);
-        double randomZ = ThreadLocalRandom.current().nextDouble(-0.02, 0.02 + 1);
+        Random random = new Random();
+        double randomX = -0.02 + (0.02 - -0.02) * random.nextDouble();
+        Random random2 = new Random();
+        double randomY = -0.02 + (0.02 - -0.02) * random2.nextDouble();
+        Random random3 = new Random();
+        double randomZ = -0.02 + (0.02 - -0.02) * random3.nextDouble();
 
         fireparticle.setVelocity(player.getEyeLocation().getDirection().multiply(0.4).add(new Vector(0, 0.4, 0)).add(new Vector(randomX, randomY, randomZ)));
 
         Bukkit.getScheduler().runTaskLater(this, () -> {
-            fireparticle.setMarker(true);
             fireparticle.setGravity(false);
         }, 20L);
 
