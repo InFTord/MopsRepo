@@ -66,11 +66,13 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                     entity.getWorld().spawnParticle(Particle.FLAME, entity.getLocation(), 1, 0.01, 0.01, 0.01, 0.01);
 
                     for(Entity nearEntities : entity.getNearbyEntities(1, 1, 1)) {
-                        nearEntities.setFireTicks(nearEntities.getFireTicks() + 12);
+                        if(!nearEntities.getScoreboardTags().contains("afireparticle")) {
+                            nearEntities.setFireTicks(nearEntities.getFireTicks() + 10);
+                        }
                     }
                 }
             }
-        }, 4L, 4L);
+        }, 0L, 1L);
 
     }
 
@@ -128,7 +130,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 fireparticle.setInvisible(true);
                 fireparticle.setInvulnerable(true);
                 fireparticle.addScoreboardTag("afireparticle");
-                fireparticle.setVelocity(player.getEyeLocation().getDirection().multiply(0.5).add(new Vector(0, 0.1, 0)));
+                fireparticle.setVelocity(player.getEyeLocation().getDirection().multiply(0.4).add(new Vector(0, 0.8, 0)));
 
                 Bukkit.getScheduler().runTaskLater(this, () -> {
                     fireparticle.setMarker(true);
