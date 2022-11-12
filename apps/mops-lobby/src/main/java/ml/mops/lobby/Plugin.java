@@ -37,6 +37,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
@@ -130,7 +131,12 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 fireparticle.setInvisible(true);
                 fireparticle.setInvulnerable(true);
                 fireparticle.addScoreboardTag("afireparticle");
-                fireparticle.setVelocity(player.getEyeLocation().getDirection().multiply(0.4).add(new Vector(0, 0.8, 0)));
+
+                double randomX = ThreadLocalRandom.current().nextDouble(-0.2, 0.2 + 1);
+                double randomY = ThreadLocalRandom.current().nextDouble(-0.2, 0.2 + 1);
+                double randomZ = ThreadLocalRandom.current().nextDouble(-0.2, 0.2 + 1);
+
+                fireparticle.setVelocity(player.getEyeLocation().getDirection().multiply(0.8).add(new Vector(0, 0.8, 0)).add(new Vector(randomX, randomY, randomZ)));
 
                 Bukkit.getScheduler().runTaskLater(this, () -> {
                     fireparticle.setMarker(true);
