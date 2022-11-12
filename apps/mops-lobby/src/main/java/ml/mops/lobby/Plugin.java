@@ -29,6 +29,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.ByteArrayOutputStream;
@@ -65,7 +66,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                     entity.getWorld().spawnParticle(Particle.FLAME, entity.getLocation(), 1, 0.01, 0.01, 0.01, 0.01);
 
                     for(Entity nearEntities : entity.getNearbyEntities(1, 1, 1)) {
-                        nearEntities.setFireTicks(nearEntities.getFireTicks() + 6);
+                        nearEntities.setFireTicks(nearEntities.getFireTicks() + 12);
                     }
                 }
             }
@@ -127,12 +128,11 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 fireparticle.setInvisible(true);
                 fireparticle.setMarker(true);
                 fireparticle.setInvulnerable(true);
-                fireparticle.setGravity(false);
                 fireparticle.addScoreboardTag("afireparticle");
-                fireparticle.setVelocity(player.getEyeLocation().getDirection());
+                fireparticle.setVelocity(player.getEyeLocation().getDirection().multiply(0.5).add(new Vector(0, 0.1, 0)));
 
                 Bukkit.getScheduler().runTaskLater(this, () -> {
-                    fireparticle.getLocation().add(0, -1000, 0);
+                    fireparticle.teleport(new Location(fireparticle.getWorld(), 0, 1000, 0));
                 }, 40L);
             }
         }
