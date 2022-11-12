@@ -177,11 +177,11 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         fireparticle.addScoreboardTag("afireparticle");
 
         Random random = new Random();
-        double randomX = -0.0005 + (0.001 - -0.0005) * random.nextDouble();
+        double randomX = -0.005 + (0.01 - -0.005) * random.nextDouble();
         Random random2 = new Random();
-        double randomZ = -0.0005 + (0.001 - -0.0005) * random2.nextDouble();
+        double randomZ = -0.005 + (0.01 - -0.005) * random2.nextDouble();
 
-        fireparticle.setVelocity(player.getEyeLocation().getDirection().multiply(0.3).add(new Vector(0, 0.2, 0)).add(new Vector(randomX, 0, randomZ)));
+        fireparticle.setVelocity(player.getEyeLocation().getDirection().multiply(0.4).add(new Vector(0, 0.4, 0)).add(new Vector(randomX, 0, randomZ)));
 
         Bukkit.getScheduler().runTaskLater(this, () -> {
             fireparticle.setGravity(false);
