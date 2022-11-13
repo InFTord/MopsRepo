@@ -13,6 +13,7 @@ import net.minecraft.network.protocol.game.PacketPlayOutNamedEntitySpawn;
 import net.minecraft.network.protocol.game.PacketPlayOutPlayerInfo;
 import net.minecraft.server.level.EntityPlayer;
 import net.minecraft.server.network.PlayerConnection;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.*;
 import org.bukkit.command.Command;
@@ -27,6 +28,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.util.Vector;
@@ -192,4 +194,38 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 //            fireparticle.teleport(new Location(fireparticle.getWorld(), 0, 1000, 0));
 //        }, 40L);
 //    }
+
+    public void itemAttacks(Player player, Action action) {
+        try {
+            ItemStack itemInHand = player.getItemInHand();
+
+            if(!action.equals(Action.LEFT_CLICK_AIR) && !action.equals(Action.LEFT_CLICK_BLOCK)) {
+                if (itemInHand.getItemMeta().getDisplayName().contains("Катана")) {
+                    List<Block> blocks = player.getLineOfSight(null, 6);
+
+                    int i = 0;
+                    while (i < 3) {
+                        if (blocks.size() > i) {
+                            blocks.remove(i);
+                        }
+                        i++;
+                    }
+
+                    for (Block block : blocks) {
+                        for (Entity entity : block.getWorld().getEntities()) {
+                            if (!(block.getLocation().distance(entity.getLocation()) > 2) && !entity.equals(player)) {
+                                if (entity instanceof LivingEntity lentity) {
+                                    if (player.getNearbyEntities(5.4, 5.4, 5.4).contains(lentity)) {
+                                        lentity.damage(4);
+                                        lentity.setVelocity(player.getEyeLocation().getDirection().multiply(0.3).add(new Vector(0, 0.10, 0)));
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+        } catch (NullPointerException ignored) {}
+    }
 }
