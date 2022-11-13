@@ -94,6 +94,19 @@ public class AdminUtils {
                     }
                     return true;
                 }
+                case "simplevanish" -> {
+                    if(player.getScoreboardTags().contains("hidden")) {
+                        for(Player onlinePlayers : Bukkit.getOnlinePlayers()) {
+                            onlinePlayers.showPlayer(plugin, player);
+                            player.removeScoreboardTag("hidden");
+                        }
+                    } else {
+                        for (Player onlinePlayers : Bukkit.getOnlinePlayers()) {
+                            onlinePlayers.hidePlayer(plugin, player);
+                            player.addScoreboardTag("hidden");
+                        }
+                    }
+                }
                 case "vector" -> {
                     double x = 0;
                     double y = 0;

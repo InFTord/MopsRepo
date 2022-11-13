@@ -80,4 +80,7 @@ commands:
   deconstructlore:
     description: ""
     usage: /deconstructlore
+  simplevanish:
+    description: ""
+    usage: /simplevanish
 
