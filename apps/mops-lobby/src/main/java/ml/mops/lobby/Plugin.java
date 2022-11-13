@@ -149,22 +149,16 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                     List<Block> blocks = player.getLineOfSight(null, 7);
                     Entity entity = player.getNearbyEntities(5.4, 5.4, 5.4).get(0);
 
-                    player.sendMessage("works");
-
                     if (entity instanceof Damageable dmgEntity) {
                         boolean isInRange = false;
-                        player.sendMessage("damageable");
                         for(Block block : blocks) {
                             if(!isInRange) {
                                 isInRange = block.getLocation().distance(dmgEntity.getLocation()) < 2;
-                                player.sendMessage("trying");
                             }
                         }
                         if(isInRange) {
-                            player.sendMessage("in range!!!!!!!");
                             dmgEntity.damage(4);
-                            dmgEntity.setVelocity(player.getEyeLocation().getDirection().multiply(0.3).add(new Vector(0, 0.1, 0)));
-                            player.sendMessage("damaged");
+                            dmgEntity.setVelocity(player.getEyeLocation().getDirection().multiply(0.5).add(new Vector(0, 0.2, 0)));
                         }
                     }
                 }
