@@ -145,27 +145,26 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
             if(action.equals(Action.LEFT_CLICK_AIR) || action.equals(Action.LEFT_CLICK_BLOCK)) {
                 if (Objects.requireNonNull(itemInHand.getItemMeta()).getDisplayName().contains("katana")) {
-                    player.sendMessage("test 1");
-                    List<Block> blocks = player.getLineOfSight(null, 7);
-                    player.sendMessage("test 2");
 
-                    for (Entity entity : player.getWorld().getEntities()) {
-                        player.sendMessage("test 3");
-                        if (entity instanceof Damageable dmgEntity) {
-                            player.sendMessage("test 4");
-                            if (player.getNearbyEntities(5.4, 5.4, 5.4).contains(dmgEntity)) {
-                                boolean isInRange = false;
-                                for(Block block : blocks) {
-                                    isInRange = block.getLocation().distance(dmgEntity.getLocation()) < 2;
-                                    player.sendMessage("test 5");
-                                }
-                                if(isInRange) {
-                                    player.sendMessage("test 6");
-                                    dmgEntity.damage(4);
-                                    dmgEntity.setVelocity(player.getEyeLocation().getDirection().multiply(0.3).add(new Vector(0, 0.1, 0)));
-                                    player.sendMessage("test 7");
-                                }
+                    List<Block> blocks = player.getLineOfSight(null, 7);
+                    Entity entity = player.getNearbyEntities(5.4, 5.4, 5.4).get(0);
+
+                    player.sendMessage("works");
+
+                    if (entity instanceof Damageable dmgEntity) {
+                        boolean isInRange = false;
+                        player.sendMessage("damageable");
+                        for(Block block : blocks) {
+                            if(!isInRange) {
+                                isInRange = block.getLocation().distance(dmgEntity.getLocation()) < 2;
+                                player.sendMessage("trying");
                             }
+                        }
+                        if(isInRange) {
+                            player.sendMessage("in range!!!!!!!");
+                            dmgEntity.damage(4);
+                            dmgEntity.setVelocity(player.getEyeLocation().getDirection().multiply(0.3).add(new Vector(0, 0.1, 0)));
+                            player.sendMessage("damaged");
                         }
                     }
                 }
