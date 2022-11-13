@@ -169,15 +169,62 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         if(action == Action.RIGHT_CLICK_BLOCK) {
             if(event.getClickedBlock().getLocation().equals(new Location(player.getWorld(), -111, 9, -210))) {
                 player.sendMessage("вы отправляетесь в бразилию (мопс пвп)");
-                ByteArrayOutputStream b = new ByteArrayOutputStream();
-                DataOutputStream out = new DataOutputStream(b);
-                try {
-                    out.writeUTF("Connect");
-                    out.writeUTF("mopspvps");
-                } catch (IOException eee) {
-                    Bukkit.getLogger().info("You'll never see me!");
-                }
-                Bukkit.getPlayer(String.valueOf(player)).sendPluginMessage(this, "BungeeCord", b.toByteArray());
+
+
+                Bukkit.getScheduler().runTaskLater(this, () -> {
+                    player.sendMessage(" ");
+                    player.sendMessage(ChatColor.DARK_GRAY + "========================");
+                    player.sendMessage(ChatColor.DARK_RED + "NullPointerException");
+                    player.sendMessage(" ");
+                    player.sendMessage(ChatColor.DARK_RED + "всем нам пиздец");
+                    player.sendMessage(ChatColor.DARK_RED + "сервер закрывается");
+                    player.sendMessage(ChatColor.DARK_RED + "в консоли 2854 ошибок");
+                    player.sendMessage(ChatColor.DARK_RED + "пока");
+                    player.sendMessage(ChatColor.DARK_GRAY + "========================");
+
+                    Bukkit.getScheduler().runTaskLater(this, () -> {
+                        player.sendMessage(" ");
+                        player.sendMessage(ChatColor.DARK_GRAY + "========================");
+                        player.sendMessage(ChatColor.DARK_RED + "NullPointerException");
+                        player.sendMessage(" ");
+                        player.sendMessage(ChatColor.DARK_RED + "сервер закрывается через 3");
+                        player.sendMessage(ChatColor.DARK_GRAY + "========================");
+                        Bukkit.getScheduler().runTaskLater(this, () -> {
+                            player.sendMessage(" ");
+                            player.sendMessage(ChatColor.DARK_GRAY + "========================");
+                            player.sendMessage(ChatColor.DARK_RED + "NullPointerException");
+                            player.sendMessage(" ");
+                            player.sendMessage(ChatColor.DARK_RED + "сервер закрывается через 2");
+                            player.sendMessage(ChatColor.DARK_GRAY + "========================");
+                            Bukkit.getScheduler().runTaskLater(this, () -> {
+                                player.sendMessage(" ");
+                                player.sendMessage(ChatColor.DARK_GRAY + "========================");
+                                player.sendMessage(ChatColor.DARK_RED + "NullPointerException");
+                                player.sendMessage(" ");
+                                player.sendMessage(ChatColor.DARK_RED + "сервер закрывается через 1");
+                                player.sendMessage(ChatColor.DARK_GRAY + "========================");
+                                Bukkit.getScheduler().runTaskLater(this, () -> {
+                                    player.sendMessage(" ");
+                                    player.sendMessage(ChatColor.DARK_GRAY + "========================");
+                                    player.sendMessage(ChatColor.DARK_RED + "NullPointerException");
+                                    player.sendMessage(" ");
+                                    player.sendMessage(ChatColor.DARK_RED + "сервер закрывается через 0");
+                                    player.sendMessage(ChatColor.DARK_GRAY + "========================");
+                                    Bukkit.getScheduler().runTaskLater(this, () -> {
+                                        player.sendMessage(" ");
+                                        player.sendMessage(ChatColor.DARK_GRAY + "========================");
+                                        player.sendMessage(" ");
+                                        player.sendMessage(ChatColor.DARK_RED + "не удалось закрыть сервер перезагружаем");
+                                        player.sendMessage(ChatColor.DARK_GRAY + "========================");
+                                        Bukkit.getScheduler().runTaskLater(this, () -> {
+                                            player.kickPlayer(ChatColor.YELLOW + "всем привет с вами сиркет \n мопс ппвп закрылся");
+                                        }, 20L);
+                                    }, 20L);
+                                }, 20L);
+                            }, 20L);
+                        }, 20L);
+                    }, 20L);
+                }, 20L);
             }
         }
 
