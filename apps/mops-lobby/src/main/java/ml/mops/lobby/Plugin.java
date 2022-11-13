@@ -39,6 +39,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -139,6 +140,39 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 //            }
 //        }
 
+        try {
+            ItemStack itemInHand = player.getItemInHand();
+
+            if(action.equals(Action.LEFT_CLICK_AIR) || action.equals(Action.LEFT_CLICK_BLOCK)) {
+                if (Objects.requireNonNull(itemInHand.getItemMeta()).getDisplayName().contains("katana")) {
+                    player.sendMessage("test 1");
+                    List<Block> blocks = player.getLineOfSight(null, 7);
+                    player.sendMessage("test 2");
+
+                    for (Entity entity : player.getWorld().getEntities()) {
+                        player.sendMessage("test 3");
+                        if (entity instanceof Damageable dmgEntity) {
+                            player.sendMessage("test 4");
+                            if (player.getNearbyEntities(5.4, 5.4, 5.4).contains(dmgEntity)) {
+                                boolean isInRange = false;
+                                for(Block block : blocks) {
+                                    isInRange = block.getLocation().distance(dmgEntity.getLocation()) < 2;
+                                    player.sendMessage("test 5");
+                                }
+                                if(isInRange) {
+                                    player.sendMessage("test 6");
+                                    dmgEntity.damage(4);
+                                    dmgEntity.setVelocity(player.getEyeLocation().getDirection().multiply(0.3).add(new Vector(0, 0.1, 0)));
+                                    player.sendMessage("test 7");
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+        } catch (NullPointerException ignored) {}
+
         if(action == Action.RIGHT_CLICK_BLOCK) {
             if(event.getClickedBlock().getLocation().equals(new Location(player.getWorld(), -111, 9, -210))) {
                 player.sendMessage("вы отправляетесь в бразилию (мопс пвп)");
@@ -194,30 +228,4 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 //            fireparticle.teleport(new Location(fireparticle.getWorld(), 0, 1000, 0));
 //        }, 40L);
 //    }
-
-    public void itemAttacks(Player player, Action action) {
-        try {
-            ItemStack itemInHand = player.getItemInHand();
-
-            if(action.equals(Action.LEFT_CLICK_AIR) || action.equals(Action.LEFT_CLICK_BLOCK)) {
-                if (itemInHand.getItemMeta().getDisplayName().contains("katana")) {
-                    List<Block> blocks = player.getLineOfSight(null, 6);
-
-                    for (Block block : blocks) {
-                        for (Entity entity : block.getWorld().getEntities()) {
-                            if (block.getLocation().distance(entity.getLocation()) < 2 && !entity.equals(player)) {
-                                if (entity instanceof LivingEntity lentity) {
-                                    if (player.getNearbyEntities(5.4, 5.4, 5.4).contains(lentity)) {
-                                        lentity.damage(4);
-                                        lentity.setVelocity(player.getEyeLocation().getDirection().multiply(0.3).add(new Vector(0, 0.10, 0)));
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-        } catch (NullPointerException ignored) {}
-    }
 }
