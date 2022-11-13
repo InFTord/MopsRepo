@@ -201,19 +201,11 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
             if(action.equals(Action.LEFT_CLICK_AIR) || action.equals(Action.LEFT_CLICK_BLOCK)) {
                 if (itemInHand.getItemMeta().getDisplayName().contains("katana")) {
-                    List<Block> blocks = player.getLineOfSight(null, 5);
-
-//                    int i = 0;
-//                    while (i < 3) {
-//                        if (blocks.size() > i) {
-//                            blocks.remove(i);
-//                        }
-//                        i++;
-//                    }
+                    List<Block> blocks = player.getLineOfSight(null, 6);
 
                     for (Block block : blocks) {
                         for (Entity entity : block.getWorld().getEntities()) {
-                            if (!(block.getLocation().distance(entity.getLocation()) > 2) && !entity.equals(player)) {
+                            if (block.getLocation().distance(entity.getLocation()) < 2 && !entity.equals(player)) {
                                 if (entity instanceof LivingEntity lentity) {
                                     if (player.getNearbyEntities(5.4, 5.4, 5.4).contains(lentity)) {
                                         lentity.damage(4);
