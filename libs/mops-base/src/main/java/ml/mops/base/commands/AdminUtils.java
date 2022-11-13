@@ -106,6 +106,7 @@ public class AdminUtils {
                             player.addScoreboardTag("hidden");
                         }
                     }
+                    return true;
                 }
                 case "vector" -> {
                     double x = 0;
