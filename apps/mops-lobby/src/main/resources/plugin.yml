@@ -83,4 +83,7 @@ commands:
   simplevanish:
     description: ""
     usage: /simplevanish
+  addflags:
+    description: ""
+    usage: /addflags
 

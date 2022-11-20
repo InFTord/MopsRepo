@@ -64,7 +64,7 @@ public abstract class KitManager {
                 chestplate.addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 1, true);
                 map.put("c", MopsUtils.unbreak(chestplate));
 
-                ItemStack leggings = MopsUtils.createItem(Material.CHAINMAIL_LEGGINGS, ChatColor.AQUA + "Ice Bear's Leggings", 1, new String[] {ChatColor.GRAY + "Protect you from knockback."});
+                ItemStack leggings = MopsUtils.createItem(Material.CHAINMAIL_LEGGINGS, ChatColor.AQUA + "Ice Bear's Leggings", 1, new String[] {ChatColor.GRAY + "Protects you from knockback."});
                 leggings.addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 8, true);
                 map.put("l", MopsUtils.unbreak(leggings));
 

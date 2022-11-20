@@ -16,6 +16,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Slime;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
@@ -139,6 +140,25 @@ public class AdminUtils {
                         } else {
                             player1.sendMessage(ChatColor.RED + "Возможно вам стоить выйти по причине " + ChatColor.RESET + string);
                         }
+                    }
+                    return true;
+                }
+                case "addflags" -> {
+                    String string = MopsUtils.convertColorCodes(MopsUtils.combineStrings(args, " "));
+
+                    try {
+                        ItemStack item = player.getInventory().getItemInMainHand();
+                        ItemMeta meta = item.getItemMeta();
+
+                        assert meta != null;
+                        meta.addItemFlags(ItemFlag.valueOf(args[0]));
+
+                        item.setItemMeta(meta);
+                        player.sendMessage(ChatColor.GREEN + "Вы добавили флаг " + args[0] + "(если он есть конечно же)");
+                        player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
+                    } catch (NullPointerException event) {
+                        player.sendMessage(ChatColor.RED + "Вы не имеете предмета в руке!");
+                        player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 2);
                     }
                     return true;
                 }
