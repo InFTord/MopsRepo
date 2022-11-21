@@ -74,7 +74,7 @@ public abstract class KitManager {
                 boots.addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 2, true);
                 map.put("bo", MopsUtils.unbreak(boots));
 
-                ItemStack potion = MopsUtils.createSplashPotion(PotionEffectType.SPEED, 1800, 2, Color.AQUA);
+                ItemStack potion = MopsUtils.createSplashPotion(PotionEffectType.SPEED, 1800, 1, Color.AQUA);
                 MopsUtils.renameItem(potion, ChatColor.AQUA + "Splash Potion of Speed (1:30)");
                 map.put("p", potion);
             }
