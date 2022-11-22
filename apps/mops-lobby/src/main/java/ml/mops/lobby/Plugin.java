@@ -26,6 +26,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.player.PlayerInteractAtEntityEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
@@ -169,67 +171,54 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         if(action == Action.RIGHT_CLICK_BLOCK) {
             if(event.getClickedBlock().getLocation().equals(new Location(player.getWorld(), -111, 9, -210))) {
                 player.sendMessage("вы отправляетесь в бразилию (мопс пвп)");
-
-
-                Bukkit.getScheduler().runTaskLater(this, () -> {
-                    player.sendMessage(" ");
-                    player.sendMessage(ChatColor.DARK_GRAY + "========================");
-                    player.sendMessage(ChatColor.DARK_RED + "NullPointerException");
-                    player.sendMessage(" ");
-                    player.sendMessage(ChatColor.DARK_RED + "всем нам пиздец");
-                    player.sendMessage(ChatColor.DARK_RED + "сервер закрывается");
-                    player.sendMessage(ChatColor.DARK_RED + "в консоли 2854 ошибок");
-                    player.sendMessage(ChatColor.DARK_RED + "пока");
-                    player.sendMessage(ChatColor.DARK_GRAY + "========================");
-
-                    Bukkit.getScheduler().runTaskLater(this, () -> {
-                        player.sendMessage(" ");
-                        player.sendMessage(ChatColor.DARK_GRAY + "========================");
-                        player.sendMessage(ChatColor.DARK_RED + "NullPointerException");
-                        player.sendMessage(" ");
-                        player.sendMessage(ChatColor.DARK_RED + "сервер закрывается через 3");
-                        player.sendMessage(ChatColor.DARK_GRAY + "========================");
-                        Bukkit.getScheduler().runTaskLater(this, () -> {
-                            player.sendMessage(" ");
-                            player.sendMessage(ChatColor.DARK_GRAY + "========================");
-                            player.sendMessage(ChatColor.DARK_RED + "NullPointerException");
-                            player.sendMessage(" ");
-                            player.sendMessage(ChatColor.DARK_RED + "сервер закрывается через 2");
-                            player.sendMessage(ChatColor.DARK_GRAY + "========================");
-                            Bukkit.getScheduler().runTaskLater(this, () -> {
-                                player.sendMessage(" ");
-                                player.sendMessage(ChatColor.DARK_GRAY + "========================");
-                                player.sendMessage(ChatColor.DARK_RED + "NullPointerException");
-                                player.sendMessage(" ");
-                                player.sendMessage(ChatColor.DARK_RED + "сервер закрывается через 1");
-                                player.sendMessage(ChatColor.DARK_GRAY + "========================");
-                                Bukkit.getScheduler().runTaskLater(this, () -> {
-                                    player.sendMessage(" ");
-                                    player.sendMessage(ChatColor.DARK_GRAY + "========================");
-                                    player.sendMessage(ChatColor.DARK_RED + "NullPointerException");
-                                    player.sendMessage(" ");
-                                    player.sendMessage(ChatColor.DARK_RED + "сервер закрывается через 0");
-                                    player.sendMessage(ChatColor.DARK_GRAY + "========================");
-                                    Bukkit.getScheduler().runTaskLater(this, () -> {
-                                        player.sendMessage(" ");
-                                        player.sendMessage(ChatColor.DARK_GRAY + "========================");
-                                        player.sendMessage(" ");
-                                        player.sendMessage(ChatColor.DARK_RED + "не удалось закрыть сервер перезагружаем");
-                                        player.sendMessage(ChatColor.DARK_GRAY + "========================");
-                                        Bukkit.getScheduler().runTaskLater(this, () -> {
-                                            player.kickPlayer(ChatColor.YELLOW + "всем привет с вами сиркет \n мопс ппвп закрылся");
-                                        }, 20L);
-                                    }, 20L);
-                                }, 20L);
-                            }, 20L);
-                        }, 20L);
-                    }, 20L);
-                }, 20L);
             }
         }
 
         if(!player.getScoreboardTags().contains("admin")) {
             event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onEntityInteract(PlayerInteractAtEntityEvent event) {
+        Player player = event.getPlayer();
+        ArmorStand armorStand = (ArmorStand) event.getRightClicked();
+        if(armorStand.getScoreboardTags().contains("armorStandHubNPC")) {
+            event.setCancelled(true);
+            if(armorStand.getScoreboardTags().contains("missionDogeNPC")) {
+                String dialogue = "Hi, i can't currently give you missions.";
+                player.sendMessage(armorStand.getCustomName() + ChatColor.WHITE + ": " + dialogue);
+                player.playSound(player.getLocation(), Sound.ENTITY_WOLF_GROWL, 10, 0);
+                player.playSound(player.getLocation(), Sound.ENTITY_WOLF_AMBIENT, 10, 0);
+            }
+            if(armorStand.getScoreboardTags().contains("fishermanDogeNPC")) {
+                String dialogue = "Giv me gfish please i want fis!!!1!!";
+                player.sendMessage(armorStand.getCustomName() + ChatColor.DARK_AQUA + ": " + dialogue);
+                player.playSound(player.getLocation(), Sound.ENTITY_FISH_SWIM, 10, 2);
+            }
+            if(armorStand.getScoreboardTags().contains("builderDogeNPC")) {
+                String dialogue = "hi this par t of hub not buildt please wait!!1";
+                player.sendMessage(armorStand.getCustomName() + ChatColor.WHITE + ": " + dialogue);
+                player.playSound(player.getLocation(), Sound.ENTITY_WOLF_AMBIENT, 10, 2);
+            }
+            if(armorStand.getScoreboardTags().contains("pvpDogeNPC")) {
+                String dialogue = "There are no upgrades yet.";
+                player.sendMessage(armorStand.getCustomName() + ChatColor.WHITE + ": " + dialogue);
+                player.playSound(player.getLocation(), Sound.ENTITY_WOLF_AMBIENT, 10, 2);
+
+                Bukkit.getScheduler().runTaskLater(this, () -> {
+                    String dialogue2 = "There is no PVP yet too.";
+                    player.sendMessage(armorStand.getCustomName() + ChatColor.WHITE + ": " + dialogue2);
+                    player.playSound(player.getLocation(), Sound.ENTITY_WOLF_AMBIENT, 10, 2);
+
+                    Bukkit.getScheduler().runTaskLater(this, () -> {
+                        String dialogue3 = "I can give you a sword though, it looks cool.";
+                        player.sendMessage(armorStand.getCustomName() + ChatColor.WHITE + ": " + dialogue3);
+                        player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_DESTROY, 10, 0);
+                        player.getInventory().addItem(MopsUtils.createItem(Material.IRON_SWORD, ChatColor.GRAY + "Iron Sword"));
+                    }, 30L);
+                }, 30L);
+            }
         }
     }
 
