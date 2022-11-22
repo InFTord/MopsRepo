@@ -215,6 +215,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                         String dialogue3 = "I can give you a sword though, it looks cool.";
                         MopsUtils.sendDialogueMessage(dialogue3, player, armorStand);
                         player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_DESTROY, 10, 0);
+                        player.playSound(player.getLocation(), Sound.ENTITY_WOLF_AMBIENT, 10, 2);
                         player.getInventory().addItem(MopsUtils.createItem(Material.IRON_SWORD, ChatColor.GRAY + "Iron Sword"));
                     }, 30L);
                 }, 30L);
