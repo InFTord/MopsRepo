@@ -417,6 +417,9 @@ public class MopsUtils {
 		return item;
 	}
 
+	static public void sendDialogueMessage(String dialogue, Player player, ArmorStand armorStand) {
+		player.sendMessage(ChatColor.YELLOW + "[NPC] " + armorStand.getCustomName() + ChatColor.WHITE + ": " + dialogue);
+	}
 
 	static public EntityPlayer createNPC(Location location, String name, String skin) {
 		MinecraftServer server = ((CraftServer) Bukkit.getServer()).getServer();

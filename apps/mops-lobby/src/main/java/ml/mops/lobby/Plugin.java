@@ -187,33 +187,33 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             event.setCancelled(true);
             if(armorStand.getScoreboardTags().contains("missionDogeNPC")) {
                 String dialogue = "Hi, i can't currently give you missions.";
-                player.sendMessage(armorStand.getCustomName() + ChatColor.WHITE + ": " + dialogue);
+                MopsUtils.sendDialogueMessage(dialogue, player, armorStand);
                 player.playSound(player.getLocation(), Sound.ENTITY_WOLF_GROWL, 10, 0);
                 player.playSound(player.getLocation(), Sound.ENTITY_WOLF_AMBIENT, 10, 0);
             }
             if(armorStand.getScoreboardTags().contains("fishermanDogeNPC")) {
                 String dialogue = "Giv me gfish please i want fis!!!1!!";
-                player.sendMessage(armorStand.getCustomName() + ChatColor.DARK_AQUA + ": " + dialogue);
+                MopsUtils.sendDialogueMessage(dialogue, player, armorStand);
                 player.playSound(player.getLocation(), Sound.ENTITY_FISH_SWIM, 10, 2);
             }
             if(armorStand.getScoreboardTags().contains("builderDogeNPC")) {
                 String dialogue = "hi this par t of hub not buildt please wait!!1";
-                player.sendMessage(armorStand.getCustomName() + ChatColor.WHITE + ": " + dialogue);
+                MopsUtils.sendDialogueMessage(dialogue, player, armorStand);
                 player.playSound(player.getLocation(), Sound.ENTITY_WOLF_AMBIENT, 10, 2);
             }
             if(armorStand.getScoreboardTags().contains("pvpDogeNPC")) {
                 String dialogue = "There are no upgrades yet.";
-                player.sendMessage(armorStand.getCustomName() + ChatColor.WHITE + ": " + dialogue);
+                MopsUtils.sendDialogueMessage(dialogue, player, armorStand);
                 player.playSound(player.getLocation(), Sound.ENTITY_WOLF_AMBIENT, 10, 2);
 
                 Bukkit.getScheduler().runTaskLater(this, () -> {
                     String dialogue2 = "There is no PVP yet too.";
-                    player.sendMessage(armorStand.getCustomName() + ChatColor.WHITE + ": " + dialogue2);
+                    MopsUtils.sendDialogueMessage(dialogue2, player, armorStand);
                     player.playSound(player.getLocation(), Sound.ENTITY_WOLF_AMBIENT, 10, 2);
 
                     Bukkit.getScheduler().runTaskLater(this, () -> {
                         String dialogue3 = "I can give you a sword though, it looks cool.";
-                        player.sendMessage(armorStand.getCustomName() + ChatColor.WHITE + ": " + dialogue3);
+                        MopsUtils.sendDialogueMessage(dialogue3, player, armorStand);
                         player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_DESTROY, 10, 0);
                         player.getInventory().addItem(MopsUtils.createItem(Material.IRON_SWORD, ChatColor.GRAY + "Iron Sword"));
                     }, 30L);
