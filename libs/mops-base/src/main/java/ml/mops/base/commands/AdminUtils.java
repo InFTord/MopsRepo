@@ -72,16 +72,13 @@ public class AdminUtils {
                             Location location = player.getLocation();
                             Player player1 = player;
 
-                            final double[] y = {0};
-
                             new BukkitRunnable() {
                                 @Override
                                 public void run() {
-                                    double x = Math.sqrt(radius*radius- y[0] * y[0]);
-                                    double z = Math.sqrt(radius*radius-x*x);
+                                    double z = Math.sqrt(radius*radius);
+                                    double x = Math.sqrt(radius*radius-z*z);
 
-                                    player1.spawnParticle(Particle.TOTEM, location.add(x, y[0], z), 2);
-                                    y[0] = y[0] + 0.1;
+                                    player1.spawnParticle(Particle.TOTEM, location.add(x, 0, z), 2, 0, 1, 0);
                                 }
                             }.runTaskTimerAsynchronously(plugin, 0, 5);
                         }
