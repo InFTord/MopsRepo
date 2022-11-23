@@ -68,7 +68,7 @@ public class AdminUtils {
                             player.sendMessage("несделано");
                         }
                         if(args[0].equals("particle")) {
-                            double radius = 1.5;
+                            double radius = 0.2;
                             final double[] y = {0};
                             Location location = player.getLocation();
                             Player player1 = player;
