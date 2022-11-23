@@ -68,10 +68,12 @@ public class AdminUtils {
                             player.sendMessage("несделано");
                         }
                         if(args[0].equals("particle")) {
-                            double radius = 0.2;
+                            double radius = 1.5;
                             final double[] y = {0};
                             Location location = player.getLocation();
                             Player player1 = player;
+
+                            boolean up = true;
 
                             new BukkitRunnable() {
                                 @Override
@@ -80,7 +82,7 @@ public class AdminUtils {
                                     double z = radius * Math.sin(y[0]);
 
                                     player1.spawnParticle(Particle.TOTEM, location.add(x, y[0], z), 2, 0, 0, 0, 0);
-                                    y[0] = y[0] + 0.1;
+                                    y[0] = y[0] + 0.01;
                                 }
                             }.runTaskTimerAsynchronously(plugin, 0, 4);
                         }
