@@ -66,7 +66,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             }
         }, 0L, 10L);
 
-        Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, () -> {
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
             Calendar calendar = Calendar.getInstance();
             Date date = calendar.getTime();
 
