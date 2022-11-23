@@ -21,6 +21,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import java.util.*;
@@ -65,6 +66,24 @@ public class AdminUtils {
                             Inventory inv = shulker.getInventory();
 
                             player.sendMessage("несделано");
+                        }
+                        if(args[0].equals("particle")) {
+                            int radius = Integer.parseInt(args[1]);
+                            Location location = player.getLocation();
+                            Player player1 = player;
+
+                            final double[] y = {0};
+
+                            new BukkitRunnable() {
+                                @Override
+                                public void run() {
+                                    double x = Math.sqrt(radius*radius- y[0] * y[0]);
+                                    double z = Math.sqrt(radius*radius-x*x);
+
+                                    player1.spawnParticle(Particle.TOTEM, location.add(x, y[0], z), 2);
+                                    y[0] = y[0] + 0.1;
+                                }
+                            }.runTaskTimerAsynchronously(plugin, 0, 5);
                         }
                         if(args[0].equals("getskullid")) {
                             ItemStack item = player.getItemInHand();
