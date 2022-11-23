@@ -68,8 +68,8 @@ public class AdminUtils {
                             player.sendMessage("несделано");
                         }
                         if(args[0].equals("particle")) {
-                            double radius = 2;
-                            final double[] d = {0};
+                            double radius = 0.4;
+                            final double[] d = {-1.5};
                             Location location = player.getLocation();
                             Player player1 = player;
 
@@ -80,7 +80,7 @@ public class AdminUtils {
                                     double x = Math.sqrt(radius*radius-z*z);
 
                                     d[0] = d[0] + 0.1;
-                                    player1.spawnParticle(Particle.TOTEM, location.add(x, 0, z), 2, 0, 1, 0, 0);
+                                    player1.spawnParticle(Particle.TOTEM, location.add(x, 0, z), 2, 0, 0, 0, 0);
                                 }
                             }.runTaskTimerAsynchronously(plugin, 0, 4);
                         }
