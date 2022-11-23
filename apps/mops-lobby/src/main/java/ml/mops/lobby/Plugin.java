@@ -39,10 +39,9 @@ import org.jetbrains.annotations.NotNull;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Random;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
@@ -60,12 +59,22 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 //        hubNPCs.add(woolbattleNPC);
 //        woolbattleNPC1 = woolbattleNPC;
 
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
+        Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, () -> {
             for(Player player : Bukkit.getServer().getOnlinePlayers()) {
                 Scoreboard lobbyscoreboard = new LobbyScoreboard().generateLobbyScoreboard(player);
                 player.setScoreboard(lobbyscoreboard);
             }
-        }, 10L, 10L);
+        }, 0L, 10L);
+
+        Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, () -> {
+            Calendar calendar = Calendar.getInstance();
+            Date date = calendar.getTime();
+
+            long seconds = date.getSeconds() + (date.getMinutes() * 60L) + (date.getHours() * 3600L);
+            long ticks = (long) (seconds * 0.277778);
+
+            mainworld.setTime(ticks);
+        }, 0L, 1200L);
 
 //        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
 //            for(Entity entity : Bukkit.getServer().getWorlds().get(0).getEntities()) {
