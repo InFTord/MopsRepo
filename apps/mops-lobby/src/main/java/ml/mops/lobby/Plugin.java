@@ -59,7 +59,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 //        hubNPCs.add(woolbattleNPC);
 //        woolbattleNPC1 = woolbattleNPC;
 
-        Bukkit.getScheduler().scheduleAsyncRepeatingTask(this, () -> {
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
             for(Player player : Bukkit.getServer().getOnlinePlayers()) {
                 Scoreboard lobbyscoreboard = new LobbyScoreboard().generateLobbyScoreboard(player);
                 player.setScoreboard(lobbyscoreboard);
