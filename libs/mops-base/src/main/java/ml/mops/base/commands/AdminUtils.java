@@ -68,19 +68,21 @@ public class AdminUtils {
                             player.sendMessage("несделано");
                         }
                         if(args[0].equals("particle")) {
-                            int radius = Integer.parseInt(args[1]);
+                            double radius = 2;
+                            final double[] d = {0};
                             Location location = player.getLocation();
                             Player player1 = player;
 
                             new BukkitRunnable() {
                                 @Override
                                 public void run() {
-                                    double z = Math.sqrt(radius*radius);
+                                    double z = Math.sqrt(radius*radius-d[0]*d[0]);
                                     double x = Math.sqrt(radius*radius-z*z);
 
-                                    player1.spawnParticle(Particle.TOTEM, location.add(x, 0, z), 2, 0, 1, 0);
+                                    d[0] = d[0] + 0.1;
+                                    player1.spawnParticle(Particle.TOTEM, location.add(x, 0, z), 2, 0, 1, 0, 0);
                                 }
-                            }.runTaskTimerAsynchronously(plugin, 0, 5);
+                            }.runTaskTimerAsynchronously(plugin, 0, 4);
                         }
                         if(args[0].equals("getskullid")) {
                             ItemStack item = player.getItemInHand();
