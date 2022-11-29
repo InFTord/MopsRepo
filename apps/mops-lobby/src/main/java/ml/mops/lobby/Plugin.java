@@ -71,7 +71,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             Date date = calendar.getTime();
 
             long seconds = date.getSeconds() + (date.getMinutes() * 60L) + (date.getHours() * 3600L);
-            long ticks = (long) (seconds * 0.277778);
+            long ticks = (long) (seconds * 0.2083333);
 
             mainworld.setTime(ticks);
         }, 0L, 1200L);
