@@ -63,6 +63,11 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             for(Player player : Bukkit.getServer().getOnlinePlayers()) {
                 Scoreboard lobbyscoreboard = new LobbyScoreboard().generateLobbyScoreboard(player);
                 player.setScoreboard(lobbyscoreboard);
+                
+                Calendar calendar = Calendar.getInstance();
+                if(calendar.get(Calendar.MONTH) == Calendar.DECEMBER || calendar.get(Calendar.MONTH) == Calendar.JANUARY) {
+                    player.getWorld().spawnParticle(Particle.SNOWFLAKE, player.getLocation().add(0, 8, 0), 350, 15, 5, 15, 0);
+                }
             }
         }, 0L, 10L);
 
@@ -74,6 +79,10 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             long ticks = (long) (seconds * 0.2083333);
 
             mainworld.setTime(ticks + 21000);
+
+            if(calendar.get(Calendar.MONTH) == Calendar.DECEMBER || calendar.get(Calendar.MONTH) == Calendar.JANUARY) {
+                mainworld.setStorm(true);
+            }
         }, 0L, 1200L);
 
 //        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
