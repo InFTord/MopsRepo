@@ -73,7 +73,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             long seconds = date.getSeconds() + (date.getMinutes() * 60L) + (date.getHours() * 3600L);
             long ticks = (long) (seconds * 0.2083333);
 
-            mainworld.setTime(ticks);
+            mainworld.setTime(ticks + 21000);
         }, 0L, 1200L);
 
 //        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
