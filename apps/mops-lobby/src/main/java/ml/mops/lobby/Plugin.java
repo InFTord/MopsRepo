@@ -91,25 +91,6 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 if(calendar.get(Calendar.MONTH) == Calendar.DECEMBER || calendar.get(Calendar.MONTH) == Calendar.JANUARY) {
                     player.getWorld().spawnParticle(Particle.SNOWFLAKE, player.getLocation().add(0, 8, 0), 350, 15, 5, 15, 0);
                 }
-
-                Location block1 = new Location(mainworld, -78, 11, -208);
-                Location block2 = new Location(mainworld, -78, 11, -208);
-
-                //calendar.get(Calendar.DAY_OF_WEEK) == Calendar.FRIDAY
-                if(true) {
-                    block1.getBlock().setType(Material.AIR);
-                    block2.getBlock().setType(Material.AIR);
-
-                    FallingBlock ghostBlock1 = mainworld.spawnFallingBlock(block1, new MaterialData(Material.BLUE_CONCRETE));
-                    ghostBlock1.setGravity(false);
-                    ghostBlock1.addScoreboardTag("killOnDisable");
-                    FallingBlock ghostBlock2 = mainworld.spawnFallingBlock(block2, new MaterialData(Material.BLUE_CONCRETE));
-                    ghostBlock2.setGravity(false);
-                    ghostBlock2.addScoreboardTag("killOnDisable");
-                } else {
-                    block1.getBlock().setType(Material.BLUE_CONCRETE);
-                    block2.getBlock().setType(Material.BLUE_CONCRETE);
-                }
             }
         }, 0L, 10L);
 
@@ -126,6 +107,29 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 mainworld.setStorm(true);
             }
         }, 0L, 1200L);
+
+
+        Location block1 = new Location(mainworld, -77.5, 11, -207.5);
+        Location block2 = new Location(mainworld, -77.5, 10, -207.5);
+
+        Location block1smooth = new Location(mainworld, -78, 11, -208);
+        Location block2smooth = new Location(mainworld, -78, 10, -208);
+
+        //calendar.get(Calendar.DAY_OF_WEEK) == Calendar.FRIDAY
+        if(true) {
+            block1.getBlock().setType(Material.AIR);
+            block2.getBlock().setType(Material.AIR);
+
+            FallingBlock ghostBlock1 = mainworld.spawnFallingBlock(block1, new MaterialData(Material.BLUE_CONCRETE));
+            ghostBlock1.setGravity(false);
+            ghostBlock1.addScoreboardTag("killOnDisable");
+            FallingBlock ghostBlock2 = mainworld.spawnFallingBlock(block2, new MaterialData(Material.BLUE_CONCRETE));
+            ghostBlock2.setGravity(false);
+            ghostBlock2.addScoreboardTag("killOnDisable");
+        } else {
+            block1smooth.getBlock().setType(Material.BLUE_CONCRETE);
+            block2smooth.getBlock().setType(Material.BLUE_CONCRETE);
+        }
 
 //        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
 //            for(Entity entity : Bukkit.getServer().getWorlds().get(0).getEntities()) {
@@ -293,7 +297,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
                     pvpDogeDialogue.put(player, pvpDogeDialogue.get(player) + 1);
                 } else if (pvpDogeDialogue.get(player) == 3) {
-                    String dialogue = "I don't have more swords.";
+                    String dialogue = "I don't have any more swords.";
                     MopsUtils.sendDialogueMessage(dialogue, player, armorStand);
                     player.playSound(player.getLocation(), Sound.ENTITY_WOLF_AMBIENT, 10, 2);
                 } else {
