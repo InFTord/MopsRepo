@@ -9,11 +9,19 @@ import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.*;
 
 public class LobbyScoreboard {
-    public Scoreboard generateLobbyScoreboard(Player player) {
+    public Scoreboard generateLobbyScoreboard(Player player, Long time) {
         ScoreboardManager manager = Bukkit.getScoreboardManager();
+        assert manager != null;
         Scoreboard board = manager.getNewScoreboard();
 
-        String score1 = ChatColor.GRAY + "Welcome!";
+        String timeChar = ChatColor.GOLD + "☀";
+
+        boolean dayCondition = (time >= 0 && time <= 12000) || (time >= 23500 && time <= 24000);
+        if(!dayCondition) {
+            timeChar = ChatColor.BLUE + "☽";
+        }
+
+        String score1 = ChatColor.GRAY + "Welcome! " + timeChar;
         String score2 = ChatColor.RED + " ";
         String score3 = ChatColor.WHITE + "Your coins: " + ChatColor.GOLD + "" + ChatColor.BOLD + "420";
         String score4 = ChatColor.WHITE + "Your rank: " + ChatColor.GREEN + "[DEV]";

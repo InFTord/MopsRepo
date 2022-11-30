@@ -26,10 +26,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.player.PlayerInteractAtEntityEvent;
-import org.bukkit.event.player.PlayerInteractEntityEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.MaterialData;
@@ -85,7 +82,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
         Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
             for(Player player : Bukkit.getServer().getOnlinePlayers()) {
-                Scoreboard lobbyscoreboard = new LobbyScoreboard().generateLobbyScoreboard(player);
+                Scoreboard lobbyscoreboard = new LobbyScoreboard().generateLobbyScoreboard(player, mainworld.getTime());
                 player.setScoreboard(lobbyscoreboard);
                 
                 Calendar calendar = Calendar.getInstance();
@@ -100,7 +97,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             Date date = calendar.getTime();
 
             long seconds = date.getSeconds() + (date.getMinutes() * 60L) + (date.getHours() * 3600L);
-            long ticks = (long) (seconds * 0.2083333);
+            long ticks = (long) (seconds * 0.277778);
 
             mainworld.setTime(ticks + 21000);
 
@@ -160,7 +157,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             }
         }
         for(Player player : Bukkit.getOnlinePlayers()) {
-            player.kickPlayer(ChatColor.YELLOW + "всем привет с вами сиркет \n мопс ппвп закрылся");
+            player.kickPlayer(ChatColor.YELLOW + "Server closed.\nShortly will be back on, maybe.");
         }
     }
 
@@ -321,13 +318,24 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         }
     }
 
+
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         event.setJoinMessage("");
 
-        player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
-        player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_CHIME, 1, 2);
+        player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 0);
+        Bukkit.getScheduler().runTaskLater(this, () -> {
+            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
+
+            player.sendTitle(ChatColor.AQUA + "Welcome!", ChatColor.DARK_AQUA + "To MopsNetwork", 10, 20, 10);
+            Bukkit.getScheduler().runTaskLater(this, () -> {
+                player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
+                player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_CHIME, 1, 2);
+            }, 4L);
+        }, 4L);
+
+        player.teleport(new Location(player.getWorld(), -106.0, 9, -186.0));
 
         pvpDogeDialogue.putIfAbsent(player, 0);
 
@@ -335,13 +343,22 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             allPlayers.sendMessage( ChatColor.GOLD + "[MopsPVPs] " + ChatColor.YELLOW + player.getName() + " joined the game.");
         }
 
-
 //        for(EntityPlayer NPC : hubNPCs) {
 //            PlayerConnection connection = ((CraftPlayer) player).getHandle().b;
 //            connection.a(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.a, NPC));
 //            connection.a(new PacketPlayOutNamedEntitySpawn(NPC));
 //            connection.a(new PacketPlayOutEntityHeadRotation(NPC, (byte) (NPC.getBukkitEntity().getLocation().getYaw() * 256 / 360)));
 //        }
+    }
+
+    @EventHandler
+    public void onPlayerLeave(PlayerQuitEvent event) {
+        Player player = event.getPlayer();
+        event.setQuitMessage("");
+
+        for(Player allPlayers : Bukkit.getOnlinePlayers()) {
+            allPlayers.sendMessage( ChatColor.GOLD + "[MopsPVPs] " + ChatColor.YELLOW + player.getName() + " left the game. " + ChatColor.AQUA + ":(");
+        }
     }
 
 //    public void temporarySummonFire(Player player) {
