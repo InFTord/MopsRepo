@@ -31,6 +31,7 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.material.MaterialData;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.util.Vector;
@@ -89,6 +90,25 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 Calendar calendar = Calendar.getInstance();
                 if(calendar.get(Calendar.MONTH) == Calendar.DECEMBER || calendar.get(Calendar.MONTH) == Calendar.JANUARY) {
                     player.getWorld().spawnParticle(Particle.SNOWFLAKE, player.getLocation().add(0, 8, 0), 350, 15, 5, 15, 0);
+                }
+
+                Location block1 = new Location(mainworld, -78, 11, -208);
+                Location block2 = new Location(mainworld, -78, 11, -208);
+
+                //calendar.get(Calendar.DAY_OF_WEEK) == Calendar.FRIDAY
+                if(true) {
+                    block1.getBlock().setType(Material.AIR);
+                    block2.getBlock().setType(Material.AIR);
+
+                    FallingBlock ghostBlock1 = mainworld.spawnFallingBlock(block1, new MaterialData(Material.BLUE_CONCRETE));
+                    ghostBlock1.setGravity(false);
+                    ghostBlock1.addScoreboardTag("killOnDisable");
+                    FallingBlock ghostBlock2 = mainworld.spawnFallingBlock(block2, new MaterialData(Material.BLUE_CONCRETE));
+                    ghostBlock2.setGravity(false);
+                    ghostBlock2.addScoreboardTag("killOnDisable");
+                } else {
+                    block1.getBlock().setType(Material.BLUE_CONCRETE);
+                    block2.getBlock().setType(Material.BLUE_CONCRETE);
                 }
             }
         }, 0L, 10L);
