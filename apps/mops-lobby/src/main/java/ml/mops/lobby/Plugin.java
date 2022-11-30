@@ -123,8 +123,10 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             FallingBlock ghostBlock1 = mainworld.spawnFallingBlock(block1, new MaterialData(Material.BLUE_CONCRETE));
             ghostBlock1.setGravity(false);
             ghostBlock1.addScoreboardTag("killOnDisable");
+            ghostBlock1.addScoreboardTag("fallingblock");
             FallingBlock ghostBlock2 = mainworld.spawnFallingBlock(block2, new MaterialData(Material.BLUE_CONCRETE));
             ghostBlock2.setGravity(false);
+            ghostBlock2.addScoreboardTag("fallingblock");
             ghostBlock2.addScoreboardTag("killOnDisable");
         } else {
             block1smooth.getBlock().setType(Material.BLUE_CONCRETE);
