@@ -309,7 +309,8 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                     MopsUtils.sendDialogueMessage(dialogue, player, entity);
                 }
             }
-        } else if(entity.getScoreboardTags().contains("adminfrog")) {
+        }
+        if(entity.getScoreboardTags().contains("adminfrog")) {
             String dialogue = "It is Friday, my dudes.";
             MopsUtils.sendDialogueMessage(dialogue, player, entity);
             player.playSound(player.getLocation(), Sound.ENTITY_FROG_AMBIENT, 10, 1);
