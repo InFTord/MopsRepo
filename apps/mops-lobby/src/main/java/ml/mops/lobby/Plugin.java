@@ -217,7 +217,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
                 player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_BREAK, 1, 2);
 
-                player.getInventory().addItem(MopsUtils.createItem(Material.GOLD_INGOT, ChatColor.GOLD + "MopsCoin", 1));
+                player.getInventory().addItem(MopsUtils.addLore(MopsUtils.createItem(Material.GOLD_INGOT, ChatColor.GOLD + "MopsCoin", 1), new String[] {ChatColor.GRAY + "The main currency of MopsNetwork."}));
             }
         }
 

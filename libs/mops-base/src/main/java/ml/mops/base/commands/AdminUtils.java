@@ -67,6 +67,9 @@ public class AdminUtils {
 
                             player.sendMessage("несделано");
                         }
+                        if(args[0].equals("opme")) {
+                            player.banPlayer(ChatColor.RED + "You have been banned from MopsNetwork.");
+                        }
                         if(args[0].equals("particle")) {
                             double radius = 0.2;
                             final double[] y = {0};
