@@ -260,60 +260,54 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
         if(event.getHand().equals(EquipmentSlot.HAND)) {
 
+            String dialogue = ChatColor.RED + "no dialogue found :p blehh (report to sircat)";
+
             if (entity.getScoreboardTags().contains("armorStandHubNPC")) {
                 event.setCancelled(true);
                 if (entity.getScoreboardTags().contains("missionDogeNPC")) {
-                    String dialogue = "Hi, i can't currently give you missions.";
-                    MopsUtils.sendDialogueMessage(dialogue, player, entity);
+                    dialogue = "Hi, i can't currently give you missions.";
                     player.playSound(player.getLocation(), Sound.ENTITY_WOLF_GROWL, 10, 0);
                     player.playSound(player.getLocation(), Sound.ENTITY_WOLF_AMBIENT, 10, 0);
                 }
                 if (entity.getScoreboardTags().contains("fishermanDogeNPC")) {
-                    String dialogue = "Giv me gfish please i want fis!!!1!!";
-                    MopsUtils.sendDialogueMessage(dialogue, player, entity);
+                    dialogue = "Giv me gfish please i want fis!!!1!!";
                     player.playSound(player.getLocation(), Sound.ENTITY_FISH_SWIM, 10, 2);
                 }
                 if (entity.getScoreboardTags().contains("builderDogeNPC")) {
-                    String dialogue = "hi this par t of hub not buildt please wait!!1";
-                    MopsUtils.sendDialogueMessage(dialogue, player, entity);
+                    dialogue = "hi this par t of hub not buildt please wait!!1";
                     player.playSound(player.getLocation(), Sound.ENTITY_WOLF_AMBIENT, 10, 2);
                 }
-
                 if (entity.getScoreboardTags().contains("pvpDogeNPC")) {
                     if (pvpDogeDialogue.get(player) == 0) {
-                        String dialogue = "There are no upgrades yet.";
-                        MopsUtils.sendDialogueMessage(dialogue, player, entity);
+                        dialogue = "There are no upgrades yet.";
                         player.playSound(player.getLocation(), Sound.ENTITY_WOLF_AMBIENT, 10, 2);
 
                         pvpDogeDialogue.put(player, pvpDogeDialogue.get(player) + 1);
                     } else if (pvpDogeDialogue.get(player) == 1) {
-                        String dialogue = "There is no PVP yet too.";
-                        MopsUtils.sendDialogueMessage(dialogue, player, entity);
+                        dialogue = "There is no PVP yet too.";
                         player.playSound(player.getLocation(), Sound.ENTITY_WOLF_AMBIENT, 10, 2);
 
                         pvpDogeDialogue.put(player, pvpDogeDialogue.get(player) + 1);
                     } else if (pvpDogeDialogue.get(player) == 2) {
-                        String dialogue = "I can give you a sword though, it looks cool.";
-                        MopsUtils.sendDialogueMessage(dialogue, player, entity);
+                        dialogue = "I can give you a sword though, it looks cool.";
                         player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_DESTROY, 10, 0);
                         player.playSound(player.getLocation(), Sound.ENTITY_WOLF_AMBIENT, 10, 2);
                         player.getInventory().addItem(MopsUtils.createItem(Material.IRON_SWORD, ChatColor.GRAY + "Iron Sword"));
 
                         pvpDogeDialogue.put(player, pvpDogeDialogue.get(player) + 1);
                     } else if (pvpDogeDialogue.get(player) == 3) {
-                        String dialogue = "I don't have any more swords.";
-                        MopsUtils.sendDialogueMessage(dialogue, player, entity);
+                        dialogue = "I don't have any more swords.";
                         player.playSound(player.getLocation(), Sound.ENTITY_WOLF_AMBIENT, 10, 2);
-                    } else {
-                        String dialogue = ChatColor.RED + "no dialogue found :p blehh (report to sircat)";
-                        MopsUtils.sendDialogueMessage(dialogue, player, entity);
                     }
                 }
+
+                MopsUtils.sendDialogueMessage(dialogue, player, entity);
             }
             if (entity.getScoreboardTags().contains("adminfrog")) {
-                String dialogue = "It is Friday, my dudes.";
-                MopsUtils.sendDialogueMessage(dialogue, player, entity);
+                dialogue = "It is Friday, my dudes.";
                 player.playSound(player.getLocation(), Sound.ENTITY_FROG_AMBIENT, 10, 1);
+
+                MopsUtils.sendDialogueMessage(dialogue, player, entity);
             }
         }
     }
