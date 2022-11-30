@@ -50,6 +50,10 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 //
 //    EntityPlayer woolbattleNPC1;
 
+    HashMap<Player, Integer> pvpDogeDialogue = new HashMap<>();
+    List<Location> flippable = new ArrayList<>();
+    List<Location> atmButtons = new ArrayList<>();
+
     @Override
     public void onEnable() {
         Bukkit.getServer().getPluginManager().registerEvents(this, this);
@@ -58,6 +62,24 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 //        EntityPlayer woolbattleNPC = MopsUtils.createNPC(new Location(mainworld, -70.500, 7, -180.500), ChatColor.YELLOW + "" + ChatColor.BOLD + "WoolBattle", "SirCat07");
 //        hubNPCs.add(woolbattleNPC);
 //        woolbattleNPC1 = woolbattleNPC;
+
+        flippable.add(new Location(mainworld, -102, 9, -195));
+        flippable.add(new Location(mainworld, -95, 9, -195));
+        flippable.add(new Location(mainworld, -85, 9, -196));
+        flippable.add(new Location(mainworld, -85, 9, -192));
+        flippable.add(new Location(mainworld, -60, 10, -192));
+        flippable.add(new Location(mainworld, -60, 11, -192));
+        flippable.add(new Location(mainworld, -58, 10, -197));
+        flippable.add(new Location(mainworld, -64, 6, -251));
+        flippable.add(new Location(mainworld, -64, 7, -251));
+        flippable.add(new Location(mainworld, -72, 8, -233));
+        flippable.add(new Location(mainworld, -71, 8, -233));
+        flippable.add(new Location(mainworld, -72, 9, -233));
+        flippable.add(new Location(mainworld, -71, 9, -233));
+        flippable.add(new Location(mainworld, -81, 8, -202));
+
+        atmButtons.add(new Location(mainworld, -69, 9, -205));
+        atmButtons.add(new Location(mainworld, -92, 9, -176));
 
         Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
             for(Player player : Bukkit.getServer().getOnlinePlayers()) {
@@ -139,8 +161,6 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         }
     }
 
-    //ж
-
 
     @EventHandler
     public void onInteract(PlayerInteractEvent event) {
@@ -148,7 +168,10 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
         Action action = event.getAction();
 
-//        if(action.equals(Action.RIGHT_CLICK_AIR) || action.equals(Action.RIGHT_CLICK_BLOCK)) {
+
+
+        if(action.equals(Action.RIGHT_CLICK_AIR) || action.equals(Action.RIGHT_CLICK_BLOCK)) {
+
 //            if(player.getItemInHand().getItemMeta().getDisplayName().contains("flamethrower")) {
 //                temporarySummonFire(player);
 //                Bukkit.getScheduler().runTaskLater(this, () -> {
@@ -158,7 +181,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 //                    }, 2L);
 //                }, 2L);
 //            }
-//        }
+        }
 
         try {
             ItemStack itemInHand = player.getItemInHand();
@@ -190,10 +213,18 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             if(event.getClickedBlock().getLocation().equals(new Location(player.getWorld(), -111, 9, -210))) {
                 player.sendMessage("вы отправляетесь в бразилию (мопс пвп)");
             }
+            if(atmButtons.contains(event.getClickedBlock().getLocation())) {
+                player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
+                player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_BREAK, 1, 2);
+
+                player.getInventory().addItem(MopsUtils.createItem(Material.GOLD_INGOT, ChatColor.GOLD + "MopsCoin", 1));
+            }
         }
 
         if(!player.getScoreboardTags().contains("admin")) {
-            event.setCancelled(true);
+            if (!flippable.contains(event.getClickedBlock().getLocation())) {
+                event.setCancelled(true);
+            }
         }
     }
 
@@ -219,24 +250,36 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 MopsUtils.sendDialogueMessage(dialogue, player, armorStand);
                 player.playSound(player.getLocation(), Sound.ENTITY_WOLF_AMBIENT, 10, 2);
             }
-            if(armorStand.getScoreboardTags().contains("pvpDogeNPC")) {
-                String dialogue = "There are no upgrades yet.";
-                MopsUtils.sendDialogueMessage(dialogue, player, armorStand);
-                player.playSound(player.getLocation(), Sound.ENTITY_WOLF_AMBIENT, 10, 2);
 
-                Bukkit.getScheduler().runTaskLater(this, () -> {
-                    String dialogue2 = "There is no PVP yet too.";
-                    MopsUtils.sendDialogueMessage(dialogue2, player, armorStand);
+            if(armorStand.getScoreboardTags().contains("pvpDogeNPC")) {
+                if (pvpDogeDialogue.get(player) == 0) {
+                    String dialogue = "There are no upgrades yet.";
+                    MopsUtils.sendDialogueMessage(dialogue, player, armorStand);
                     player.playSound(player.getLocation(), Sound.ENTITY_WOLF_AMBIENT, 10, 2);
 
-                    Bukkit.getScheduler().runTaskLater(this, () -> {
-                        String dialogue3 = "I can give you a sword though, it looks cool.";
-                        MopsUtils.sendDialogueMessage(dialogue3, player, armorStand);
-                        player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_DESTROY, 10, 0);
-                        player.playSound(player.getLocation(), Sound.ENTITY_WOLF_AMBIENT, 10, 2);
-                        player.getInventory().addItem(MopsUtils.createItem(Material.IRON_SWORD, ChatColor.GRAY + "Iron Sword"));
-                    }, 30L);
-                }, 30L);
+                    pvpDogeDialogue.put(player, pvpDogeDialogue.get(player) + 1);
+                } else if (pvpDogeDialogue.get(player) == 1) {
+                    String dialogue = "There is no PVP yet too.";
+                    MopsUtils.sendDialogueMessage(dialogue, player, armorStand);
+                    player.playSound(player.getLocation(), Sound.ENTITY_WOLF_AMBIENT, 10, 2);
+
+                    pvpDogeDialogue.put(player, pvpDogeDialogue.get(player) + 1);
+                } else if (pvpDogeDialogue.get(player) == 2) {
+                    String dialogue = "I can give you a sword though, it looks cool.";
+                    MopsUtils.sendDialogueMessage(dialogue, player, armorStand);
+                    player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_DESTROY, 10, 0);
+                    player.playSound(player.getLocation(), Sound.ENTITY_WOLF_AMBIENT, 10, 2);
+                    player.getInventory().addItem(MopsUtils.createItem(Material.IRON_SWORD, ChatColor.GRAY + "Iron Sword"));
+
+                    pvpDogeDialogue.put(player, pvpDogeDialogue.get(player) + 1);
+                } else if (pvpDogeDialogue.get(player) == 3) {
+                    String dialogue = "I don't have more swords.";
+                    MopsUtils.sendDialogueMessage(dialogue, player, armorStand);
+                    player.playSound(player.getLocation(), Sound.ENTITY_WOLF_AMBIENT, 10, 2);
+                } else {
+                    String dialogue = ChatColor.RED + "no dialogue found :p blehh (report to sircat)";
+                    MopsUtils.sendDialogueMessage(dialogue, player, armorStand);
+                }
             }
         }
     }
@@ -244,6 +287,17 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
+        event.setJoinMessage("");
+
+        player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
+        player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_CHIME, 1, 2);
+
+        pvpDogeDialogue.putIfAbsent(player, 0);
+
+        for(Player allPlayers : Bukkit.getOnlinePlayers()) {
+            allPlayers.sendMessage( ChatColor.GOLD + "[MopsPVPs] " + ChatColor.YELLOW + player.getName() + " joined the game.");
+        }
+
 
 //        for(EntityPlayer NPC : hubNPCs) {
 //            PlayerConnection connection = ((CraftPlayer) player).getHandle().b;
