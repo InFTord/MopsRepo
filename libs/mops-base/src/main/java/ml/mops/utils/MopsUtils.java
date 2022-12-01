@@ -423,6 +423,14 @@ public class MopsUtils {
 		player.sendMessage(ChatColor.YELLOW + "[NPC] " + entity.getCustomName() + ChatColor.WHITE + ": " + dialogue);
 	}
 
+	static public void sendRandomDialogueMessage(List<String> dialogue, Player player, Entity entity) {
+		int max = dialogue.size()-1;
+		int min = 0;
+		int randomString = (int) (Math.random() * (max - min + 1)) + min;
+
+		player.sendMessage(ChatColor.YELLOW + "[NPC] " + entity.getCustomName() + ChatColor.WHITE + ": " + dialogue.get(randomString));
+	}
+
 	static public EntityPlayer createNPC(Location location, String name, String skin) {
 		MinecraftServer server = ((CraftServer) Bukkit.getServer()).getServer();
 		WorldServer world = ((CraftWorld) Objects.requireNonNull(location.getWorld())).getHandle();
