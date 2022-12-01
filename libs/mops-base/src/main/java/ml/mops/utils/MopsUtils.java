@@ -4,6 +4,8 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
+import io.sentry.protocol.Message;
+import net.md_5.bungee.api.ChatMessageType;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.EntityPlayer;
 import net.minecraft.server.level.WorldServer;
@@ -484,5 +486,9 @@ public class MopsUtils {
 		}
 
 		return entities.get(0);
+	}
+
+	static public void actionBarGenerator(Player player, String string) {
+		player.sendMessage(ChatMessageType.ACTION_BAR, net.md_5.bungee.api.chat.TextComponent.fromLegacyText(string));
 	}
 }

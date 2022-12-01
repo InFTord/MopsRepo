@@ -2122,7 +2122,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			case 13 -> player1.sendTitle(ChatColor.WHITE + "Класс!", ChatColor.WHITE + "Я негр!", fadeIn, hold, fadeOut);
 			case 14 -> player1.sendTitle(ChatColor.WHITE + "ео", ChatColor.WHITE + "плши", fadeIn, hold, fadeOut);
 			case 15 -> player1.sendTitle(ChatColor.WHITE + "мяу, мяри мяри", ChatColor.WHITE + "мяу мяу мяу мяу", fadeIn, hold, fadeOut);
-			case 16 -> player1.sendTitle(ChatColor.WHITE + "пустите торда", ChatColor.WHITE + "на КоИ", fadeIn, hold, fadeOut);
+			case 16 -> player1.sendTitle(ChatColor.WHITE + "пустите торда", ChatColor.WHITE + "на ош", fadeIn, hold, fadeOut);
 			case 17 -> player1.sendTitle(ChatColor.WHITE + "stay", ChatColor.WHITE + "safe", fadeIn, hold, fadeOut);
 		}
 	}

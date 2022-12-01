@@ -8,6 +8,7 @@ import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import ml.mops.base.commands.Commands;
 import ml.mops.utils.MopsUtils;
+import net.minecraft.network.chat.ChatMessageType;
 import net.minecraft.network.protocol.game.PacketPlayOutEntityHeadRotation;
 import net.minecraft.network.protocol.game.PacketPlayOutNamedEntitySpawn;
 import net.minecraft.network.protocol.game.PacketPlayOutPlayerInfo;
@@ -35,12 +36,14 @@ import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
+import java.awt.*;
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
@@ -52,6 +55,8 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     HashMap<Player, Integer> pvpDogeDialogue = new HashMap<>();
     List<Location> flippable = new ArrayList<>();
     List<Location> atmButtons = new ArrayList<>();
+    List<Location> openables = new ArrayList<>();
+    List<Location> usables = new ArrayList<>();
 
     @Override
     public void onEnable() {
@@ -76,9 +81,31 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         flippable.add(new Location(mainworld, -72, 9, -233));
         flippable.add(new Location(mainworld, -71, 9, -233));
         flippable.add(new Location(mainworld, -81, 8, -202));
+        flippable.add(new Location(mainworld, -84, 9, -205));
+        flippable.add(new Location(mainworld, -84, 10, -205));
+
+        usables.add(new Location(mainworld, -77, 9, -157));
 
         atmButtons.add(new Location(mainworld, -69, 9, -205));
         atmButtons.add(new Location(mainworld, -92, 9, -176));
+
+        openables.add(new Location(mainworld, -82, 6, -202));
+        openables.add(new Location(mainworld, -83, 6, -201));
+        openables.add(new Location(mainworld, -83, 6, -202));
+        openables.add(new Location(mainworld, -60, 10, -195));
+        openables.add(new Location(mainworld, -60, 11, -195));
+        openables.add(new Location(mainworld, -84, 9, -189));
+        openables.add(new Location(mainworld, -81, 11, -205));
+        openables.add(new Location(mainworld, -80, 11, -205));
+        openables.add(new Location(mainworld, -81, 10, -205));
+        openables.add(new Location(mainworld, -80, 10, -205));
+        openables.add(new Location(mainworld, -80, 9, -226));
+        openables.add(new Location(mainworld, -80, 10, -225));
+        openables.add(new Location(mainworld, -79, 9, -225));
+        openables.add(new Location(mainworld, -60, 6, -251));
+        openables.add(new Location(mainworld, -60, 7, -255));
+        openables.add(new Location(mainworld, -61, 6, -255));
+        openables.add(new Location(mainworld, -64, 6, -255));
 
         Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
             for(Player player : Bukkit.getServer().getOnlinePlayers()) {
@@ -193,7 +220,6 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         Action action = event.getAction();
 
 
-
         if(action.equals(Action.RIGHT_CLICK_AIR) || action.equals(Action.RIGHT_CLICK_BLOCK)) {
 
 //            if(player.getItemInHand().getItemMeta().getDisplayName().contains("flamethrower")) {
@@ -243,11 +269,31 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
                 player.getInventory().addItem(MopsUtils.addLore(MopsUtils.createItem(Material.GOLD_INGOT, ChatColor.GOLD + "MopsCoin", 1), new String[] {ChatColor.GRAY + "The main currency of MopsNetwork."}));
             }
+            if(event.getClickedBlock().getLocation().equals(new Location(player.getWorld(), -82, 10, -216))) {
+                player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
+                player.playSound(player.getLocation(), Sound.BLOCK_FIRE_EXTINGUISH, 0.3F, 1);
+                player.playSound(player.getLocation(), Sound.ITEM_FIRECHARGE_USE, 0.3F, 1);
+
+                player.sendMessage(ChatColor.GRAY + "add furnace later plslssl");
+            }
+
+            if(event.getClickedBlock().getLocation().equals(new Location(player.getWorld(), -84, 9, -184))) {
+                player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
+                player.sendMessage(ChatColor.AQUA + "Our Discord: https://discord.gg/pGscG66pze");
+            }
+            if(event.getClickedBlock().getLocation().equals(new Location(player.getWorld(), -84, 9, -185))) {
+                player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
+                player.sendMessage(ChatColor.RED + "Our Youtube Channel: https://www.youtube.com/channel/UCmIrl7QQzVoVX-jeFNMkykg");
+            }
         }
 
         if(!player.getScoreboardTags().contains("admin")) {
             if (!flippable.contains(event.getClickedBlock().getLocation())) {
-                event.setCancelled(true);
+                if (!usables.contains(event.getClickedBlock().getLocation())) {
+                    if (!openables.contains(event.getClickedBlock().getLocation())) {
+                        event.setCancelled(true);
+                    }
+                }
             }
         }
     }
@@ -301,7 +347,12 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                     }
                 }
 
-                MopsUtils.sendDialogueMessage(dialogue, player, entity);
+                if(!entity.getScoreboardTags().contains("guideline")) {
+                    MopsUtils.sendDialogueMessage(dialogue, player, entity);
+
+                } else if (entity.getScoreboardTags().contains("furnaceGuideline")) {
+                    player.sendMessage(ChatColor.GRAY + "This furnace is the only one in the hub. It smelts corn for the Theatre, or fish for the Fisherman. It also needs to be fueled, however, not by coal. It uses MopsCoins. But the Doge are not always smart. They tried to put all sorts of items in there to fuel the Smelter. And sometimes when you put in MopsCoins, it gives you some cool items. It may still give you something!");
+                }
             }
             if (entity.getScoreboardTags().contains("adminfrog")) {
                 dialogue = "It is Friday, my dudes.";
@@ -331,7 +382,10 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             }, 4L);
         }, 60L);
 
-        player.teleport(new Location(player.getWorld(), -106.0, 9, -186.0));
+        Location spawn = new Location(player.getWorld(), -106.0, 9, -186.0);
+        spawn.setYaw(90);
+
+        player.teleport(spawn);
 
         pvpDogeDialogue.putIfAbsent(player, 0);
 
@@ -380,4 +434,12 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 //            fireparticle.teleport(new Location(fireparticle.getWorld(), 0, 1000, 0));
 //        }, 40L);
 //    }
+
+    public void announceRareDrop(String string, Player player) {
+        for(Player allPlayers : Bukkit.getOnlinePlayers()) {
+            allPlayers.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
+            String message = player.getName() + " got the " + string;
+            MopsUtils.actionBarGenerator(player, message);
+        }
+    }
 }
