@@ -296,7 +296,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             if(event.getClickedBlock().getLocation().equals(new Location(player.getWorld(), 151, 7, 147))) {
                 player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
 
-                player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 100, 1, true, false));
+                player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 60, 1, true, false));
 
                 Bukkit.getScheduler().runTaskLater(this, () -> {
                     player.setVelocity(new Vector(0, 1, 0));
@@ -315,58 +315,58 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 bookMeta.setAuthor(ChatColor.DARK_AQUA + "SirCat07");
                 bookMeta.setTitle("1000 и 1 факт про Астарту");
 
-                bookMeta.setPage(1, "1000 и 1 факт про Астарту.");
-                bookMeta.setPage(2, "1 факт: порода Астарты - корниш-рекс.");
-                bookMeta.setPage(3, "2 факт: раскраска у Астарты как у сиамской кошки.");
-                bookMeta.setPage(4, "3 факт: Астарте надо долго привыкать к новому корму. Когда Астарте надо привыкать к новому корму, то она чешет своё ухо и иногда у неё появляются покраснения");
-                bookMeta.setPage(5, "4 факт: Астарта любит спать с Расокет.");
-                bookMeta.setPage(6, "5 факт: иногда Астарта зовёт сестру Расокет, чтобы она отправлялась спать. Когда сестра идёт с ней в кровать, Астарта сразу же уходит.");
-                bookMeta.setPage(7, "6 факт: Астарта по какой-то причине закапывает свою мочу.");
-                bookMeta.setPage(8, "7 факт: Астарта - не единственное имя Астарты. Все её имена: Астарта, Астарточка, Асстарта, Манюня, Манюша, Миланья, Милания.");
-                bookMeta.setPage(9, "8 факт: Астарта третья кошка Расокет.");
-                bookMeta.setPage(10, "9 факт: у Астарты было двое хозяинов: первая семья и семья Расокет.");
-                bookMeta.setPage(11, "10 факт: прошлым хозяинам Астарты пришлось сделать объявления о том, что они отдают свою кошку из-за того, что у прошлых хозяинов родился ребёнок с аллергией на шерсть.");
-                bookMeta.setPage(12, "11 факт: у прошлых хозяинов Астарта много рожала.");
-                bookMeta.setPage(13, "12 факт: к сожалению, прошлые хозяины продавали котят Астарты.");
-                bookMeta.setPage(14, "13 факт: Астарта любит сидеть работающей на стиральной машине.");
-                bookMeta.setPage(15, "14 факт: Астарта прикольно зевает.");
-                bookMeta.setPage(16, "15 факт: Астарта прикольно шипит.");
-                bookMeta.setPage(17, "16 факт: когда Астарта только появилась у Расокет дома, Астарта на всё шипела и била.");
-                bookMeta.setPage(18, "17 факт: когда Астарта только появилась у Расокет дома, она постоянно залезала на шкаф в кухне.");
-                bookMeta.setPage(19, "18 факт: моя семья стерилизовала Астарту.");
-                bookMeta.setPage(20, "19 факт: после операции, Астарта опять стала на всех шипеть и бить");
-                bookMeta.setPage(21, "20 факт: после операции мы решили закрыть Астарту в переноске.");
-                bookMeta.setPage(22, "21 факт: когда Астарта спит, она нагревается.");
-                bookMeta.setPage(23, "22 факт: у Астарты хриплый голос.");
-                bookMeta.setPage(24, "23 факт: Астарта мило мяукает и мурчит.");
-                bookMeta.setPage(25, "24 факт: Астарта любит биться с первой кошкой Расокет, Джиной (играются).");
-                bookMeta.setPage(26, "25 факт: мама Расокет захотела забрать Астарту.");
-                bookMeta.setPage(27, "26 факт: у Астарты острые когти.");
-                bookMeta.setPage(28, "27 факт: после того, как Астарте подстригают когти, она их быстро наращивает.");
-                bookMeta.setPage(29, "28 факт: если засвет попадает на глаза Астарты, то её зрачки становятся красными.");
-                bookMeta.setPage(30, "29 факт: у Астарты острые клыки.");
-                bookMeta.setPage(31, "30 факт: когда Астарта ходит по кому-либо, то это действие с какой-то стороны можно считать за массаж.");
-                bookMeta.setPage(32, "31 факт: если злобную Астарту почесать, то у неё будет прикольная улыбка");
-                bookMeta.setPage(33, "32 факт: Астарта любит греться у ноутбука Расокет, когда она играет.");
-                bookMeta.setPage(34, "33 факт: Расокет делала Астарту в Споре.");
-                bookMeta.setPage(35, "34 факт: иногда, Астарта приходит к Расокет, когда она во что-либо играет. Она часто следит за чем-либо двигающимся.");
-                bookMeta.setPage(36, "35 факт: Астарта любит наблюдать за существами Расокет в Споре.");
-                bookMeta.setPage(37, "36 факт: до 03.05.2022, Астарту рисовала только Расокет");
-                bookMeta.setPage(38, "37 факт: айсчатовцы любят Астарту.");
-                bookMeta.setPage(39, "38 факт: подруга Расокет почему-то любит больше Джину, чем Астарту.");
-                bookMeta.setPage(40, "39 факт: когда Расокет научилась рисовать корниш-рексов, то корниш-рексы, которых она рисовала в 99% случаях превращались в Астарту.");
-                bookMeta.setPage(41, "40 факт: Астарта любит греться на солнышке.");
-                bookMeta.setPage(42, "41 факт: Астарта любит спать клубочком.");
-                bookMeta.setPage(43, "42 факт: когда Астарта спит, она СИЛЬНО нагревается.");
-                bookMeta.setPage(44, "43 факт: спящая Астарта - хорошее снотворное!");
-                bookMeta.setPage(45, "44 факт: когда Расокет смотрит в окно, то Астарта сразу же откуда-то появляется, запрыгивает на стол, залезает на подоконник и тоже начинает смотреть в окно.");
-                bookMeta.setPage(46, "45 факт: одной ночью, Расокет решила посмотреть в окно. Астарта тоже решила посмотреть в окно. В небе была луна. Астарта увидела её. Она на неё удивлённо смотрела. Скорее всего, для неё полная луна в небе - очень удивительное событие.");
-                bookMeta.setPage(47, "46 факт: иногда, когда Джина начинает мыться, Астарта тоже начинает мыться и наоборот.");
-                bookMeta.setPage(48, "47 факт: иногда, когда Расокет начинает есть на кухне, Астарта тоже начинает есть.");
-                bookMeta.setPage(49, "48 факт: Астарта громко пьёт и ест.");
-                bookMeta.setPage(50, "49 факт: Астарта любит точить когти.");
-                bookMeta.setPage(51, "50 факт: Астарта любит садится на мамин журнал с японскими сканвордами, на учебники и на тетради Расокет.");
-                bookMeta.setPage(52, "Продолжите читать \"1000 и 1 факт про Астарту\" за $1999.99!");
+                bookMeta.setPage(0, "1000 и 1 факт про Астарту.");
+                bookMeta.setPage(1, "1 факт: порода Астарты - корниш-рекс.");
+                bookMeta.setPage(2, "2 факт: раскраска у Астарты как у сиамской кошки.");
+                bookMeta.setPage(3, "3 факт: Астарте надо долго привыкать к новому корму. Когда Астарте надо привыкать к новому корму, то она чешет своё ухо и иногда у неё появляются покраснения");
+                bookMeta.setPage(4, "4 факт: Астарта любит спать с Расокет.");
+                bookMeta.setPage(5, "5 факт: иногда Астарта зовёт сестру Расокет, чтобы она отправлялась спать. Когда сестра идёт с ней в кровать, Астарта сразу же уходит.");
+                bookMeta.setPage(6, "6 факт: Астарта по какой-то причине закапывает свою мочу.");
+                bookMeta.setPage(7, "7 факт: Астарта - не единственное имя Астарты. Все её имена: Астарта, Астарточка, Асстарта, Манюня, Манюша, Миланья, Милания.");
+                bookMeta.setPage(8, "8 факт: Астарта третья кошка Расокет.");
+                bookMeta.setPage(9, "9 факт: у Астарты было двое хозяинов: первая семья и семья Расокет.");
+                bookMeta.setPage(10, "10 факт: прошлым хозяинам Астарты пришлось сделать объявления о том, что они отдают свою кошку из-за того, что у прошлых хозяинов родился ребёнок с аллергией на шерсть.");
+                bookMeta.setPage(11, "11 факт: у прошлых хозяинов Астарта много рожала.");
+                bookMeta.setPage(12, "12 факт: к сожалению, прошлые хозяины продавали котят Астарты.");
+                bookMeta.setPage(13, "13 факт: Астарта любит сидеть работающей на стиральной машине.");
+                bookMeta.setPage(14, "14 факт: Астарта прикольно зевает.");
+                bookMeta.setPage(15, "15 факт: Астарта прикольно шипит.");
+                bookMeta.setPage(16, "16 факт: когда Астарта только появилась у Расокет дома, Астарта на всё шипела и била.");
+                bookMeta.setPage(17, "17 факт: когда Астарта только появилась у Расокет дома, она постоянно залезала на шкаф в кухне.");
+                bookMeta.setPage(18, "18 факт: моя семья стерилизовала Астарту.");
+                bookMeta.setPage(19, "19 факт: после операции, Астарта опять стала на всех шипеть и бить");
+                bookMeta.setPage(20, "20 факт: после операции мы решили закрыть Астарту в переноске.");
+                bookMeta.setPage(21, "21 факт: когда Астарта спит, она нагревается.");
+                bookMeta.setPage(22, "22 факт: у Астарты хриплый голос.");
+                bookMeta.setPage(23, "23 факт: Астарта мило мяукает и мурчит.");
+                bookMeta.setPage(24, "24 факт: Астарта любит биться с первой кошкой Расокет, Джиной (играются).");
+                bookMeta.setPage(25, "25 факт: мама Расокет захотела забрать Астарту.");
+                bookMeta.setPage(26, "26 факт: у Астарты острые когти.");
+                bookMeta.setPage(27, "27 факт: после того, как Астарте подстригают когти, она их быстро наращивает.");
+                bookMeta.setPage(28, "28 факт: если засвет попадает на глаза Астарты, то её зрачки становятся красными.");
+                bookMeta.setPage(29, "29 факт: у Астарты острые клыки.");
+                bookMeta.setPage(30, "30 факт: когда Астарта ходит по кому-либо, то это действие с какой-то стороны можно считать за массаж.");
+                bookMeta.setPage(31, "31 факт: если злобную Астарту почесать, то у неё будет прикольная улыбка");
+                bookMeta.setPage(32, "32 факт: Астарта любит греться у ноутбука Расокет, когда она играет.");
+                bookMeta.setPage(33, "33 факт: Расокет делала Астарту в Споре.");
+                bookMeta.setPage(34, "34 факт: иногда, Астарта приходит к Расокет, когда она во что-либо играет. Она часто следит за чем-либо двигающимся.");
+                bookMeta.setPage(35, "35 факт: Астарта любит наблюдать за существами Расокет в Споре.");
+                bookMeta.setPage(36, "36 факт: до 03.05.2022, Астарту рисовала только Расокет");
+                bookMeta.setPage(37, "37 факт: айсчатовцы любят Астарту.");
+                bookMeta.setPage(38, "38 факт: подруга Расокет почему-то любит больше Джину, чем Астарту.");
+                bookMeta.setPage(39, "39 факт: когда Расокет научилась рисовать корниш-рексов, то корниш-рексы, которых она рисовала в 99% случаях превращались в Астарту.");
+                bookMeta.setPage(40, "40 факт: Астарта любит греться на солнышке.");
+                bookMeta.setPage(41, "41 факт: Астарта любит спать клубочком.");
+                bookMeta.setPage(42, "42 факт: когда Астарта спит, она СИЛЬНО нагревается.");
+                bookMeta.setPage(43, "43 факт: спящая Астарта - хорошее снотворное!");
+                bookMeta.setPage(44, "44 факт: когда Расокет смотрит в окно, то Астарта сразу же откуда-то появляется, запрыгивает на стол, залезает на подоконник и тоже начинает смотреть в окно.");
+                bookMeta.setPage(45, "45 факт: одной ночью, Расокет решила посмотреть в окно. Астарта тоже решила посмотреть в окно. В небе была луна. Астарта увидела её. Она на неё удивлённо смотрела. Скорее всего, для неё полная луна в небе - очень удивительное событие.");
+                bookMeta.setPage(46, "46 факт: иногда, когда Джина начинает мыться, Астарта тоже начинает мыться и наоборот.");
+                bookMeta.setPage(47, "47 факт: иногда, когда Расокет начинает есть на кухне, Астарта тоже начинает есть.");
+                bookMeta.setPage(48, "48 факт: Астарта громко пьёт и ест.");
+                bookMeta.setPage(49, "49 факт: Астарта любит точить когти.");
+                bookMeta.setPage(50, "50 факт: Астарта любит садится на мамин журнал с японскими сканвордами, на учебники и на тетради Расокет.");
+                bookMeta.setPage(51, "Продолжите читать \"1000 и 1 факт про Астарту\" за $1999.99!");
                 bookMeta.setPage(999, "*страница поцарапана мопсом*");
                 bookMeta.setPage(1000, "1000 факт: Астарта один из главных персонажей МопсПВП.");
 
@@ -383,7 +383,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 100, 1, true, false));
 
                 Bukkit.getScheduler().runTaskLater(this, () -> {
-                    Location loc = new Location(player.getWorld(), 151, 11, 147);
+                    Location loc = new Location(player.getWorld(), 151.5, 11.0, 147.5);
                     loc.setYaw(-90);
                     player.teleport(loc);
                 }, 5L);
@@ -410,6 +410,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         if(event.getHand().equals(EquipmentSlot.HAND)) {
 
             String dialogue = ChatColor.RED + "no dialogue found :p blehh (report to sircat)";
+            boolean randomDialogue = false;
 
             if (entity.getScoreboardTags().contains("armorStandHubNPC")) {
                 event.setCancelled(true);
@@ -477,13 +478,10 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 if (entity.getScoreboardTags().contains("lonelyPigeon")) {
                     dialogue = "hey " + ChatColor.GRAY + "(add quest later)";
                     player.playSound(player.getLocation(), Sound.ENTITY_PARROT_AMBIENT, 10, 2);
-
-                    MopsUtils.sendDialogueMessage(dialogue, player, entity);
                 }
 
-                if(!entity.getScoreboardTags().contains("guideline")) {
+                if(!entity.getScoreboardTags().contains("guideline") && !randomDialogue) {
                     MopsUtils.sendDialogueMessage(dialogue, player, entity);
-
                 } else if (entity.getScoreboardTags().contains("furnaceGuideline")) {
                     player.sendMessage(ChatColor.GRAY + "This furnace is the only one in the hub. It smelts corn for the Theatre, or fish for the Fisherman. It also needs to be fueled, however, not by coal. It uses MopsCoins. But the Doge are not always smart. They tried to put all sorts of items in there to fuel the Smelter. And sometimes when you put in MopsCoins, it gives you some cool items. It may still give you something!");
                 }
