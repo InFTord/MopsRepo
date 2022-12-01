@@ -26,6 +26,7 @@ import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockFadeEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.EquipmentSlot;
@@ -114,7 +115,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 
                 Calendar calendar = Calendar.getInstance();
                 if(calendar.get(Calendar.MONTH) == Calendar.DECEMBER || calendar.get(Calendar.MONTH) == Calendar.JANUARY) {
-                    player.getWorld().spawnParticle(Particle.SNOWFLAKE, player.getLocation().add(0, 8, 0), 350, 15, 5, 15, 0);
+                    player.getWorld().spawnParticle(Particle.SNOWFLAKE, player.getLocation().add(0, 7, 0), 450, 15, 6, 15, 0);
                 }
             }
         }, 0L, 10L);
@@ -380,10 +381,10 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                     player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_CHIME, 1, 2);
                 }, 4L);
             }, 4L);
-        }, 60L);
+        }, 50L);
 
         Location spawn = new Location(player.getWorld(), -106.0, 9, -186.0);
-        spawn.setYaw(90);
+        spawn.setYaw(-90);
 
         player.teleport(spawn);
 
@@ -409,6 +410,11 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         for(Player allPlayers : Bukkit.getOnlinePlayers()) {
             allPlayers.sendMessage( ChatColor.GOLD + "[MopsPVPs] " + ChatColor.YELLOW + player.getName() + " left the game. " + ChatColor.AQUA + ":(");
         }
+    }
+
+    @EventHandler
+    public void blockFadeEvent(BlockFadeEvent event) {
+        event.setCancelled(true);
     }
 
 //    public void temporarySummonFire(Player player) {
