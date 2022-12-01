@@ -16,7 +16,7 @@ public class LobbyScoreboard {
 
         String timeChar = ChatColor.GOLD + "☀";
 
-        boolean dayCondition = (time >= 0 && time <= 12000) || (time >= 23500 && time <= 24000);
+        boolean dayCondition = (time >= 0 && time <= 13500) || (time >= 23500 && time <= 24000);
         if(!dayCondition) {
             timeChar = ChatColor.BLUE + "☽";
         }
