@@ -57,9 +57,13 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     HashMap<Player, Integer> woolbattleDogeDialogue = new HashMap<>();
     HashMap<Player, Integer> pigeonDialogue = new HashMap<>();
 
+    //doors n trapdoors n shit
     List<Location> flippable = new ArrayList<>();
+    // atm or bank
     List<Location> atmButtons = new ArrayList<>();
+    // chests
     List<Location> openables = new ArrayList<>();
+    // note blok and button
     List<Location> usables = new ArrayList<>();
 
     @Override
@@ -86,7 +90,8 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         flippable.add(new Location(mainworld, -84, 10, -205));
 
         usables.add(new Location(mainworld, -77, 9, -157));
-        usables.add(new Location(mainworld, 156, 3, 148));
+        usables.add(new Location(mainworld, -95, 10, -170));
+        usables.add(new Location(mainworld, 151, 7, 147));
 
         atmButtons.add(new Location(mainworld, -69, 9, -205));
         atmButtons.add(new Location(mainworld, -92, 9, -176));
@@ -108,6 +113,8 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         openables.add(new Location(mainworld, -60, 7, -255));
         openables.add(new Location(mainworld, -61, 6, -255));
         openables.add(new Location(mainworld, -64, 6, -255));
+        openables.add(new Location(mainworld, 156, 3, 148));
+
 
         Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
             for(Player player : Bukkit.getServer().getOnlinePlayers()) {
@@ -334,14 +341,14 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 pages.add(10, "10 факт: прошлым хозяинам Астарты пришлось сделать объявления о том, что они отдают свою кошку из-за того, что у прошлых хозяинов родился ребёнок с аллергией на шерсть.");
                 pages.add(11, "11 факт: у прошлых хозяинов Астарта много рожала.");
                 pages.add(12, "12 факт: к сожалению, прошлые хозяины продавали котят Астарты.");
-                pages.add(13, "13 факт: Астарта любит сидеть работающей на стиральной машине.");
+                pages.add(13, "13 факт: Астарта любит сидеть на работающей стиральной машине.");
                 pages.add(14, "14 факт: Астарта прикольно зевает.");
                 pages.add(15, "15 факт: Астарта прикольно шипит.");
                 pages.add(16, "16 факт: когда Астарта только появилась у Расокет дома, Астарта на всё шипела и била.");
                 pages.add(17, "17 факт: когда Астарта только появилась у Расокет дома, она постоянно залезала на шкаф в кухне.");
-                pages.add(18, "18 факт: моя семья стерилизовала Астарту.");
+                pages.add(18, "18 факт: семья Расокет стерилизовала Астарту.");
                 pages.add(19, "19 факт: после операции, Астарта опять стала на всех шипеть и бить");
-                pages.add(20, "20 факт: после операции мы решили закрыть Астарту в переноске.");
+                pages.add(20, "20 факт: после операции семья Расокет решили закрыть Астарту в переноске.");
                 pages.add(21, "21 факт: когда Астарта спит, она нагревается.");
                 pages.add(22, "22 факт: у Астарты хриплый голос.");
                 pages.add(23, "23 факт: Астарта мило мяукает и мурчит.");
@@ -439,18 +446,18 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                     player.playSound(player.getLocation(), Sound.ENTITY_WOLF_AMBIENT, 10, 2);
                 }
                 if (entity.getScoreboardTags().contains("woolbattleDogeNPC")) {
-                    switch (pvpDogeDialogue.get(player)) {
+                    switch (woolbattleDogeDialogue.get(player)) {
                         case 0 -> {
                             dialogue = "Hi, woolbattle isn't done yet.";
                             player.playSound(player.getLocation(), Sound.ENTITY_WOLF_AMBIENT, 10, 2);
 
-                            pvpDogeDialogue.put(player, pvpDogeDialogue.get(player) + 1);
+                            woolbattleDogeDialogue.put(player, pvpDogeDialogue.get(player) + 1);
                         }
                         case 1 -> {
                             dialogue = "It will be out soon, though!";
                             player.playSound(player.getLocation(), Sound.ENTITY_WOLF_AMBIENT, 10, 2);
 
-                            pvpDogeDialogue.put(player, pvpDogeDialogue.get(player) + 1);
+                            woolbattleDogeDialogue.put(player, pvpDogeDialogue.get(player) + 1);
                         }
                         case 2 -> {
                             dialogue = "Have a great day!";

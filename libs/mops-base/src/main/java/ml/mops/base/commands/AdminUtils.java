@@ -5,6 +5,7 @@ import ml.mops.base.KitManager;
 import ml.mops.base.KitType;
 import ml.mops.base.Value;
 import ml.mops.base.inventory.KitGUI;
+import ml.mops.utils.Cuboid;
 import ml.mops.utils.MopsColor;
 import ml.mops.utils.MopsUtils;
 import org.bukkit.*;
@@ -94,6 +95,14 @@ public class AdminUtils {
                             String string = MopsUtils.getHeadID(item).replaceAll("=\"}]}}}", "");
                             string = string.substring(string.indexOf('"')).trim();
                             player.sendMessage("https://mops.pvp/" + string.replaceAll("\"", ""));
+                        }
+                        if(args[0].equals("cuboid")) {
+                            Location loc1 = new Location(player.getWorld(), Integer.parseInt(args[1]), Integer.parseInt(args[2]), Integer.parseInt(args[3]));
+                            Location loc2 = new Location(player.getWorld(), Integer.parseInt(args[4]), Integer.parseInt(args[5]), Integer.parseInt(args[6]));
+
+                            Cuboid cuboid = new Cuboid(loc1, loc2);
+
+                            cuboid.toString();
                         }
                     } catch (ArrayIndexOutOfBoundsException event) {
                         player.sendMessage("ало ты какой то там эррей не написал");
