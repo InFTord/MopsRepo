@@ -78,7 +78,6 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         flippable.add(new Location(mainworld, -85, 9, -192));
         flippable.add(new Location(mainworld, -60, 10, -192));
         flippable.add(new Location(mainworld, -60, 11, -192));
-        flippable.add(new Location(mainworld, -58, 10, -197));
         flippable.add(new Location(mainworld, -64, 6, -251));
         flippable.add(new Location(mainworld, -64, 7, -251));
         flippable.add(new Location(mainworld, -72, 8, -233));
@@ -92,6 +91,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         usables.add(new Location(mainworld, -77, 9, -157));
         usables.add(new Location(mainworld, -95, 10, -170));
         usables.add(new Location(mainworld, 151, 7, 147));
+        usables.add(new Location(mainworld, -58, 10, -197));
 
         atmButtons.add(new Location(mainworld, -69, 9, -205));
         atmButtons.add(new Location(mainworld, -92, 9, -176));

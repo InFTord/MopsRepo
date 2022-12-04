@@ -104,7 +104,7 @@ public class AdminUtils {
                             string = string.substring(string.indexOf('"')).trim();
                             player.sendMessage("https://mops.pvp/" + string.replaceAll("\"", ""));
                         }
-                        if(args[0].equals("cuboid")) {
+                        if(args[0].equals("saveCuboid")) {
                             Location loc1 = new Location(player.getWorld(), Integer.parseInt(args[1]), Integer.parseInt(args[2]), Integer.parseInt(args[3]));
                             Location loc2 = new Location(player.getWorld(), Integer.parseInt(args[4]), Integer.parseInt(args[5]), Integer.parseInt(args[6]));
 
@@ -124,18 +124,21 @@ public class AdminUtils {
 
                                 for(Block block : cuboid) {
                                     String addition = "[";
-                                    addition += block.getType();
-                                    addition += "] ";
+                                    addition += block.getType() + "] ";
 
-                                    addition += "{";
-                                    addition += " " + block.getLocation().getX();
-                                    addition += " " + block.getLocation().getY();
-                                    addition += " " + block.getLocation().getZ();
-                                    addition += "} ";
+                                    Location location = block.getLocation();
+                                    Location center = cuboid.getCenter();
 
-                                    addition += "(";
-                                    addition += block.getBlockData();
-                                    addition += ")";
+                                    double x = location.getX(); double y = location.getY(); double z = location.getZ();
+
+                                    double centerX = center.getX(); double centerY = center.getY(); double centerZ = center.getZ();
+
+                                    // добавить нереальную математику которая будет ставить всю постройку на локацию 0 0 0 вместо локации центра
+                                    addition += "{ " + x;
+                                    addition += " " + y;
+                                    addition += " " + z + "} ";
+
+                                    addition += "(" + block.getBlockData() + ")";
 
                                     theWholeList.append(addition).append("\n");
                                 }
@@ -146,7 +149,6 @@ public class AdminUtils {
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
-
 
 
                         }
