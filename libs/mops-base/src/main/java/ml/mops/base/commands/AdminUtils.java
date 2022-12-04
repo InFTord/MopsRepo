@@ -9,6 +9,7 @@ import ml.mops.utils.Cuboid;
 import ml.mops.utils.MopsColor;
 import ml.mops.utils.MopsUtils;
 import org.bukkit.*;
+import org.bukkit.block.Block;
 import org.bukkit.block.ShulkerBox;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -25,6 +26,13 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
+import javax.swing.*;
+import javax.swing.filechooser.FileSystemView;
+import java.io.*;
+import java.nio.file.FileAlreadyExistsException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 public class AdminUtils {
@@ -102,7 +110,45 @@ public class AdminUtils {
 
                             Cuboid cuboid = new Cuboid(loc1, loc2);
 
-                            cuboid.toString();
+
+                            Path path = Paths.get(FileSystemView.getFileSystemView().getHomeDirectory().getAbsolutePath() + "\\" + args[7] + ".txt"); //creates Path instance
+                            try {
+                                Path p = Files.createFile(path);
+                                System.out.println("File Created at Path: " + p);
+
+                                Writer output = null;
+                                File file = new File(path.toString());
+                                output = new BufferedWriter(new FileWriter(file));
+
+                                StringBuilder theWholeList = new StringBuilder();
+
+                                for(Block block : cuboid) {
+                                    String addition = "[";
+                                    addition += block.getType();
+                                    addition += "] ";
+
+                                    addition += "{";
+                                    addition += " " + block.getLocation().getX();
+                                    addition += " " + block.getLocation().getY();
+                                    addition += " " + block.getLocation().getZ();
+                                    addition += "} ";
+
+                                    addition += "(";
+                                    addition += block.getBlockData();
+                                    addition += ")";
+
+                                    theWholeList.append(addition).append("\n");
+                                }
+
+                                output.write(theWholeList.toString());
+                                output.close();
+
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+
+
+
                         }
                     } catch (ArrayIndexOutOfBoundsException event) {
                         player.sendMessage("ало ты какой то там эррей не написал");

@@ -389,7 +389,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 book.setItemMeta(bookMeta);
 
                 player.openBook(book);
-                player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
+                player.playSound(player.getLocation(), Sound.ITEM_BOOK_PAGE_TURN, 1, 0);
             }
         }
 
@@ -451,13 +451,13 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                             dialogue = "Hi, woolbattle isn't done yet.";
                             player.playSound(player.getLocation(), Sound.ENTITY_WOLF_AMBIENT, 10, 2);
 
-                            woolbattleDogeDialogue.put(player, pvpDogeDialogue.get(player) + 1);
+                            woolbattleDogeDialogue.put(player, woolbattleDogeDialogue.get(player) + 1);
                         }
                         case 1 -> {
                             dialogue = "It will be out soon, though!";
                             player.playSound(player.getLocation(), Sound.ENTITY_WOLF_AMBIENT, 10, 2);
 
-                            woolbattleDogeDialogue.put(player, pvpDogeDialogue.get(player) + 1);
+                            woolbattleDogeDialogue.put(player, woolbattleDogeDialogue.get(player) + 1);
                         }
                         case 2 -> {
                             dialogue = "Have a great day!";
@@ -465,6 +465,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                         }
                     }
                 }
+
                 if (entity.getScoreboardTags().contains("pvpDogeNPC")) {
                     switch (pvpDogeDialogue.get(player)) {
                         case 0 -> {
