@@ -11,6 +11,7 @@ import ml.mops.utils.MopsUtils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.ShulkerBox;
+import org.bukkit.block.Sign;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.Enchantment;
@@ -143,6 +144,16 @@ public class AdminUtils {
                                     addition += " " + z + "} ";
 
                                     addition += "(" + block.getBlockData() + ")";
+
+                                    if(block.getType().equals(Material.OAK_SIGN)) {
+                                        Sign sign = (Sign) block.getState();
+                                        String[] lines = sign.getLines();
+
+                                        addition += " *text1: " + lines[0] + "* ";
+                                        addition += "*text2: " + lines[1] + "* ";
+                                        addition += "*text3: " + lines[2] + "* ";
+                                        addition += "*text4: " + lines[3] + "*";
+                                    }
 
                                     theWholeList.append(addition).append("\n");
                                 }
