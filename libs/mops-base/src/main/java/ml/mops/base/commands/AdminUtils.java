@@ -124,38 +124,44 @@ public class AdminUtils {
                                 StringBuilder theWholeList = new StringBuilder();
 
                                 for(Block block : cuboid) {
-                                    String addition = "[";
-                                    addition += block.getType() + "] ";
+                                    if(block.getType() != Material.AIR) {
+                                        String addition = "[";
+                                        addition += block.getType() + "] ";
 
-                                    Location location = block.getLocation();
-                                    Location center = cuboid.getCenter();
+                                        Location location = block.getLocation();
+                                        Location center = cuboid.getCenter();
 
-                                    double x = location.getX(); double y = location.getY(); double z = location.getZ();
+                                        double x = location.getX();
+                                        double y = location.getY();
+                                        double z = location.getZ();
 
-                                    double centerX = center.getX(); double centerY = center.getY(); double centerZ = center.getZ();
+                                        double centerX = center.getX();
+                                        double centerY = center.getY();
+                                        double centerZ = center.getZ();
 
-                                    x = x - centerX;
-                                    y = y - centerY + 16;
-                                    z = z - centerZ;
+                                        x = x - centerX;
+                                        y = y - centerY + 16;
+                                        z = z - centerZ;
 
-                                    // добавить нереальную математику которая будет ставить всю постройку на локацию 0 0 0 вместо локации центра
-                                    addition += "{" + x;
-                                    addition += " " + y;
-                                    addition += " " + z + "} ";
+                                        // добавить нереальную математику которая будет ставить всю постройку на локацию 0 0 0 вместо локации центра
+                                        addition += "{" + x;
+                                        addition += " " + y;
+                                        addition += " " + z + "} ";
 
-                                    addition += "(" + block.getBlockData() + ")";
+                                        addition += "(" + block.getBlockData() + ")";
 
-                                    if(block.getType().equals(Material.OAK_SIGN)) {
-                                        Sign sign = (Sign) block.getState();
-                                        String[] lines = sign.getLines();
+                                        if (block.getType().equals(Material.OAK_SIGN)) {
+                                            Sign sign = (Sign) block.getState();
+                                            String[] lines = sign.getLines();
 
-                                        addition += " *text1: " + lines[0] + "* ";
-                                        addition += "*text2: " + lines[1] + "* ";
-                                        addition += "*text3: " + lines[2] + "* ";
-                                        addition += "*text4: " + lines[3] + "*";
+                                            addition += " *text1: " + lines[0] + "* ";
+                                            addition += "*text2: " + lines[1] + "* ";
+                                            addition += "*text3: " + lines[2] + "* ";
+                                            addition += "*text4: " + lines[3] + "*";
+                                        }
+
+                                        theWholeList.append(addition).append("\n");
                                     }
-
-                                    theWholeList.append(addition).append("\n");
                                 }
 
                                 output.write(theWholeList.toString());
