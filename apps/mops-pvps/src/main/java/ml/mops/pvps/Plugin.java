@@ -108,9 +108,9 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 					} catch (Exception ignored) { }
 
 						for (String row : rowArray) {
-							Material type = Material.valueOf(row.substring(row.indexOf("["), row.indexOf("]")));
+							Material type = Material.valueOf(row.substring(row.indexOf("[") + 1, row.indexOf("]")).trim());
 
-							String locationString = row.substring(row.indexOf("{"), row.indexOf("}"));
+							String locationString = row.substring(row.indexOf("{") + 1, row.indexOf("}")).trim();
 							String[] xyz = locationString.split(" ");
 
 							int x = Integer.parseInt(xyz[0]);
@@ -119,7 +119,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
 							Location location = new Location(player.getWorld(), x, y, z);
 
-							String rawBlockData = row.substring(row.indexOf("("), row.indexOf(")"));
+							String rawBlockData = row.substring(row.indexOf("(") + 1, row.indexOf(")")).trim();
 							BlockData data = Bukkit.createBlockData(rawBlockData);
 
 							location.getBlock().setType(type);
