@@ -1,9 +1,12 @@
 package ml.mops.pvps;
 
+import ml.mops.base.Kit;
 import ml.mops.base.commands.AdminUtils;
 import ml.mops.base.commands.Commands;
 import ml.mops.base.commands.PlayerEssentials;
+import ml.mops.utils.Cuboid;
 import ml.mops.utils.MopsUtils;
+import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Player;
 import org.bukkit.*;
@@ -25,12 +28,23 @@ import java.io.InputStreamReader;
 
 public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
+	World mainworld;
+
+	Location location1;
+	Location location2;
+
+	Location turtleLocation;
+
 	@Override
 	public void onEnable() {
 		Bukkit.getServer().getPluginManager().registerEvents(this, this);
-		World mainworld = Bukkit.getServer().getWorlds().get(0);
-	}
+		mainworld = Bukkit.getServer().getWorlds().get(0);
 
+		location1 = new Location(mainworld, 0, 0, 0);
+		location2 = new Location(mainworld, 0, 0, 0);
+
+		turtleLocation = new Location(mainworld, 0, 0, 0);
+	}
 
 	@Override
 	public void onDisable() {
@@ -44,6 +58,18 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 			player.kickPlayer(ChatColor.YELLOW + "Server closed.\nShortly will be back on, maybe.");
 		}
 	}
+
+	boolean gameSession = false;
+	Map map = Map.DESERT;
+
+	Player player1;
+	Player player2;
+
+	boolean ready1 = false;
+	boolean ready2 = false;
+
+	Kit player1kit = null;
+	Kit player2kit = null;
 
 
 	@Override
@@ -65,73 +91,37 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 		Player player = (Player) sender;
 
 		if(command.getName().equals("testpvp")) {
-			player.sendMessage("command sent");
 
 			if(args[0].equals("loadCuboid")) {
-				player.sendMessage("load cuboid");
-
 				Map map = Map.valueOf(args[1]);
 				boolean confirm = Boolean.parseBoolean(args[2]);
 				boolean confirm2 = args[3].equals("CONFIRM");
 
-				player.sendMessage("parsed");
-
 				if (perms && confirm && confirm2) {
-
-					player.sendMessage("conditions met");
-
-					InputStream stream = getResource(map.getFileName());
-
-					player.sendMessage("file found");
-
-					String[] rowArray = new String[] {""};
-
-					try {
-						assert stream != null;
-						BufferedReader bufferedReader = new BufferedReader(
-								new InputStreamReader(stream));
-
-						StringBuilder stringBuilder = new StringBuilder();
-
-						String inputLine;
-						while ((inputLine = bufferedReader.readLine()) != null) {
-							stringBuilder.append(inputLine);
-							stringBuilder.append(System.lineSeparator());
-						}
-						bufferedReader.close();
-
-						player.sendMessage("string read");
-						player.sendMessage(ChatColor.YELLOW + stringBuilder.toString().substring(0, 50));
-
-						rowArray = stringBuilder.toString().split("\n");;
-
-					} catch (Exception ignored) { }
-
-						for (String row : rowArray) {
-							Material type = Material.valueOf(row.substring(row.indexOf("[") + 1, row.indexOf("]")).trim());
-
-							String locationString = row.substring(row.indexOf("{") + 1, row.indexOf("}")).trim();
-							String[] xyz = locationString.split(" ");
-
-							double x = Double.parseDouble(String.valueOf(xyz[0]));
-							double y = Double.parseDouble(String.valueOf(xyz[1]));
-							double z = Double.parseDouble(String.valueOf(xyz[2]));
-
-							Location location = new Location(player.getWorld(), x, y, z);
-
-							String veryRawBlockData = row.substring(row.indexOf("(") + 1, row.indexOf(")")).trim();
-							String rawBlockData = veryRawBlockData.substring(veryRawBlockData.indexOf(":") + 1, veryRawBlockData.indexOf("}")).trim();
-							BlockData data = Bukkit.createBlockData(rawBlockData);
-
-							location.getBlock().setType(type);
-							location.getBlock().setBlockData(data, true);
-
-							if(Boolean.parseBoolean(args[4])) {
-								player.sendMessage(ChatColor.RED + "" + type + " " + x + " " + y + " " + z + " " + rawBlockData);
-							}
-						}
+					loadCuboid(map, player.getWorld());
 				}
 			}
+
+			if(args[0].equals("wipeout")) {
+				boolean confirm = Boolean.parseBoolean(args[1]);
+				boolean confirm2 = args[2].equals("CONFIRM");
+
+				if (perms && confirm && confirm2) {
+					wipeout(player.getWorld());
+				}
+			}
+
+			if(args[0].equals("startgame")) {
+				gameSession = true;
+
+				wipeout(mainworld);
+				loadCuboid(map, mainworld);
+			}
+
+			if(args[0].equals("selectmap")) {
+				map = Map.valueOf(args[1]);
+			}
+
 			return true;
 		}
 
@@ -152,6 +142,89 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
 		for(Player allPlayers : Bukkit.getOnlinePlayers()) {
 			allPlayers.sendMessage(rank + name + ChatColor.WHITE + ": " + MopsUtils.convertColorCodes(message).trim());
+		}
+	}
+
+
+	@EventHandler
+	public void onPlayerJoin(PlayerJoinEvent event) {
+		if(player1 == null) {
+			player1 = event.getPlayer();
+		} else {
+			player2 = event.getPlayer();
+		}
+	}
+
+	@EventHandler
+	public void onPlayerLeave(PlayerQuitEvent event) {
+		if(player1 != null) {
+			player1 = null;
+		} else {
+			player2 = null;
+		}
+	}
+
+
+
+
+	public void wipeout(World world) {
+		Location loc1 = new Location(world, -400, -63, -400);
+		Location loc2 = new Location(world, 400, 319, 400);
+
+		Cuboid cuboid = new Cuboid(loc1, loc2);
+
+		for(Block block : cuboid) {
+			if(block.getType() != Material.AIR) {
+				block.setType(Material.AIR);
+			}
+		}
+
+		Location center = new Location(world, 0, 0, 0);
+		center.getBlock().setType(Material.BEDROCK);
+	}
+
+
+
+	public void loadCuboid(Map map, World world) {
+		InputStream stream = getResource(map.getFileName());
+		String[] rowArray = new String[] {""};
+
+		try {
+			assert stream != null;
+			BufferedReader bufferedReader = new BufferedReader(
+					new InputStreamReader(stream));
+
+			StringBuilder stringBuilder = new StringBuilder();
+
+			String inputLine;
+			while ((inputLine = bufferedReader.readLine()) != null) {
+				stringBuilder.append(inputLine);
+				stringBuilder.append(System.lineSeparator());
+			}
+			bufferedReader.close();
+
+			rowArray = stringBuilder.toString().split("\n");;
+
+		} catch (Exception ignored) { }
+
+		for (String row : rowArray) {
+			Material type = Material.valueOf(row.substring(row.indexOf("[") + 1, row.indexOf("]")).trim());
+
+			String locationString = row.substring(row.indexOf("{") + 1, row.indexOf("}")).trim();
+			String[] xyz = locationString.split(" ");
+
+			double x = Double.parseDouble(String.valueOf(xyz[0]));
+			double y = Double.parseDouble(String.valueOf(xyz[1]));
+			double z = Double.parseDouble(String.valueOf(xyz[2]));
+
+			Location location = new Location(world, x, y, z);
+
+			String veryRawBlockData = row.substring(row.indexOf("(") + 1, row.indexOf(")")).trim();
+			String rawBlockData = veryRawBlockData.substring(veryRawBlockData.indexOf(":") + 1, veryRawBlockData.indexOf("}")).trim();
+			BlockData data = Bukkit.createBlockData(rawBlockData);
+
+			location.getBlock().setType(type);
+			location.getBlock().setBlockData(data, true);
 		}
 	}
 
