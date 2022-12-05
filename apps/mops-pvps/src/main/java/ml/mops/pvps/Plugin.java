@@ -113,9 +113,9 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 							String locationString = row.substring(row.indexOf("{") + 1, row.indexOf("}")).trim();
 							String[] xyz = locationString.split(" ");
 
-							int x = Integer.parseInt(xyz[0]);
-							int y = Integer.parseInt(xyz[1]);
-							int z = Integer.parseInt(xyz[2]);
+							double x = Double.parseDouble(String.valueOf(xyz[0]));
+							double y = Double.parseDouble(String.valueOf(xyz[1]));
+							double z = Double.parseDouble(String.valueOf(xyz[2]));
 
 							Location location = new Location(player.getWorld(), x, y, z);
 
