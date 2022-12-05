@@ -1,13 +1,10 @@
-name: MopsPVP
-main: ml.mopspvps.Plugin
-version: \'indev-SNAPSHOT-1.0
-api-version: 1.18
+name: MopsLobby
+main: ml.mops.lobby.Plugin
+version: "'indev-SNAPSHOT-1.0"
+api-version: 1.19
 author: MopsCorporation
-description: Plugin for MopsPVP
+description: Plugin for MopsNetworks lobby
 commands:
-  pog:
-    description: ""
-    usage: /poga
   slimetest:
     description: ""
     usage: /slimetest
@@ -25,19 +22,19 @@ commands:
     usage: /customgive
   loreadd:
     description: ""
-    usage: /loreadditem
+    usage: /loreadd
   loreclear:
     description: ""
-    usage: /loreclearitem
+    usage: /loreclear
+  loreremove:
+    description: ""
+    usage: /loreremove
   nameitem:
     description: ""
     usage: /nameitem
   fly:
     description: ""
     usage: /fly
-  whoiam:
-    description: ""
-    usage: /whoiam
   announce:
     description: ""
     usage: /announce
@@ -47,9 +44,6 @@ commands:
   enchantclear:
     description: ""
     usage: /enchantclear
-  hideflags:
-    description: ""
-    usage: /hideflags
   kit:
     description: ""
     usage: /kit
@@ -77,15 +71,21 @@ commands:
   food:
     description: ""
     usage: /food
-  coins:
+  color:
     description: ""
-    usage: /coins
-  crank:
+    usage: "/color #11ccee"
+  colorcodes:
     description: ""
-    usage: "/crank me &6[&2COOL&6]&a"
-  cname:
+    usage: /colorcodes
+  deconstructlore:
     description: ""
-    usage: "/crank me &aCoolGuy"
-  cnameitem:
+    usage: /deconstructlore
+  simplevanish:
     description: ""
-    usage: "/crank &6<&2COOL_SWORD&6>&a"
+    usage: /simplevanish
+  addflags:
+    description: ""
+    usage: /addflags
+  testpvp:
+    description: ""
+    usage: /testpvp

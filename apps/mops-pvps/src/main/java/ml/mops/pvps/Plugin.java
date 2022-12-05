@@ -2,6 +2,7 @@ package ml.mops.pvps;
 
 import ml.mops.base.commands.Commands;
 import ml.mops.utils.MopsUtils;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Player;
 import org.bukkit.*;
 import org.bukkit.command.Command;
@@ -13,6 +14,11 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.*;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 
 public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
@@ -22,7 +28,6 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 		Bukkit.getServer().getPluginManager().registerEvents(this, this);
 		World mainworld = Bukkit.getServer().getWorlds().get(0);
 	}
-
 
 
 	@Override
@@ -41,8 +46,76 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
 	@Override
 	public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
-		return new Commands().commandsExecutor(sender, command, label, args, this);
+		if(pvpExclusiveCommands(sender, command, label, args, this)) {
+			return pvpExclusiveCommands(sender, command, label, args, this);
+		} else {
+			return new Commands().commandsExecutor(sender, command, label, args, this);
+		}
 	}
+
+
+	public boolean pvpExclusiveCommands(CommandSender sender, Command command, String label, String[] args, org.bukkit.plugin.Plugin plugin) {
+		boolean perms = sender.isOp();
+		if (args == null) {
+			args = new String[]{""};
+		}
+
+		Player player = (Player) sender;
+
+		if(command.getName().equals("testpvp")) {
+			if(args[0].equals("loadCuboid")) {
+				Map map = Map.valueOf(args[1]);
+				boolean confirm = Boolean.parseBoolean(args[2]);
+				boolean confirm2 = args[3].equals("CONFIRM");
+
+				if (perms && confirm && confirm2) {
+
+					InputStream stream = getResource(map.getFileName());
+
+					try {
+						assert stream != null;
+						BufferedReader bufferedReader = new BufferedReader(
+								new InputStreamReader(stream));
+
+						StringBuilder stringBuilder = new StringBuilder();
+
+						String inputLine;
+						while ((inputLine = bufferedReader.readLine()) != null) {
+							stringBuilder.append(inputLine);
+							stringBuilder.append(System.lineSeparator());
+						}
+						bufferedReader.close();
+
+
+						String[] rowArray = stringBuilder.toString().split("\n");
+
+						for (String row : rowArray) {
+							Material type = Material.valueOf(row.substring(row.indexOf("["), row.indexOf("]")));
+
+							String locationString = row.substring(row.indexOf("{"), row.indexOf("}"));
+							String[] xyz = row.split(" ");
+
+							int x = Integer.parseInt(xyz[0]);
+							int y = Integer.parseInt(xyz[1]);
+							int z = Integer.parseInt(xyz[2]);
+
+							Location location = new Location(player.getWorld(), x, y, z);
+
+							String rawBlockData = row.substring(row.indexOf("("), row.indexOf(")"));
+							BlockData data = Bukkit.createBlockData(rawBlockData);
+
+							location.getBlock().setType(type);
+							location.getBlock().setBlockData(data, true);
+						}
+					} catch (Exception ignored) { }
+				}
+			}
+			return true;
+		}
+
+		return false;
+	}
+
 
 
 
@@ -59,5 +132,11 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 		for(Player allPlayers : Bukkit.getOnlinePlayers()) {
 			allPlayers.sendMessage(rank + name + ChatColor.WHITE + ": " + MopsUtils.convertColorCodes(message).trim());
 		}
+	}
+
+
+	@Override
+	public @Nullable InputStream getResource(@NotNull String filename) {
+		return super.getResource(filename);
 	}
 }
