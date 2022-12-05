@@ -119,7 +119,8 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
 							Location location = new Location(player.getWorld(), x, y, z);
 
-							String rawBlockData = row.substring(row.indexOf("(") + 1, row.indexOf(")")).trim().substring(row.indexOf("{") + 1, row.indexOf("}")).trim();
+							String veryRawBlockData = row.substring(row.indexOf("(") + 1, row.indexOf(")")).trim();
+							String rawBlockData = veryRawBlockData.substring(row.indexOf("{") + 1, row.indexOf("}")).trim();
 							BlockData data = Bukkit.createBlockData(rawBlockData);
 
 							location.getBlock().setType(type);
