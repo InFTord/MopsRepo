@@ -1,6 +1,8 @@
 package ml.mops.pvps;
 
+import ml.mops.base.commands.AdminUtils;
 import ml.mops.base.commands.Commands;
+import ml.mops.base.commands.PlayerEssentials;
 import ml.mops.utils.MopsUtils;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Player;
@@ -46,8 +48,8 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
 	@Override
 	public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
-		if(pvpExclusiveCommands(sender, command, label, args, this)) {
-			return pvpExclusiveCommands(sender, command, label, args, this);
+		if (pvpExclusiveCommands(sender, command, label, args, this)) {
+			return true;
 		} else {
 			return new Commands().commandsExecutor(sender, command, label, args, this);
 		}
@@ -97,7 +99,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 						bufferedReader.close();
 
 						player.sendMessage("string read");
-
+						player.sendMessage(ChatColor.YELLOW + stringBuilder.toString().substring(0, 20));
 
 						String[] rowArray = stringBuilder.toString().split("\n");
 
@@ -118,6 +120,10 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
 							location.getBlock().setType(type);
 							location.getBlock().setBlockData(data, true);
+
+							if(Boolean.parseBoolean(args[4])) {
+								player.sendMessage(ChatColor.RED + "" + type + " " + x + " " + y + " " + z + " " + rawBlockData);
+							}
 						}
 					} catch (Exception ignored) { }
 				}
