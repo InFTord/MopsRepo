@@ -84,6 +84,8 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
 					player.sendMessage("file found");
 
+					String[] rowArray = new String[] {""};
+
 					try {
 						assert stream != null;
 						BufferedReader bufferedReader = new BufferedReader(
@@ -99,9 +101,11 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 						bufferedReader.close();
 
 						player.sendMessage("string read");
-						player.sendMessage(ChatColor.YELLOW + stringBuilder.toString().substring(0, 20));
+						player.sendMessage(ChatColor.YELLOW + stringBuilder.toString().substring(0, 50));
 
-						String[] rowArray = stringBuilder.toString().split("\n");
+						rowArray = stringBuilder.toString().split("\n");;
+
+					} catch (Exception ignored) { }
 
 						for (String row : rowArray) {
 							Material type = Material.valueOf(row.substring(row.indexOf("["), row.indexOf("]")));
@@ -125,7 +129,6 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 								player.sendMessage(ChatColor.RED + "" + type + " " + x + " " + y + " " + z + " " + rawBlockData);
 							}
 						}
-					} catch (Exception ignored) { }
 				}
 			}
 			return true;
