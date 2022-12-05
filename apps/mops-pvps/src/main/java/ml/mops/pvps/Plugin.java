@@ -63,14 +63,24 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 		Player player = (Player) sender;
 
 		if(command.getName().equals("testpvp")) {
+			player.sendMessage("command sent");
+
 			if(args[0].equals("loadCuboid")) {
+				player.sendMessage("load cuboid");
+
 				Map map = Map.valueOf(args[1]);
 				boolean confirm = Boolean.parseBoolean(args[2]);
 				boolean confirm2 = args[3].equals("CONFIRM");
 
+				player.sendMessage("parsed");
+
 				if (perms && confirm && confirm2) {
 
+					player.sendMessage("conditions met");
+
 					InputStream stream = getResource(map.getFileName());
+
+					player.sendMessage("file found");
 
 					try {
 						assert stream != null;
@@ -86,6 +96,8 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 						}
 						bufferedReader.close();
 
+						player.sendMessage("string read");
+
 
 						String[] rowArray = stringBuilder.toString().split("\n");
 
@@ -93,7 +105,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 							Material type = Material.valueOf(row.substring(row.indexOf("["), row.indexOf("]")));
 
 							String locationString = row.substring(row.indexOf("{"), row.indexOf("}"));
-							String[] xyz = row.split(" ");
+							String[] xyz = locationString.split(" ");
 
 							int x = Integer.parseInt(xyz[0]);
 							int y = Integer.parseInt(xyz[1]);
