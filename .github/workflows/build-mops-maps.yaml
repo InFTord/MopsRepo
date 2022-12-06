@@ -1,15 +1,15 @@
-name: Build Lobby
+name: Build Maps
 
 on:
   push:
     paths:
-      - 'apps/mops-lobby/**'
-      - '.github/workflows/build-mopslobby.yaml'
+      - 'apps/mops-maps/**'
+      - '.github/workflows/build-mops-maps.yaml'
       - 'libs/mops-base/**'
   pull_request:
     paths:
-      - 'apps/mops-lobby/**'
-      - '.github/workflows/build-mopslobby.yaml'
+      - 'apps/mops-maps/**'
+      - '.github/workflows/build-mops-maps.yaml'
       - 'libs/mops-base/**'
 
 jobs:
@@ -25,14 +25,14 @@ jobs:
           java-version: '18'
           distribution: 'zulu'
           cache: maven
-      - name: Cache NMS
-        id: cache-nms
-        uses: actions/cache@v3
-        with:
-          path: libs/mops-base/scripts/work
-          key: ${{ runner.os }}-nms-1_19
-          restore-keys: |
-            nps-${{ hashFiles('libs/mops-base/scripts/build-tools.sh') }}-${{ hashFiles('libs/mops-base/scripts/mvn-install-1_19.sh') }}-1_19
+      #      - name: Cache NMS
+      #        id: cache-nms
+      #        uses: actions/cache@v3
+      #        with:
+      #          path: libs/mops-base/scripts/work
+      #          key: ${{ runner.os }}-nms-1_19
+      #          restore-keys: |
+      #            nps-${{ hashFiles('libs/mops-base/scripts/build-tools.sh') }}-${{ hashFiles('libs/mops-base/scripts/mvn-install-1_19.sh') }}-1_19
       - name: Restore Maven cache
         uses: skjolber/maven-cache-github-action@v1
         with:
@@ -43,15 +43,15 @@ jobs:
           cd ./libs/mops-base/scripts/
           ./mvn-install-1_19.sh
           cd /
-      - name: 'Install libs and build Lobby'
-        run: mvn -X install --projects :mops-base,:mops-lobby
+      - name: 'Install libs and build Maps'
+        run: mvn -X install --projects :mops-base,:mops-maps
       - name: 'Remove unnecessary jar'
-        run: rm apps/mops-lobby/target/original-*.jar
+        run: rm apps/mops-maps/target/original-*.jar
       - name: 'Upload .jar artefact of plugin'
         uses: actions/upload-artifact@v3.1.1
         with:
           name: Lobby Plugin JAR
-          path: apps/mops-lobby/target/*.jar
+          path: apps/mops-maps/target/*.jar
       - name: Save Maven cache
         uses: skjolber/maven-cache-github-action@v1
         with:

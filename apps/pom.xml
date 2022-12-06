@@ -30,6 +30,7 @@
         <module>mops-lobby</module>
         <module>mops-pvps</module>
         <module>wool-battle</module>
+        <module>mops-maps</module>
     </modules>
 
 </project>
