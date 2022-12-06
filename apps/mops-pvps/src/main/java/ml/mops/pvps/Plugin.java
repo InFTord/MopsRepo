@@ -233,4 +233,6 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 	public @Nullable InputStream getResource(@NotNull String filename) {
 		return super.getResource(filename);
 	}
+
+	// бап бипп буп барапимпум бип буп
 }
