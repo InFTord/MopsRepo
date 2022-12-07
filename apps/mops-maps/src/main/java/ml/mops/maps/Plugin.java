@@ -1,4 +1,4 @@
-package ml.mops.mapl;
+package ml.mops.maps;
 
 import ml.mops.base.commands.Commands;
 import org.bukkit.Bukkit;
