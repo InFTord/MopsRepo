@@ -3,7 +3,7 @@ main: ml.mops.pvps.Plugin
 version: "'indev-SNAPSHOT-1.0"
 api-version: 1.19
 author: MopsCorporation
-description: Plugin for MopsNetworks lobby
+description: Plugin for MopsNetworks PVP
 commands:
   slimetest:
     description: ""

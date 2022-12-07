@@ -221,7 +221,7 @@
 [BEDROCK] {3.0 6.5 -19.0} (CraftBlockData{minecraft:bedrock})
 [BEDROCK] {-4.0 7.5 -19.0} (CraftBlockData{minecraft:bedrock})
 [COAL_BLOCK] {-3.0 7.5 -19.0} (CraftBlockData{minecraft:coal_block})
-[OAK_SIGN] {-1.0 7.5 -19.0} (CraftBlockData{minecraft:oak_sign[rotation=0,waterlogged=false]}) *text1: executecode* *text2: PLAYER1_SPAWN* *text3: 0 -1 0* *text4: *
+[EXECUTECODE] {-1.0 6.5 -19.0} (PLAYER1_SPAWN)
 [COAL_BLOCK] {2.0 7.5 -19.0} (CraftBlockData{minecraft:coal_block})
 [BEDROCK] {3.0 7.5 -19.0} (CraftBlockData{minecraft:bedrock})
 [BEDROCK] {-4.0 8.5 -19.0} (CraftBlockData{minecraft:bedrock})
@@ -4948,7 +4948,7 @@
 [GRAY_TERRACOTTA] {-17.0 6.5 -1.0} (CraftBlockData{minecraft:gray_terracotta})
 [SMOOTH_SANDSTONE] {-6.0 6.5 -1.0} (CraftBlockData{minecraft:smooth_sandstone})
 [SANDSTONE_WALL] {-5.0 6.5 -1.0} (CraftBlockData{minecraft:sandstone_wall[east=none,north=none,south=none,up=true,waterlogged=false,west=low]})
-[OAK_SIGN] {0.0 6.5 -1.0} (CraftBlockData{minecraft:oak_sign[rotation=8,waterlogged=false]}) *text1: executecode* *text2: TURTLE_SPAWN* *text3: 0 -1 0* *text4: *
+[EXECUTECODE] {0.0 5.5 -1.0} (TURTLE_SPAWN)
 [SANDSTONE_WALL] {5.0 6.5 -1.0} (CraftBlockData{minecraft:sandstone_wall[east=low,north=none,south=none,up=true,waterlogged=false,west=none]})
 [SMOOTH_SANDSTONE] {6.0 6.5 -1.0} (CraftBlockData{minecraft:smooth_sandstone})
 [GRAY_TERRACOTTA] {16.0 6.5 -1.0} (CraftBlockData{minecraft:gray_terracotta})
@@ -10085,7 +10085,7 @@
 [BEDROCK] {3.0 6.5 18.0} (CraftBlockData{minecraft:bedrock})
 [BEDROCK] {-4.0 7.5 18.0} (CraftBlockData{minecraft:bedrock})
 [COAL_BLOCK] {-3.0 7.5 18.0} (CraftBlockData{minecraft:coal_block})
-[OAK_SIGN] {0.0 7.5 18.0} (CraftBlockData{minecraft:oak_sign[rotation=8,waterlogged=false]}) *text1: executecode* *text2: PLAYER2_SPAWN* *text3: 0 -1 0* *text4: *
+[EXECUTECODE] {0.0 6.5 18.0} (PLAYER2_SPAWN)
 [COAL_BLOCK] {2.0 7.5 18.0} (CraftBlockData{minecraft:coal_block})
 [BEDROCK] {3.0 7.5 18.0} (CraftBlockData{minecraft:bedrock})
 [BEDROCK] {-4.0 8.5 18.0} (CraftBlockData{minecraft:bedrock})

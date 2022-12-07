@@ -1,5 +1,6 @@
 package ml.mops.pvps;
 
+import it.unimi.dsi.fastutil.Hash;
 import ml.mops.base.Kit;
 import ml.mops.base.commands.AdminUtils;
 import ml.mops.base.commands.Commands;
@@ -24,26 +25,21 @@ import org.jetbrains.annotations.Nullable;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.HashMap;
 
 
 public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
 	World mainworld;
 
-	Location location1;
-	Location location2;
-
-	Location turtleLocation;
+	Location turtleLoc;
 
 	@Override
 	public void onEnable() {
 		Bukkit.getServer().getPluginManager().registerEvents(this, this);
 		mainworld = Bukkit.getServer().getWorlds().get(0);
 
-		location1 = new Location(mainworld, 0, 0, 0);
-		location2 = new Location(mainworld, 0, 0, 0);
-
-		turtleLocation = new Location(mainworld, 0, 0, 0);
+		turtleLoc = new Location(mainworld, 0, 0, 0);
 	}
 
 	@Override
@@ -65,11 +61,9 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 	Player player1;
 	Player player2;
 
-	boolean ready1 = false;
-	boolean ready2 = false;
-
-	Kit player1kit = null;
-	Kit player2kit = null;
+	HashMap<Player, Boolean> ready = new HashMap<>();
+	HashMap<Player, Kit> kit = new HashMap<>();
+	HashMap<Player, Location> spawn = new HashMap<>();
 
 
 	@Override
@@ -148,15 +142,22 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent event) {
+		Player player = event.getPlayer();
+
 		if(player1 == null) {
-			player1 = event.getPlayer();
+			player1 = player;
 		} else {
-			player2 = event.getPlayer();
+			player2 = player;
 		}
+
+		ready.put(player, false);
+		spawn.putIfAbsent(player, new Location(player.getWorld(), 0, 0, 0));
 	}
 
 	@EventHandler
 	public void onPlayerLeave(PlayerQuitEvent event) {
+		Player player = event.getPlayer();
+
 		if(player1 != null) {
 			player1 = null;
 		} else {
@@ -208,23 +209,50 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 		} catch (Exception ignored) { }
 
 		for (String row : rowArray) {
-			Material type = Material.valueOf(row.substring(row.indexOf("[") + 1, row.indexOf("]")).trim());
+			String materialtext = row.substring(row.indexOf("[") + 1, row.indexOf("]")).trim();
 
 			String locationString = row.substring(row.indexOf("{") + 1, row.indexOf("}")).trim();
-			String[] xyz = locationString.split(" ");
 
-			double x = Double.parseDouble(String.valueOf(xyz[0]));
-			double y = Double.parseDouble(String.valueOf(xyz[1]));
-			double z = Double.parseDouble(String.valueOf(xyz[2]));
+			if(materialtext.equals("EXECUTECODE")) {
+				String[] xyz = locationString.split(" ");
 
-			Location location = new Location(world, x, y, z);
+				double x = Double.parseDouble(String.valueOf(xyz[0]));
+				double y = Double.parseDouble(String.valueOf(xyz[1]));
+				double z = Double.parseDouble(String.valueOf(xyz[2]));
 
-			String veryRawBlockData = row.substring(row.indexOf("(") + 1, row.indexOf(")")).trim();
-			String rawBlockData = veryRawBlockData.substring(veryRawBlockData.indexOf(":") + 1, veryRawBlockData.indexOf("}")).trim();
-			BlockData data = Bukkit.createBlockData(rawBlockData);
+				Location location = new Location(world, x, y, z);
 
-			location.getBlock().setType(type);
-			location.getBlock().setBlockData(data, true);
+				String commandData = row.substring(row.indexOf("(") + 1, row.indexOf(")")).trim();
+
+				switch (commandData) {
+					case "PLAYER1_SPAWN" -> {
+						spawn.put(player1, location);
+					}
+					case "PLAYER2_SPAWN" -> {
+						spawn.put(player2, location);
+					}
+					case "TURTLE_SPAWN" -> {
+						turtleLoc = location;
+					}
+				}
+			} else {
+				Material type = Material.valueOf(materialtext);
+
+				String[] xyz = locationString.split(" ");
+
+				double x = Double.parseDouble(String.valueOf(xyz[0]));
+				double y = Double.parseDouble(String.valueOf(xyz[1]));
+				double z = Double.parseDouble(String.valueOf(xyz[2]));
+
+				Location location = new Location(world, x, y, z);
+
+				String veryRawBlockData = row.substring(row.indexOf("(") + 1, row.indexOf(")")).trim();
+				String rawBlockData = veryRawBlockData.substring(veryRawBlockData.indexOf(":") + 1, veryRawBlockData.indexOf("}")).trim();
+				BlockData data = Bukkit.createBlockData(rawBlockData);
+
+				location.getBlock().setType(type);
+				location.getBlock().setBlockData(data, true);
+			}
 		}
 	}
 
