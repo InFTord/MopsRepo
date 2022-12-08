@@ -47,21 +47,32 @@
     </repositories>
 
     <dependencies>
-        <dependency>
-            <groupId>org.purpurmc.purpur</groupId>
-            <artifactId>purpur-api</artifactId>
-            <version>1.19-R0.1-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>v1_19_R1</artifactId>
-            <version>b3513</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.purpurmc.purpur</groupId>-->
+<!--            <artifactId>purpur-api</artifactId>-->
+<!--            <version>1.19-R0.1-SNAPSHOT</version>-->
+<!--            <scope>provided</scope>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>org.spigotmc</groupId>-->
+<!--            <artifactId>v1_19_R1</artifactId>-->
+<!--            <version>b3513</version>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>ml.mops.base</groupId>-->
+<!--            <artifactId>mops-base</artifactId>-->
+<!--            <version>${project.version}</version>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>ml.mops.base</groupId>
             <artifactId>mops-base</artifactId>
-            <version>${project.version}</version>
+            <version>IN_DEV</version>
+        </dependency>
+        <dependency>
+            <groupId>net.kyori</groupId>
+            <artifactId>adventure-api</artifactId>
+            <version>4.12.0</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 
