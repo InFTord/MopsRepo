@@ -91,6 +91,7 @@
                                     <include>com.fasterxml.jackson.core:*</include>
                                     <include>com.fasterxml.jackson.dataformat:jackson-dataformat-yaml</include>
                                     <include>*:okhttp</include>
+                                    <include>org.jetbrains.kotlin:*</include>
                                 </includes>
                             </artifactSet>
                         </configuration>
