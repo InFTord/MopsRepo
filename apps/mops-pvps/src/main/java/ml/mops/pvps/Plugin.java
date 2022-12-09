@@ -1,5 +1,8 @@
 package ml.mops.pvps;
 
+import club.minnced.discord.webhook.WebhookClient;
+import club.minnced.discord.webhook.send.WebhookEmbed;
+import club.minnced.discord.webhook.send.WebhookEmbedBuilder;
 import it.unimi.dsi.fastutil.Hash;
 import ml.mops.base.Kit;
 import ml.mops.base.commands.AdminUtils;
@@ -22,6 +25,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.awt.Color;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -40,6 +44,14 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 		mainworld = Bukkit.getServer().getWorlds().get(0);
 
 		turtleLoc = new Location(mainworld, 0, 0, 0);
+
+		WebhookClient client = WebhookClient.withUrl("https://discord.com/api/webhooks/983390269665865778/DzC0nsW5ge9Zl4mgoQQseOM26KMSfmgX-_gFlCLTMfOpLwxrK-5QbpFvEdQhVxY0GZ4x");
+
+		WebhookEmbed embed = new WebhookEmbedBuilder()
+				.setColor(Color.GREEN.getRGB())
+				.setDescription("\uD83D\uDFE2 mopspvps запущен.")
+				.build();
+		client.send(embed);
 	}
 
 	@Override
@@ -53,6 +65,14 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 		for(Player player : Bukkit.getOnlinePlayers()) {
 			player.kickPlayer(ChatColor.YELLOW + "Server closed.\nShortly will be back on, maybe.");
 		}
+
+		WebhookClient client = WebhookClient.withUrl("https://discord.com/api/webhooks/983390269665865778/DzC0nsW5ge9Zl4mgoQQseOM26KMSfmgX-_gFlCLTMfOpLwxrK-5QbpFvEdQhVxY0GZ4x");
+
+		WebhookEmbed embed = new WebhookEmbedBuilder()
+				.setColor(Color.RED.getRGB())
+				.setDescription("\uD83D\uDD34 mopspvps выключен.")
+				.build();
+		client.send(embed);
 	}
 
 	boolean gameSession = false;

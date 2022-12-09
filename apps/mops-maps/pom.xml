@@ -104,6 +104,7 @@
                                     <include>ml.mops.base:*</include>
                                     <include>com.fasterxml.jackson.core:*</include>
                                     <include>com.fasterxml.jackson.dataformat:jackson-dataformat-yaml</include>
+                                    <include>*:discord-webhooks</include>
                                 </includes>
                             </artifactSet>
                         </configuration>

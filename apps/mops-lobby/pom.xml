@@ -85,6 +85,8 @@
                             <artifactSet>
                                 <includes>
                                     <include>ml.mops.base:*</include>
+                                    <include>*:NoteBlockAPI</include>
+                                    <include>*:discord-webhooks</include>
                                 </includes>
                             </artifactSet>
                         </configuration>
