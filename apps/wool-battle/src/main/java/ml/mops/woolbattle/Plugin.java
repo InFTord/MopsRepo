@@ -51,7 +51,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 	// спасибо
 	// пододжди два года и сделаю))))
 
-	 final MopsUtils utils = new MopsUtils(this);
+	final MopsUtils utils = new MopsUtils(this);
 	final Abilities abilities = new Abilities(this);
 	Translation translator;
 
