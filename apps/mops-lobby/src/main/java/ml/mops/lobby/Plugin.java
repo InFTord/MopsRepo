@@ -445,6 +445,15 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                     dialogue = "hi this par t of hub not buildt please wait!!1";
                     player.playSound(player.getLocation(), Sound.ENTITY_WOLF_AMBIENT, 10, 2);
                 }
+                if (entity.getScoreboardTags().contains("tord")) {
+                    List<String> dialogueList = new ArrayList<>();
+                    dialogueList.add("привет я клоун");
+                    dialogueList.add("прив");
+
+                    player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BANJO, 2, 0);
+
+                    MopsUtils.sendRandomDialogueMessage(dialogueList, player, entity);
+                }
                 if (entity.getScoreboardTags().contains("woolbattleDogeNPC")) {
                     switch (woolbattleDogeDialogue.get(player)) {
                         case 0 -> {
