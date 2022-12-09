@@ -453,6 +453,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                     player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BANJO, 2, 0);
 
                     MopsUtils.sendRandomDialogueMessage(dialogueList, player, entity);
+                    randomDialogue = true;
                 }
                 if (entity.getScoreboardTags().contains("woolbattleDogeNPC")) {
                     switch (woolbattleDogeDialogue.get(player)) {
