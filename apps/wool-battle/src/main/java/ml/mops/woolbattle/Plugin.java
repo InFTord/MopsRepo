@@ -118,7 +118,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			lang = config.getString("lang").toLowerCase(Locale.ROOT);
 			logger.info("lang string: " + lang);
 			if (lang.isBlank()) {
-				logger.warning("lang in blank");
+				logger.warning("lang is blank");
 				lang = "rus";
 				throw new Exception("couldn't load custom lang");
 			}
