@@ -108,6 +108,7 @@
                                     <include>*:discord-webhooks</include>
                                     <include>*:NoteBlockAPI</include>
                                     <include>org.json:*</include>
+                                    <include>*:okhttp</include>
                                 </includes>
                             </artifactSet>
                         </configuration>
