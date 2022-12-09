@@ -108,7 +108,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 	@Override
 	public void onEnable() {
-		defaultOnEnable();
+		super.onEnable();
 		Bukkit.getServer().getPluginManager().registerEvents(this, this);
 
 		logger.info("Loaded translations: \n" + translation.saveToString());
