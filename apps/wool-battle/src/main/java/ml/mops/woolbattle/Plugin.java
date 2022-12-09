@@ -111,14 +111,34 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		super.onEnable();
 		Bukkit.getServer().getPluginManager().registerEvents(this, this);
 
+		this.saveDefaultConfig();
+		this.config = this.getConfig();
+		logger.info("config: \n" + config.saveToString() );
+		logger.info("default config: \n" + ((FileConfiguration) Objects.requireNonNull(config.getDefaults())).saveToString());
+
+		String data;
+
+		try (Scanner reader = new Scanner(Objects.requireNonNull(getResource("translations.yml")))) {
+			data = "";
+			while (reader.hasNextLine()) {
+				data = data + "\n" + reader.nextLine();
+			}
+		}
+
+		try {
+			this.translation.loadFromString(data);
+		} catch (InvalidConfigurationException e) {
+			logger.warning(Arrays.toString(e.getStackTrace()));
+		}
+
 		logger.info("Loaded translations: \n" + translation.saveToString());
 		logger.info("6");
 
 		try {
-			lang = config.getString("lang").toLowerCase(Locale.ROOT);
+			lang = Objects.requireNonNull(config.getString("lang")).toLowerCase(Locale.ROOT);
 			logger.info("lang string: " + lang);
 			if (lang.isBlank()) {
-				logger.warning("lang in blank");
+				logger.warning("lang is blank");
 				lang = "rus";
 				throw new Exception("couldn't load custom lang");
 			}

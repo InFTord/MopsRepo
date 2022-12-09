@@ -92,9 +92,19 @@
             <id>sonatype-oss-snapshots</id>
             <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
         </repository>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+
     </repositories>
 
     <dependencies>
+        <dependency>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <version>23.0.0</version>
+        </dependency>
         <dependency>
             <groupId>org.purpurmc.purpur</groupId>
             <artifactId>purpur-api</artifactId>
@@ -155,6 +165,20 @@
             <artifactId>exec-maven-plugin</artifactId>
             <version>3.1.0</version>
         </dependency>
+<!--        Я их добавил в пом только мопс бейса так как по идеи они должны загружать и в другие (ну типо зависимость зависимости), но скорее всего оно не будет работать без include (чекни pom.xml у вулбатла для примера) -->
+        <dependency>
+            <groupId>club.minnced</groupId>
+            <artifactId>discord-webhooks</artifactId>
+            <version>0.8.2</version>
+        </dependency>
+<!--        ДЛЯ РАБОТЫ НЕОБХОДИМ МЕМ в plugin.yml: softdepend: [NoteBlockAPI]-->
+        <dependency>
+            <groupId>com.github.koca2000</groupId>
+            <artifactId>NoteBlockAPI</artifactId>
+            <version>-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+
 
     </dependencies>
 
