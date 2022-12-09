@@ -555,6 +555,8 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         woolbattleDogeDialogue.putIfAbsent(player, 0);
         pigeonDialogue.putIfAbsent(player, 0);
 
+        player.setGameMode(GameMode.ADVENTURE);
+
         for(Player allPlayers : Bukkit.getOnlinePlayers()) {
             allPlayers.sendMessage( ChatColor.GOLD + "[MopsPVPs] " + ChatColor.YELLOW + player.getName() + " joined the game.");
         }
