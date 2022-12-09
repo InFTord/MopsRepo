@@ -27,7 +27,13 @@ public class MopsPlugin extends JavaPlugin {
 		logger.info("§aS§at§2a§ar§2t§ai§2n§ag §2M§ao§2p§as§2P§al§2u§ag§2i§an§2!");
 		for(Method m : doOnEnable) {
 			//m.invoke();
+//			m.invoke()
 		}
+	}
+
+	public void defaultOnEnable() {
+		this.logger = getLogger();
+		logger.info("§aS§at§2a§ar§2t§ai§2n§ag §2M§ao§2p§as§2P§al§2u§ag§2i§an§2!");
 	}
 
 	//public void registerUtilCommands() {
