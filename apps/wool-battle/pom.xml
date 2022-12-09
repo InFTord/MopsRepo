@@ -105,6 +105,10 @@
                                     <include>ml.mops.base:*</include>
                                     <include>com.fasterxml.jackson.core:*</include>
                                     <include>com.fasterxml.jackson.dataformat:jackson-dataformat-yaml</include>
+<!--                                     [СКОРЕЕ ВСЕГО] Строку ниже нужно добавить в pom.xml каждого плагина где нужен нот блок апи-->
+                                    <include>*:NoteBlockAPI</include>
+<!--                                    [СКОРЕЕ ВСЕГО] Строку ниже нужно добавить в pom.xml каждого плагина где нужны вебхуйи-->
+                                    <include>*:discord-webhooks</include>
                                 </includes>
                             </artifactSet>
                         </configuration>
