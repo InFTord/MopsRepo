@@ -1,12 +1,12 @@
 package ml.mops.base;
 
-import ml.mops.base.game.GameSession;
 import ml.mops.utils.Translation;
 import net.kyori.adventure.text.TextComponent;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
+import ml.mops.base.game.GameSession;
 
 import javax.annotation.Nullable;
 import java.lang.reflect.Method;
