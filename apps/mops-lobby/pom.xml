@@ -82,7 +82,7 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
-                            <artifactSet>
+<!--                            <artifactSet>-->
 <!--                                <includes>-->
 <!--                                    <include>*:*</include>-->
 <!--                                    <include>ml.mops.base:*</include>-->
@@ -94,24 +94,26 @@
 <!--                                    <include>*:okhttp</include>-->
 <!--                                    <include>org.jetbrains.*:*</include> &lt;!&ndash; так же можно? пж daddy скажи что да&ndash;&gt;-->
 <!--                                </includes>-->
-                                <excludes>
-                                    <exclude>com.google.*:*</exclude>
-                                    <exclude>com.mojang:*</exclude>
-                                    <exclude>commons-*:*</exclude>
-                                    <exclude>io.netty:*</exclude>
-                                    <exclude>javax.inject:*</exclude>
-                                    <exclude>io.sentry:*</exclude>
-                                    <exclude>net.kyori:*</exclude>
-                                    <exclude>org.apache.*:*</exclude>
-                                    <exclude>org.bukkit:*</exclude>
-                                    <exclude>org.codehaus.*:*</exclude>
-                                    <exclude>eclipse.sisu:*</exclude>
-                                    <exclude>org.slf4j:*</exclude>
-                                    <exclude>org.purpurmc.purpur:*</exclude>
-                                    <exclude>org.spigotmc:*</exclude>
-                                    <exclude>org.yaml:*</exclude>
-                                </excludes>
-                            </artifactSet>
+<!--                                <excludes>-->
+<!--                                    <exclude>com.google.*:*</exclude>-->
+<!--                                    <exclude>com.mojang:*</exclude>-->
+<!--                                    <exclude>commons-*:*</exclude>-->
+<!--                                    <exclude>io.netty:*</exclude>-->
+<!--                                    <exclude>javax.inject:*</exclude>-->
+<!--                                    <exclude>io.sentry:*</exclude>-->
+<!--                                    <exclude>net.kyori:*</exclude>-->
+<!--                                    <exclude>org.apache.*:*</exclude>-->
+<!--                                    <exclude>org.bukkit:*</exclude>-->
+<!--                                    <exclude>org.codehaus.*:*</exclude>-->
+<!--                                    <exclude>eclipse.sisu:*</exclude>-->
+<!--                                    <exclude>org.slf4j:*</exclude>-->
+<!--                                    <exclude>org.purpurmc.purpur:*</exclude>-->
+<!--                                    <exclude>org.spigotmc:*</exclude>-->
+<!--                                    <exclude>org.yaml:*</exclude>-->
+<!--                                    <exclude>org.jetbrains.kotlin:*</exclude>-->
+<!--                                </excludes>-->
+<!--                            </artifactSet>-->
+                            <minimizeJar>true</minimizeJar>
                         </configuration>
                     </execution>
                 </executions>
