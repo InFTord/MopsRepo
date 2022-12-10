@@ -44,10 +44,6 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     HashMap<Player, Integer> woolbattleDogeDialogue = new HashMap<>();
     HashMap<Player, Integer> pigeonDialogue = new HashMap<>();
 
-    WebhookClientBuilder webhookClientBuilder = new WebhookClientBuilder("https://discord.com/api/webhooks/1051203515818717244/jeUYGQ_MubANPR6fZLFGxO-1VS_LJllBLgZ0Nm9qHW8sh0EHShu_XpOClAHM7wTdPurC");
-    WebhookClient webhookClient;
-    WebhookEmbed.EmbedAuthor webhookEmbedAuthor = new WebhookEmbed.EmbedAuthor("Вестник плохих новостей", "https://cdn.discordapp.com/attachments/859817248621330482/1051204820121423984/yab.png", "https://rule34.xxx/index.php?page=post&s=list&tags=soldier_%28team_fortress_2%29+gay");
-
     //doors n trapdoors n shit
     List<Location> flippable = new ArrayList<>();
     // atm or bank
@@ -61,26 +57,6 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     public void onEnable() {
         Bukkit.getServer().getPluginManager().registerEvents(this, this);
         World mainworld = Bukkit.getServer().getWorlds().get(0);
-
-        webhookClientBuilder.setThreadFactory((job) -> {
-            Thread thread = new Thread(job);
-            thread.setName("Local discord logs");
-            thread.setDaemon(true);
-            return thread;
-        });
-        webhookClientBuilder.setWait(true);
-        this.webhookClient = webhookClientBuilder.build();
-
-        // Ещё можно сделать клиента гораздо проще: (, но я уже скопировал длинный способ ыыы)
-//        WebhookClient client = WebhookClient.withUrl(url);
-
-        webhookClient.send("Hello World");
-        WebhookEmbedBuilder startupEmbedBuilder = new WebhookEmbedBuilder().setColor(0x11CCEE)
-                .setDescription("дон ягон дон ягон дон ягон (сервер к сожалению онлайн");
-        startupEmbedBuilder.setAuthor(webhookEmbedAuthor);
-        WebhookEmbed startupEmbed = startupEmbedBuilder.build();
-        webhookClient.send(startupEmbed);
-
 
         flippable.add(new Location(mainworld, -102, 9, -195));
         flippable.add(new Location(mainworld, -95, 9, -195));
@@ -193,13 +169,13 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
 
 
-//        WebhookClient client = WebhookClient.withUrl("https://discord.com/api/webhooks/983390269665865778/DzC0nsW5ge9Zl4mgoQQseOM26KMSfmgX-_gFlCLTMfOpLwxrK-5QbpFvEdQhVxY0GZ4x");
-//
-//        WebhookEmbed embed = new WebhookEmbedBuilder()
-//                .setColor(Color.GREEN.getRGB())
-//                .setDescription("\uD83D\uDFE2 mopslobby запущен.")
-//                .build();
-//        client.send(embed);
+        WebhookClient client = WebhookClient.withUrl("https://discord.com/api/webhooks/983390269665865778/DzC0nsW5ge9Zl4mgoQQseOM26KMSfmgX-_gFlCLTMfOpLwxrK-5QbpFvEdQhVxY0GZ4x");
+
+        WebhookEmbed embed = new WebhookEmbedBuilder()
+                .setColor(Color.GREEN.asRGB())
+                .setDescription("\uD83D\uDFE2 mopslobby запущен.")
+                .build();
+        client.send(embed);
     }
 
 
@@ -215,13 +191,13 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             player.kickPlayer(ChatColor.YELLOW + "Server closed.\nShortly will be back on, maybe.");
         }
 
-//        WebhookClient client = WebhookClient.withUrl("https://discord.com/api/webhooks/983390269665865778/DzC0nsW5ge9Zl4mgoQQseOM26KMSfmgX-_gFlCLTMfOpLwxrK-5QbpFvEdQhVxY0GZ4x");
-//
-//        WebhookEmbed embed = new WebhookEmbedBuilder()
-//                .setColor(Color.RED.getRGB())
-//                .setDescription("\uD83D\uDD34 mopslobby выключен.")
-//                .build();
-//        client.send(embed);
+        WebhookClient client = WebhookClient.withUrl("https://discord.com/api/webhooks/983390269665865778/DzC0nsW5ge9Zl4mgoQQseOM26KMSfmgX-_gFlCLTMfOpLwxrK-5QbpFvEdQhVxY0GZ4x");
+
+        WebhookEmbed embed = new WebhookEmbedBuilder()
+                .setColor(Color.RED.asRGB())
+                .setDescription("\uD83D\uDD34 mopslobby выключен.")
+                .build();
+        client.send(embed);
     }
 
 
