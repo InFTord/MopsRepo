@@ -6,7 +6,7 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
-import ml.mops.base.game.GameSession;
+//import ml.mops.base.game.GameSession;
 
 import javax.annotation.Nullable;
 import java.lang.reflect.Method;
@@ -15,7 +15,7 @@ import java.util.*;;
 import java.util.logging.Logger;
 
 public class MopsPlugin extends JavaPlugin {
-	private List<GameSession> gameSessions;
+//	private List<GameSession> gameSessions;
 	protected FileConfiguration config;
 	public final FileConfiguration translation = new YamlConfiguration();
 	protected List<Method> doOnEnable = new LinkedList<>();
