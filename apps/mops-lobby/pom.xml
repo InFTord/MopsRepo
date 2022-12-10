@@ -133,7 +133,7 @@
                                     <exclude>it.unimi.dsi:*</exclude>
 
                                     <exclude>org.yaml:*</exclude>
-                                    <exclude>org.jetbrains.kotlin:*</exclude>
+<!--                                    <exclude>org.jetbrains.kotlin:*</exclude>-->
                                     <exclude>org.jetbrains:*</exclude>
                                     <exclude>org.hamcrest:hamcrest-core</exclude>
                                     <exclude>org.ow2.asm:*</exclude>
