@@ -523,6 +523,11 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                         case 3 -> {
                             dialogue = "I don't have any more swords.";
                             player.playSound(player.getLocation(), Sound.ENTITY_WOLF_AMBIENT, 10, 2);
+
+                            pvpDogeDialogue.put(player, pvpDogeDialogue.get(player) + 1);
+                        }
+                        case 4 -> {
+
                         }
                     }
                 }
