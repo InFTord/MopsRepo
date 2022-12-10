@@ -100,6 +100,7 @@
                                     <exclude>com.google.j2objc:*</exclude>
                                     <exclude>com.google.protobuf:*</exclude>
                                     <exclude>com.google.errorprone:*</exclude>
+                                    <exclude>com.googlecode.json-simple:*</exclude>
                                     <exclude>com.mojang:*</exclude>
                                     <exclude>commons-codec:*</exclude>
                                     <exclude>commons-io:*</exclude>
@@ -107,7 +108,6 @@
                                     <exclude>io.netty:*</exclude>
                                     <exclude>javax.inject:*</exclude>
                                     <exclude>io.sentry:*</exclude>
-                                    <exclude>net.kyori:*</exclude>
                                     <exclude>org.apache.commons:*</exclude>
                                     <exclude>org.apache.http:*</exclude>
                                     <exclude>org.apache.logging:*</exclude>
@@ -115,12 +115,25 @@
                                     <exclude>org.codehaus.plexus:*</exclude>
                                     <exclude>org.codehaus.mojo:*</exclude>
                                     <exclude>eclipse.sisu:*</exclude>
+                                    <exclude>org.eclipse.sisu:*</exclude>
                                     <exclude>org.slf4j:*</exclude>
+                                    <exclude>jline:*</exclude>
+                                    <exclude>junit:*</exclude>
+                                    <exclude>net.java.dev.jna:*</exclude>
+
                                     <exclude>org.purpurmc.purpur:*</exclude>
                                     <exclude>org.spigotmc:*</exclude>
+                                    <exlucde>net.md-5:*</exlucde>
+                                    <exclude>net.kyori:*</exclude>
+
+                                    <exclude>it.unimi.dsi:*</exclude>
+
                                     <exclude>org.yaml:*</exclude>
                                     <exclude>org.jetbrains.kotlin:*</exclude>
                                     <exclude>org.hamcrest:hamcrest-core</exclude>
+                                    <exclude>org.ow2.asm:*</exclude>
+                                    <exclude>org.xerial:*</exclude>
+
                                     <exclude>mysql:mysql-connector-java</exclude>
                                 </excludes>
                             </artifactSet>
