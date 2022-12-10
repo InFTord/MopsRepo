@@ -109,13 +109,17 @@
                                     <exclude>javax.inject:*</exclude>
                                     <exclude>io.sentry:*</exclude>
                                     <exclude>org.apache.commons:*</exclude>
-                                    <exclude>org.apache.http:*</exclude>
-                                    <exclude>org.apache.logging:*</exclude>
+                                    <exclude>org.apache.httpcomponents:*</exclude>
+                                    <exclude>org.apache.logging.log4j:*</exclude>
+                                    <exclude>org.apache.logging.slf4j*</exclude>
+                                    <exclude>org.apache.maven:*</exclude>
+                                    <exclude>org.apache.maven.resolver:*</exclude>
                                     <exclude>org.bukkit:*</exclude>
                                     <exclude>org.codehaus.plexus:*</exclude>
                                     <exclude>org.codehaus.mojo:*</exclude>
                                     <exclude>eclipse.sisu:*</exclude>
                                     <exclude>org.eclipse.sisu:*</exclude>
+                                    <exclude>org.eclipse.aether*</exclude>
                                     <exclude>org.slf4j:*</exclude>
                                     <exclude>jline:*</exclude>
                                     <exclude>junit:*</exclude>
@@ -130,9 +134,11 @@
 
                                     <exclude>org.yaml:*</exclude>
                                     <exclude>org.jetbrains.kotlin:*</exclude>
+                                    <exclude>org.jetbrains:*</exclude>
                                     <exclude>org.hamcrest:hamcrest-core</exclude>
                                     <exclude>org.ow2.asm:*</exclude>
                                     <exclude>org.xerial:*</exclude>
+                                    <exclude>com.github.oshi:*</exclude>
 
                                     <exclude>mysql:mysql-connector-java</exclude>
                                 </excludes>

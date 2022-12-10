@@ -102,12 +102,57 @@
                             <artifactSet>
                                 <includes>
                                     <include>ml.mops.base:*</include>
-                                    <include>com.fasterxml.jackson.core:*</include>
-                                    <include>com.fasterxml.jackson.dataformat:jackson-dataformat-yaml</include>
-                                    <include>*:NoteBlockAPI</include>
-                                    <include>org.json:*</include>
                                 </includes>
+                                <excludes>
+                                    <exclude>com.google.code:*</exclude>
+                                    <exclude>com.google.guava:*</exclude>
+                                    <exclude>com.google.j2objc:*</exclude>
+                                    <exclude>com.google.protobuf:*</exclude>
+                                    <exclude>com.google.errorprone:*</exclude>
+                                    <exclude>com.googlecode.json-simple:*</exclude>
+                                    <exclude>com.mojang:*</exclude>
+                                    <exclude>commons-codec:*</exclude>
+                                    <exclude>commons-io:*</exclude>
+                                    <exclude>commons-lang:*</exclude>
+                                    <exclude>io.netty:*</exclude>
+                                    <exclude>javax.inject:*</exclude>
+                                    <exclude>io.sentry:*</exclude>
+                                    <exclude>org.apache.commons:*</exclude>
+                                    <exclude>org.apache.httpcomponents:*</exclude>
+                                    <exclude>org.apache.logging.log4j:*</exclude>
+                                    <exclude>org.apache.logging.slf4j*</exclude>
+                                    <exclude>org.apache.maven:*</exclude>
+                                    <exclude>org.apache.maven.resolver:*</exclude>
+                                    <exclude>org.bukkit:*</exclude>
+                                    <exclude>org.codehaus.plexus:*</exclude>
+                                    <exclude>org.codehaus.mojo:*</exclude>
+                                    <exclude>eclipse.sisu:*</exclude>
+                                    <exclude>org.eclipse.sisu:*</exclude>
+                                    <exclude>org.eclipse.aether*</exclude>
+                                    <exclude>org.slf4j:*</exclude>
+                                    <exclude>jline:*</exclude>
+                                    <exclude>junit:*</exclude>
+                                    <exclude>net.java.dev.jna:*</exclude>
+
+                                    <exclude>org.purpurmc.purpur:*</exclude>
+                                    <exclude>org.spigotmc:*</exclude>
+                                    <exlucde>net.md-5:*</exlucde>
+                                    <exclude>net.kyori:*</exclude>
+
+                                    <exclude>it.unimi.dsi:*</exclude>
+
+                                    <exclude>org.yaml:*</exclude>
+                                    <exclude>org.jetbrains.kotlin:*</exclude>
+                                    <exclude>org.jetbrains:*</exclude>
+                                    <exclude>org.hamcrest:hamcrest-core</exclude>
+                                    <exclude>org.ow2.asm:*</exclude>
+                                    <exclude>org.xerial:*</exclude>
+                                    <exclude>com.github.oshi:*</exclude>
+
+                                    <exclude>mysql:mysql-connector-java</exclude>
+                                </excludes>
                             </artifactSet>
+                            <minimizeJar>true</minimizeJar>
                         </configuration>
                     </execution>
                 </executions>
