@@ -5,20 +5,11 @@ package ml.mops.lobby;
 //import club.minnced.discord.webhook.send.WebhookEmbedBuilder;
 //import club.minnced.discord.webhook.send.WebhookMessageBuilder;
 import club.minnced.discord.webhook.WebhookClient;
+import club.minnced.discord.webhook.WebhookClientBuilder;
 import club.minnced.discord.webhook.send.WebhookEmbed;
 import club.minnced.discord.webhook.send.WebhookEmbedBuilder;
-import club.minnced.discord.webhook.send.WebhookMessageBuilder;
-import com.google.common.io.ByteArrayDataOutput;
-import com.google.common.io.ByteStreams;
 import ml.mops.base.commands.Commands;
 import ml.mops.utils.MopsUtils;
-import net.minecraft.network.chat.ChatMessageType;
-import net.minecraft.network.chat.PlayerChatMessage;
-import net.minecraft.network.protocol.game.PacketPlayOutEntityHeadRotation;
-import net.minecraft.network.protocol.game.PacketPlayOutNamedEntitySpawn;
-import net.minecraft.network.protocol.game.PacketPlayOutPlayerInfo;
-import net.minecraft.server.level.EntityPlayer;
-import net.minecraft.server.network.PlayerConnection;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.*;
@@ -26,7 +17,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.event.block.Action;
-import org.bukkit.craftbukkit.v1_19_R1.entity.CraftPlayer;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -45,22 +35,18 @@ import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
-import java.awt.*;
-import java.awt.Color;
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
     HashMap<Player, Integer> pvpDogeDialogue = new HashMap<>();
     HashMap<Player, Integer> woolbattleDogeDialogue = new HashMap<>();
     HashMap<Player, Integer> pigeonDialogue = new HashMap<>();
+
+    WebhookClientBuilder webhookClientBuilder = new WebhookClientBuilder("https://discord.com/api/webhooks/1051203515818717244/jeUYGQ_MubANPR6fZLFGxO-1VS_LJllBLgZ0Nm9qHW8sh0EHShu_XpOClAHM7wTdPurC");
+    WebhookClient webhookClient;
+    WebhookEmbed.EmbedAuthor webhookEmbedAuthor = new WebhookEmbed.EmbedAuthor("Вестник плохих новостей", "https://cdn.discordapp.com/attachments/859817248621330482/1051204820121423984/yab.png", "https://rule34.xxx/index.php?page=post&s=list&tags=soldier_%28team_fortress_2%29+gay");
 
     //doors n trapdoors n shit
     List<Location> flippable = new ArrayList<>();
@@ -75,6 +61,25 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     public void onEnable() {
         Bukkit.getServer().getPluginManager().registerEvents(this, this);
         World mainworld = Bukkit.getServer().getWorlds().get(0);
+
+        webhookClientBuilder.setThreadFactory((job) -> {
+            Thread thread = new Thread(job);
+            thread.setName("Local discord logs");
+            thread.setDaemon(true);
+            return thread;
+        });
+        webhookClientBuilder.setWait(true);
+        this.webhookClient = webhookClientBuilder.build();
+
+        // Ещё можно сделать клиента гораздо проще: (, но я уже скопировал длинный способ ыыы)
+//        WebhookClient client = WebhookClient.withUrl(url);
+
+        webhookClient.send("Hello World");
+        WebhookEmbedBuilder startupEmbedBuilder = new WebhookEmbedBuilder().setColor(0x11CCEE)
+                .setDescription("дон ягон дон ягон дон ягон (сервер к сожалению онлайн");
+        startupEmbedBuilder.setAuthor(webhookEmbedAuthor);
+        WebhookEmbed startupEmbed = startupEmbedBuilder.build();
+        webhookClient.send(startupEmbed);
 
 
         flippable.add(new Location(mainworld, -102, 9, -195));
