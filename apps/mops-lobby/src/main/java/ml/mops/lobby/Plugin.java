@@ -186,13 +186,15 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 //            }
 //        }, 0L, 2L);
 
-        WebhookClient client = WebhookClient.withUrl("https://discord.com/api/webhooks/983390269665865778/DzC0nsW5ge9Zl4mgoQQseOM26KMSfmgX-_gFlCLTMfOpLwxrK-5QbpFvEdQhVxY0GZ4x");
 
-        WebhookEmbed embed = new WebhookEmbedBuilder()
-                .setColor(Color.GREEN.getRGB())
-                .setDescription("\uD83D\uDFE2 mopslobby запущен.")
-                .build();
-        client.send(embed);
+
+//        WebhookClient client = WebhookClient.withUrl("https://discord.com/api/webhooks/983390269665865778/DzC0nsW5ge9Zl4mgoQQseOM26KMSfmgX-_gFlCLTMfOpLwxrK-5QbpFvEdQhVxY0GZ4x");
+//
+//        WebhookEmbed embed = new WebhookEmbedBuilder()
+//                .setColor(Color.GREEN.getRGB())
+//                .setDescription("\uD83D\uDFE2 mopslobby запущен.")
+//                .build();
+//        client.send(embed);
     }
 
 
@@ -208,13 +210,13 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             player.kickPlayer(ChatColor.YELLOW + "Server closed.\nShortly will be back on, maybe.");
         }
 
-        WebhookClient client = WebhookClient.withUrl("https://discord.com/api/webhooks/983390269665865778/DzC0nsW5ge9Zl4mgoQQseOM26KMSfmgX-_gFlCLTMfOpLwxrK-5QbpFvEdQhVxY0GZ4x");
-
-        WebhookEmbed embed = new WebhookEmbedBuilder()
-                .setColor(Color.RED.getRGB())
-                .setDescription("\uD83D\uDD34 mopslobby выключен.")
-                .build();
-        client.send(embed);
+//        WebhookClient client = WebhookClient.withUrl("https://discord.com/api/webhooks/983390269665865778/DzC0nsW5ge9Zl4mgoQQseOM26KMSfmgX-_gFlCLTMfOpLwxrK-5QbpFvEdQhVxY0GZ4x");
+//
+//        WebhookEmbed embed = new WebhookEmbedBuilder()
+//                .setColor(Color.RED.getRGB())
+//                .setDescription("\uD83D\uDD34 mopslobby выключен.")
+//                .build();
+//        client.send(embed);
     }
 
 

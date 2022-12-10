@@ -105,9 +105,7 @@
                                     <include>com.fasterxml.jackson.core:*</include>
                                     <include>com.fasterxml.jackson.dataformat:jackson-dataformat-yaml</include>
                                     <include>*:NoteBlockAPI</include>
-                                    <include>*:discord-webhooks</include>
                                     <include>org.json:*</include>
-                                    <include>*:okhttp</include>
                                 </includes>
                             </artifactSet>
                         </configuration>
