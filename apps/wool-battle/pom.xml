@@ -100,9 +100,6 @@
                         </goals>
                         <configuration>
                             <artifactSet>
-                                <includes>
-                                    <include>ml.mops.base:*</include>
-                                </includes>
                                 <excludes>
                                     <exclude>com.google.code:*</exclude>
                                     <exclude>com.google.guava:*</exclude>
