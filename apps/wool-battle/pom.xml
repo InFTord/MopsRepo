@@ -134,6 +134,7 @@
                                     <exclude>junit:*</exclude>
                                     <exclude>net.java.dev.jna:*</exclude>
 
+
                                     <exclude>org.purpurmc.purpur:*</exclude>
                                     <exclude>org.spigotmc:*</exclude>
                                     <exlucde>net.md-5:*</exlucde>
