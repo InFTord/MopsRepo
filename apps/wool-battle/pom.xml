@@ -100,10 +100,6 @@
                         </goals>
                         <configuration>
                             <artifactSet>
-                                <includes>
-                                    <include>ml.mops.base:*</include>
-                                    <include>club.minnced:*</include>
-                                </includes>
                                 <excludes>
                                     <exclude>com.google.code:*</exclude>
                                     <exclude>com.google.guava:*</exclude>
@@ -154,7 +150,7 @@
                                     <exclude>mysql:mysql-connector-java</exclude>
                                 </excludes>
                             </artifactSet>
-<!--                            <minimizeJar>true</minimizeJar>-->
+                            <minimizeJar>true</minimizeJar>
                         </configuration>
                     </execution>
                 </executions>
