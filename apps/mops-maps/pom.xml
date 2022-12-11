@@ -100,9 +100,17 @@
                         </goals>
                         <configuration>
                             <artifactSet>
-                                <includes>
-                                    <include>ml.mops.base:*</include>
-                                </includes>
+                                <!--                                <includes>-->
+                                <!--                                    <include>*:*</include>-->
+                                <!--                                    <include>ml.mops.base:*</include>-->
+                                <!--                                    <include>*:NoteBlockAPI</include>-->
+                                <!--                                    <include>*:discord-webhooks</include>-->
+                                <!--                                    <include>org.json:*</include>-->
+                                <!--                                    <include>com.fasterxml.jackson.core:*</include>-->
+                                <!--                                    <include>com.fasterxml.jackson.dataformat:jackson-dataformat-yaml</include>-->
+                                <!--                                    <include>*:okhttp</include>-->
+                                <!--                                    <include>org.jetbrains.*:*</include> &lt;!&ndash; так же можно? пж daddy скажи что да&ndash;&gt;-->
+                                <!--                                </includes>-->
                                 <excludes>
                                     <exclude>com.google.code:*</exclude>
                                     <exclude>com.google.guava:*</exclude>
@@ -142,7 +150,7 @@
                                     <exclude>it.unimi.dsi:*</exclude>
 
                                     <exclude>org.yaml:*</exclude>
-                                    <exclude>org.jetbrains.kotlin:*</exclude>
+                                    <!--                                    <exclude>org.jetbrains.kotlin:*</exclude>-->
                                     <exclude>org.jetbrains:*</exclude>
                                     <exclude>org.hamcrest:hamcrest-core</exclude>
                                     <exclude>org.ow2.asm:*</exclude>
