@@ -23,8 +23,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockFadeEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.material.MaterialData;
@@ -52,6 +54,8 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     List<Location> openables = new ArrayList<>();
     // note blok and button
     List<Location> usables = new ArrayList<>();
+
+    Inventory mapGUI = new MapGUI().getInventory();
 
     @Override
     public void onEnable() {
@@ -510,7 +514,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                         case 4 -> {
                             cancelDialogue = true;
 
-                            new MapGUI().openInventory(player);
+                            player.openInventory(mapGUI);
                         }
                     }
                 }
@@ -615,6 +619,14 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
         for(Player allPlayers : Bukkit.getOnlinePlayers()) {
             allPlayers.sendMessage(rank + name + ChatColor.WHITE + ": " + MopsUtils.convertColorCodes(message).trim());
+        }
+    }
+
+    @EventHandler
+    public void onInventoryClick(InventoryClickEvent event) {
+        if (event.getClickedInventory() == mapGUI) {
+            event.setCancelled(true);
+
         }
     }
 

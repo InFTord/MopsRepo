@@ -205,26 +205,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
 
 	public void loadCuboid(Map map, World world) {
-		InputStream stream = map.getFile();
-		String[] rowArray = new String[] {""};
-
-		try {
-			assert stream != null;
-			BufferedReader bufferedReader = new BufferedReader(
-					new InputStreamReader(stream));
-
-			StringBuilder stringBuilder = new StringBuilder();
-
-			String inputLine;
-			while ((inputLine = bufferedReader.readLine()) != null) {
-				stringBuilder.append(inputLine);
-				stringBuilder.append(System.lineSeparator());
-			}
-			bufferedReader.close();
-
-			rowArray = stringBuilder.toString().split("\n");;
-
-		} catch (Exception ignored) { }
+		String[] rowArray = map.getRowArray();
 
 		for (String row : rowArray) {
 			String materialtext = row.substring(row.indexOf("[") + 1, row.indexOf("]")).trim();

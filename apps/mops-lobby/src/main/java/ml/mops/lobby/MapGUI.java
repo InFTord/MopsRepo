@@ -20,7 +20,7 @@ public class MapGUI implements Listener {
     private final Inventory inv;
 
     public MapGUI() {
-        inv = Bukkit.createInventory(null, 45, "Map List");
+        inv = Bukkit.createInventory(null, 36, "Map List");
 
         setItems();
     }
@@ -33,7 +33,7 @@ public class MapGUI implements Listener {
         while(i < maps.size()) {
             Map map = maps.get(i);
 
-            inv.setItem(0, MopsUtils.createItem(map.getType(), map.getName()));
+            inv.setItem(i, MopsUtils.createItem(map.getType(), map.getName()));
             i++;
         }
     }
@@ -42,12 +42,7 @@ public class MapGUI implements Listener {
         player.openInventory(inv);
     }
 
-    @EventHandler
-    public void onInventoryClick(InventoryClickEvent event) {
-        if (event.getClickedInventory() == inv) {
-            event.setCancelled(true);
-
-
-        }
+    public Inventory getInventory() {
+        return inv;
     }
 }
