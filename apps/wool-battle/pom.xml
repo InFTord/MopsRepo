@@ -102,6 +102,7 @@
                             <artifactSet>
                                 <includes>
                                     <include>ml.mops.base:*</include>
+                                    <include>club.minnced:*</include>
                                 </includes>
                                 <excludes>
                                     <exclude>com.google.code:*</exclude>
