@@ -3,11 +3,9 @@ package ml.mops.pvps;
 import club.minnced.discord.webhook.WebhookClient;
 import club.minnced.discord.webhook.send.WebhookEmbed;
 import club.minnced.discord.webhook.send.WebhookEmbedBuilder;
-import it.unimi.dsi.fastutil.Hash;
 import ml.mops.base.Kit;
-import ml.mops.base.commands.AdminUtils;
 import ml.mops.base.commands.Commands;
-import ml.mops.base.commands.PlayerEssentials;
+import ml.mops.base.maps.Map;
 import ml.mops.utils.Cuboid;
 import ml.mops.utils.MopsUtils;
 import org.bukkit.block.Block;
@@ -207,7 +205,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
 
 	public void loadCuboid(Map map, World world) {
-		InputStream stream = getResource(map.getFileName());
+		InputStream stream = map.getFile();
 		String[] rowArray = new String[] {""};
 
 		try {
@@ -275,12 +273,4 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 			}
 		}
 	}
-
-
-	@Override
-	public @Nullable InputStream getResource(@NotNull String filename) {
-		return super.getResource(filename);
-	}
-
-	// бап бипп буп барапимпум бип буп
 }

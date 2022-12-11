@@ -431,7 +431,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         if(event.getHand().equals(EquipmentSlot.HAND)) {
 
             String dialogue = ChatColor.RED + "no dialogue found :p blehh (report to sircat)";
-            boolean randomDialogue = false;
+            boolean cancelDialogue = false;
 
             if (entity.getScoreboardTags().contains("armorStandHubNPC")) {
                 event.setCancelled(true);
@@ -456,7 +456,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                     player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BANJO, 2, 0);
 
                     MopsUtils.sendRandomDialogueMessage(dialogueList, player, entity);
-                    randomDialogue = true;
+                    cancelDialogue = true;
                 }
                 if (entity.getScoreboardTags().contains("woolbattleDogeNPC")) {
                     switch (woolbattleDogeDialogue.get(player)) {
@@ -508,21 +508,28 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                             pvpDogeDialogue.put(player, pvpDogeDialogue.get(player) + 1);
                         }
                         case 4 -> {
+                            cancelDialogue = true;
 
+                            new MapGUI().openInventory(player);
                         }
                     }
                 }
+
                 if (entity.getScoreboardTags().contains("lonelyPigeon")) {
                     dialogue = "hey " + ChatColor.GRAY + "(add quest later)";
                     player.playSound(player.getLocation(), Sound.ENTITY_PARROT_AMBIENT, 10, 2);
                 }
 
-                if(!entity.getScoreboardTags().contains("guideline") && !randomDialogue) {
+
+                if(!entity.getScoreboardTags().contains("guideline") && !cancelDialogue) {
                     MopsUtils.sendDialogueMessage(dialogue, player, entity);
                 } else if (entity.getScoreboardTags().contains("furnaceGuideline")) {
                     player.sendMessage(ChatColor.GRAY + "This furnace is the only one in the hub. It smelts corn for the Theatre, or fish for the Fisherman. It also needs to be fueled, however, not by coal. It uses MopsCoins. But the Doge are not always smart. They tried to put all sorts of items in there to fuel the Smelter. And sometimes when you put in MopsCoins, it gives you some cool items. It may still give you something!");
                 }
             }
+
+
+
             if (entity.getScoreboardTags().contains("adminfrog")) {
                 dialogue = "It is Friday, my dudes.";
                 player.playSound(player.getLocation(), Sound.ENTITY_FROG_AMBIENT, 10, 1);
@@ -544,8 +551,6 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             }
         }
     }
-
-    //а
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {

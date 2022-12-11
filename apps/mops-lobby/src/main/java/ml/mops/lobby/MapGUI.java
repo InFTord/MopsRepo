@@ -1,5 +1,7 @@
 package ml.mops.lobby;
 
+import ml.mops.base.maps.Map;
+import ml.mops.base.maps.MapManager;
 import ml.mops.utils.MopsUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -11,6 +13,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.List;
 import java.util.Objects;
 
 public class MapGUI implements Listener {
@@ -22,15 +25,17 @@ public class MapGUI implements Listener {
         setItems();
     }
 
-    public ItemStack item(Material material) {
-        return new ItemStack(material);
-    }
-    public ItemStack item(Material material, int i) {
-        return new ItemStack(material, i);
-    }
-
     public void setItems() {
+        List<Map> maps = MapManager.getMaps();
 
+        int i = 0;
+
+        while(i < maps.size()) {
+            Map map = maps.get(i);
+
+            inv.setItem(0, MopsUtils.createItem(map.getType(), map.getName()));
+            i++;
+        }
     }
 
     public void openInventory(Player player) {
