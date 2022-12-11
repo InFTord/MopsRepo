@@ -34,7 +34,8 @@ public enum Map {
     }
 
     public String[] getRowArray() {
-        InputStream stream = Map.class.getResourceAsStream("/" + mapType.getFilePath() + "/" + fileName + ".txt");
+//        InputStream stream = Map.class.getResourceAsStream(mapType.getFilePath() + "/" + fileName + ".txt");
+        InputStream stream = Map.class.getResourceAsStream("pvp/desert.txt");
         String[] rowArray = new String[] {""};
 
         try {

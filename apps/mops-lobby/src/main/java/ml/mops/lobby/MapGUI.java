@@ -20,7 +20,7 @@ public class MapGUI implements Listener {
     private final Inventory inv;
 
     public MapGUI() {
-        inv = Bukkit.createInventory(null, 36, "Map List");
+        inv = Bukkit.createInventory(null, 36, "Select Your Map");
 
         setItems();
     }
