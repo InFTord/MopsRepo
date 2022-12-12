@@ -33,32 +33,6 @@ public enum Map {
         return fileName;
     }
 
-    public String[] getRowArray() {
-//        InputStream stream = Map.class.getResourceAsStream(mapType.getFilePath() + "/" + fileName + ".txt");
-        InputStream stream = Map.class.getResourceAsStream("src/main/java/ml/mops/base/maps/pvp/desert.txt");
-        String[] rowArray = new String[] {""};
-
-        try {
-            assert stream != null;
-            BufferedReader bufferedReader = new BufferedReader(
-                    new InputStreamReader(stream));
-
-            StringBuilder stringBuilder = new StringBuilder();
-
-            String inputLine;
-            while ((inputLine = bufferedReader.readLine()) != null) {
-                stringBuilder.append(inputLine);
-                stringBuilder.append(System.lineSeparator());
-            }
-            bufferedReader.close();
-
-            rowArray = stringBuilder.toString().split("\n");;
-
-        } catch (Exception ignored) { }
-
-        return rowArray;
-    }
-
     public Material getType() {
         return type;
     }
