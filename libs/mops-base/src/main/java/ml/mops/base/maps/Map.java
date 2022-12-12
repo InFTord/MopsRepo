@@ -7,6 +7,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -36,24 +38,12 @@ public enum Map {
     }
 
     public String[] getRowArray() {
-        InputStream stream = Map.class.getClassLoader().getResourceAsStream(mapType.getFilePath() + "/" + fileName + ".txt");
         String[] rowArray = new String[] {""};
 
         try {
-            assert stream != null;
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(stream));
+            String data = new String(Files.readAllBytes(Paths.get(mapType.getFilePath() + "/" + fileName + ".txt")));
 
-            StringBuilder stringBuilder = new StringBuilder();
-
-            String inputLine;
-            while ((inputLine = bufferedReader.readLine()) != null) {
-                stringBuilder.append(inputLine);
-                stringBuilder.append(System.lineSeparator());
-            }
-            bufferedReader.close();
-
-            rowArray = stringBuilder.toString().split("\n");;
-
+            rowArray = data.split("\n");;
         } catch (IOException ignored) { }
 
         return rowArray;
