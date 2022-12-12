@@ -4,6 +4,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -52,13 +53,9 @@ public enum Map {
             }
             bufferedReader.close();
 
-            System.out.println(stringBuilder.toString());
-
             rowArray = stringBuilder.toString().split("\n");;
 
-        } catch (Exception ignored) { }
-
-        System.out.println(Arrays.toString(rowArray));
+        } catch (IOException ignored) { }
 
         return rowArray;
     }
