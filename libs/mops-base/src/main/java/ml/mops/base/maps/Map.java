@@ -41,7 +41,7 @@ public enum Map {
         String[] rowArray = new String[] {""};
 
         try {
-            String data = new String(Files.readAllBytes(Paths.get(mapType.getFilePath() + "/" + fileName + ".txt")));
+            String data = Files.readString(Paths.get(mapType.getFilePath() + "/" + fileName + ".txt"));
 
             rowArray = data.split("\n");;
         } catch (IOException ignored) { }
