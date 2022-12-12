@@ -36,13 +36,12 @@ public enum Map {
     }
 
     public String[] getRowArray() {
-        InputStream stream = Map.class.getResourceAsStream(mapType.getFilePath() + "/" + fileName + ".txt");
+        InputStream stream = Map.class.getClassLoader().getResourceAsStream(mapType.getFilePath() + "/" + fileName + ".txt");
         String[] rowArray = new String[] {""};
 
         try {
             assert stream != null;
-            BufferedReader bufferedReader = new BufferedReader(
-                    new InputStreamReader(stream));
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(stream));
 
             StringBuilder stringBuilder = new StringBuilder();
 
