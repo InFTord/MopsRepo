@@ -7,6 +7,7 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public enum Map {
@@ -31,6 +32,35 @@ public enum Map {
 
     public String getFileName() {
         return fileName;
+    }
+
+    public String[] getRowArray() {
+        InputStream stream = Map.class.getResourceAsStream(mapType.getFilePath() + "/" + fileName + ".txt");
+        String[] rowArray = new String[] {""};
+
+        try {
+            assert stream != null;
+            BufferedReader bufferedReader = new BufferedReader(
+                    new InputStreamReader(stream));
+
+            StringBuilder stringBuilder = new StringBuilder();
+
+            String inputLine;
+            while ((inputLine = bufferedReader.readLine()) != null) {
+                stringBuilder.append(inputLine);
+                stringBuilder.append(System.lineSeparator());
+            }
+            bufferedReader.close();
+
+            System.out.println(stringBuilder.toString());
+
+            rowArray = stringBuilder.toString().split("\n");;
+
+        } catch (Exception ignored) { }
+
+        System.out.println(Arrays.toString(rowArray));
+
+        return rowArray;
     }
 
     public Material getType() {

@@ -24,7 +24,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.awt.Color;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 
 
@@ -203,30 +205,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
 
 	public void loadCuboid(Map map, World world) {
-		String[] rowArray = new String[] {""};
-
-		try {
-			InputStream stream = new FileInputStream("ml/mops/base/maps" + map.getMapType().getFilePath() + "/" + map.getFileName() + ".txt");
-
-			BufferedReader bufferedReader = new BufferedReader(
-					new InputStreamReader(stream));
-
-			StringBuilder stringBuilder = new StringBuilder();
-
-			String inputLine;
-			while ((inputLine = bufferedReader.readLine()) != null) {
-				stringBuilder.append(inputLine);
-				stringBuilder.append(System.lineSeparator());
-			}
-			bufferedReader.close();
-
-			rowArray = stringBuilder.toString().split("\n");;
-
-		} catch (Exception ignored) { }
-
-
-
-
+		String[] rowArray = map.getRowArray();
 
 		for (String row : rowArray) {
 			String materialtext = row.substring(row.indexOf("[") + 1, row.indexOf("]")).trim();
