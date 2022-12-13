@@ -187,8 +187,8 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
 
 	public void wipeout(World world) {
-		Location loc1 = new Location(world, -400, -63, -400);
-		Location loc2 = new Location(world, 400, 319, 400);
+		Location loc1 = new Location(world, -100, -30, -100);
+		Location loc2 = new Location(world, 100, 180, 100);
 
 		Cuboid cuboid = new Cuboid(loc1, loc2);
 

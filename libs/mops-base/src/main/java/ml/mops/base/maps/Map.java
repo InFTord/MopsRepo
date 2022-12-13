@@ -17,7 +17,7 @@ import java.util.List;
 
 public enum Map {
     DESERT("https://cdn.discordapp.com/attachments/897853554340020254/1052219255392849920/desert.txt", ChatColor.YELLOW + "Desert", MapType.PVP, Material.SANDSTONE),
-    PLAINS("desert", ChatColor.GREEN + "Plains", MapType.PVP, Material.GRASS_BLOCK),
+    PLAINS("https://cdn.discordapp.com/attachments/897853554340020254/1052222190877163620/plains.txt", ChatColor.GREEN + "Plains", MapType.PVP, Material.GRASS_BLOCK),
     AQUA("desert", ChatColor.AQUA + "Aqua", MapType.PVP, Material.WARPED_WART_BLOCK),
     TAIGA("desert", ChatColor.DARK_GREEN + "Taiga", MapType.PVP, Material.SPRUCE_LEAVES),
     CITY("desert", ChatColor.GOLD + "City", MapType.PVP, Material.BRICKS),
