@@ -41,7 +41,7 @@ public enum Map {
     public String[] getRowArray() {
         String[] rowArray = new String[] {""};
 
-        System.out.println(Paths.get(mapType.getFilePath() + "/" + fileName + ".txt"));
+        System.out.println(Paths.get(mapType.getFilePath() + "/" + fileName + ".txt").toAbsolutePath());
 
         try {
             List<String> stringList = Files.readAllLines(Paths.get(mapType.getFilePath() + "/" + fileName + ".txt"), StandardCharsets.UTF_8);
