@@ -1,4 +1,4 @@
-name: MopsLobby
+name: mops-pvps
 main: ml.mops.pvps.Plugin
 version: "'indev-SNAPSHOT-1.0"
 api-version: 1.19

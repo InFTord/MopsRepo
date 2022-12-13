@@ -1,4 +1,4 @@
-name: WoolBattle
+name: wool-battle
 main: ml.mops.woolbattle.Plugin
 version: "'indev-SNAPSHOT-1.0"
 api-version: 1.19

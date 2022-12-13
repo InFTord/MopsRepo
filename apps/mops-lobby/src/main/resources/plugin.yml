@@ -1,4 +1,4 @@
-name: MopsLobby
+name: mops-lobby
 main: ml.mops.lobby.Plugin
 version: "'indev-SNAPSHOT-1.0"
 api-version: 1.19
