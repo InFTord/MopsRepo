@@ -408,24 +408,24 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			genCaptureChecks(genDblocks, genDblocksLONG, "D");
 		}, 80L, 20L);
 
-		WebhookClient client = WebhookClient.withUrl("https://discord.com/api/webhooks/983390269665865778/DzC0nsW5ge9Zl4mgoQQseOM26KMSfmgX-_gFlCLTMfOpLwxrK-5QbpFvEdQhVxY0GZ4x");
-
-		WebhookEmbed embed = new WebhookEmbedBuilder()
-				.setColor(java.awt.Color.GREEN.getRGB())
-				.setDescription("\uD83D\uDFE2 woolbattle запущен.")
-				.build();
-		client.send(embed);
+//		WebhookClient client = WebhookClient.withUrl("https://discord.com/api/webhooks/983390269665865778/DzC0nsW5ge9Zl4mgoQQseOM26KMSfmgX-_gFlCLTMfOpLwxrK-5QbpFvEdQhVxY0GZ4x");
+//
+//		WebhookEmbed embed = new WebhookEmbedBuilder()
+//				.setColor(java.awt.Color.GREEN.getRGB())
+//				.setDescription("\uD83D\uDFE2 woolbattle запущен.")
+//				.build();
+//		client.send(embed);
 	}
 
 	@Override
 	public void onDisable() {
-		WebhookClient client = WebhookClient.withUrl("https://discord.com/api/webhooks/983390269665865778/DzC0nsW5ge9Zl4mgoQQseOM26KMSfmgX-_gFlCLTMfOpLwxrK-5QbpFvEdQhVxY0GZ4x");
-
-		WebhookEmbed embed = new WebhookEmbedBuilder()
-				.setColor(java.awt.Color.RED.getRGB())
-				.setDescription("\uD83D\uDD34 woolbattle выключен.")
-				.build();
-		client.send(embed);
+//		WebhookClient client = WebhookClient.withUrl("https://discord.com/api/webhooks/983390269665865778/DzC0nsW5ge9Zl4mgoQQseOM26KMSfmgX-_gFlCLTMfOpLwxrK-5QbpFvEdQhVxY0GZ4x");
+//
+//		WebhookEmbed embed = new WebhookEmbedBuilder()
+//				.setColor(java.awt.Color.RED.getRGB())
+//				.setDescription("\uD83D\uDD34 woolbattle выключен.")
+//				.build();
+//		client.send(embed);
 	}
 
 	final int[] minutes = {0};
