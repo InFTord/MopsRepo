@@ -43,15 +43,19 @@ public enum Map {
     public String[] getRowArray(Plugin plugin) {
         String[] rowArray = new String[] {""};
 
-        System.out.println(Paths.get(mapType.getFilePath() + "/" + fileName + ".txt").toAbsolutePath());
+        System.out.println(Paths.get("plugins/" + plugin.getName() + "/src/main/java/ml/mops/base/maps/" + mapType.getFilePath() + "/" + fileName + ".txt"));
 
         try {
             List<String> stringList = Files.readAllLines(Paths.get("plugins/" + plugin.getName() + "/src/main/java/ml/mops/base/maps/" + mapType.getFilePath() + "/" + fileName + ".txt"), StandardCharsets.UTF_8);
+            System.out.println(stringList);
+
             StringBuilder stringBuilder = new StringBuilder();
 
             for(String string : stringList) {
                 stringBuilder.append(string);
             }
+
+            System.out.println(stringBuilder);
 
             rowArray = stringBuilder.toString().split("\n");;
         } catch (IOException ignored) { }
