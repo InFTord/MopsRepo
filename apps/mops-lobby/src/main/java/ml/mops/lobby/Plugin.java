@@ -622,7 +622,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         }
     }
 
-    //ты забилдишся?
+    //ты забилдишся? ну пж
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
