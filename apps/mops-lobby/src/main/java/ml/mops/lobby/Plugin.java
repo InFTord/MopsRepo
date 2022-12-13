@@ -50,6 +50,8 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     List<Location> flippable = new ArrayList<>();
     // atm or bank
     List<Location> atmButtons = new ArrayList<>();
+    // vending machines
+    List<Location> vendingButtons = new ArrayList<>();
     // chests
     List<Location> openables = new ArrayList<>();
     // note blok and button
@@ -104,6 +106,9 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         openables.add(new Location(mainworld, -61, 6, -255));
         openables.add(new Location(mainworld, -64, 6, -255));
         openables.add(new Location(mainworld, 156, 3, 148));
+
+        vendingButtons.add(new Location(mainworld, -92, 9, -194));
+        vendingButtons.add(new Location(mainworld, -77, 9, -192));
 
 
         Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
@@ -492,12 +497,6 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                             pvpDogeDialogue.put(player, pvpDogeDialogue.get(player) + 1);
                         }
                         case 1 -> {
-                            dialogue = "There is no PVP yet too.";
-                            player.playSound(player.getLocation(), Sound.ENTITY_WOLF_AMBIENT, 10, 2);
-
-                            pvpDogeDialogue.put(player, pvpDogeDialogue.get(player) + 1);
-                        }
-                        case 2 -> {
                             dialogue = "I can give you a sword though, it looks cool.";
                             player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_DESTROY, 10, 0);
                             player.playSound(player.getLocation(), Sound.ENTITY_WOLF_AMBIENT, 10, 2);
@@ -505,14 +504,15 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
                             pvpDogeDialogue.put(player, pvpDogeDialogue.get(player) + 1);
                         }
-                        case 3 -> {
+                        case 2 -> {
                             dialogue = "I don't have any more swords.";
                             player.playSound(player.getLocation(), Sound.ENTITY_WOLF_AMBIENT, 10, 2);
 
                             pvpDogeDialogue.put(player, pvpDogeDialogue.get(player) + 1);
                         }
-                        case 4 -> {
-                            cancelDialogue = true;
+                        case 3 -> {
+                            dialogue = "You can visit PVP now. Select the map.";
+                            player.playSound(player.getLocation(), Sound.ENTITY_WOLF_AMBIENT, 10, 2);
 
                             player.openInventory(mapGUI);
                         }

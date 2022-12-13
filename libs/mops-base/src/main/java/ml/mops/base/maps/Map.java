@@ -8,12 +8,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public enum Map {
     DESERT("https://cdn.discordapp.com/attachments/897853554340020254/1052219255392849920/desert.txt", ChatColor.YELLOW + "Desert", MapType.PVP, Material.SANDSTONE),
