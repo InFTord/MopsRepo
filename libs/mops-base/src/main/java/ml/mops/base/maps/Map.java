@@ -1,7 +1,9 @@
 package ml.mops.base.maps;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.plugin.Plugin;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -38,13 +40,13 @@ public enum Map {
         return fileName;
     }
 
-    public String[] getRowArray() {
+    public String[] getRowArray(Plugin plugin) {
         String[] rowArray = new String[] {""};
 
         System.out.println(Paths.get(mapType.getFilePath() + "/" + fileName + ".txt").toAbsolutePath());
 
         try {
-            List<String> stringList = Files.readAllLines(Paths.get(mapType.getFilePath() + "/" + fileName + ".txt"), StandardCharsets.UTF_8);
+            List<String> stringList = Files.readAllLines(Paths.get("plugins/" + plugin.getName() + "/src/main/java/ml/mops/base/maps/" + mapType.getFilePath() + "/" + fileName + ".txt"), StandardCharsets.UTF_8);
             StringBuilder stringBuilder = new StringBuilder();
 
             for(String string : stringList) {

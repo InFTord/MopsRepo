@@ -205,7 +205,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
 
 	public void loadCuboid(Map map, World world) {
-		String[] rowArray = map.getRowArray();
+		String[] rowArray = map.getRowArray(this);
 
 		for (String row : rowArray) {
 			String materialtext = row.substring(row.indexOf("[") + 1, row.indexOf("]")).trim();
