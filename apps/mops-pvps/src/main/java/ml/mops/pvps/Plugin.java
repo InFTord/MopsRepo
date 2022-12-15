@@ -250,6 +250,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 				BlockData data = Bukkit.createBlockData(rawBlockData);
 
 				location.getBlock().setType(type);
+				location.getBlock().setBiome(map.getBiome());
 				location.getBlock().setBlockData(data, true);
 			}
 		}
