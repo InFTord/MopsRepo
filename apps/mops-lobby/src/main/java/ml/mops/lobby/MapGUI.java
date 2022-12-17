@@ -26,7 +26,7 @@ public class MapGUI implements Listener {
     }
 
     public void setItems() {
-        List<Map> maps = MapManager.getMaps();
+        List<Map> maps = MapManager.getPlayableMaps();
 
         int i = 0;
 

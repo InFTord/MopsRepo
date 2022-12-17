@@ -20,7 +20,15 @@ public enum MopsColor {
     GREEN(ChatColor.DARK_GREEN + "", Material.GREEN_SHULKER_BOX),
     DARK_GRAY(ChatColor.DARK_GRAY + "", Material.GRAY_SHULKER_BOX),
     YELLOW(ChatColor.YELLOW + "", Material.YELLOW_SHULKER_BOX),
-    PINK(net.md_5.bungee.api.ChatColor.of("#ffadc6") + "", Material.PINK_SHULKER_BOX),
+    PINK(net.md_5.bungee.api.ChatColor.of("#f79cb8") + "", Material.PINK_SHULKER_BOX),
+
+    SOFT_LIME(net.md_5.bungee.api.ChatColor.of("#83f783") + "", Material.LIME_SHULKER_BOX),
+    SOFT_GREEN(net.md_5.bungee.api.ChatColor.of("#50bf50") + "", Material.GREEN_SHULKER_BOX),
+    SOFT_YELLOW(net.md_5.bungee.api.ChatColor.of("#f2ec6f") + "", Material.YELLOW_SHULKER_BOX),
+    SOFT_MAGENTA(net.md_5.bungee.api.ChatColor.of("#f573f5") + "", Material.MAGENTA_SHULKER_BOX),
+    SOFT_PURPLE(net.md_5.bungee.api.ChatColor.of("#c851cf") + "", Material.PURPLE_SHULKER_BOX),
+    SOFT_DARKBLUE(net.md_5.bungee.api.ChatColor.of("#3434ad") + "", Material.BLUE_SHULKER_BOX),
+
     PLAIN(ChatColor.RESET + "", Material.SHULKER_BOX);
 
     final String color;

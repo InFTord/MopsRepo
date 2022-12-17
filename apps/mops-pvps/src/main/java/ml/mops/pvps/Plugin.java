@@ -18,6 +18,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
@@ -27,7 +29,9 @@ import java.awt.Color;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 
 public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
@@ -82,6 +86,10 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 	HashMap<Player, Boolean> ready = new HashMap<>();
 	HashMap<Player, Kit> kit = new HashMap<>();
 	HashMap<Player, Location> spawn = new HashMap<>();
+
+	List<Block> ppb = new ArrayList<>();
+	// player placed blocks
+	HashMap<Player, List<Block>> playerPlaced = new HashMap<>();
 
 
 	@Override
@@ -176,6 +184,12 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 	public void onPlayerLeave(PlayerQuitEvent event) {
 		Player player = event.getPlayer();
 
+		if(!gameSession) {
+			for (Block block : playerPlaced.get(player)) {
+				block.setType(Material.AIR);
+			}
+		}
+
 		if(player1 != null) {
 			player1 = null;
 		} else {
@@ -183,7 +197,26 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 		}
 	}
 
+	@EventHandler
+	public void onBlockBreak(BlockBreakEvent event) {
+		if(!gameSession) {
+			event.setCancelled(true);
+		}
+	}
 
+
+	@EventHandler
+	public void onBlockPlace(BlockPlaceEvent event) {
+		Player player = event.getPlayer();
+		Block block = event.getBlock();
+
+		ppb.add(block);
+
+		List<Block> blocks = playerPlaced.get(player);
+		blocks.add(block);
+
+		playerPlaced.put(player, blocks);
+	}
 
 
 	public void wipeout(World world) {

@@ -23,7 +23,6 @@ public enum Kit {
     PALADIN("Paladin", MopsColor.YELLOW, KitType.BASE, KitManager.createKit(new String[] {"0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0"}, KitManager.baseMapping())),
     SAKURA("Sakura Warrior", MopsColor.PINK, KitType.BASE, KitManager.createKit(new String[] {"0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0"}, KitManager.baseMapping())),
 
-
     PLACEHOLDERSHITIDKJUSTIGNORETHIS("PLACEHOLDERSHITIDKJUSTIGNORETHIS", MopsColor.PLAIN, KitType.ADMIN_TEST_ONLY, KitManager.createKit(new String[] {"0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0", "0 0 0 0 0 0 0 0 0"}, KitManager.baseMapping()));
 
     final String name;
