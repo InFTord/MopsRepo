@@ -228,22 +228,22 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 						switch (Objects.requireNonNull(lastdamage).getScore(player.getName()).getScore()) {
 							case 1 -> {
 								redkills = redkills + 1;
-								broadcastDeath(player, getByLang(lang, "woolbattle.gotKilledBy") + " " + ChatColor.RED + "" + ChatColor.BOLD + "КРАСНЫМИ" + ChatColor.GRAY + ".");
+								broadcastDeath(player, getStringByLang(lang, "woolbattle.gotKilledBy") + " " + ChatColor.RED + "" + ChatColor.BOLD + "КРАСНЫМИ" + ChatColor.GRAY + ".");
 							}
 							case 2 -> {
 								yellowkills = yellowkills + 1;
-								broadcastDeath(player, getByLang(lang, "woolbattle.gotKilledBy") + " " + ChatColor.YELLOW + "" + ChatColor.BOLD + "ЖЁЛТЫМИ" + ChatColor.GRAY + ".");
+								broadcastDeath(player, getStringByLang(lang, "woolbattle.gotKilledBy") + " " + ChatColor.YELLOW + "" + ChatColor.BOLD + "ЖЁЛТЫМИ" + ChatColor.GRAY + ".");
 							}
 							case 3 -> {
 								greenkills = greenkills + 1;
-								broadcastDeath(player, getByLang(lang, "woolbattle.gotKilledBy") + " " + ChatColor.GREEN + "" + ChatColor.BOLD + "ЗЕЛЁНЫМИ" + ChatColor.GRAY + ".");
+								broadcastDeath(player, getStringByLang(lang, "woolbattle.gotKilledBy") + " " + ChatColor.GREEN + "" + ChatColor.BOLD + "ЗЕЛЁНЫМИ" + ChatColor.GRAY + ".");
 							}
 							case 4 -> {
 								bluekills = bluekills + 1;
-								broadcastDeath(player, getByLang(lang, "woolbattle.gotKilledBy") + " " + ChatColor.AQUA + "" + ChatColor.BOLD + "СИНИМИ" + ChatColor.GRAY + ".");
+								broadcastDeath(player, getStringByLang(lang, "woolbattle.gotKilledBy") + " " + ChatColor.AQUA + "" + ChatColor.BOLD + "СИНИМИ" + ChatColor.GRAY + ".");
 							}
 
-							default -> broadcastDeath(player, getByLang(lang, "woolbattle.fellInVoid") + "");
+							default -> broadcastDeath(player, getStringByLang(lang, "woolbattle.fellInVoid") + "");
 						}
 
 						if(!hardmode) {
@@ -1962,16 +1962,24 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		for (Block block : ppbs) {
 			block.setType(Material.AIR);
 		}
-		for (Player player1 : Bukkit.getOnlinePlayers()) {
-			if(player1.getScoreboardTags().contains("ingame")) {
-				player1.teleport(new Location(player1.getWorld(), 9, -34, 9));
-				player1.getInventory().clear();
-				player1.removePotionEffect(PotionEffectType.JUMP);
-				player1.setGameMode(GameMode.SURVIVAL);
-				player1.setHealth(player1.getMaxHealth());
+		for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+			if(onlinePlayer.getScoreboardTags().contains("ingame")) {
+				onlinePlayer.teleport(new Location(onlinePlayer.getWorld(), 9, -34, 9));
+				// почему при хардмоде не тепает???
+				onlinePlayer.getInventory().clear();
+				onlinePlayer.removePotionEffect(PotionEffectType.JUMP);
+				onlinePlayer.setGameMode(GameMode.SURVIVAL);
+				onlinePlayer.setHealth(onlinePlayer.getMaxHealth());
 
-				updateLevels(player1);
+				updateLevels(onlinePlayer);
 			}
+
+			clearScoreboard(onlinePlayer);
+
+			onlinePlayer.setFlying(false);
+			onlinePlayer.setAllowFlight(false);
+
+			onlinePlayer.removeScoreboardTag("spectator");
 		}
 
 		recoloringGenerators(genAblocksLONG, genAblocks);
@@ -1989,9 +1997,6 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			worldBorderTask.cancel();
 		} catch (Throwable ignored) {}
 
-		for (Player player1 : Bukkit.getOnlinePlayers()) {
-			clearScoreboard(player1);
-		}
 
 		shears.clear();
 		explosiveSticks.clear();
