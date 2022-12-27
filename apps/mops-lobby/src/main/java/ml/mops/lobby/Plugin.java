@@ -38,6 +38,7 @@ import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -214,7 +215,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             player.kickPlayer(ChatColor.YELLOW + "Server closed.\nShortly will be back on, maybe.");
         }
 
-        WebhookClient client = WebhookClient.withUrl(Arrays.toString(Base64.getDecoder().decode(MopsUtils.statusText())));
+        WebhookClient client = WebhookClient.withUrl(new String(Base64.getDecoder().decode(MopsUtils.statusText()), StandardCharsets.UTF_8));
 
         WebhookEmbed embed = new WebhookEmbedBuilder()
                 .setColor(Color.RED.asRGB())
