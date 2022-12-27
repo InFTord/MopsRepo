@@ -23,6 +23,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockFadeEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.EquipmentSlot;
@@ -39,6 +40,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
@@ -58,6 +60,8 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     List<Location> usables = new ArrayList<>();
 
     Inventory mapGUI = new MapGUI().getInventory();
+
+    ArmorStand ball;
 
     @Override
     public void onEnable() {
@@ -177,6 +181,16 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 //        }, 0L, 2L);
 
 
+        ArmorStand stand = (ArmorStand) mainworld.spawnEntity(new Location(mainworld, -95, 10, -186), EntityType.ARMOR_STAND);
+        stand.setInvulnerable(true);
+        stand.setInvisible(true);
+        stand.setHelmet(MopsUtils.createCustomHead("5a5ab05ea254c32e3c48f3fdcf9fd9d77d3cba04e6b5ec2e68b3cbdcfac3fd"));
+
+        stand.addScoreboardTag("killOnDisable");
+        stand.addScoreboardTag("balls");
+
+        ball = stand;
+
 
         WebhookClient client = WebhookClient.withUrl(Arrays.toString(Base64.getDecoder().decode(MopsUtils.statusText())));
 
@@ -215,6 +229,24 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         return new Commands().commandsExecutor(sender, command, label, args, this);
     }
 
+    @EventHandler
+    public void onPlayerMove(PlayerMoveEvent event) {
+        Player player = event.getPlayer();
+
+        if(player.getNearbyEntities(0.2, 0.2, 0.2).contains(ball)) {
+            if(player.isSneaking()) {
+                double random = ThreadLocalRandom.current().nextDouble(0.1, 0.3 + 1);
+                ball.setVelocity(player.getEyeLocation().getDirection().multiply(random));
+            } else if(player.isSprinting()) {
+                double random = ThreadLocalRandom.current().nextDouble(1.8, 2.5 + 1);
+                ball.setVelocity(player.getEyeLocation().getDirection().multiply(random));
+            } else {
+                double random = ThreadLocalRandom.current().nextDouble(0.7, 1 + 1);
+                ball.setVelocity(player.getEyeLocation().getDirection().multiply(random));
+            }
+            player.playSound(player.getLocation(), Sound.BLOCK_BAMBOO_HIT, 1, 1);
+        }
+    }
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
@@ -622,13 +654,20 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         }
     }
 
-    //ты забилдишся? ну пж
-
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
         if (event.getClickedInventory() == mapGUI) {
             event.setCancelled(true);
 
+        }
+    }
+
+    @EventHandler
+    public void onEntityDamage(EntityDamageEvent event) {
+        if(event.getEntityType() == EntityType.PLAYER) {
+            event.setDamage(0);
+        } else {
+            event.setCancelled(true);
         }
     }
 
