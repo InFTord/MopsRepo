@@ -193,7 +193,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         ball = stand;
 
 
-        WebhookClient client = WebhookClient.withUrl(Arrays.toString(Base64.getDecoder().decode(MopsUtils.statusText())));
+        WebhookClient client = WebhookClient.withUrl(new String(Base64.getDecoder().decode(MopsUtils.statusText()), StandardCharsets.UTF_8));
 
         WebhookEmbed embed = new WebhookEmbedBuilder()
                 .setColor(Color.GREEN.asRGB())
