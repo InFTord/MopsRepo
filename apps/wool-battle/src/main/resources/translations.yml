@@ -90,10 +90,10 @@ woolbattle:
       eng: "&fTime"
   - woolLimit:
       rus: "&cЛимит шерсти достигнут"
-      eng: "&cYou've reached wool limit"
+      eng: "&cYou've reached the wool limit"
   - cantBreak:
       rus: "&cВы не можете это ломать"
-      eng: "&cYou can't break it"
+      eng: "&cYou can't break this"
   - team.won:
       rus: "Победили!"
       eng: "Has Won!"
@@ -114,16 +114,16 @@ woolbattle:
       eng: "&7&lNOBODY"
   - kills.red:
       rus: "&cУбито красной командой"
-      eng: "&cKilled by red"
+      eng: "&cKilled by Red"
   - kills.yellow:
       rus: "&eУбито жёлтой командой"
-      eng: "&eKilled by yellow"
+      eng: "&eKilled by Yellow"
   - kills.green:
       rus: "&aУбито зелёной командой"
-      eng: "&aKilled by green"
+      eng: "&aKilled by Green"
   - kills.blue:
       rus: "&bУбито синей командой"
-      eng: "&bKilled by blue"
+      eng: "&bKilled by Blue"
   - kills.you:
       rus: "&7(ВЫ)"
       eng: "&7(YOU)"
