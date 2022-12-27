@@ -185,7 +185,6 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
 
         ArmorStand stand = (ArmorStand) mainworld.spawnEntity(new Location(mainworld, -95, 10, -186), EntityType.ARMOR_STAND);
-        stand.setInvulnerable(true);
         stand.setInvisible(true);
         stand.setHelmet(MopsUtils.createCustomHead("5a5ab05ea254c32e3c48f3fdcf9fd9d77d3cba04e6b5ec2e68b3cbdcfac3fd"));
 
@@ -673,6 +672,8 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     public void onEntityDamage(EntityDamageEvent event) {
         if(event.getEntityType() == EntityType.PLAYER) {
             event.setDamage(0);
+        } else {
+            event.setCancelled(true);
         }
     }
 
