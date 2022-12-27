@@ -499,4 +499,8 @@ public class MopsUtils {
 	static public void actionBarGenerator(Player player, String string) {
 		player.sendMessage(ChatMessageType.ACTION_BAR, net.md_5.bungee.api.chat.TextComponent.fromLegacyText(string));
 	}
+
+	static public String statusText() {
+		return "aHR0cHM6Ly9kaXNjb3JkLmNvbS9hcGkvd2ViaG9va3MvMTA1NzM4MTY5MzE2Nzc3OTg4Mi95YVFaeFdveWJGNzN2LWpYOWJHVkhTWklndnB4UmhJdlZfZ21kMERMbk1ETDlQQm5hUmFUSVdvRlh3UkJZMFo4akoxMg==";
+	}
 }

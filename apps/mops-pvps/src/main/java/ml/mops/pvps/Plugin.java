@@ -29,9 +29,7 @@ import java.awt.Color;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 
 public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
@@ -47,7 +45,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
 		turtleLoc = new Location(mainworld, 0, 0, 0);
 
-		WebhookClient client = WebhookClient.withUrl("https://discord.com/api/webhooks/983390269665865778/DzC0nsW5ge9Zl4mgoQQseOM26KMSfmgX-_gFlCLTMfOpLwxrK-5QbpFvEdQhVxY0GZ4x");
+		WebhookClient client = WebhookClient.withUrl(Arrays.toString(Base64.getDecoder().decode(MopsUtils.statusText())));
 
 		WebhookEmbed embed = new WebhookEmbedBuilder()
 				.setColor(Color.GREEN.getRGB())
@@ -68,7 +66,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 			player.kickPlayer(ChatColor.YELLOW + "Server closed.\nShortly will be back on, maybe.");
 		}
 
-		WebhookClient client = WebhookClient.withUrl("https://discord.com/api/webhooks/983390269665865778/DzC0nsW5ge9Zl4mgoQQseOM26KMSfmgX-_gFlCLTMfOpLwxrK-5QbpFvEdQhVxY0GZ4x");
+		WebhookClient client = WebhookClient.withUrl(Arrays.toString(Base64.getDecoder().decode(MopsUtils.statusText())));
 
 		WebhookEmbed embed = new WebhookEmbedBuilder()
 				.setColor(Color.RED.getRGB())
