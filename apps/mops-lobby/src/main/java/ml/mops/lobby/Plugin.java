@@ -591,6 +591,10 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
                 MopsUtils.sendRandomDialogueMessage(dialogueList, player, entity);
             }
+
+            if(entity == ball) {
+                event.setCancelled(true);
+            }
         }
     }
 
