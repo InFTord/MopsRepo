@@ -23,6 +23,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockFadeEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.*;
@@ -35,6 +36,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
@@ -190,6 +192,8 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         stand.addScoreboardTag("killOnDisable");
         stand.addScoreboardTag("balls");
 
+        stand.setHeadPose(new EulerAngle(Math.toRadians(180), Math.toRadians(0), Math.toRadians(0)));
+
         ball = stand;
 
 
@@ -234,15 +238,15 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     public void onPlayerMove(PlayerMoveEvent event) {
         Player player = event.getPlayer();
 
-        if(player.getNearbyEntities(0.2, 0.2, 0.2).contains(ball)) {
+        if(player.getNearbyEntities(0.4, 0.4, 0.4).contains(ball)) {
             if(player.isSneaking()) {
-                double random = ThreadLocalRandom.current().nextDouble(0.1, 0.3 + 1);
+                double random = ThreadLocalRandom.current().nextDouble(0.01, 0.05 + 1);
                 ball.setVelocity(player.getEyeLocation().getDirection().multiply(random));
-            } else if(player.isSprinting()) {
-                double random = ThreadLocalRandom.current().nextDouble(1.8, 2.5 + 1);
+            } else if(!player.isSprinting()) {
+                double random = ThreadLocalRandom.current().nextDouble(0.05, 0.1 + 1);
                 ball.setVelocity(player.getEyeLocation().getDirection().multiply(random));
-            } else {
-                double random = ThreadLocalRandom.current().nextDouble(0.7, 1 + 1);
+            } else if (player.isSprinting()) {
+                double random = ThreadLocalRandom.current().nextDouble(0.1, 0.2 + 1);
                 ball.setVelocity(player.getEyeLocation().getDirection().multiply(random));
             }
             player.playSound(player.getLocation(), Sound.BLOCK_BAMBOO_HIT, 1, 1);
@@ -669,6 +673,26 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             event.setDamage(0);
         } else {
             event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void entityDamageByEntity(EntityDamageByEntityEvent event) {
+        Entity damager = event.getDamager();
+        Entity victim = event.getEntity();
+
+        if(damager instanceof Player player) {
+            if (player.isSneaking()) {
+                double random = ThreadLocalRandom.current().nextDouble(0.1, 0.2 + 1);
+                ball.setVelocity(player.getEyeLocation().getDirection().multiply(random));
+            } else if (!player.isSprinting()) {
+                double random = ThreadLocalRandom.current().nextDouble(0.2, 0.4 + 1);
+                ball.setVelocity(player.getEyeLocation().getDirection().multiply(random));
+            } else if (player.isSprinting()) {
+                double random = ThreadLocalRandom.current().nextDouble(0.4, 0.8 + 1);
+                ball.setVelocity(player.getEyeLocation().getDirection().multiply(random));
+            }
+            player.playSound(player.getLocation(), Sound.BLOCK_BAMBOO_HIT, 1, 1);
         }
     }
 
