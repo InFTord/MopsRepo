@@ -2,6 +2,9 @@ woolbattle:
   - gotKilledBy:
       rus: "был убит"
       eng: "got killed by"
+  - fellInVoid:
+      rus: "упал в пустоту."
+      eng: "fell into the void."
   - generator.uncaptured:
       rus: "&7НЕЗАХВАЧЕН"
       eng: "&7UNCAPTURED"

@@ -81,7 +81,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 	private final HashMap<Player, Integer> combo = new HashMap<>();
 	private final HashMap<Player, BukkitTask> deathmsg = new HashMap<>();
-
+	private final HashMap<Player, Boolean> hasWrittenAnything = new HashMap<>();
 
 	ScoreboardManager manager;
 	Scoreboard mainboard;
@@ -242,6 +242,8 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 								bluekills = bluekills + 1;
 								broadcastDeath(player, getByLang(lang, "woolbattle.gotKilledBy") + " " + ChatColor.AQUA + "" + ChatColor.BOLD + "СИНИМИ" + ChatColor.GRAY + ".");
 							}
+
+							default -> broadcastDeath(player, getByLang(lang, "woolbattle.fellInVoid") + "");
 						}
 
 						if(!hardmode) {
@@ -256,7 +258,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 							ItemStack[] finalSavedInventory = savedInventory;
 
 							player.addScoreboardTag("spectator");
-							player.hidePlayer(player);
+							player.hidePlayer(this, player);
 							player.setAllowFlight(true);
 							player.setFlying(true);
 
@@ -296,7 +298,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 											loc.setYaw(90);
 											player.teleport(loc);
 										}
-										player.showPlayer(player);
+										player.showPlayer(this, player);
 										player.setAllowFlight(false);
 										player.setFlying(false);
 										player.removeScoreboardTag("spectator");
@@ -319,6 +321,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 						simulateHardmodeDeath(player);
 						player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_DEATH, 0.8F, 1);
 					}
+					// ЧТО ДЕЛАЕТ ЭТОТ КОД?? ЗАЧЕМ ОН НУЖЕН?? типо чтобы от ворлдбордера смерть считалась или чё, наверное да
 				}
 
 				recountTeamMembers();
@@ -481,13 +484,8 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 				lootGenerator();
 
 				scoreboardTask = Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
-					for (Player player1 : Bukkit.getServer().getOnlinePlayers()) {
-
-					if (gameactive) {
-						newboard = manager.getNewScoreboard();
-						Objective fakekills = newboard.registerNewObjective("fakekills", "dummy", Component.text("WoolBattle", NamedTextColor.GOLD, TextDecoration.BOLD));
-						fakekills.setDisplaySlot(DisplaySlot.SIDEBAR);
-
+					if(gameactive) {
+						// time update
 						seconds[0] = seconds[0] + 1;
 
 						if (seconds[0] == 60) {
@@ -506,132 +504,141 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 						actualgametime0[0] = actualgametime0[0] + 1;
 
 
-						if (actualgametime[0] < 240) {
-							nextevent = ChatColor.DARK_GRAY + " (Рефилл | 4:00)";
-						}
-						if (actualgametime[0] == 240) {
-							lootGenerator();
-							for (Player player0 : mainworld.getPlayers()) {
-								player0.sendTitle(ChatColor.YELLOW + "Рефилл!", ChatColor.GRAY + "Лут восстановился", 1, 20, 20);
-								player0.playSound(player0.getLocation(), Sound.BLOCK_CHEST_OPEN, 1, 1);
+						// random scoreboard bullshit
+
+						for (Player player1 : Bukkit.getServer().getOnlinePlayers()) {
+
+							newboard = manager.getNewScoreboard();
+							Objective fakekills = newboard.registerNewObjective("fakekills", "dummy", Component.text("WoolBattle", NamedTextColor.GOLD, TextDecoration.BOLD));
+							fakekills.setDisplaySlot(DisplaySlot.SIDEBAR);
+
+
+							if (actualgametime[0] < 240) {
+								nextevent = ChatColor.DARK_GRAY + " (Рефилл | 4:00)";
 							}
-						}
-						if (actualgametime[0] < 480 && actualgametime[0] > 240) {
-							nextevent = ChatColor.DARK_GRAY + " (Рефилл | 8:00)";
-						}
-						if (actualgametime[0] == 480) {
-							lootGenerator();
-							for (Player player0 : mainworld.getPlayers()) {
-								player0.sendTitle(ChatColor.YELLOW + "Рефилл!", ChatColor.GRAY + "Лут восстановился", 1, 20, 20);
-								player0.playSound(player0.getLocation(), Sound.BLOCK_CHEST_OPEN, 1, 1);
+							if (actualgametime[0] == 240) {
+								lootGenerator();
+								for (Player player0 : mainworld.getPlayers()) {
+									player0.sendTitle(ChatColor.YELLOW + "Рефилл!", ChatColor.GRAY + "Лут восстановился", 1, 20, 20);
+									player0.playSound(player0.getLocation(), Sound.BLOCK_CHEST_OPEN, 1, 1);
+								}
 							}
-						}
-						if (actualgametime[0] < 720 && actualgametime[0] > 480) {
-							nextevent = ChatColor.DARK_GRAY + " (Рефилл | 12:00)";
-						}
-						if (actualgametime[0] == 720) {
-							lootGenerator();
-							for (Player player0 : mainworld.getPlayers()) {
-								player0.sendTitle(ChatColor.YELLOW + "Рефилл!", ChatColor.GRAY + "Лут восстановился", 1, 20, 20);
-								player0.playSound(player0.getLocation(), Sound.BLOCK_CHEST_OPEN, 1, 1);
+							if (actualgametime[0] < 480 && actualgametime[0] > 240) {
+								nextevent = ChatColor.DARK_GRAY + " (Рефилл | 8:00)";
 							}
-						}
-						if (actualgametime[0] < 1200 && actualgametime[0] > 720) {
-							nextevent = ChatColor.DARK_GRAY + " (" + ChatColor.DARK_RED + "Хардмод" + ChatColor.DARK_GRAY + " | 20:00)";
-						}
-						if (actualgametime[0] == 1200) {
-							if (!hardmode) {
-								activateHardmode();
+							if (actualgametime[0] == 480) {
+								lootGenerator();
+								for (Player player0 : mainworld.getPlayers()) {
+									player0.sendTitle(ChatColor.YELLOW + "Рефилл!", ChatColor.GRAY + "Лут восстановился", 1, 20, 20);
+									player0.playSound(player0.getLocation(), Sound.BLOCK_CHEST_OPEN, 1, 1);
+								}
 							}
-							nextevent = ChatColor.DARK_GRAY + " (Сражение до конца)";
-						}
+							if (actualgametime[0] < 720 && actualgametime[0] > 480) {
+								nextevent = ChatColor.DARK_GRAY + " (Рефилл | 12:00)";
+							}
+							if (actualgametime[0] == 720) {
+								lootGenerator();
+								for (Player player0 : mainworld.getPlayers()) {
+									player0.sendTitle(ChatColor.YELLOW + "Рефилл!", ChatColor.GRAY + "Лут восстановился", 1, 20, 20);
+									player0.playSound(player0.getLocation(), Sound.BLOCK_CHEST_OPEN, 1, 1);
+								}
+							}
+							if (actualgametime[0] < 1200 && actualgametime[0] > 720) {
+								nextevent = ChatColor.DARK_GRAY + " (" + ChatColor.DARK_RED + "Хардмод" + ChatColor.DARK_GRAY + " | 20:00)";
+							}
+							if (actualgametime[0] == 1200) {
+								if (!hardmode) {
+									activateHardmode();
+								}
+								nextevent = ChatColor.DARK_GRAY + " (Сражение до конца)";
+							}
 
 
-						if (actualgametime0[0] < 240) {
-							nextevent0 = ChatColor.DARK_GRAY + " (Рефилл | 4:00)";
-						}
-						if (actualgametime0[0] < 480 && actualgametime0[0] > 240) {
-							nextevent0 = ChatColor.DARK_GRAY + " (Рефилл | 8:00)";
-						}
-						if (actualgametime0[0] < 720 && actualgametime0[0] > 480) {
-							nextevent0 = ChatColor.DARK_GRAY + " (Рефилл | 12:00)";
-						}
-						if (actualgametime0[0] < 1200 && actualgametime0[0] > 720) {
-							nextevent0 = ChatColor.DARK_GRAY + " (" + ChatColor.DARK_RED + "Хардмод" + ChatColor.DARK_GRAY + " | 20:00)";
-						}
-						if (actualgametime0[0] == 1200) {
-							nextevent0 = ChatColor.DARK_GRAY + " (Сражение до конца)";
-						}
+							if (actualgametime0[0] < 240) {
+								nextevent0 = ChatColor.DARK_GRAY + " (Рефилл | 4:00)";
+							}
+							if (actualgametime0[0] < 480 && actualgametime0[0] > 240) {
+								nextevent0 = ChatColor.DARK_GRAY + " (Рефилл | 8:00)";
+							}
+							if (actualgametime0[0] < 720 && actualgametime0[0] > 480) {
+								nextevent0 = ChatColor.DARK_GRAY + " (Рефилл | 12:00)";
+							}
+							if (actualgametime0[0] < 1200 && actualgametime0[0] > 720) {
+								nextevent0 = ChatColor.DARK_GRAY + " (" + ChatColor.DARK_RED + "Хардмод" + ChatColor.DARK_GRAY + " | 20:00)";
+							}
+							if (actualgametime0[0] == 1200) {
+								nextevent0 = ChatColor.DARK_GRAY + " (Сражение до конца)";
+							}
 
-						String you = getStringByLang(lang, "kills.you");
-						Team playerteam = Objects.requireNonNull(mainboard.getPlayerTeam(player1));
-						String teamname = playerteam.getName();
+							String you = getStringByLang(lang, "kills.you");
+							Team playerteam = Objects.requireNonNull(mainboard.getPlayerTeam(player1));
+							String teamname = playerteam.getName();
 
-						String redyourteam = "";
-						String yellowyourteam = "";
-						String greenyourteam = "";
-						String blueyourteam = "";
+							String redyourteam = "";
+							String yellowyourteam = "";
+							String greenyourteam = "";
+							String blueyourteam = "";
 
-						if(teamname.contains("red")) { redyourteam = redyourteam + " " + you;}
-						if(teamname.contains("yellow")) { yellowyourteam = yellowyourteam + " " + you; }
-						if(teamname.contains("green")) { greenyourteam = greenyourteam + " " + you; }
-						if(teamname.contains("blue")) { blueyourteam = blueyourteam + " " + you; }
-
-
-						fakekills.getScoreboard().resetScores(getStringByLang(lang, "kills.red") + colon + ChatColor.RED + (redkills - 1) + redyourteam);
-						fakekills.getScoreboard().resetScores(getStringByLang(lang, "kills.yellow") + colon + ChatColor.YELLOW + (yellowkills - 1) + yellowyourteam);
-						fakekills.getScoreboard().resetScores(getStringByLang(lang, "kills.green") + colon + ChatColor.GREEN + (greenkills - 1) + greenyourteam);
-						fakekills.getScoreboard().resetScores(getStringByLang(lang, "kills.blue") + colon + ChatColor.AQUA + (bluekills - 1) + blueyourteam);
-
-						if (seconds0[0] < 10) {
-							fakekills.getScoreboard().resetScores(getStringByLang(lang, "scoreboardTime") + colon + ChatColor.YELLOW + minutes0[0] + ":" + "0" + seconds0[0] + nextevent0);
-						} else {
-							fakekills.getScoreboard().resetScores(getStringByLang(lang, "scoreboardTime") + colon + ChatColor.YELLOW + minutes0[0] + ":" + seconds0[0] + nextevent0);
-						}
-
-						fakekills.getScore(getStringByLang(lang, "kills.red") + colon + ChatColor.RED + redkills + redyourteam).setScore(12);
-						fakekills.getScore(getStringByLang(lang, "kills.yellow") + colon + ChatColor.YELLOW + yellowkills + yellowyourteam).setScore(11);
-						fakekills.getScore(getStringByLang(lang, "kills.green") + colon + ChatColor.GREEN + greenkills + greenyourteam).setScore(10);
-						fakekills.getScore(getStringByLang(lang, "kills.blue") + colon + ChatColor.AQUA + bluekills + blueyourteam).setScore(9);
+							if(teamname.contains("red")) { redyourteam = redyourteam + " " + you;}
+							if(teamname.contains("yellow")) { yellowyourteam = yellowyourteam + " " + you; }
+							if(teamname.contains("green")) { greenyourteam = greenyourteam + " " + you; }
+							if(teamname.contains("blue")) { blueyourteam = blueyourteam + " " + you; }
 
 
-						fakekills.getScore(ChatColor.RED + " ").setScore(8);
+							fakekills.getScoreboard().resetScores(getStringByLang(lang, "kills.red") + colon + ChatColor.RED + (redkills - 1) + redyourteam);
+							fakekills.getScoreboard().resetScores(getStringByLang(lang, "kills.yellow") + colon + ChatColor.YELLOW + (yellowkills - 1) + yellowyourteam);
+							fakekills.getScoreboard().resetScores(getStringByLang(lang, "kills.green") + colon + ChatColor.GREEN + (greenkills - 1) + greenyourteam);
+							fakekills.getScoreboard().resetScores(getStringByLang(lang, "kills.blue") + colon + ChatColor.AQUA + (bluekills - 1) + blueyourteam);
 
-						if (seconds[0] < 10) {
-							fakekills.getScore(ChatColor.WHITE + getStringByLang(lang, "scoreboardTime") + colon + ChatColor.YELLOW + minutes[0] + ":" + "0" + seconds[0] + nextevent).setScore(7);
-						} else {
-							fakekills.getScore(ChatColor.WHITE + getStringByLang(lang, "scoreboardTime") + colon + ChatColor.YELLOW + minutes[0] + ":" + seconds[0] + nextevent).setScore(7);
-						}
+							if (seconds0[0] < 10) {
+								fakekills.getScoreboard().resetScores(getStringByLang(lang, "scoreboardTime") + colon + ChatColor.YELLOW + minutes0[0] + ":" + "0" + seconds0[0] + nextevent0);
+							} else {
+								fakekills.getScoreboard().resetScores(getStringByLang(lang, "scoreboardTime") + colon + ChatColor.YELLOW + minutes0[0] + ":" + seconds0[0] + nextevent0);
+							}
 
-						fakekills.getScore(ChatColor.GOLD + " ").setScore(6);
-
-						resetGeneratorText(player);
-
-
-						String Acopy = getStringByLang(lang, genAstatus);
-						String Bcopy = getStringByLang(lang, genBstatus);
-						String Ccopy = getStringByLang(lang, genCstatus);
-						String Dcopy = getStringByLang(lang, genDstatus);
-
-						if(gensLocked) {
-							Acopy = Acopy + ChatColor.GRAY + " ⚠";
-							Bcopy = Bcopy + ChatColor.GRAY + " ⚠";
-							Ccopy = Ccopy + ChatColor.GRAY + " ⚠";
-							Dcopy = Dcopy + ChatColor.GRAY + " ⚠";
-						}
-
-						fakekills.getScore(ChatColor.WHITE + "Генератор A - " + Acopy).setScore(5);
-						fakekills.getScore(ChatColor.WHITE + "Генератор B - " + Bcopy).setScore(4);
-						fakekills.getScore(ChatColor.WHITE + "Генератор C - " + Ccopy).setScore(3);
-						fakekills.getScore(ChatColor.WHITE + "Генератор D - " + Dcopy).setScore(2);
+							fakekills.getScore(getStringByLang(lang, "kills.red") + colon + ChatColor.RED + redkills + redyourteam).setScore(12);
+							fakekills.getScore(getStringByLang(lang, "kills.yellow") + colon + ChatColor.YELLOW + yellowkills + yellowyourteam).setScore(11);
+							fakekills.getScore(getStringByLang(lang, "kills.green") + colon + ChatColor.GREEN + greenkills + greenyourteam).setScore(10);
+							fakekills.getScore(getStringByLang(lang, "kills.blue") + colon + ChatColor.AQUA + bluekills + blueyourteam).setScore(9);
 
 
-						fakekills.getScore(ChatColor.YELLOW + " ").setScore(1);
-						fakekills.getScore(ChatColor.DARK_GRAY + connectToIP + ":" + Bukkit.getPort()).setScore(0);
+							fakekills.getScore(ChatColor.RED + " ").setScore(8);
+
+							if (seconds[0] < 10) {
+								fakekills.getScore(ChatColor.WHITE + getStringByLang(lang, "scoreboardTime") + colon + ChatColor.YELLOW + minutes[0] + ":" + "0" + seconds[0] + nextevent).setScore(7);
+							} else {
+								fakekills.getScore(ChatColor.WHITE + getStringByLang(lang, "scoreboardTime") + colon + ChatColor.YELLOW + minutes[0] + ":" + seconds[0] + nextevent).setScore(7);
+							}
+
+							fakekills.getScore(ChatColor.GOLD + " ").setScore(6);
+
+							resetGeneratorText(player);
 
 
-							player1.setScoreboard(fakekills.getScoreboard());
-						}
+							String Acopy = getStringByLang(lang, genAstatus);
+							String Bcopy = getStringByLang(lang, genBstatus);
+							String Ccopy = getStringByLang(lang, genCstatus);
+							String Dcopy = getStringByLang(lang, genDstatus);
+
+							if(gensLocked) {
+								Acopy = Acopy + ChatColor.GRAY + " ⚠";
+								Bcopy = Bcopy + ChatColor.GRAY + " ⚠";
+								Ccopy = Ccopy + ChatColor.GRAY + " ⚠";
+								Dcopy = Dcopy + ChatColor.GRAY + " ⚠";
+							}
+
+							fakekills.getScore(ChatColor.WHITE + "Генератор A - " + Acopy).setScore(5);
+							fakekills.getScore(ChatColor.WHITE + "Генератор B - " + Bcopy).setScore(4);
+							fakekills.getScore(ChatColor.WHITE + "Генератор C - " + Ccopy).setScore(3);
+							fakekills.getScore(ChatColor.WHITE + "Генератор D - " + Dcopy).setScore(2);
+
+
+							fakekills.getScore(ChatColor.YELLOW + " ").setScore(1);
+							fakekills.getScore(ChatColor.DARK_GRAY + connectToIP + ":" + Bukkit.getPort()).setScore(0);
+
+
+								player1.setScoreboard(fakekills.getScoreboard());
+							}
 
 					}
 				}, 0L, 20L);
@@ -656,7 +663,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 								genStatus = "woolbattle.generator.uncaptured";
 							}
 
-							if(player1.getScoreboardTags().contains("ingame")) {
+							if(player1.getScoreboardTags().contains("ingame") && !player1.getScoreboardTags().contains("spectator")) {
 								if (teamname.contains("red")) {
 									if (genStatus.contains("woolbattle.generator.red")) {
 										if (!player1.getInventory().contains(Material.RED_WOOL, 512)) {
@@ -1043,6 +1050,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		Team team = mainboard.getPlayerTeam(player);
 		String teamname = team.getName();
 		String msg = event.getMessage();
+		hasWrittenAnything.putIfAbsent(player, false);
 
 		event.setCancelled(true);
 
@@ -1065,8 +1073,14 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			if (msg.startsWith("!")) {
 				for (Player players : Bukkit.getOnlinePlayers()) {
 					players.sendMessage(ChatColor.AQUA + "[!] " + color + player.getName() + ChatColor.WHITE + ": " + msg.replaceFirst("!", ""));
+					hasWrittenAnything.put(player, true);
 				}
 			} else {
+				if(!hasWrittenAnything.get(player)) {
+					player.sendMessage(ChatColor.GRAY + "Your messages are only seen to your team, write ! at the start to make them global.");
+					hasWrittenAnything.put(player, true);
+				}
+
 				for (OfflinePlayer players0 : team.getPlayers()) {
 					if (players0.isOnline()) {
 						Player players = players0.getPlayer();
@@ -1074,13 +1088,10 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 					}
 				}
 			}
-		} else {
-			for (Player players : Bukkit.getOnlinePlayers()) {
-				players.sendMessage(color + player.getName() + ChatColor.WHITE + ": " + msg);
-			}
 		}
+
 		for (Player players : Bukkit.getOnlinePlayers()) {
-			if(players.getScoreboardTags().contains("spectator")) {
+			if(player.getScoreboardTags().contains("spectator")) {
 				players.sendMessage(ChatColor.GRAY + "[Зрители] " + color + player.getName() + ChatColor.WHITE + ": " + msg);
 			}
 		}
@@ -2050,7 +2061,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		broadcastFinalDeath(player);
 
 		player.addScoreboardTag("spectator");
-		player.hidePlayer(player);
+		player.hidePlayer(this, player);
 		player.setAllowFlight(true);
 		player.setFlying(true);
 
