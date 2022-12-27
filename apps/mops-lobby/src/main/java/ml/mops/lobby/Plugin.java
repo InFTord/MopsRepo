@@ -192,6 +192,8 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         stand.addScoreboardTag("killOnDisable");
         stand.addScoreboardTag("balls");
 
+        stand.setSmall(true);
+
         stand.setHeadPose(new EulerAngle(Math.toRadians(180), Math.toRadians(0), Math.toRadians(0)));
 
         ball = stand;
@@ -671,8 +673,6 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     public void onEntityDamage(EntityDamageEvent event) {
         if(event.getEntityType() == EntityType.PLAYER) {
             event.setDamage(0);
-        } else {
-            event.setCancelled(true);
         }
     }
 
@@ -682,17 +682,19 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         Entity victim = event.getEntity();
 
         if(damager instanceof Player player) {
-            if (player.isSneaking()) {
-                double random = ThreadLocalRandom.current().nextDouble(0.1, 0.2 + 1);
-                ball.setVelocity(player.getEyeLocation().getDirection().multiply(random));
-            } else if (!player.isSprinting()) {
-                double random = ThreadLocalRandom.current().nextDouble(0.2, 0.4 + 1);
-                ball.setVelocity(player.getEyeLocation().getDirection().multiply(random));
-            } else if (player.isSprinting()) {
-                double random = ThreadLocalRandom.current().nextDouble(0.4, 0.8 + 1);
-                ball.setVelocity(player.getEyeLocation().getDirection().multiply(random));
+            if(victim == ball) {
+                if (player.isSneaking()) {
+                    double random = ThreadLocalRandom.current().nextDouble(0.1, 0.2 + 1);
+                    ball.setVelocity(player.getEyeLocation().getDirection().multiply(random));
+                } else if (!player.isSprinting()) {
+                    double random = ThreadLocalRandom.current().nextDouble(0.2, 0.4 + 1);
+                    ball.setVelocity(player.getEyeLocation().getDirection().multiply(random));
+                } else if (player.isSprinting()) {
+                    double random = ThreadLocalRandom.current().nextDouble(0.4, 0.8 + 1);
+                    ball.setVelocity(player.getEyeLocation().getDirection().multiply(random));
+                }
+                player.playSound(player.getLocation(), Sound.BLOCK_BAMBOO_HIT, 1, 1);
             }
-            player.playSound(player.getLocation(), Sound.BLOCK_BAMBOO_HIT, 1, 1);
         }
     }
 
