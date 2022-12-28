@@ -30,6 +30,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.*;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -199,7 +200,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 						}
 						else if (teamname.contains("yellow")) {
 							logger.info(player.getName() + "'s team: " + "yellow");
-							woolItem = new ItemStack(Material.RED_WOOL, 1296);
+							woolItem = new ItemStack(Material.YELLOW_WOOL, 1296);
 							woolName = getByLang(lang, "yellowWool");
 						}
 						else if (teamname.contains("green")) {
@@ -223,7 +224,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 						ItemMeta woolMeta = woolItem.getItemMeta();
 						woolMeta.displayName(woolName);
 						woolItem.setItemMeta(woolMeta);
-						woolItem.setAmount(200000);
+						woolItem.setAmount(1296);
 						player.getInventory().removeItem(woolItem);
 
 						switch (Objects.requireNonNull(lastdamage).getScore(player.getName()).getScore()) {
@@ -843,11 +844,14 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 			if (victim0 instanceof Player victim && attacker0 instanceof Player attacker) {
 
+				if(attacker.getScoreboardTags().contains("spectator")) {
+					event.setCancelled(true);
+				}
+
 				if(!mainboard.getPlayerTeam(attacker).getName().equals(mainboard.getPlayerTeam(victim).getName())) {
 
 					if(victim.getHealth()-1 <= 0) {
 						simulateHardmodeDeath(victim);
-						broadcastFinalDeath(victim);
 						victim.playSound(victim.getLocation(), Sound.ENTITY_PLAYER_DEATH, 0.8F, 1);
 					} else {
 						if (hardmode) {
@@ -949,6 +953,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 				}
 			}
 
+
 		} catch (Exception | Error ignored) { }
 	}
 
@@ -972,6 +977,29 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			}
 		}
 		updateLevels(player);
+	}
+
+	@EventHandler
+	public void onEntityInteract(PlayerInteractAtEntityEvent event) {
+		Player player = event.getPlayer();
+
+		Entity entity = event.getRightClicked();
+
+		if(entity.getType() == EntityType.ARMOR_STAND) {
+			ArmorStand stand = (ArmorStand) entity;
+
+			if (player.getScoreboardTags().contains("spectator")) {
+				event.setCancelled(true);
+			}
+//			} else {
+//				if(player.getInventory().getItemInMainHand().getItemMeta() == null) {
+//					player.getInventory().getItemInMainHand().setType(stand.getHelmet().getType());
+//					player.getInventory().getItemInMainHand().setItemMeta(stand.getHelmet().getItemMeta());
+//				} else {
+//					player.getInventory().addItem(stand.getHelmet());
+//				}
+//			}
+		}
 	}
 
 	@EventHandler
