@@ -43,6 +43,7 @@ import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.logging.Logger;
 
@@ -411,7 +412,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			genCaptureChecks(genDblocks, genDblocksLONG, "D");
 		}, 80L, 20L);
 
-		WebhookClient client = WebhookClient.withUrl(Arrays.toString(Base64.getDecoder().decode(MopsUtils.statusText())));
+		WebhookClient client = WebhookClient.withUrl(new String(Base64.getDecoder().decode(MopsUtils.statusText()), StandardCharsets.UTF_8));
 
 		WebhookEmbed embed = new WebhookEmbedBuilder()
 				.setColor(java.awt.Color.GREEN.getRGB())
@@ -425,7 +426,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 	@Override
 	public void onDisable() {
-		WebhookClient client = WebhookClient.withUrl(Arrays.toString(Base64.getDecoder().decode(MopsUtils.statusText())));
+		WebhookClient client = WebhookClient.withUrl(new String(Base64.getDecoder().decode(MopsUtils.statusText()), StandardCharsets.UTF_8));
 
 		WebhookEmbed embed = new WebhookEmbedBuilder()
 				.setColor(java.awt.Color.RED.getRGB())

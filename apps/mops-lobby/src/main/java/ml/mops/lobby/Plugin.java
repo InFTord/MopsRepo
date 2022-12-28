@@ -689,14 +689,14 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         if(damager instanceof Player player) {
             if(victim == ball) {
                 if (player.isSneaking()) {
-                    double random = ThreadLocalRandom.current().nextDouble(0.1, 0.2 + 1);
+                    double random = ThreadLocalRandom.current().nextDouble(0.1, 0.3 + 1);
                     ball.setVelocity(player.getEyeLocation().getDirection().multiply(random));
                 } else if (!player.isSprinting()) {
-                    double random = ThreadLocalRandom.current().nextDouble(0.2, 0.4 + 1);
+                    double random = ThreadLocalRandom.current().nextDouble(0.3, 0.5 + 1);
                     ball.setVelocity(player.getEyeLocation().getDirection().multiply(random));
                 } else if (player.isSprinting()) {
-                    double random = ThreadLocalRandom.current().nextDouble(0.4, 0.8 + 1);
-                    ball.setVelocity(player.getEyeLocation().getDirection().multiply(random));
+                    double random = ThreadLocalRandom.current().nextDouble(0.6, 1 + 1);
+                    ball.setVelocity(player.getEyeLocation().getDirection().multiply(random).add(new Vector(0, 0.2, 0)));
                 }
                 player.playSound(player.getLocation(), Sound.BLOCK_BAMBOO_HIT, 1, 1);
             }

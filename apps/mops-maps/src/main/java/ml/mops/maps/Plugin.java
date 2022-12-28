@@ -20,6 +20,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Base64;
 
@@ -28,7 +29,7 @@ public class Plugin extends JavaPlugin implements Listener {
     public void onEnable() {
         Bukkit.getServer().getPluginManager().registerEvents(this, this);
 
-        WebhookClient client = WebhookClient.withUrl(Arrays.toString(Base64.getDecoder().decode(MopsUtils.statusText())));
+        WebhookClient client = WebhookClient.withUrl(new String(Base64.getDecoder().decode(MopsUtils.statusText()), StandardCharsets.UTF_8));
 
         WebhookEmbed embed = new WebhookEmbedBuilder()
                 .setColor(Color.GREEN.getRGB())
@@ -39,7 +40,7 @@ public class Plugin extends JavaPlugin implements Listener {
 
     @Override
     public void onDisable() {
-        WebhookClient client = WebhookClient.withUrl(Arrays.toString(Base64.getDecoder().decode(MopsUtils.statusText())));
+        WebhookClient client = WebhookClient.withUrl(new String(Base64.getDecoder().decode(MopsUtils.statusText()), StandardCharsets.UTF_8));
 
         WebhookEmbed embed = new WebhookEmbedBuilder()
                 .setColor(Color.RED.getRGB())

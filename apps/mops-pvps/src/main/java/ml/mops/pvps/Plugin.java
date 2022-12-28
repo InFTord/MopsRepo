@@ -29,6 +29,7 @@ import java.awt.Color;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 
@@ -45,7 +46,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
 		turtleLoc = new Location(mainworld, 0, 0, 0);
 
-		WebhookClient client = WebhookClient.withUrl(Arrays.toString(Base64.getDecoder().decode(MopsUtils.statusText())));
+		WebhookClient client = WebhookClient.withUrl(new String(Base64.getDecoder().decode(MopsUtils.statusText()), StandardCharsets.UTF_8));
 
 		WebhookEmbed embed = new WebhookEmbedBuilder()
 				.setColor(Color.GREEN.getRGB())
@@ -66,7 +67,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 			player.kickPlayer(ChatColor.YELLOW + "Server closed.\nShortly will be back on, maybe.");
 		}
 
-		WebhookClient client = WebhookClient.withUrl(Arrays.toString(Base64.getDecoder().decode(MopsUtils.statusText())));
+		WebhookClient client = WebhookClient.withUrl(new String(Base64.getDecoder().decode(MopsUtils.statusText()), StandardCharsets.UTF_8));
 
 		WebhookEmbed embed = new WebhookEmbedBuilder()
 				.setColor(Color.RED.getRGB())
