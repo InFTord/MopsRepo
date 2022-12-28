@@ -264,6 +264,8 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 							player.setAllowFlight(true);
 							player.setFlying(true);
 
+							player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 60, 1, true, false));
+
 							Location mid = new Location(player.getWorld(), 9, 270, 9);
 							player.teleport(mid);
 							lastdamage.getScore(player.getName()).setScore(0);

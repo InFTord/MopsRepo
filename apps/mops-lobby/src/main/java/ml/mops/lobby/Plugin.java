@@ -603,6 +603,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         Player player = event.getPlayer();
         event.setJoinMessage("");
 
+        player.addPotionEffect(new PotionEffect(PotionEffectType.SATURATION, 2000000, 100, true, false));
 
         Bukkit.getScheduler().runTaskLater(this, () -> {
             player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 0);
