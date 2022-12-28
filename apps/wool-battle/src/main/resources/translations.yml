@@ -20,6 +20,18 @@ woolbattle:
   - generator.blue:
       rus: "&bСИНИЙ"
       eng: "&bBLUE"
+  - generator.a:
+      rus: "&fГенератор А"
+      eng: "&fGenerator A"
+  - generator.b:
+      rus: "&fГенератор B"
+      eng: "&fGenerator B"
+  - generator.c:
+      rus: "&fГенератор C"
+      eng: "&fGenerator C"
+  - generator.d:
+      rus: "&fГенератор D"
+      eng: "&fGenerator D"
   - redWool:
       rus: "&cКрасная Шерсть"
       eng: "&cRed Wool"
@@ -94,6 +106,12 @@ woolbattle:
   - woolLimit:
       rus: "&cЛимит шерсти достигнут"
       eng: "&cYou've reached the wool limit"
+  - team:
+      rus: "Team"
+      eng: "Team"
+  - spectators:
+      rus: "Spectators"
+      eng: "Spectators"
   - cantBreak:
       rus: "&cВы не можете это ломать"
       eng: "&cYou can't break this"

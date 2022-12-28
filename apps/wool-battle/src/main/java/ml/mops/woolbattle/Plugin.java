@@ -401,7 +401,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 							player.setVelocity((player.getEyeLocation().getDirection().multiply(0.9)).add(new Vector(0, 0.45, 0)));
 							player.setAllowFlight(false);
 						} else {
-							player.sendActionBar(Component.text(ChatColor.RED + "Недостаточно шерсти!"));
+							player.sendActionBar(getByLang(lang, "woolbattle.notEnoughWool"));
 						}
 					}
 				}
@@ -646,8 +646,8 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 							fakekills.getScore(ChatColor.DARK_GRAY + connectToIP + ":" + Bukkit.getPort()).setScore(0);
 
 
-								player1.setScoreboard(fakekills.getScoreboard());
-							}
+							player1.setScoreboard(fakekills.getScoreboard());
+						}
 
 					}
 				}, 0L, 20L);
@@ -1120,7 +1120,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 				for (OfflinePlayer players0 : team.getPlayers()) {
 					if (players0.isOnline()) {
 						Player players = players0.getPlayer();
-						players.sendMessage(ChatColor.DARK_GREEN + "[Команда] " + color + player.getName() + ChatColor.WHITE + ": " + color + msg);
+						players.sendMessage(ChatColor.DARK_GREEN + "[" + getStringByLang(lang, "woolbattle.team") + "] " + color + player.getName() + ChatColor.WHITE + ": " + color + msg);
 					}
 				}
 			}
@@ -1128,7 +1128,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 		for (Player players : Bukkit.getOnlinePlayers()) {
 			if(player.getScoreboardTags().contains("spectator")) {
-				players.sendMessage(ChatColor.GRAY + "[Зрители] " + color + player.getName() + ChatColor.WHITE + ": " + msg);
+				players.sendMessage(ChatColor.GRAY + "[" + getStringByLang(lang, "woolbattle.spectators") + "] " + color + player.getName() + ChatColor.WHITE + ": " + msg);
 			}
 		}
 	}
@@ -1319,7 +1319,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 							player.setVelocity(new Vector(0, -1, 0));
 						}
 					} else {
-						player.sendActionBar(Component.text(ChatColor.RED + "Недостаточно шерсти!"));
+						player.sendActionBar(getByLang(lang, "woolbattle.notEnoughWool"));
 					}
 				}
 				if (platforms.contains(item)) {
@@ -1360,7 +1360,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 							}
 						}
 					} else {
-						player.sendActionBar(Component.text(ChatColor.RED + "Недостаточно шерсти!"));
+						player.sendActionBar(getByLang(lang, "woolbattle.notEnoughWool"));
 					}
 
 				}
@@ -1391,7 +1391,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 							players.playSound(loc, Sound.ENTITY_FIREWORK_ROCKET_BLAST, 1F, 2F);
 						}
 					} else {
-						player.sendActionBar(Component.text(ChatColor.RED + "Недостаточно шерсти!"));
+						player.sendActionBar(getByLang(lang, "woolbattle.notEnoughWool"));
 					}
 				} else if (explosiveSticksMK2.contains(item)) {
 					Team team = mainboard.getPlayerTeam(player);
@@ -1419,7 +1419,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 							players.playSound(players.getLocation(), Sound.ITEM_TRIDENT_THUNDER, 1F, 2);
 						}
 					} else {
-						player.sendActionBar(Component.text(ChatColor.RED + "Недостаточно шерсти!"));
+						player.sendActionBar(getByLang(lang, "woolbattle.notEnoughWool"));
 					}
 				} else if(shears.contains(item)) {
 					Block block = event.getClickedBlock();
@@ -1447,7 +1447,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 								block.setType(Material.AIR);
 								player.playSound(block.getLocation(), Sound.BLOCK_WOODEN_TRAPDOOR_CLOSE, 1, 2);
 							} else {
-								player.sendActionBar(Component.text(ChatColor.RED + "Недостаточно шерсти!"));
+								player.sendActionBar(getByLang(lang, "woolbattle.notEnoughWool"));
 							}
 						}
 					}
