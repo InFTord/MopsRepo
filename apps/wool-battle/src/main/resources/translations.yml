@@ -60,10 +60,10 @@ woolbattle:
   - explosionStaff.lore:
       rus: |
         &7Палка откидывающая тебя назад. &e&lПКМ &r&8(Нужно наводится на блок)
-        &bСтоимость: 40 шерсти
+        &bСтоимость: 28 шерсти
       eng: |
         &7Stick that throws you backwards. &e&lRIGHT CLICK &r&8(Aim on a block)
-        &bCost: 40 wool
+        &bCost: 28 wool
   - shears.name:
       rus: "&bНожницы"
       eng: "&bShears"
