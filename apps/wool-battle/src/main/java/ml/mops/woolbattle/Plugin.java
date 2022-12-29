@@ -189,7 +189,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 						player.setVelocity(new Vector(0, 10, 0));
 					}
 
-					if (loc0.getY() > 143 && loc0.getY() < 160) {
+					if (loc0.getY() > 142 && loc0.getY() < 160 && !player.getScoreboardTags().contains("spectator")) {
 						ItemStack woolItem;
 						TextComponent woolName;
 
@@ -230,25 +230,37 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 						switch (Objects.requireNonNull(lastdamage).getScore(player.getName()).getScore()) {
 							case 1 -> {
 								redkills = redkills + 1;
-								broadcastDeath(player, getStringByLang(lang, "woolbattle.gotKilledBy") + " " + ChatColor.RED + "" + ChatColor.BOLD + "КРАСНЫМИ" + ChatColor.GRAY + ".");
+								if(!hardmode) {
+									broadcastDeath(player, getStringByLang(lang, "woolbattle.gotKilledBy") + " " + ChatColor.RED + "" + ChatColor.BOLD + "КРАСНЫМИ" + ChatColor.GRAY + ".");
+								}
 							}
 							case 2 -> {
 								yellowkills = yellowkills + 1;
-								broadcastDeath(player, getStringByLang(lang, "woolbattle.gotKilledBy") + " " + ChatColor.YELLOW + "" + ChatColor.BOLD + "ЖЁЛТЫМИ" + ChatColor.GRAY + ".");
+								if(!hardmode) {
+									broadcastDeath(player, getStringByLang(lang, "woolbattle.gotKilledBy") + " " + ChatColor.YELLOW + "" + ChatColor.BOLD + "ЖЁЛТЫМИ" + ChatColor.GRAY + ".");
+								}
 							}
 							case 3 -> {
 								greenkills = greenkills + 1;
-								broadcastDeath(player, getStringByLang(lang, "woolbattle.gotKilledBy") + " " + ChatColor.GREEN + "" + ChatColor.BOLD + "ЗЕЛЁНЫМИ" + ChatColor.GRAY + ".");
+								if (!hardmode) {
+									broadcastDeath(player, getStringByLang(lang, "woolbattle.gotKilledBy") + " " + ChatColor.GREEN + "" + ChatColor.BOLD + "ЗЕЛЁНЫМИ" + ChatColor.GRAY + ".");
+								}
 							}
 							case 4 -> {
 								bluekills = bluekills + 1;
-								broadcastDeath(player, getStringByLang(lang, "woolbattle.gotKilledBy") + " " + ChatColor.AQUA + "" + ChatColor.BOLD + "СИНИМИ" + ChatColor.GRAY + ".");
+								if(!hardmode) {
+									broadcastDeath(player, getStringByLang(lang, "woolbattle.gotKilledBy") + " " + ChatColor.AQUA + "" + ChatColor.BOLD + "СИНИМИ" + ChatColor.GRAY + ".");
+								}
 							}
 
-							default -> broadcastDeath(player, getStringByLang(lang, "woolbattle.fellInVoid") + "");
+							default -> {
+								if(!hardmode) {
+									broadcastDeath(player, getStringByLang(lang, "woolbattle.fellInVoid") + "");
+								}
+							}
 						}
 
-						if(!hardmode && !player.getScoreboardTags().contains("spectator")) {
+						if(!hardmode) {
 							ItemStack[] savedInventory = new ItemStack[0];
 
 							if(!player.getScoreboardTags().contains("spectator")) {
@@ -324,7 +336,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 						simulateHardmodeDeath(player);
 						player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_DEATH, 0.8F, 1);
 					}
-					// ЧТО ДЕЛАЕТ ЭТОТ КОД?? ЗАЧЕМ ОН НУЖЕН?? типо чтобы от ворлдбордера смерть считалась или чё, наверное да
+					// типо чтобы от ворлдбордера смерть считалась
 				}
 
 				recountTeamMembers();
@@ -918,7 +930,13 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 						victim.playSound(victim.getLocation(), Sound.ENTITY_PLAYER_DEATH, 0.8F, 1);
 					} else {
 						if (hardmode) {
-							event.setDamage(1);
+							if(projectile instanceof Arrow arrow) {
+								if(arrow.getShooter() != victim) {
+									event.setDamage(1);
+								}
+							} else {
+								event.setDamage(1);
+							}
 						}
 					}
 
@@ -2171,17 +2189,31 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			Team team = mainboard.getPlayerTeam(player);
 			String teamname = team.getName();
 
-			if(teamname.contains("red")) {
-				redTeamPlayers0.add(player);
+			boolean letCounting = false;
+
+			if(!hardmode) {
+				letCounting = true;
+			} else {
+				if(!player.getScoreboardTags().contains("spectator")) {
+					letCounting = true;
+				}
 			}
-			if(teamname.contains("yellow")) {
-				yellowTeamPlayers0.add(player);
-			}
-			if(teamname.contains("green")) {
-				greenTeamPlayers0.add(player);
-			}
-			if(teamname.contains("blue")) {
-				blueTeamPlayers0.add(player);
+
+			// мне лень оптимизировать идите нахуй лмао :p
+
+			if(letCounting) {
+				if (teamname.contains("red")) {
+					redTeamPlayers0.add(player);
+				}
+				if (teamname.contains("yellow")) {
+					yellowTeamPlayers0.add(player);
+				}
+				if (teamname.contains("green")) {
+					greenTeamPlayers0.add(player);
+				}
+				if (teamname.contains("blue")) {
+					blueTeamPlayers0.add(player);
+				}
 			}
 
 			redTeamPlayers = redTeamPlayers0;

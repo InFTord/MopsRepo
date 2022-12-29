@@ -71,6 +71,12 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         Bukkit.getServer().getPluginManager().registerEvents(this, this);
         World mainworld = Bukkit.getServer().getWorlds().get(0);
 
+        for(Entity entity : mainworld.getEntities()) {
+            if(entity.getScoreboardTags().contains("killOnDisable")) {
+                entity.teleport(new Location(mainworld, 0, -1000, 0));
+            }
+        }
+
         flippable.add(new Location(mainworld, -102, 9, -195));
         flippable.add(new Location(mainworld, -95, 9, -195));
         flippable.add(new Location(mainworld, -85, 9, -196));
