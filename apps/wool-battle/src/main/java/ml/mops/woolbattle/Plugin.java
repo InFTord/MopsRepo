@@ -1628,12 +1628,12 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		mainworld.getWorldBorder().setSize(90, 90);
 		Bukkit.getScheduler().runTaskLater(this, () -> mainworld.getWorldBorder().setSize(17, 70), 2100L);
 		for (Player player1 : mainworld.getPlayers()) {
-			player1.sendTitle(ChatColor.RED + "Хардмод!", ChatColor.GRAY + "Постарайся выжить!", 5, 30, 15);
+			player1.sendTitle(getStringByLang(lang, "hardmode.activation.1"), getStringByLang(lang, "hardmode.activation.2"), 5, 30, 15);
 			player1.playSound(player1.getLocation(), Sound.ENTITY_WITHER_DEATH, 1, 0);
 			player1.playSound(player1.getLocation(), Sound.ENTITY_ENDER_DRAGON_AMBIENT, 1, 0);
 
 			worldBorderTask = Bukkit.getScheduler().runTaskLater(this, () -> {
-				player1.sendTitle(ChatColor.RED + "Генераторы", ChatColor.GRAY + "Заблокированы!", 5, 30, 15);
+				player1.sendTitle(getStringByLang(lang, "generator.blocked.1"), getStringByLang(lang, "generator.blocked.2"), 5, 30, 15);
 				player1.playSound(player1.getLocation(), Sound.ENTITY_ZOMBIE_ATTACK_IRON_DOOR, 0.8F, 0);
 				player1.playSound(player1.getLocation(), Sound.ENTITY_ZOMBIE_ATTACK_IRON_DOOR, 0.8F, 1);
 				player1.playSound(player1.getLocation(), Sound.ENTITY_ZOMBIE_ATTACK_IRON_DOOR, 0.8F, 2);

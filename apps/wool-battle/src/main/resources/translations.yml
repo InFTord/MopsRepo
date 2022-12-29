@@ -59,10 +59,10 @@ woolbattle:
       eng: "&eExplosion Staff"
   - explosionStaff.lore:
       rus: |
-        &7Палка, откидывающая тебя назад. &e&lПКМ &r&8(Нужно наводится на блок)
+        &7Палка откидывающая тебя назад. &e&lПКМ &r&8(Нужно наводится на блок)
         &bСтоимость: 40 шерсти
       eng: |
-        &7Stick, that throws you back. &e&lRIGHT CLICK &r&8(Aim on a block)
+        &7Stick that throws you backwards. &e&lRIGHT CLICK &r&8(Aim on a block)
         &bCost: 40 wool
   - shears.name:
       rus: "&bНожницы"
@@ -82,16 +82,19 @@ woolbattle:
         &bAbility: &7Removes blocks of
         &7your color on generators. &e&lRIGHT CLICK
         &bCost: 6 wool pet block
+  - bow.name:
+      rus: "&bЛук"
+      eng: "&bBow"
   - notEnoughWool:
       rus: "&cНедостаточно шерсти!"
       eng: "&cNot enough wool!"
-  - event.refill1:
+  - event.refill.1:
       rus: "&8(Рефилл | 4:00)"
       eng: "&8(Refill | 4:00)"
-  - event.refill2:
+  - event.refill.2:
       rus: "&8(Рефилл | 8:00)"
       eng: "&8(Refill | 8:00)"
-  - event.refill3:
+  - event.refill.3:
       rus: "&8(Рефилл | 12:00)"
       eng: "&8(Refill | 12:00)"
   - event.hardmode:
@@ -107,14 +110,26 @@ woolbattle:
       rus: "&cЛимит шерсти достигнут"
       eng: "&cYou've reached the wool limit"
   - team:
-      rus: "Team"
+      rus: "Команда"
       eng: "Team"
   - spectators:
-      rus: "Spectators"
+      rus: "Зрители"
       eng: "Spectators"
   - cantBreak:
       rus: "&cВы не можете это ломать"
       eng: "&cYou can't break this"
+  - hardmode.activation.1:
+      rus: "&cХардмод!"
+      eng: "&cHardmode!"
+  - hardmode.activation.2:
+      rus: "&7Постарайся выжить!"
+      eng: "&7Try to survive!!"
+  - generator.blocked.1:
+      rus: "&cGenerators"
+      eng: "&cGenerators"
+  - generator.blocked.2:
+      rus: "&7Blocked!"
+      eng: "&7Blocked!"
   - team.won:
       rus: "Победили!"
       eng: "Has Won!"

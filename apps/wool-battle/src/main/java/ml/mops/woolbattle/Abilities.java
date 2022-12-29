@@ -11,7 +11,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 
+import java.awt.*;
 import java.util.*;
+import java.util.List;
 
 public class Abilities {
 	final Plugin plugin;
@@ -43,10 +45,14 @@ public class Abilities {
 		ItemStack item2 = new ItemStack(Material.STICK);
 		ItemMeta meta2 = item2.getItemMeta();
 		meta2.displayName(plugin.getByLang(lang, "explosionStaff.name"));
+
+		List<String> lore02 = new ArrayList<>(Arrays.asList(MopsUtils.textComponentToString(plugin.getByLang(lang, "explosionStaff.lore")).split("\n")));
 		List<String> lore2 = new ArrayList<>();
-		lore2.add(ChatColor.GRAY + "Палка откидывающая тебя назад." + ChatColor.YELLOW + "" + ChatColor.BOLD + " ПКМ" + ChatColor.DARK_GRAY + " (Нужно наводится на блок)");
-		lore2.add(ChatColor.AQUA + "Стоимость: 28 шерсти");
+		for(String string : lore02) {
+			lore2.add(MopsUtils.convertColorCodes(string));
+		}
 		meta2.setLore(lore2);
+
 		item2.setItemMeta(meta2);
 		player1.getInventory().setItem(1, item2);
 
@@ -68,7 +74,7 @@ public class Abilities {
 
 		ItemStack item4 = new ItemStack(Material.BOW);
 		ItemMeta meta4 = item4.getItemMeta();
-		meta4.setDisplayName(ChatColor.AQUA + "Лук");
+		meta4.displayName(plugin.getByLang(lang, "bow.name"));
 		List<String> lore4 = new ArrayList<>();
 		lore4.add(ChatColor.GRAY + "Лук, может ломать шерсть при попадании.");
 		meta4.addEnchant(Enchantment.ARROW_KNOCKBACK, 2, true);
