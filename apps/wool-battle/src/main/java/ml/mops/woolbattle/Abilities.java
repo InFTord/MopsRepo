@@ -28,9 +28,12 @@ public class Abilities {
 		meta1.addEnchant(Enchantment.KNOCKBACK, 2, true);
 		meta1.setUnbreakable(true);
 
-		List<String> lore1 = new ArrayList<>(Arrays.asList(MopsUtils.textComponentToString(plugin.getByLang(lang, "shears.lore")).split("\n")));
+		List<String> lore01 = new ArrayList<>(Arrays.asList(MopsUtils.textComponentToString(plugin.getByLang(lang, "shears.lore")).split("\n")));
+		List<String> lore1 = new ArrayList<>();
+		for(String string : lore01) {
+			lore1.add(MopsUtils.convertColorCodes(string));
+		}
 		meta1.setLore(lore1);
-
 
 		item1.setItemMeta(meta1);
 		player1.getInventory().setItem(0, item1);

@@ -248,7 +248,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 							default -> broadcastDeath(player, getStringByLang(lang, "woolbattle.fellInVoid") + "");
 						}
 
-						if(!hardmode) {
+						if(!hardmode && !player.getScoreboardTags().contains("spectator")) {
 							ItemStack[] savedInventory = new ItemStack[0];
 
 							if(!player.getScoreboardTags().contains("spectator")) {
@@ -263,9 +263,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 							player.setAllowFlight(true);
 							player.setFlying(true);
 
-							for (Player allPlayers : Bukkit.getOnlinePlayers()) {
-								allPlayers.hidePlayer(this, player);
-							}
+							player.setGameMode(GameMode.SPECTATOR);
 
 							Location mid = new Location(player.getWorld(), 9, 270, 9);
 							player.teleport(mid);
@@ -304,9 +302,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 											player.teleport(loc);
 										}
 
-										for (Player allPlayers : Bukkit.getOnlinePlayers()) {
-											allPlayers.showPlayer(this, player);
-										}
+										player.setGameMode(GameMode.SURVIVAL);
 
 										player.setAllowFlight(false);
 										player.setFlying(false);
@@ -320,11 +316,11 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 									}, 20L));
 								}, 20L));
 							}, 20L));
-						} else {
+						} else if(!player.getScoreboardTags().contains("spectator")) {
 							simulateHardmodeDeath(player);
 						}
 					}
-					if(hardmode && !player.getWorld().getWorldBorder().isInside(player.getLocation())) {
+					if(hardmode && !player.getWorld().getWorldBorder().isInside(player.getLocation()) && !player.getScoreboardTags().contains("spectator")) {
 						simulateHardmodeDeath(player);
 						player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_DEATH, 0.8F, 1);
 					}
