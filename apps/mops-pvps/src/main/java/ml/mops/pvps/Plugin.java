@@ -53,6 +53,12 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 				.setDescription("\uD83D\uDFE2 mopspvps запущен.")
 				.build();
 		client.send(embed);
+
+		Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(this, () -> {
+			if(ready.get(player1) && ready.get(player2)) {
+				gameSession = true;
+			}
+		}, 0, 10L);
 	}
 
 	@Override
@@ -130,11 +136,22 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 				}
 			}
 
-			if(args[0].equals("startgame")) {
-				gameSession = true;
-
+			if(args[0].equals("loadmap")) {
 				wipeout(mainworld);
 				loadCuboid(map, mainworld);
+			}
+
+			if(args[0].equals("readyup")) {
+				if(args[1].equals("1")) {
+					ready.put(player1, true);
+				}
+				if(args[2].equals("2")) {
+					ready.put(player2, true);
+				}
+			}
+
+			if(args[0].equals("stopgame")) {
+				gameSession = false;
 			}
 
 			if(args[0].equals("selectmap")) {
@@ -171,9 +188,13 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
 		if(player1 == null) {
 			player1 = player;
+			player1.teleport(spawn.get(player1));
 		} else {
 			player2 = player;
+			player2.teleport(spawn.get(player2));
 		}
+
+
 
 		ready.put(player, false);
 		spawn.putIfAbsent(player, new Location(player.getWorld(), 0, 0, 0));

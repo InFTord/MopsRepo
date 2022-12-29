@@ -260,11 +260,12 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 							ItemStack[] finalSavedInventory = savedInventory;
 
 							player.addScoreboardTag("spectator");
-							player.hidePlayer(this, player);
 							player.setAllowFlight(true);
 							player.setFlying(true);
 
-							player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 60, 1, true, false));
+							for (Player allPlayers : Bukkit.getOnlinePlayers()) {
+								allPlayers.hidePlayer(this, player);
+							}
 
 							Location mid = new Location(player.getWorld(), 9, 270, 9);
 							player.teleport(mid);
@@ -302,15 +303,17 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 											loc.setYaw(90);
 											player.teleport(loc);
 										}
-										player.showPlayer(this, player);
+
+										for (Player allPlayers : Bukkit.getOnlinePlayers()) {
+											allPlayers.showPlayer(this, player);
+										}
+
 										player.setAllowFlight(false);
 										player.setFlying(false);
 										player.removeScoreboardTag("spectator");
 
-
 										player.getInventory().setContents(finalSavedInventory);
 										player.updateInventory();
-
 
 										player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
 
