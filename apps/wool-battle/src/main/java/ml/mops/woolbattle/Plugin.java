@@ -2072,7 +2072,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 				default -> colorWon = "Nobody";
 			}
 
-			player.showTitle(genTitle(lang, "team." + colorWon, "team.won", 5, 40, 30));
+			player.sendTitle(getStringByLang(lang, "game.win"), getStringByLang(lang, "team." + colorWon) + " " + getStringByLang(lang, "team.won"), 5, 50, 40);
 
 			player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 0);
 			player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 0.2F);
@@ -2279,7 +2279,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		}
 
 		gameStartingTitle(player1);
-		requiredKills = (int) (Math.round(4 * (Bukkit.getOnlinePlayers().size() * 0.7)));
+		requiredKills = (int) (Math.round(4 * (Bukkit.getOnlinePlayers().size() * 0.7))) + 1;
 
 		Bukkit.getScheduler().runTaskLater(this, () -> {
 			player1.sendTitle(ChatColor.WHITE + "Нужно сделать", ChatColor.WHITE + String.valueOf(requiredKills) + " киллов.", 1, 40, 25);

@@ -131,8 +131,8 @@ woolbattle:
       rus: "&7Blocked!"
       eng: "&7Blocked!"
   - team.won:
-      rus: "Победили!"
-      eng: "Has Won!"
+      rus: "&r&fПобедили!"
+      eng: "&r&fHas Won!"
   - team.RED:
       rus: "&c&lКРАСНЫЕ"
       eng: "&c&lRED"
@@ -148,17 +148,26 @@ woolbattle:
   - team.Nobody:
       rus: "&7&lНИКТО НЕ"
       eng: "&7&lNOBODY"
+  - game.win:
+      rus: "&b&lПОБЕДА!"
+      eng: "&b&lWIN!"
+  - game.wipeout:
+      rus: "&c&lЗАЧИСТКА!"
+      eng: "&c&lWIPEOUT!"
+  - game.domination:
+      rus: "&e&lДОМИНАЦИЯ!"
+      eng: "&e&lDOMINATION!"
   - kills.red:
-      rus: "&cУбито красной командой"
+      rus: "&cУбито Красными"
       eng: "&cKilled by Red"
   - kills.yellow:
-      rus: "&eУбито жёлтой командой"
+      rus: "&eУбито Жёлтыми"
       eng: "&eKilled by Yellow"
   - kills.green:
-      rus: "&aУбито зелёной командой"
+      rus: "&aУбито Зелёными"
       eng: "&aKilled by Green"
   - kills.blue:
-      rus: "&bУбито синей командой"
+      rus: "&bУбито Синими"
       eng: "&bKilled by Blue"
   - kills.you:
       rus: "&7(ВЫ)"
@@ -167,20 +176,20 @@ woolbattle:
       rus: |
         &e----------------------------------------------------
                              &6&lWoolBattle
-            &eИгра началась! Копайте шерсть чтобы строится к другим
+            &eИгра началась! Добудьте шерсть чтобы строится к другим
              &eи использовать способности. Ваша цель - сделать §kills§
-             &eубийств. Так же вы можете захыватывать генераторы
-             &e(угловые острова) чтобы получать пассивную шерсть,
-             &eнужно сломайте всю шерсть и заменить шерстью своего цвета!
+             &eубийств. Так же вы можете захватить генераторы (углы)
+             &eчтобы получать пассивную шерсть, нужно заменить всю
+             &eшерсть своей. При захвате всех генераторов вы выиграете.
                               &eУдачи!
         &e----------------------------------------------------
       eng: |
         &e----------------------------------------------------
                              &6&lWoolBattle
-            &eGame has started! Mine wool, it's used for bridging
-             &eand using abilities. Your goal is to get §kills§ kills.
-             &eYou can also capture generators (corner islands) to
-             &eget passive wool, just replace all the wool with
-             &ethe wool of your color!
-                              &eGood luck!
+            &eGame has started! Get wool, it's used for bridging
+             &eand abilities. Your goal is to get §kills§ kills.
+             &eYou can also capture generators (corners) to get
+             &epassive wool, just replace all the wool with yours!
+             &eIf you capture all of them - you win.
+                               &eGood luck!
         &e----------------------------------------------------
