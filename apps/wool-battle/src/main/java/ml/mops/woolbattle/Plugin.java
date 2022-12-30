@@ -40,6 +40,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.scoreboard.*;
+import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -409,6 +410,21 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 					if (entity.getLocation().getY() > 143 && entity.getLocation().getY() < 160) {
 						entity.teleport(entity.getLocation().add(0, -1000, 0));
 					}
+				}
+
+				if(entity.getScoreboardTags().contains("generatorTitle")) {
+					ArmorStand stand = (ArmorStand) entity;
+
+					double radian = stand.getHeadPose().getY();
+					double angle = Math.toDegrees(radian);
+
+					if(angle < 360) {
+						angle += 15;
+					} else {
+						angle = 0;
+					}
+
+					stand.setHeadPose(new EulerAngle(Math.toRadians(0), Math.toRadians(angle), Math.toRadians(0)));
 				}
 			}
 		}, 80L, 5L);
