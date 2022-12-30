@@ -124,6 +124,12 @@ woolbattle:
   - hardmode.activation.2:
       rus: "&7Постарайся выжить!"
       eng: "&7Try to survive!!"
+  - refill.activation.1:
+      rus: "&eРефилл!"
+      eng: "&eRefill!"
+  - refill.activation.2:
+      rus: "&7Лут восстановился"
+      eng: "&7Loot regenerated"
   - generator.blocked.1:
       rus: "&cGenerators"
       eng: "&cGenerators"

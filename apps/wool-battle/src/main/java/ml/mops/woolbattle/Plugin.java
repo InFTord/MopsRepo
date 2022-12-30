@@ -441,10 +441,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 				String teamname = team.getName();
 
 				if (!hardmode) {
-					player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 7, 100, true, false));
-					player.addPotionEffect(new PotionEffect(PotionEffectType.SATURATION, 7, 100, true, false));
-				} else {
-					player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 60, 1, true, false));
+					player.addPotionEffect(new PotionEffect(PotionEffectType.SATURATION, 7, 10, true, false));
 				}
 
 
@@ -459,7 +456,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 						if (hasItems) {
 							player.setVelocity((player.getEyeLocation().getDirection().multiply(0.9)).add(new Vector(0, 0.45, 0)));
-							player.playSound(player.getLocation(), Sound.ENTITY_ENDER_DRAGON_FLAP, 0.05F, 1);
+							player.playSound(player.getLocation(), Sound.ENTITY_ENDER_DRAGON_FLAP, 0.2F, 1);
 							player.setAllowFlight(false);
 						} else {
 							player.sendActionBar(getByLang(lang, "woolbattle.notEnoughWool"));
@@ -509,8 +506,8 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 	final int[] actualgametime = {0};
 	final int[] actualgametime0 = {-1};
 
-	String nextevent = ChatColor.DARK_GRAY + " (Рефилл | 4:00)";
-	String nextevent0 = ChatColor.DARK_GRAY + " (Рефилл | 4:00)";
+	String nextevent = getStringByLang(lang, "event.refill.1");
+	String nextevent0 = getStringByLang(lang, "event.refill.1");
 
 	int scoreboardTask;
 
@@ -522,263 +519,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 		if (perms) {
 			if (commandName.equals("startgame")) {
-				player.getWorld().getWorldBorder().setSize(200, 1);
-				hardmode = false;
-				for (Player player1 : Bukkit.getOnlinePlayers()) {
-					if (!(mainboard.getPlayerTeam(player1) == null)) {
-						Team team = mainboard.getPlayerTeam(player1);
-						assert team != null;
-						String teamname = team.getName();
-
-						try {
-							if (args[0].equals("instant")) {
-								gameStartSequence(player1, teamname);
-							} else {
-								if(!testmode) {
-									timedGameStart(player1, teamname);
-								} else {
-									player.sendMessage(ChatColor.RED + "В тестмоде игра работает только с моментальным запуском.");
-								}
-							}
-						} catch (IndexOutOfBoundsException error) {
-							if(!testmode) {
-								timedGameStart(player1, teamname);
-							} else {
-								player.sendMessage(ChatColor.RED + "В тестмоде игра работает только с моментальным запуском.");
-							}
-						}
-					}
-				}
-
-				lootGenerator();
-
-				scoreboardTask = Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
-					if(gameactive) {
-						// time update
-						seconds[0] = seconds[0] + 1;
-
-						if (seconds[0] == 60) {
-							minutes[0] = minutes[0] + 1;
-							seconds[0] = 0;
-						}
-
-						seconds0[0] = seconds0[0] + 1;
-
-						if (seconds0[0] == 60) {
-							minutes0[0] = minutes0[0] + 1;
-							seconds0[0] = 0;
-						}
-
-						actualgametime[0] = actualgametime[0] + 1;
-						actualgametime0[0] = actualgametime0[0] + 1;
-
-
-						// random scoreboard bullshit
-
-						for (Player player1 : Bukkit.getServer().getOnlinePlayers()) {
-
-							newboard = manager.getNewScoreboard();
-							Objective fakekills = newboard.registerNewObjective("fakekills", "dummy", Component.text("WoolBattle", NamedTextColor.GOLD, TextDecoration.BOLD));
-							fakekills.setDisplaySlot(DisplaySlot.SIDEBAR);
-
-
-							if (actualgametime[0] < 240) {
-								nextevent = ChatColor.DARK_GRAY + " (Рефилл | 4:00)";
-							}
-							if (actualgametime[0] == 240) {
-								lootGenerator();
-								for (Player player0 : mainworld.getPlayers()) {
-									player0.sendTitle(ChatColor.YELLOW + "Рефилл!", ChatColor.GRAY + "Лут восстановился", 1, 20, 20);
-									player0.playSound(player0.getLocation(), Sound.BLOCK_CHEST_OPEN, 1, 1);
-								}
-							}
-							if (actualgametime[0] < 480 && actualgametime[0] > 240) {
-								nextevent = ChatColor.DARK_GRAY + " (Рефилл | 8:00)";
-							}
-							if (actualgametime[0] == 480) {
-								lootGenerator();
-								for (Player player0 : mainworld.getPlayers()) {
-									player0.sendTitle(ChatColor.YELLOW + "Рефилл!", ChatColor.GRAY + "Лут восстановился", 1, 20, 20);
-									player0.playSound(player0.getLocation(), Sound.BLOCK_CHEST_OPEN, 1, 1);
-								}
-							}
-							if (actualgametime[0] < 720 && actualgametime[0] > 480) {
-								nextevent = ChatColor.DARK_GRAY + " (Рефилл | 12:00)";
-							}
-							if (actualgametime[0] == 720) {
-								lootGenerator();
-								for (Player player0 : mainworld.getPlayers()) {
-									player0.sendTitle(ChatColor.YELLOW + "Рефилл!", ChatColor.GRAY + "Лут восстановился", 1, 20, 20);
-									player0.playSound(player0.getLocation(), Sound.BLOCK_CHEST_OPEN, 1, 1);
-								}
-							}
-							if (actualgametime[0] < 1200 && actualgametime[0] > 720) {
-								nextevent = ChatColor.DARK_GRAY + " (" + ChatColor.DARK_RED + "Хардмод" + ChatColor.DARK_GRAY + " | 20:00)";
-							}
-							if (actualgametime[0] == 1200) {
-								if (!hardmode) {
-									activateHardmode();
-								}
-								nextevent = ChatColor.DARK_GRAY + " (Сражение до конца)";
-							}
-
-
-							if (actualgametime0[0] < 240) {
-								nextevent0 = ChatColor.DARK_GRAY + " (Рефилл | 4:00)";
-							}
-							if (actualgametime0[0] < 480 && actualgametime0[0] > 240) {
-								nextevent0 = ChatColor.DARK_GRAY + " (Рефилл | 8:00)";
-							}
-							if (actualgametime0[0] < 720 && actualgametime0[0] > 480) {
-								nextevent0 = ChatColor.DARK_GRAY + " (Рефилл | 12:00)";
-							}
-							if (actualgametime0[0] < 1200 && actualgametime0[0] > 720) {
-								nextevent0 = ChatColor.DARK_GRAY + " (" + ChatColor.DARK_RED + "Хардмод" + ChatColor.DARK_GRAY + " | 20:00)";
-							}
-							if (actualgametime0[0] == 1200) {
-								nextevent0 = ChatColor.DARK_GRAY + " (Сражение до конца)";
-							}
-
-							String you = getStringByLang(lang, "kills.you");
-							Team playerteam = Objects.requireNonNull(mainboard.getPlayerTeam(player1));
-							String teamname = playerteam.getName();
-
-							String redyourteam = "";
-							String yellowyourteam = "";
-							String greenyourteam = "";
-							String blueyourteam = "";
-
-							if(teamname.contains("red")) { redyourteam = redyourteam + " " + you;}
-							if(teamname.contains("yellow")) { yellowyourteam = yellowyourteam + " " + you; }
-							if(teamname.contains("green")) { greenyourteam = greenyourteam + " " + you; }
-							if(teamname.contains("blue")) { blueyourteam = blueyourteam + " " + you; }
-
-
-							fakekills.getScoreboard().resetScores(getStringByLang(lang, "kills.red") + colon + ChatColor.RED + (redkills - 1) + redyourteam);
-							fakekills.getScoreboard().resetScores(getStringByLang(lang, "kills.yellow") + colon + ChatColor.YELLOW + (yellowkills - 1) + yellowyourteam);
-							fakekills.getScoreboard().resetScores(getStringByLang(lang, "kills.green") + colon + ChatColor.GREEN + (greenkills - 1) + greenyourteam);
-							fakekills.getScoreboard().resetScores(getStringByLang(lang, "kills.blue") + colon + ChatColor.AQUA + (bluekills - 1) + blueyourteam);
-
-							if (seconds0[0] < 10) {
-								fakekills.getScoreboard().resetScores(getStringByLang(lang, "scoreboardTime") + colon + ChatColor.YELLOW + minutes0[0] + ":" + "0" + seconds0[0] + nextevent0);
-							} else {
-								fakekills.getScoreboard().resetScores(getStringByLang(lang, "scoreboardTime") + colon + ChatColor.YELLOW + minutes0[0] + ":" + seconds0[0] + nextevent0);
-							}
-
-							fakekills.getScore(getStringByLang(lang, "kills.red") + colon + ChatColor.RED + redkills + redyourteam).setScore(12);
-							fakekills.getScore(getStringByLang(lang, "kills.yellow") + colon + ChatColor.YELLOW + yellowkills + yellowyourteam).setScore(11);
-							fakekills.getScore(getStringByLang(lang, "kills.green") + colon + ChatColor.GREEN + greenkills + greenyourteam).setScore(10);
-							fakekills.getScore(getStringByLang(lang, "kills.blue") + colon + ChatColor.AQUA + bluekills + blueyourteam).setScore(9);
-
-
-							fakekills.getScore(ChatColor.RED + " ").setScore(8);
-
-							if (seconds[0] < 10) {
-								fakekills.getScore(ChatColor.WHITE + getStringByLang(lang, "scoreboardTime") + colon + ChatColor.YELLOW + minutes[0] + ":" + "0" + seconds[0] + nextevent).setScore(7);
-							} else {
-								fakekills.getScore(ChatColor.WHITE + getStringByLang(lang, "scoreboardTime") + colon + ChatColor.YELLOW + minutes[0] + ":" + seconds[0] + nextevent).setScore(7);
-							}
-
-							fakekills.getScore(ChatColor.GOLD + " ").setScore(6);
-
-							resetGeneratorText(player);
-
-
-							String Acopy = getStringByLang(lang, genAstatus);
-							String Bcopy = getStringByLang(lang, genBstatus);
-							String Ccopy = getStringByLang(lang, genCstatus);
-							String Dcopy = getStringByLang(lang, genDstatus);
-
-							if(gensLocked) {
-								Acopy = Acopy + ChatColor.GRAY + " ⚠";
-								Bcopy = Bcopy + ChatColor.GRAY + " ⚠";
-								Ccopy = Ccopy + ChatColor.GRAY + " ⚠";
-								Dcopy = Dcopy + ChatColor.GRAY + " ⚠";
-							}
-
-							fakekills.getScore(getStringByLang(lang, "woolbattle.generator.a") + " - " + Acopy).setScore(5);
-							fakekills.getScore(getStringByLang(lang, "woolbattle.generator.b") + " - " + Bcopy).setScore(4);
-							fakekills.getScore(getStringByLang(lang, "woolbattle.generator.c") + " - " + Ccopy).setScore(3);
-							fakekills.getScore(getStringByLang(lang, "woolbattle.generator.d") + " - " + Dcopy).setScore(2);
-
-							fakekills.getScore(ChatColor.YELLOW + " ").setScore(1);
-							fakekills.getScore(ChatColor.DARK_GRAY + connectToIP + ":" + Bukkit.getPort()).setScore(0);
-
-							player1.setScoreboard(fakekills.getScoreboard());
-						}
-
-					}
-				}, 0L, 20L);
-
-				Bukkit.getScheduler().cancelTask(generatorTask);
-
-				generatorTask = Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
-
-					for (Player player1 : mainworld.getPlayers()) {
-						Team team = mainboard.getPlayerTeam(player1);
-						assert team != null;
-						String teamname = team.getName();
-
-						List<String> genStatuses = new ArrayList<>();
-						genStatuses.add(genAstatus);
-						genStatuses.add(genBstatus);
-						genStatuses.add(genCstatus);
-						genStatuses.add(genDstatus);
-
-						for (String genStatus : genStatuses) {
-							if (genStatus == null || genStatus.isBlank()) {
-								genStatus = "woolbattle.generator.uncaptured";
-							}
-
-							if(player1.getScoreboardTags().contains("ingame") && !player1.getScoreboardTags().contains("spectator")) {
-								if (teamname.contains("red")) {
-									if (genStatus.contains("woolbattle.generator.red")) {
-										if (!player1.getInventory().contains(Material.RED_WOOL, 512)) {
-											ItemStack woolitem = new ItemStack(Material.RED_WOOL, 1);
-											ItemMeta woolmeta = woolitem.getItemMeta();
-											woolmeta.displayName(getByLang(lang, "woolbattle.redWool"));
-											woolitem.setItemMeta(woolmeta);
-											player1.getInventory().addItem(woolitem);
-										}
-									}
-								} else if (teamname.contains("yellow")) {
-									if (genStatus.contains("woolbattle.generator.yellow")) {
-										if (!player1.getInventory().contains(Material.YELLOW_WOOL, 512)) {
-											ItemStack woolitem = new ItemStack(Material.YELLOW_WOOL, 1);
-											ItemMeta woolmeta = woolitem.getItemMeta();
-											woolmeta.displayName(getByLang(lang, "woolbattle.yellowWool"));
-											woolitem.setItemMeta(woolmeta);
-											player1.getInventory().addItem(woolitem);
-										}
-									}
-								} else if (teamname.contains("green")) {
-									if (genStatus.contains("woolbattle.generator.green")) {
-										if (!player1.getInventory().contains(Material.LIME_WOOL, 512)) {
-											ItemStack woolitem = new ItemStack(Material.LIME_WOOL, 1);
-											ItemMeta woolmeta = woolitem.getItemMeta();
-											woolmeta.displayName(getByLang(lang, "woolbattle.greenWool"));
-											woolitem.setItemMeta(woolmeta);
-											player1.getInventory().addItem(woolitem);
-										}
-									}
-								} else if (teamname.contains("blue")) {
-									if (genStatus.contains("woolbattle.generator.blue")) {
-										if (!player1.getInventory().contains(Material.LIGHT_BLUE_WOOL, 512)) {
-											ItemStack woolitem = new ItemStack(Material.LIGHT_BLUE_WOOL, 1);
-											ItemMeta woolmeta = woolitem.getItemMeta();
-											woolmeta.displayName(getByLang(lang, "woolbattle.blueWool"));
-											woolitem.setItemMeta(woolmeta);
-											player1.getInventory().addItem(woolitem);
-										}
-									}
-								}
-							}
-						}
-						checkForWoolCap(player1);
-						updateLevels(player1);
-					}
-				}, 0L, 20L);
-
+				startGame(args);
 				return true;
 			}
 			if (commandName.equals("clearblocks")) {
@@ -799,7 +540,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 				lootGenerator();
 
 				for (Player player0 : mainworld.getPlayers()) {
-					player0.sendTitle(ChatColor.YELLOW + "Рефилл!", ChatColor.GRAY + "Лут восстановился", 1, 20, 20);
+					player0.sendTitle(getStringByLang(lang, "refill.activation.1"), getStringByLang(lang, "refill.activation.2"), 1, 20, 20);
 					player0.playSound(player0.getLocation(), Sound.BLOCK_CHEST_OPEN, 1, 1);
 				}
 				return true;
@@ -1759,8 +1500,9 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		fakekills.getScoreboard().resetScores(getStringByLang(lang, "scoreboardTime") + colon + ChatColor.YELLOW + minutes0[0] + ":" + "0" + seconds0[0] + nextevent0);
 		fakekills.getScoreboard().resetScores(getStringByLang(lang, "scoreboardTime") + colon + ChatColor.YELLOW + minutes0[0] + ":" + seconds0[0] + nextevent0);
 
-		fakekills.getScoreboard().resetScores(getStringByLang(lang, "scoreboardTime") + colon + ChatColor.YELLOW + minutes[0] + ":" + "0" + seconds[0] + nextevent0);
-		fakekills.getScoreboard().resetScores(getStringByLang(lang, "scoreboardTime") + colon + ChatColor.YELLOW + minutes[0] + ":" + seconds[0] + nextevent0);
+		fakekills.getScoreboard().resetScores(getStringByLang(lang, "scoreboardTime") + colon + ChatColor.YELLOW + minutes[0] + ":" + "0" + seconds[0] + nextevent);
+		fakekills.getScoreboard().resetScores(getStringByLang(lang, "scoreboardTime") + colon + ChatColor.YELLOW + minutes[0] + ":" + seconds[0] + nextevent);
+
 
 
 		fakekills.getScoreboard().resetScores(ChatColor.GOLD + " ");
@@ -1794,8 +1536,8 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		genCstatus = "woolbattle.generator.uncaptured";
 		genDstatus = "woolbattle.generator.uncaptured";
 
-		nextevent = ChatColor.DARK_GRAY + " (Рефилл | 4:00)";
-		nextevent0 = ChatColor.DARK_GRAY + " (Рефилл | 4:00)";
+		nextevent = getStringByLang(lang, "event.refill.1");
+		nextevent0 = getStringByLang(lang, "event.refill.1");
 
 		player.setScoreboard(fakekills.getScoreboard());
 	}
@@ -2113,6 +1855,8 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		mainworld.getWorldBorder().setSize(200, 1);
 		worldBorderTask.cancel();
 
+		Bukkit.getScheduler().cancelTask(scoreboardTask);
+
 		hardmode = false;
 		gameactive = false;
 
@@ -2310,21 +2054,21 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		int min = 1;
 		int randomtitle = (int) (Math.random() * (max - min + 1)) + min;
 
-		int fadeIn = 1;
-		int hold = 30;
-		int fadeOut = 20;
+		int fadeIn = 5;
+		int hold = 40;
+		int fadeOut = 25;
 
 		switch (randomtitle) {
-			case 1 -> player1.sendTitle(ChatColor.WHITE + "виу виу", ChatColor.WHITE + "дурка приехала", fadeIn, hold, fadeOut);
-			case 2 -> player1.sendTitle(ChatColor.WHITE + "ландер", ChatColor.WHITE + "привео", fadeIn, hold, fadeOut);
-			case 3 -> player1.sendTitle(ChatColor.GOLD + "" + ChatColor.BOLD + "WoolBattle", ChatColor.WHITE + "Игра началась.", fadeIn, hold, fadeOut);
-			case 4 -> player1.sendTitle(ChatColor.WHITE + "эта миниигра", ChatColor.WHITE + "спонсирована мопспвп", fadeIn, hold, fadeOut);
-			case 5 -> player1.sendTitle(ChatColor.WHITE + "русский корабль", ChatColor.WHITE + "иди нахуй", fadeIn, hold, fadeOut);
-			case 6 -> player1.sendTitle(ChatColor.WHITE + "не пускайте", ChatColor.WHITE + "сюда тапка", fadeIn, hold, fadeOut);
-			case 7 -> player1.sendTitle(ChatColor.WHITE + "окей", ChatColor.WHITE + "летсгоу", fadeIn, hold, fadeOut);
-			case 8 -> player1.sendTitle(ChatColor.WHITE + "кот", ChatColor.WHITE + "гей", fadeIn, hold, fadeOut);
-			case 9 -> player1.sendTitle(ChatColor.WHITE + "инф ты нахуя", ChatColor.WHITE + "продал мои ресы", fadeIn, hold, fadeOut);
-			case 10 -> player1.sendTitle(ChatColor.WHITE + "кот", ChatColor.WHITE + "скинь логи", fadeIn, hold, fadeOut);
+			case 1 -> player1.sendTitle(ChatColor.WHITE + "frog", ChatColor.WHITE + "bottom text", fadeIn, hold, fadeOut);
+			case 2 -> player1.sendTitle(ChatColor.WHITE + "guys win pls", ChatColor.WHITE + "i want to go eat", fadeIn, hold, fadeOut);
+			case 3 -> player1.sendTitle(ChatColor.GOLD + "" + ChatColor.BOLD + "WoolBattle", ChatColor.WHITE + "The game has started.", fadeIn, hold, fadeOut);
+			case 4 -> player1.sendTitle(ChatColor.WHITE + "el", ChatColor.WHITE + "gato", fadeIn, hold, fadeOut);
+			case 5 -> player1.sendTitle(ChatColor.WHITE + "there are", ChatColor.WHITE + "no pigeons", fadeIn, hold, fadeOut);
+			case 6 -> player1.sendTitle(ChatColor.WHITE + "me when the", ChatColor.WHITE + "the uhhh", fadeIn, hold, fadeOut);
+			case 8 -> player1.sendTitle(ChatColor.WHITE + "Sponsored by", ChatColor.WHITE + "Astarta", fadeIn, hold, fadeOut);
+			case 9 -> player1.sendTitle(ChatColor.WHITE + "but here's", ChatColor.WHITE + "the woolbattler", fadeIn, hold, fadeOut);
+			case 10 -> player1.sendTitle(ChatColor.WHITE + "gl", ChatColor.WHITE + "hf", fadeIn, hold, fadeOut);
+
 			case 11 -> player1.sendTitle(ChatColor.WHITE + "тут нет", ChatColor.WHITE + "голубей", fadeIn, hold, fadeOut);
 			case 12 -> player1.sendTitle(ChatColor.WHITE + "NO WAY", ChatColor.WHITE + "Крис фумо", fadeIn, hold, fadeOut);
 			case 13 -> player1.sendTitle(ChatColor.WHITE + "тут нет", ChatColor.WHITE + "голубей", fadeIn, hold, fadeOut);
@@ -2364,7 +2108,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		requiredKills = (int) (Math.round(4 * (Bukkit.getOnlinePlayers().size() * 0.7))) + 1;
 
 		Bukkit.getScheduler().runTaskLater(this, () -> {
-			player1.sendTitle(ChatColor.WHITE + "Нужно сделать", ChatColor.WHITE + String.valueOf(requiredKills) + " киллов.", 1, 40, 25);
+			player1.sendTitle(ChatColor.WHITE + "Нужно сделать", ChatColor.WHITE + String.valueOf(requiredKills) + " киллов.", 5, 40, 30);
 
 			player1.playSound(player1.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 0);
 			player1.playSound(player1.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 0.2F);
@@ -2379,7 +2123,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 				}, 3L);
 			}, 3L);
 
-		}, 40L);
+		}, 60L);
 
 		player1.playSound(player1.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
 		player1.removeScoreboardTag("onspawn");
@@ -2484,6 +2228,262 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		};
 		
 		return color;
+	}
+
+	public void startGame(String[] args) {
+		mainworld.getWorldBorder().setSize(200, 1);
+		hardmode = false;
+		for (Player player1 : Bukkit.getOnlinePlayers()) {
+			if (!(mainboard.getPlayerTeam(player1) == null)) {
+				Team team = mainboard.getPlayerTeam(player1);
+				assert team != null;
+				String teamname = team.getName();
+
+				try {
+					if (args[0].equals("instant")) {
+						gameStartSequence(player1, teamname);
+					} else {
+						if(!testmode) {
+							timedGameStart(player1, teamname);
+						}
+					}
+				} catch (IndexOutOfBoundsException error) {
+					if(!testmode) {
+						timedGameStart(player1, teamname);
+					}
+				}
+			}
+		}
+
+		lootGenerator();
+
+		scoreboardTask = Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
+			if(gameactive) {
+				// time update
+				seconds[0] = seconds[0] + 1;
+
+				if (seconds[0] == 60) {
+					minutes[0] = minutes[0] + 1;
+					seconds[0] = 0;
+				}
+
+				seconds0[0] = seconds0[0] + 1;
+
+				if (seconds0[0] == 60) {
+					minutes0[0] = minutes0[0] + 1;
+					seconds0[0] = 0;
+				}
+
+				actualgametime[0] = actualgametime[0] + 1;
+				actualgametime0[0] = actualgametime0[0] + 1;
+
+
+				// random scoreboard bullshit
+
+				for (Player player1 : Bukkit.getServer().getOnlinePlayers()) {
+
+					newboard = manager.getNewScoreboard();
+					Objective fakekills = newboard.registerNewObjective("fakekills", "dummy", Component.text("WoolBattle", NamedTextColor.GOLD, TextDecoration.BOLD));
+					fakekills.setDisplaySlot(DisplaySlot.SIDEBAR);
+
+
+					if (actualgametime[0] < 240) {
+						nextevent = getStringByLang(lang, "event.refill.1");
+					}
+					if (actualgametime[0] == 240) {
+						lootGenerator();
+						for (Player player0 : mainworld.getPlayers()) {
+							player0.sendTitle(getStringByLang(lang, "refill.activation.1"), getStringByLang(lang, "refill.activation.2"), 1, 20, 20);
+							player0.playSound(player0.getLocation(), Sound.BLOCK_CHEST_OPEN, 1, 1);
+						}
+					}
+					if (actualgametime[0] < 480 && actualgametime[0] > 240) {
+						nextevent = getStringByLang(lang, "event.refill.2");
+					}
+					if (actualgametime[0] == 480) {
+						lootGenerator();
+						for (Player player0 : mainworld.getPlayers()) {
+							player0.sendTitle(getStringByLang(lang, "refill.activation.1"), getStringByLang(lang, "refill.activation.2"), 1, 20, 20);
+							player0.playSound(player0.getLocation(), Sound.BLOCK_CHEST_OPEN, 1, 1);
+						}
+					}
+					if (actualgametime[0] < 720 && actualgametime[0] > 480) {
+						nextevent = getStringByLang(lang, "event.refill.3");
+					}
+					if (actualgametime[0] == 720) {
+						lootGenerator();
+						for (Player player0 : mainworld.getPlayers()) {
+							player0.sendTitle(getStringByLang(lang, "refill.activation.1"), getStringByLang(lang, "refill.activation.2"), 1, 20, 20);
+							player0.playSound(player0.getLocation(), Sound.BLOCK_CHEST_OPEN, 1, 1);
+						}
+					}
+					if (actualgametime[0] < 1200 && actualgametime[0] > 720) {
+						nextevent = getStringByLang(lang, "event.hardmode");
+					}
+					if (actualgametime[0] == 1200) {
+						if (!hardmode) {
+							activateHardmode();
+						}
+						nextevent = getStringByLang(lang, "event.deathmatch");
+					}
+
+
+					if (actualgametime0[0] < 240) {
+						nextevent0 = getStringByLang(lang, "event.refill.1");
+					}
+					if (actualgametime0[0] < 480 && actualgametime0[0] > 240) {
+						nextevent0 = getStringByLang(lang, "event.refill.2");
+					}
+					if (actualgametime0[0] < 720 && actualgametime0[0] > 480) {
+						nextevent0 = getStringByLang(lang, "event.refill.3");
+					}
+					if (actualgametime0[0] < 1200 && actualgametime0[0] > 720) {
+						nextevent0 = getStringByLang(lang, "event.hardmode");
+					}
+					if (actualgametime0[0] == 1200) {
+						nextevent0 = getStringByLang(lang, "event.deathmatch");
+					}
+
+					String you = getStringByLang(lang, "kills.you");
+					Team playerteam = Objects.requireNonNull(mainboard.getPlayerTeam(player1));
+					String teamname = playerteam.getName();
+
+					String redyourteam = "";
+					String yellowyourteam = "";
+					String greenyourteam = "";
+					String blueyourteam = "";
+
+					if(teamname.contains("red")) { redyourteam = redyourteam + " " + you;}
+					if(teamname.contains("yellow")) { yellowyourteam = yellowyourteam + " " + you; }
+					if(teamname.contains("green")) { greenyourteam = greenyourteam + " " + you; }
+					if(teamname.contains("blue")) { blueyourteam = blueyourteam + " " + you; }
+
+
+					fakekills.getScoreboard().resetScores(getStringByLang(lang, "kills.red") + colon + ChatColor.RED + (redkills - 1) + redyourteam);
+					fakekills.getScoreboard().resetScores(getStringByLang(lang, "kills.yellow") + colon + ChatColor.YELLOW + (yellowkills - 1) + yellowyourteam);
+					fakekills.getScoreboard().resetScores(getStringByLang(lang, "kills.green") + colon + ChatColor.GREEN + (greenkills - 1) + greenyourteam);
+					fakekills.getScoreboard().resetScores(getStringByLang(lang, "kills.blue") + colon + ChatColor.AQUA + (bluekills - 1) + blueyourteam);
+
+					if (seconds0[0] < 10) {
+						fakekills.getScoreboard().resetScores(getStringByLang(lang, "scoreboardTime") + colon + ChatColor.YELLOW + minutes0[0] + ":" + "0" + seconds0[0] + nextevent0);
+					} else {
+						fakekills.getScoreboard().resetScores(getStringByLang(lang, "scoreboardTime") + colon + ChatColor.YELLOW + minutes0[0] + ":" + seconds0[0] + nextevent0);
+					}
+
+					fakekills.getScore(getStringByLang(lang, "kills.red") + colon + ChatColor.RED + redkills + redyourteam).setScore(12);
+					fakekills.getScore(getStringByLang(lang, "kills.yellow") + colon + ChatColor.YELLOW + yellowkills + yellowyourteam).setScore(11);
+					fakekills.getScore(getStringByLang(lang, "kills.green") + colon + ChatColor.GREEN + greenkills + greenyourteam).setScore(10);
+					fakekills.getScore(getStringByLang(lang, "kills.blue") + colon + ChatColor.AQUA + bluekills + blueyourteam).setScore(9);
+
+
+					fakekills.getScore(ChatColor.RED + " ").setScore(8);
+
+					if (seconds[0] < 10) {
+						fakekills.getScore(ChatColor.WHITE + getStringByLang(lang, "scoreboardTime") + colon + ChatColor.YELLOW + minutes[0] + ":" + "0" + seconds[0] + nextevent).setScore(7);
+					} else {
+						fakekills.getScore(ChatColor.WHITE + getStringByLang(lang, "scoreboardTime") + colon + ChatColor.YELLOW + minutes[0] + ":" + seconds[0] + nextevent).setScore(7);
+					}
+
+					fakekills.getScore(ChatColor.GOLD + " ").setScore(6);
+
+					for(Player player : Bukkit.getServer().getOnlinePlayers()) {
+						resetGeneratorText(player);
+					}
+
+					String Acopy = getStringByLang(lang, genAstatus);
+					String Bcopy = getStringByLang(lang, genBstatus);
+					String Ccopy = getStringByLang(lang, genCstatus);
+					String Dcopy = getStringByLang(lang, genDstatus);
+
+					if(gensLocked) {
+						Acopy = Acopy + ChatColor.GRAY + " ⚠";
+						Bcopy = Bcopy + ChatColor.GRAY + " ⚠";
+						Ccopy = Ccopy + ChatColor.GRAY + " ⚠";
+						Dcopy = Dcopy + ChatColor.GRAY + " ⚠";
+					}
+
+					fakekills.getScore(getStringByLang(lang, "woolbattle.generator.a") + " - " + Acopy).setScore(5);
+					fakekills.getScore(getStringByLang(lang, "woolbattle.generator.b") + " - " + Bcopy).setScore(4);
+					fakekills.getScore(getStringByLang(lang, "woolbattle.generator.c") + " - " + Ccopy).setScore(3);
+					fakekills.getScore(getStringByLang(lang, "woolbattle.generator.d") + " - " + Dcopy).setScore(2);
+
+					fakekills.getScore(ChatColor.YELLOW + " ").setScore(1);
+					fakekills.getScore(ChatColor.DARK_GRAY + connectToIP + ":" + Bukkit.getPort()).setScore(0);
+
+					player1.setScoreboard(fakekills.getScoreboard());
+				}
+
+			}
+		}, 0L, 20L);
+
+		Bukkit.getScheduler().cancelTask(generatorTask);
+
+		generatorTask = Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
+
+			for (Player player1 : mainworld.getPlayers()) {
+				Team team = mainboard.getPlayerTeam(player1);
+				assert team != null;
+				String teamname = team.getName();
+
+				List<String> genStatuses = new ArrayList<>();
+				genStatuses.add(genAstatus);
+				genStatuses.add(genBstatus);
+				genStatuses.add(genCstatus);
+				genStatuses.add(genDstatus);
+
+				for (String genStatus : genStatuses) {
+					if (genStatus == null || genStatus.isBlank()) {
+						genStatus = "woolbattle.generator.uncaptured";
+					}
+
+					if(player1.getScoreboardTags().contains("ingame") && !player1.getScoreboardTags().contains("spectator")) {
+						if (teamname.contains("red")) {
+							if (genStatus.contains("woolbattle.generator.red")) {
+								if (!player1.getInventory().contains(Material.RED_WOOL, 512)) {
+									ItemStack woolitem = new ItemStack(Material.RED_WOOL, 1);
+									ItemMeta woolmeta = woolitem.getItemMeta();
+									woolmeta.displayName(getByLang(lang, "woolbattle.redWool"));
+									woolitem.setItemMeta(woolmeta);
+									player1.getInventory().addItem(woolitem);
+								}
+							}
+						} else if (teamname.contains("yellow")) {
+							if (genStatus.contains("woolbattle.generator.yellow")) {
+								if (!player1.getInventory().contains(Material.YELLOW_WOOL, 512)) {
+									ItemStack woolitem = new ItemStack(Material.YELLOW_WOOL, 1);
+									ItemMeta woolmeta = woolitem.getItemMeta();
+									woolmeta.displayName(getByLang(lang, "woolbattle.yellowWool"));
+									woolitem.setItemMeta(woolmeta);
+									player1.getInventory().addItem(woolitem);
+								}
+							}
+						} else if (teamname.contains("green")) {
+							if (genStatus.contains("woolbattle.generator.green")) {
+								if (!player1.getInventory().contains(Material.LIME_WOOL, 512)) {
+									ItemStack woolitem = new ItemStack(Material.LIME_WOOL, 1);
+									ItemMeta woolmeta = woolitem.getItemMeta();
+									woolmeta.displayName(getByLang(lang, "woolbattle.greenWool"));
+									woolitem.setItemMeta(woolmeta);
+									player1.getInventory().addItem(woolitem);
+								}
+							}
+						} else if (teamname.contains("blue")) {
+							if (genStatus.contains("woolbattle.generator.blue")) {
+								if (!player1.getInventory().contains(Material.LIGHT_BLUE_WOOL, 512)) {
+									ItemStack woolitem = new ItemStack(Material.LIGHT_BLUE_WOOL, 1);
+									ItemMeta woolmeta = woolitem.getItemMeta();
+									woolmeta.displayName(getByLang(lang, "woolbattle.blueWool"));
+									woolitem.setItemMeta(woolmeta);
+									player1.getInventory().addItem(woolitem);
+								}
+							}
+						}
+					}
+				}
+				checkForWoolCap(player1);
+				updateLevels(player1);
+			}
+		}, 0L, 20L);
 	}
 
 
