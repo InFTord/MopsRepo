@@ -435,7 +435,6 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		}, 80L, 5L);
 
 
-
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
 			for (Player player : Bukkit.getOnlinePlayers()) {
 				Team team = mainboard.getPlayerTeam(player);
@@ -446,6 +445,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 					if (player.isOnGround() && !player.getAllowFlight()) {
 						player.setAllowFlight(true);
 					}
+
 					if (player.isFlying() && player.getGameMode().equals(GameMode.SURVIVAL)) {
 						player.setFlying(false);
 
@@ -459,6 +459,8 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 							player.sendActionBar(getByLang(lang, "woolbattle.notEnoughWool"));
 						}
 					}
+				} else {
+					player.setAllowFlight(false);
 				}
 			}
 		}, 80L, 1L);
@@ -816,8 +818,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 				event.setCancelled(true);
 			} else {
 				if(player.getInventory().getItemInMainHand().getItemMeta() == null) {
-					player.getInventory().getItemInMainHand().setType(stand.getHelmet().getType());
-					player.getInventory().getItemInMainHand().setItemMeta(stand.getHelmet().getItemMeta());
+					player.getInventory().setItem(player.getInventory().getHeldItemSlot(), stand.getHelmet());
 
 					stand.setHelmet(new ItemStack(Material.AIR));
 				} else {
@@ -1853,7 +1854,9 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		gensLocked = false;
 
 		mainworld.getWorldBorder().setSize(200, 1);
-		worldBorderTask.cancel();
+		if(worldBorderTask != null) {
+			worldBorderTask.cancel();
+		}
 
 		Bukkit.getScheduler().cancelTask(scoreboardTask);
 
@@ -2108,7 +2111,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		requiredKills = (int) (Math.round(4 * (Bukkit.getOnlinePlayers().size() * 0.7))) + 1;
 
 		Bukkit.getScheduler().runTaskLater(this, () -> {
-			player1.sendTitle(ChatColor.WHITE + "Нужно сделать", ChatColor.WHITE + String.valueOf(requiredKills) + " киллов.", 5, 40, 30);
+			player1.sendTitle(getStringByLang(lang, "killRequirement.1"), getStringByLang(lang, "killRequirement.2", Map.of("kills", String.valueOf(requiredKills))), 5, 40, 30);
 
 			player1.playSound(player1.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 0);
 			player1.playSound(player1.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 0.2F);

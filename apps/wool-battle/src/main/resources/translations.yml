@@ -89,20 +89,20 @@ woolbattle:
       rus: "&cНедостаточно шерсти!"
       eng: "&cNot enough wool!"
   - event.refill.1:
-      rus: "&8(Рефилл | 4:00)"
-      eng: "&8(Refill | 4:00)"
+      rus: " &8(Рефилл | 4:00)"
+      eng: " &8(Refill | 4:00)"
   - event.refill.2:
-      rus: "&8(Рефилл | 8:00)"
-      eng: "&8(Refill | 8:00)"
+      rus: " &8(Рефилл | 8:00)"
+      eng: " &8(Refill | 8:00)"
   - event.refill.3:
-      rus: "&8(Рефилл | 12:00)"
-      eng: "&8(Refill | 12:00)"
+      rus: " &8(Рефилл | 12:00)"
+      eng: " &8(Refill | 12:00)"
   - event.hardmode:
-      rus: "&8(&4Хардмод&8 | 20:00)"
-      eng: "&8(&4Hardmode&8 | 20:00)"
+      rus: " &8(&4Хардмод&8 | 20:00)"
+      eng: " &8(&4Hardmode&8 | 20:00)"
   - event.deathmatch:
-      rus: "&8(Сражение до конца)"
-      eng: "&8(Deathmatch)"
+      rus: " &8(Сражение до конца)"
+      eng: " &8(Deathmatch)"
   - scoreboardTime:
       rus: "&fВремя"
       eng: "&fTime"
@@ -184,6 +184,12 @@ woolbattle:
   - combo.subtitle:
       rus: "&e10 ударов подряд!"
       eng: "&e10 hits in a row!"
+  - killRequirement.1:
+      rus: "&rНужно сделать"
+      eng: "&rYou need get"
+  - killRequirement.2:
+      rus: "&r§kills§ киллов."
+      eng: "&r§kills§ kills."
   - immunity.guideline:
       rus: "&7У этого игрока иммунитет после респавна, подождите 2 секудны."
       eng: "&7This player has respawn immunity, please wait 2 seconds."
