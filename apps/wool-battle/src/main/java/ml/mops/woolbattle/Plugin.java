@@ -119,8 +119,8 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 		this.saveDefaultConfig();
 		this.config = this.getConfig();
-		logger.info("config: \n" + config.saveToString() );
-		logger.info("default config: \n" + ((FileConfiguration) Objects.requireNonNull(config.getDefaults())).saveToString());
+//		logger.info("config: \n" + config.saveToString() );
+//		logger.info("default config: \n" + ((FileConfiguration) Objects.requireNonNull(config.getDefaults())).saveToString());
 
 		String data;
 
@@ -134,22 +134,22 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		try {
 			this.translation.loadFromString(data);
 		} catch (InvalidConfigurationException e) {
-			logger.warning(Arrays.toString(e.getStackTrace()));
+//			logger.warning(Arrays.toString(e.getStackTrace()));
 		}
 
-		logger.info("Loaded translations: \n" + translation.saveToString());
-		logger.info("6");
+//		logger.info("Loaded translations: \n" + translation.saveToString());
+//		logger.info("6");
 
 		try {
 			lang = Objects.requireNonNull(config.getString("lang")).toLowerCase(Locale.ROOT);
-			logger.info("lang string: " + lang);
+//			logger.info("lang string: " + lang);
 			if (lang.isBlank()) {
-				logger.warning("lang is blank");
+//				logger.warning("lang is blank");
 				lang = "rus";
 				throw new Exception("couldn't load custom lang");
 			}
 		} catch (Exception e) {
-			logger.info(e.getMessage() + "\n" + Arrays.toString(e.getStackTrace()));
+//			logger.info(e.getMessage() + "\n" + Arrays.toString(e.getStackTrace()));
 		}
 
 		translator = new Translation(translation, getLogger(), "woolbattle");
@@ -195,26 +195,26 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 						TextComponent woolName;
 
 						if (teamname.contains("red")) {
-							logger.info(player.getName() + "'s team: " + "red");
+//							logger.info(player.getName() + "'s team: " + "red");
 							woolItem = new ItemStack(Material.RED_WOOL, 1296);
 							woolName = getByLang(lang, "woolbattle.redWool");
 						}
 						else if (teamname.contains("yellow")) {
-							logger.info(player.getName() + "'s team: " + "yellow");
+//							logger.info(player.getName() + "'s team: " + "yellow");
 							woolItem = new ItemStack(Material.YELLOW_WOOL, 1296);
 							woolName = getByLang(lang, "yellowWool");
 						}
 						else if (teamname.contains("green")) {
-							logger.info(player.getName() + "'s team: " + "green");
+//							logger.info(player.getName() + "'s team: " + "green");
 							woolItem = new ItemStack(Material.LIME_WOOL, 1296);
 							woolName = getByLang(lang, "greenWool");
 						}
 						else if (teamname.contains("blue")) {
-							logger.info(player.getName() + "'s team: " + "blue");
+//							logger.info(player.getName() + "'s team: " + "blue");
 							woolItem = new ItemStack(Material.LIGHT_BLUE_WOOL, 1296);
 							woolName = getByLang(lang, "blueWool");
 						} else {
-							logger.warning("No team found for " + player.getName() + "\ntags: " + player.getScoreboardTags() + "\nteam name: " + player.getScoreboard().getPlayerTeam(player).getName());
+//							logger.warning("No team found for " + player.getName() + "\ntags: " + player.getScoreboardTags() + "\nteam name: " + player.getScoreboard().getPlayerTeam(player).getName());
 							player.removeScoreboardTag("ingame");
 							woolItem = new ItemStack(Material.AIR);
 							woolName = Component.empty();
@@ -2465,12 +2465,12 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 	@Override
 	public TextComponent getByLang(String lang, String string) {
-		getLogger().info("WoolBattle:Plugin | getByLang: \n" + lang + "\n" + string);
+//		getLogger().info("WoolBattle:Plugin | getByLang: \n" + lang + "\n" + string);
 		return translator.getTranslation(lang, string.replaceFirst("woolbattle.", "")).decoration(TextDecoration.ITALIC, false);
 	}
 	@Override
 	public TextComponent getByLang(String lang, String string, Map<String, String> formatV) {
-		getLogger().info("WoolBattle:Plugin | getByLang: \n" + lang + "\n" + string + "\n" + formatV.toString());
+//		getLogger().info("WoolBattle:Plugin | getByLang: \n" + lang + "\n" + string + "\n" + formatV.toString());
 		return translator.getTranslation(lang, string.replaceFirst("woolbattle.", ""), formatV).decoration(TextDecoration.ITALIC, false);
 
 	}
