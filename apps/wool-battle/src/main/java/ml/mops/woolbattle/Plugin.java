@@ -645,6 +645,13 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 	private final HashMap<Player, BukkitTask> damagetask0 = new HashMap<>();
 
+	@EventHandler
+	public void onEntityDamage(EntityDamageEvent event) {
+		if(event.getCause() == EntityDamageEvent.DamageCause.SUFFOCATION) {
+			event.setCancelled(true);
+		}
+	}
+
 
 	@EventHandler
 	public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
@@ -655,12 +662,10 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			Objective obj = mainboard.getObjective("lastdamagedbyteam");
 
 			if (victim0 instanceof Player victim && attacker0 instanceof Player attacker) {
+				event.setDamage(0);
+
 				if(attacker.getScoreboardTags().contains("spectator") || victim.getScoreboardTags().contains("spectator")) {
 					event.setCancelled(true);
-				}
-
-				if (!hardmode) {
-					event.setDamage(0);
 				}
 
 				if(victim.getScoreboardTags().contains("immunity")) {
@@ -725,6 +730,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 				}
 
 			} else if(victim0 instanceof Player victim && attacker0 instanceof Projectile projectile) {
+				event.setDamage(0);
 
 				//ELSE IF ARROW
 				Player attacker = (Player) projectile.getShooter();
@@ -745,18 +751,8 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 						simulateHardmodeDeath(victim);
 						broadcastFinalDeath(victim);
 						victim.playSound(victim.getLocation(), Sound.ENTITY_PLAYER_DEATH, 0.8F, 1);
-					} else {
-						if (hardmode) {
-							if(projectile instanceof Arrow arrow) {
-								if(arrow.getShooter() != victim) {
-									event.setDamage(1);
-								}
-							} else {
-								event.setDamage(1);
-							}
-						} else {
-							event.setDamage(0);
-						}
+					} else if (hardmode) {
+						event.setDamage(1);
 					}
 
 					if (victim != attacker) {
