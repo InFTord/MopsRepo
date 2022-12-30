@@ -2087,35 +2087,35 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 	public void gameStartSequence(Player player1, String teamname) {
 		Teams team;
 		if (teamname.contains("red")) {
-			Location loc = new Location(player1.getWorld(), 9.5, 258, -27.5);
+			Location loc = new Location(player1.getWorld(), 9, 257, -28);
 			while(loc.getBlock().getType() != Material.AIR) {
 				loc = loc.add(0, 1, 0);
 			}
-			player1.teleport(loc);
+			player1.teleport(loc.add(0.5, 1, 0.5));
 			team = Teams.RED;
 		} else if (teamname.contains("yellow")) {
-			Location loc = new Location(player1.getWorld(), -27.5, 258, 9.5);
+			Location loc = new Location(player1.getWorld(), -28, 257, 9);
 			while(loc.getBlock().getType() != Material.AIR) {
 				loc = loc.add(0, 1, 0);
 			}
 			loc.setYaw(-90);
-			player1.teleport(loc);
+			player1.teleport(loc.add(0.5, 1, 0.5));
 			team = Teams.YELLOW;
 		} else if (teamname.contains("green")) {
-			Location loc = new Location(player1.getWorld(), 9.5, 258, 46.5);
+			Location loc = new Location(player1.getWorld(), 9, 257, 46);
 			while(loc.getBlock().getType() != Material.AIR) {
 				loc = loc.add(0, 1, 0);
 			}
 			loc.setYaw(-180);
-			player1.teleport(loc);
+			player1.teleport(loc.add(0.5, 1, 0.5));
 			team = Teams.GREEN;
 		} else if (teamname.contains("blue")) {
-			Location loc = new Location(player1.getWorld(), 46.5, 258, 9.5);
+			Location loc = new Location(player1.getWorld(), 46, 257, 9);
 			while(loc.getBlock().getType() != Material.AIR) {
 				loc = loc.add(0, 1, 0);
 			}
 			loc.setYaw(90);
-			player1.teleport(loc);
+			player1.teleport(loc.add(0.5, 1, 0.5));
 			team = Teams.BLUE;
 		} else {
 			team = Teams.SPECTATOR;
