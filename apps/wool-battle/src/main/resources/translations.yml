@@ -56,7 +56,7 @@ woolbattle:
         &bCost: 16 wool
   - explosionStaff.name:
       rus: "&eВзрывная Палка"
-      eng: "&eExplosion Staff"
+      eng: "&eBoomstick"
   - explosionStaff.lore:
       rus: |
         &7Палка откидывающая тебя назад. &e&lПКМ &r&8(Нужно наводится на блок)
@@ -70,17 +70,17 @@ woolbattle:
   - shears.lore:
       rus: |
         &7Ножницы для копания шерсти и
-        &7скидывания игроков в бездну.
+        &r&7скидывания игроков в бездну.
         &r
         &bСпособность: &7Убирает блоки
-        &7своего цвета на генераторах. &e&lПКМ
+        &r&7своего цвета на генераторах. &e&lПКМ
         &bСтоимость: 6 шерсти за блок
       eng: |
         &7Shears for mining wool and
-        &7knocking people in the void.
+        7r&7knocking people in the void.
         &r
         &bAbility: &7Removes blocks of
-        &7your color on generators. &e&lRIGHT CLICK
+        &r&7your color on generators. &e&lRIGHT CLICK
         &bCost: 6 wool pet block
   - bow.name:
       rus: "&bЛук"
@@ -178,6 +178,9 @@ woolbattle:
   - combo.subtitle:
       rus: "&e10 ударов подряд!"
       eng: "&e10 hits in a row!"
+  - immunity.guideline:
+      rus: "&7У этого игрока иммунитет после респавна, подождите 2 секудны."
+      eng: "&7This player has respawn immunity, please wait 2 seconds."
   - onStartMessage:
       rus: |
         &e----------------------------------------------------
@@ -187,7 +190,7 @@ woolbattle:
              &eубийств. Так же вы можете захватить генераторы (углы)
              &eчтобы получать пассивную шерсть, нужно заменить всю
              &eшерсть своей. При захвате всех генераторов вы выиграете.
-                              &eУдачи!
+                               &eУдачи!
         &e----------------------------------------------------
       eng: |
         &e----------------------------------------------------
@@ -199,3 +202,22 @@ woolbattle:
              &eIf you capture all of them - you win.
                                &eGood luck!
         &e----------------------------------------------------
+  - hardmodeMessage:
+      rus: |
+        &7----------------------------------------------------
+                             &c&lХардмод
+            &cХардмод активирован. Генераторы нельзя перехватить, но
+             &cони всё равно будут приносить шерсть. Теперь стрелы и
+             &cудары наносят вам урон! Смерти окончательные. Граница
+             &cмира будет сужаться.
+                         &сВаша цель - выжить.
+        &7----------------------------------------------------
+      eng: |
+        &7----------------------------------------------------
+                             &c&lHardmode
+            &cHardmode is activated. You cannot re-capture generators,
+             &cbut they are still giving you wool. Now arrows and hits
+             &cdeal damage to you, and all deaths are final. The border
+             &cis going to be shrinking to the middle.
+                     &сYour goal is to survive.
+        &7----------------------------------------------------

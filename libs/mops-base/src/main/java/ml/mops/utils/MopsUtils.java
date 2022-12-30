@@ -224,9 +224,7 @@ public class MopsUtils {
 		string = string.replaceAll("&n", ChatColor.UNDERLINE + "");
 		string = string.replaceAll("&o", ChatColor.ITALIC + "");
 		string = string.replaceAll("&r", ChatColor.RESET + "");
-
-
-
+		 
 		string = string.replaceAll("&s", " ");
 
 		return string;

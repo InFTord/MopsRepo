@@ -324,6 +324,11 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 										player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
 
+										player.addScoreboardTag("immunity");
+										Bukkit.getScheduler().runTaskLater(this, () -> {
+											player.removeScoreboardTag("immunity");
+										}, 40L);
+
 									}, 20L));
 								}, 20L));
 							}, 20L));
@@ -454,6 +459,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 						if (hasItems) {
 							player.setVelocity((player.getEyeLocation().getDirection().multiply(0.9)).add(new Vector(0, 0.45, 0)));
+							player.playSound(player.getLocation(), Sound.ENTITY_ENDER_DRAGON_FLAP, 0.05F, 1);
 							player.setAllowFlight(false);
 						} else {
 							player.sendActionBar(getByLang(lang, "woolbattle.notEnoughWool"));
@@ -897,9 +903,17 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			Objective obj = mainboard.getObjective("lastdamagedbyteam");
 
 			if (victim0 instanceof Player victim && attacker0 instanceof Player attacker) {
-
 				if(attacker.getScoreboardTags().contains("spectator") || victim.getScoreboardTags().contains("spectator")) {
 					event.setCancelled(true);
+				}
+
+				if (!hardmode) {
+					event.setDamage(0);
+				}
+
+				if(victim.getScoreboardTags().contains("immunity")) {
+					event.setCancelled(true);
+					attacker.sendMessage(getByLang(lang, "woolbattle.immunity.guideline"));
 				}
 
 				if(!mainboard.getPlayerTeam(attacker).getName().equals(mainboard.getPlayerTeam(victim).getName())) {
@@ -967,6 +981,12 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 					event.setCancelled(true);
 				}
 
+				if (victim.getScoreboardTags().contains("immunity")) {
+					event.setCancelled(true);
+					attacker.sendMessage(getByLang(lang, "woolbattle.immunity.guideline"));
+				}
+
+
 				if(!mainboard.getPlayerTeam(attacker).getName().equals(mainboard.getPlayerTeam(victim).getName())) {
 
 					if(victim.getHealth()-1 <= 0) {
@@ -982,6 +1002,8 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 							} else {
 								event.setDamage(1);
 							}
+						} else {
+							event.setDamage(0);
 						}
 					}
 
@@ -1690,16 +1712,18 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		hardmode = true;
 		mainworld.getWorldBorder().setSize(90, 90);
 		Bukkit.getScheduler().runTaskLater(this, () -> mainworld.getWorldBorder().setSize(17, 70), 2100L);
-		for (Player player1 : mainworld.getPlayers()) {
-			player1.sendTitle(getStringByLang(lang, "hardmode.activation.1"), getStringByLang(lang, "hardmode.activation.2"), 5, 30, 15);
-			player1.playSound(player1.getLocation(), Sound.ENTITY_WITHER_DEATH, 1, 0);
-			player1.playSound(player1.getLocation(), Sound.ENTITY_ENDER_DRAGON_AMBIENT, 1, 0);
+		for (Player allPlayers : mainworld.getPlayers()) {
+			allPlayers.sendTitle(getStringByLang(lang, "hardmode.activation.1"), getStringByLang(lang, "hardmode.activation.2"), 5, 30, 15);
+			allPlayers.playSound(allPlayers.getLocation(), Sound.ENTITY_WITHER_DEATH, 1, 0);
+			allPlayers.playSound(allPlayers.getLocation(), Sound.ENTITY_ENDER_DRAGON_AMBIENT, 1, 0);
+
+			allPlayers.sendMessage(getByLang(lang, "woolbattle.hardmodeMessage"));
 
 			worldBorderTask = Bukkit.getScheduler().runTaskLater(this, () -> {
-				player1.sendTitle(getStringByLang(lang, "generator.blocked.1"), getStringByLang(lang, "generator.blocked.2"), 5, 30, 15);
-				player1.playSound(player1.getLocation(), Sound.ENTITY_ZOMBIE_ATTACK_IRON_DOOR, 0.8F, 0);
-				player1.playSound(player1.getLocation(), Sound.ENTITY_ZOMBIE_ATTACK_IRON_DOOR, 0.8F, 1);
-				player1.playSound(player1.getLocation(), Sound.ENTITY_ZOMBIE_ATTACK_IRON_DOOR, 0.8F, 2);
+				allPlayers.sendTitle(getStringByLang(lang, "generator.blocked.1"), getStringByLang(lang, "generator.blocked.2"), 5, 30, 15);
+				allPlayers.playSound(allPlayers.getLocation(), Sound.ENTITY_ZOMBIE_ATTACK_IRON_DOOR, 0.8F, 0);
+				allPlayers.playSound(allPlayers.getLocation(), Sound.ENTITY_ZOMBIE_ATTACK_IRON_DOOR, 0.8F, 1);
+				allPlayers.playSound(allPlayers.getLocation(), Sound.ENTITY_ZOMBIE_ATTACK_IRON_DOOR, 0.8F, 2);
 			}, 50L);
 		}
 
@@ -2300,7 +2324,6 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			case 10 -> player1.sendTitle(ChatColor.WHITE + "кот", ChatColor.WHITE + "скинь логи", fadeIn, hold, fadeOut);
 			case 11 -> player1.sendTitle(ChatColor.WHITE + "тут нет", ChatColor.WHITE + "голубей", fadeIn, hold, fadeOut);
 			case 12 -> player1.sendTitle(ChatColor.WHITE + "NO WAY", ChatColor.WHITE + "Крис фумо", fadeIn, hold, fadeOut);
-			case 13 -> player1.sendTitle(ChatColor.WHITE + "Класс!", ChatColor.WHITE + "Я негр!", fadeIn, hold, fadeOut);
 			case 14 -> player1.sendTitle(ChatColor.WHITE + "ео", ChatColor.WHITE + "плши", fadeIn, hold, fadeOut);
 			case 15 -> player1.sendTitle(ChatColor.WHITE + "мяу, мяри мяри", ChatColor.WHITE + "мяу мяу мяу мяу", fadeIn, hold, fadeOut);
 			case 16 -> player1.sendTitle(ChatColor.WHITE + "пустите торда", ChatColor.WHITE + "на ош", fadeIn, hold, fadeOut);
