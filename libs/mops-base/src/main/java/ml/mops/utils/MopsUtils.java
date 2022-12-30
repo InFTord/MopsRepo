@@ -39,8 +39,9 @@ import java.util.*;
 
 import static net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacyAmpersand;
 
-public class MopsUtils {
+public class MopsUtils <OBJ extends Object, COMPONENT_COLLECTION extends Collection<Component>, COLLECTION extends Collection<OBJ>> {
 	MopsPlugin plugin;
+
 
 	public MopsUtils(MopsPlugin plugin) {
 		this.plugin = plugin;
@@ -90,22 +91,6 @@ public class MopsUtils {
 		return Title.title(c1, c2, times);
 	}
 
-	static public String componentsToSingularString(List<Component> textComponents) {
-		List<String> strings = null;
-		for (Component component : textComponents) {
-			strings.add(legacyAmpersand().serialize(component));
-		}
-		return strings.toString();
-	}
-
-	static public String textComponentsToSingularString(List<TextComponent> textComponents) {
-		List<String> strings = null;
-		for (TextComponent textComponent : textComponents) {
-			strings.add(legacyAmpersand().serialize(textComponent));
-		}
-		return strings.toString();
-	}
-
 	static public List<String> componentsToStrings(List<Component> textComponents) {
 		List<String> strings = null;
 		for (Component component : textComponents) {
@@ -120,6 +105,14 @@ public class MopsUtils {
 			strings.add(legacyAmpersand().serialize(textComponent));
 		}
 		return strings;
+	}
+
+	String CombineComponentsToString(COMPONENT_COLLECTION components) {
+		List<String> strings = null;
+		for (Component component : components) {
+			strings.add(legacyAmpersand().serialize(component));
+		}
+		return strings.toString();
 	}
 
 //	static public List<String> playerNames() {
