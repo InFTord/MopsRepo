@@ -2108,8 +2108,11 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		recoloringGenerators(genBblocksLONG, genBblocks);
 		recoloringGenerators(genCblocksLONG, genCblocks);
 		recoloringGenerators(genDblocksLONG, genDblocks);
+		gensLocked = false;
 
 		mainworld.getWorldBorder().setSize(200, 1);
+		worldBorderTask.cancel();
+
 		hardmode = false;
 		gameactive = false;
 
@@ -2324,6 +2327,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			case 10 -> player1.sendTitle(ChatColor.WHITE + "кот", ChatColor.WHITE + "скинь логи", fadeIn, hold, fadeOut);
 			case 11 -> player1.sendTitle(ChatColor.WHITE + "тут нет", ChatColor.WHITE + "голубей", fadeIn, hold, fadeOut);
 			case 12 -> player1.sendTitle(ChatColor.WHITE + "NO WAY", ChatColor.WHITE + "Крис фумо", fadeIn, hold, fadeOut);
+			case 13 -> player1.sendTitle(ChatColor.WHITE + "тут нет", ChatColor.WHITE + "голубей", fadeIn, hold, fadeOut);
 			case 14 -> player1.sendTitle(ChatColor.WHITE + "ео", ChatColor.WHITE + "плши", fadeIn, hold, fadeOut);
 			case 15 -> player1.sendTitle(ChatColor.WHITE + "мяу, мяри мяри", ChatColor.WHITE + "мяу мяу мяу мяу", fadeIn, hold, fadeOut);
 			case 16 -> player1.sendTitle(ChatColor.WHITE + "пустите торда", ChatColor.WHITE + "на ош", fadeIn, hold, fadeOut);

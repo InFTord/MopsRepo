@@ -70,18 +70,18 @@ woolbattle:
   - shears.lore:
       rus: |
         &7Ножницы для копания шерсти и
-        &r&7скидывания игроков в бездну.
+        &7скидывания игроков в бездну.
         &r
         &bСпособность: &7Убирает блоки
-        &r&7своего цвета на генераторах. &e&lПКМ
+        &7своего цвета на генераторах. &e&lПКМ
         &bСтоимость: 6 шерсти за блок
       eng: |
         &7Shears for mining wool and
-        7r&7knocking people in the void.
+        &7knocking people in the void.
         &r
         &bAbility: &7Removes blocks of
-        &r&7your color on generators. &e&lRIGHT CLICK
-        &bCost: 6 wool pet block
+        &7your color on generators. &e&lRIGHT CLICK
+        &bCost: 6 wool per block
   - bow.name:
       rus: "&bЛук"
       eng: "&bBow"
