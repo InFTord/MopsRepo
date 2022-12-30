@@ -109,6 +109,9 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 	List<ItemStack> shears = new ArrayList<>();
 
 
+	// Хардкодю значения УРААААА ((Я перенёс это в начало что бы не нужно было постоянно перепросчитывать угол/2/pi))
+	final double BlockRotationInDegrees = 15;
+	final double BlockRotationInRadians = BlockRotationInDegrees / 2 / Math.PI;
 
 	@Override
 	public void onEnable() {
@@ -419,17 +422,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 				if(entity.getScoreboardTags().contains("generatorTitle")) {
 					ArmorStand stand = (ArmorStand) entity;
-
-					double radian = stand.getHeadPose().getY();
-					double angle = Math.toDegrees(radian);
-
-					if(angle < 360) {
-						angle += 15;
-					} else {
-						angle = 0;
-					}
-
-					stand.setHeadPose(new EulerAngle(Math.toRadians(0), Math.toRadians(angle), Math.toRadians(0)));
+					stand.setHeadPose(stand.getHeadPose().add(0, BlockRotationInRadians, 0));
 				}
 			}
 		}, 80L, 5L);
