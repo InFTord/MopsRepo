@@ -113,8 +113,9 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 	// Хардкодю значения УРААААА ((Я перенёс это в начало что бы не нужно было постоянно перепросчитывать угол/2/pi))
 	private static final double DEGREES_TO_RADIANS = 0.017453292519943295;
-	final double BlockRotationInDegrees = 15;
-	final double BlockRotationInRadians = BlockRotationInDegrees * DEGREES_TO_RADIANS;
+	final double BLOCK_ROTATION_DEGREES = 15;
+	final double BLOCK_ROTATION_RADIANS = BLOCK_ROTATION_DEGREES * DEGREES_TO_RADIANS;
+	final double PI_TIMES_TWO = Math.PI * 2;
 
 	@Override
 	public void onEnable() {
@@ -437,8 +438,9 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 				if(entity.getScoreboardTags().contains("generatorTitle")) {
 					ArmorStand stand = (ArmorStand) entity;
-					double angle = Math.abs(stand.getHeadPose().getY());
-					stand.setHeadPose(stand.getHeadPose().subtract(0, angle - BlockRotationInRadians, 0));
+					EulerAngle vectorAngle = stand.getHeadPose();
+					double angle = ((vectorAngle.getY() + Math.PI + BLOCK_ROTATION_RADIANS) % PI_TIMES_TWO) - Math.PI;
+					stand.setHeadPose(vectorAngle.setY(angle));
 				}
 			}
 		}, 80L, 5L);
