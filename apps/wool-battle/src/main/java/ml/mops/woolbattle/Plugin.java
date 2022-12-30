@@ -302,23 +302,35 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 										updateLevels(player);
 
 										if (teamname.contains("red")) {
-											Location loc = new Location(player.getWorld(), 9.5, 258, -27.5);
-											player.teleport(loc);
+											Location loc = new Location(player.getWorld(), 9, 257, -28);
+											while(loc.getBlock().getType() != Material.AIR) {
+												loc = loc.add(0, 1, 0);
+											}
+											player.teleport(loc.add(0.5, 1, 0.5));
 										}
 										if (teamname.contains("yellow")) {
-											Location loc = new Location(player.getWorld(), -27.5, 258, 9.5);
+											Location loc = new Location(player.getWorld(), -28, 257, 9);
+											while(loc.getBlock().getType() != Material.AIR) {
+												loc = loc.add(0, 1, 0);
+											}
 											loc.setYaw(-90);
-											player.teleport(loc);
+											player.teleport(loc.add(0.5, 1, 0.5));
 										}
 										if (teamname.contains("green")) {
-											Location loc = new Location(player.getWorld(), 9.5, 258, 46.5);
+											Location loc = new Location(player.getWorld(), 9, 257, 46);
+											while(loc.getBlock().getType() != Material.AIR) {
+												loc = loc.add(0, 1, 0);
+											}
 											loc.setYaw(-180);
-											player.teleport(loc);
+											player.teleport(loc.add(0.5, 1, 0.5));
 										}
 										if (teamname.contains("blue")) {
-											Location loc = new Location(player.getWorld(), 46.5, 258, 9.5);
+											Location loc = new Location(player.getWorld(), 46, 257, 9);
+											while(loc.getBlock().getType() != Material.AIR) {
+												loc = loc.add(0, 1, 0);
+											}
 											loc.setYaw(90);
-											player.teleport(loc);
+											player.teleport(loc.add(0.5, 1, 0.5));
 										}
 
 										player.setGameMode(GameMode.SURVIVAL);
@@ -2088,36 +2100,25 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 	public void gameStartSequence(Player player1, String teamname) {
 		Teams team;
+
 		if (teamname.contains("red")) {
-			Location loc = new Location(player1.getWorld(), 9, 257, -28);
-			while(loc.getBlock().getType() != Material.AIR) {
-				loc = loc.add(0, 1, 0);
-			}
-			player1.teleport(loc.add(0.5, 1, 0.5));
+			Location loc = new Location(player1.getWorld(), 9.5, 258, -27.5);
+			player1.teleport(loc);
 			team = Teams.RED;
 		} else if (teamname.contains("yellow")) {
-			Location loc = new Location(player1.getWorld(), -28, 257, 9);
-			while(loc.getBlock().getType() != Material.AIR) {
-				loc = loc.add(0, 1, 0);
-			}
+			Location loc = new Location(player1.getWorld(), -27.5, 258, 9.5);
 			loc.setYaw(-90);
-			player1.teleport(loc.add(0.5, 1, 0.5));
+			player1.teleport(loc);
 			team = Teams.YELLOW;
 		} else if (teamname.contains("green")) {
-			Location loc = new Location(player1.getWorld(), 9, 257, 46);
-			while(loc.getBlock().getType() != Material.AIR) {
-				loc = loc.add(0, 1, 0);
-			}
+			Location loc = new Location(player1.getWorld(), 9.5, 258, 46.5);
 			loc.setYaw(-180);
-			player1.teleport(loc.add(0.5, 1, 0.5));
+			player1.teleport(loc);
 			team = Teams.GREEN;
 		} else if (teamname.contains("blue")) {
-			Location loc = new Location(player1.getWorld(), 46, 257, 9);
-			while(loc.getBlock().getType() != Material.AIR) {
-				loc = loc.add(0, 1, 0);
-			}
+			Location loc = new Location(player1.getWorld(), 46.5, 258, 9.5);
 			loc.setYaw(90);
-			player1.teleport(loc.add(0.5, 1, 0.5));
+			player1.teleport(loc);
 			team = Teams.BLUE;
 		} else {
 			team = Teams.SPECTATOR;
