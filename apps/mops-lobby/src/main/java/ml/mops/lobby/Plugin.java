@@ -199,7 +199,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
         stand.setSmall(true);
 
-        stand.setHeadPose(new EulerAngle(Math.toRadians(180), Math.toRadians(0), Math.toRadians(0)));
+        stand.setHeadPose(new EulerAngle(Math.toRadians(180), 0, 0));
 
         ball = stand;
 

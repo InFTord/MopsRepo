@@ -27,6 +27,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemFlag;
@@ -94,6 +95,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 	int generatorTask;
 
 	BukkitTask worldBorderTask;
+	BukkitTask generatorBlockTask;
 
 	boolean testmode = false;
 
@@ -454,7 +456,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 							player.sendActionBar(getByLang(lang, "woolbattle.notEnoughWool"));
 						}
 					}
-				} else {
+				} else if(player.getGameMode() == GameMode.SURVIVAL) {
 					player.setAllowFlight(false);
 				}
 			}
@@ -628,6 +630,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 	}
 
 	private final HashMap<Player, BukkitTask> damagetask0 = new HashMap<>();
+
 
 	@EventHandler
 	public void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
@@ -814,10 +817,12 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			} else {
 				if(player.getInventory().getItemInMainHand().getItemMeta() == null) {
 					player.getInventory().setItem(player.getInventory().getHeldItemSlot(), stand.getHelmet());
+					player.playSound(player.getLocation(), Sound.ENTITY_ITEM_PICKUP, 1, 1);
 
 					stand.setHelmet(new ItemStack(Material.AIR));
 				} else {
 					player.getInventory().addItem(stand.getHelmet());
+					player.playSound(player.getLocation(), Sound.ENTITY_ITEM_PICKUP, 1, 1);
 
 					stand.setHelmet(new ItemStack(Material.AIR));
 				}
@@ -1448,7 +1453,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 	public void activateHardmode() {
 		hardmode = true;
 		mainworld.getWorldBorder().setSize(90, 90);
-		Bukkit.getScheduler().runTaskLater(this, () -> mainworld.getWorldBorder().setSize(17, 70), 2100L);
+		worldBorderTask = Bukkit.getScheduler().runTaskLater(this, () -> mainworld.getWorldBorder().setSize(17, 70), 2100L);
 		for (Player allPlayers : mainworld.getPlayers()) {
 			allPlayers.sendTitle(getStringByLang(lang, "hardmode.activation.1"), getStringByLang(lang, "hardmode.activation.2"), 5, 30, 15);
 			allPlayers.playSound(allPlayers.getLocation(), Sound.ENTITY_WITHER_DEATH, 1, 0);
@@ -1456,7 +1461,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 			allPlayers.sendMessage(getByLang(lang, "woolbattle.hardmodeMessage"));
 
-			worldBorderTask = Bukkit.getScheduler().runTaskLater(this, () -> {
+			generatorBlockTask = Bukkit.getScheduler().runTaskLater(this, () -> {
 				allPlayers.sendTitle(getStringByLang(lang, "generator.blocked.1"), getStringByLang(lang, "generator.blocked.2"), 5, 30, 15);
 				allPlayers.playSound(allPlayers.getLocation(), Sound.ENTITY_ZOMBIE_ATTACK_IRON_DOOR, 0.8F, 0);
 				allPlayers.playSound(allPlayers.getLocation(), Sound.ENTITY_ZOMBIE_ATTACK_IRON_DOOR, 0.8F, 1);
@@ -1853,6 +1858,10 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			worldBorderTask.cancel();
 		}
 
+		if(generatorBlockTask != null) {
+			generatorBlockTask.cancel();
+		}
+
 		Bukkit.getScheduler().cancelTask(scoreboardTask);
 
 		hardmode = false;
@@ -2081,20 +2090,32 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		Teams team;
 		if (teamname.contains("red")) {
 			Location loc = new Location(player1.getWorld(), 9.5, 258, -27.5);
+			while(loc.getBlock().getType() != Material.AIR) {
+				loc = loc.add(0, 1, 0);
+			}
 			player1.teleport(loc);
 			team = Teams.RED;
 		} else if (teamname.contains("yellow")) {
 			Location loc = new Location(player1.getWorld(), -27.5, 258, 9.5);
+			while(loc.getBlock().getType() != Material.AIR) {
+				loc = loc.add(0, 1, 0);
+			}
 			loc.setYaw(-90);
 			player1.teleport(loc);
 			team = Teams.YELLOW;
 		} else if (teamname.contains("green")) {
 			Location loc = new Location(player1.getWorld(), 9.5, 258, 46.5);
+			while(loc.getBlock().getType() != Material.AIR) {
+				loc = loc.add(0, 1, 0);
+			}
 			loc.setYaw(-180);
 			player1.teleport(loc);
 			team = Teams.GREEN;
 		} else if (teamname.contains("blue")) {
 			Location loc = new Location(player1.getWorld(), 46.5, 258, 9.5);
+			while(loc.getBlock().getType() != Material.AIR) {
+				loc = loc.add(0, 1, 0);
+			}
 			loc.setYaw(90);
 			player1.teleport(loc);
 			team = Teams.BLUE;
