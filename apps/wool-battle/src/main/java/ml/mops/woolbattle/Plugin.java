@@ -429,7 +429,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 						angle = 0;
 					}
 
-					stand.setHeadPose(new EulerAngle(0, Math.toRadians(angle), 0));
+					stand.setHeadPose(new EulerAngle(Math.toRadians(0), Math.toRadians(angle), Math.toRadians(0)));
 				}
 			}
 		}, 80L, 5L);
