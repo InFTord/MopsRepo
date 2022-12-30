@@ -19,7 +19,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
@@ -30,7 +29,6 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.*;
-import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -122,17 +120,17 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 //		logger.info("config: \n" + config.saveToString() );
 //		logger.info("default config: \n" + ((FileConfiguration) Objects.requireNonNull(config.getDefaults())).saveToString());
 
-		String data;
+		StringBuilder data;
 
 		try (Scanner reader = new Scanner(Objects.requireNonNull(getResource("translations.yml")))) {
-			data = "";
+			data = new StringBuilder();
 			while (reader.hasNextLine()) {
-				data = data + "\n" + reader.nextLine();
+				data.append("\n").append(reader.nextLine());
 			}
 		}
 
 		try {
-			this.translation.loadFromString(data);
+			this.translation.loadFromString(data.toString());
 		} catch (InvalidConfigurationException e) {
 //			logger.warning(Arrays.toString(e.getStackTrace()));
 		}

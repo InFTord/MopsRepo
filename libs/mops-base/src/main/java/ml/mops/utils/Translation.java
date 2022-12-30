@@ -27,7 +27,7 @@ public class Translation {
     }
 
     public TextComponent getTranslation(String lang, String string, Map<String, String> formatValues) {
-        logger.info("Translation.getTranslation (1): " + lang + "\n" + string + "\n" + formatValues.toString());
+//        logger.info("Translation.getTranslation (1): " + lang + "\n" + string + "\n" + formatValues.toString());
         TextComponent tc;
         if (languages.contains(lang.toLowerCase(Locale.ROOT))) {
             String s = "";
@@ -35,19 +35,19 @@ public class Translation {
             //TODO: нужно дробить строку на String[] по точки (что бы условный woolbattle.song.name) норм работал
             // Я наверное сам этим займусь
 
-            logger.info("woolbattleTranslation: " + Arrays.toString(woolbattleTranslation.toArray()));
+//            logger.info("woolbattleTranslation: " + Arrays.toString(woolbattleTranslation.toArray()));
             for (Map<?, ?> mp : woolbattleTranslation) {
-                logger.info(mp.toString());
+//                logger.info(mp.toString());
                 if (mp.containsKey(string)) {
                     s = ((Map<?, ?>) mp.get(string)).get(lang).toString();
-                    logger.info(string);
+//                    logger.info(string);
                     break;
                 }
             }
 
             if (s.isBlank()) {
                 tc = invalidString;
-                logger.warning("invalid string");
+//                logger.warning("invalid string");
             } else {
                 for (String K : formatValues.keySet()) {
                     s = s.replaceAll("§" + K + "§", formatValues.get(K));
@@ -63,7 +63,7 @@ public class Translation {
     }
 
     public TextComponent getTranslation(String lang, String string) {
-        logger.info("Translation.getTranslation (1): " + lang + "\n" + string + "\n" + colors);
+//        logger.info("Translation.getTranslation (1): " + lang + "\n" + string + "\n" + colors);
         return getTranslation(lang, string, colors);
     }
 }
