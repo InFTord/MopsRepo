@@ -171,11 +171,13 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
 			for (Player player : Bukkit.getOnlinePlayers()) {
-
-
 				Team team = mainboard.getPlayerTeam(player);
 				assert team != null;
 				String teamname = team.getName();
+
+				if (!hardmode) {
+					player.addPotionEffect(new PotionEffect(PotionEffectType.SATURATION, 7, 10, true, false));
+				}
 
 				mainworld = player.getWorld();
 				if (player.getScoreboardTags().contains("ingame")) {
@@ -439,11 +441,6 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 				Team team = mainboard.getPlayerTeam(player);
 				assert team != null;
 				String teamname = team.getName();
-
-				if (!hardmode) {
-					player.addPotionEffect(new PotionEffect(PotionEffectType.SATURATION, 7, 10, true, false));
-				}
-
 
 				if(doubleJumpBoots.contains(player.getInventory().getBoots())) {
 					if (player.isOnGround() && !player.getAllowFlight()) {
