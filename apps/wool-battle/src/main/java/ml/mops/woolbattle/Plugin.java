@@ -503,8 +503,8 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 	final int[] actualgametime = {0};
 	final int[] actualgametime0 = {-1};
 
-	String nextevent = getStringByLang(lang, "event.refill.1");
-	String nextevent0 = getStringByLang(lang, "event.refill.1");
+	String nextevent = ChatColor.RED + "(NO EVENT | 0:00)";
+	String nextevent0 = ChatColor.RED + "(NO EVENT | 0:00)";
 
 	int scoreboardTask;
 
