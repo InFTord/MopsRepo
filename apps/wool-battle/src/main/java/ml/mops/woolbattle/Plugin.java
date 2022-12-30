@@ -304,14 +304,14 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 										if (teamname.contains("red")) {
 											Location loc = new Location(player.getWorld(), 9, 257, -28);
-											while(loc.getBlock().getType() != Material.AIR) {
+											while (loc.getBlock().getType() != Material.AIR && !(loc.getY() >= 319)) {
 												loc = loc.add(0, 1, 0);
 											}
 											player.teleport(loc.add(0.5, 1, 0.5));
 										}
 										if (teamname.contains("yellow")) {
 											Location loc = new Location(player.getWorld(), -28, 257, 9);
-											while(loc.getBlock().getType() != Material.AIR) {
+											while (loc.getBlock().getType() != Material.AIR && !(loc.getY() >= 319)) {
 												loc = loc.add(0, 1, 0);
 											}
 											loc.setYaw(-90);
@@ -319,7 +319,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 										}
 										if (teamname.contains("green")) {
 											Location loc = new Location(player.getWorld(), 9, 257, 46);
-											while(loc.getBlock().getType() != Material.AIR) {
+											while (loc.getBlock().getType() != Material.AIR && !(loc.getY() >= 319)) {
 												loc = loc.add(0, 1, 0);
 											}
 											loc.setYaw(-180);
@@ -327,7 +327,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 										}
 										if (teamname.contains("blue")) {
 											Location loc = new Location(player.getWorld(), 46, 257, 9);
-											while(loc.getBlock().getType() != Material.AIR) {
+											while (loc.getBlock().getType() != Material.AIR && !(loc.getY() >= 319)) {
 												loc = loc.add(0, 1, 0);
 											}
 											loc.setYaw(90);
