@@ -172,6 +172,12 @@ woolbattle:
   - kills.you:
       rus: "&7(ВЫ)"
       eng: "&7(YOU)"
+  - combo.title:
+      rus: "&eКОМБО!"
+      eng: "&eCOMBO!"
+  - combo.subtitle:
+      rus: "&e10 ударов подряд!"
+      eng: "&e10 hits in a row!"
   - onStartMessage:
       rus: |
         &e----------------------------------------------------
