@@ -1557,7 +1557,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 	}
 
 	public ItemStack randomLoot(ItemStack loot1item) {
-		int max = 14;
+		int max = 13;
 		int min = 1;
 		int loot1 = (int) (Math.random() * (max - min + 1)) + min;
 		ItemMeta loot1meta = loot1item.getItemMeta();
@@ -1609,7 +1609,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 				loot1item.setItemMeta(loot1meta);
 				loot1item.setAmount(32);
 			}
-			case 6, 10 -> {
+			case 6 -> {
 				loot1item.setType(Material.BRICK);
 				loot1meta.setDisplayName(ChatColor.RED + "Платформа!");
 				loot1lore.add(ChatColor.GRAY + "Ставит платформу из шерсти." + ChatColor.YELLOW + "" + ChatColor.BOLD + " ПКМ" + ChatColor.DARK_GRAY + " (Не пропадает)");
@@ -1649,7 +1649,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 				loot1item.setItemMeta(loot1meta);
 				loot1item.setAmount(8);
 			}
-			case 14 -> {
+			case 10 -> {
 				loot1item.setType(Material.BLAZE_ROD);
 				loot1meta.setDisplayName(ChatColor.YELLOW + "Взрывная Палка (T2)");
 				loot1lore.add(ChatColor.GRAY + "Палка откидывающая тебя назад." + ChatColor.YELLOW + "" + ChatColor.BOLD + " ПКМ" + ChatColor.DARK_GRAY + " (Нужно наводится на блок)");
