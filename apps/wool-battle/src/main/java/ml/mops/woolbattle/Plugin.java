@@ -814,15 +814,18 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 			if (player.getScoreboardTags().contains("spectator")) {
 				event.setCancelled(true);
+			} else {
+				if(player.getInventory().getItemInMainHand().getItemMeta() == null) {
+					player.getInventory().getItemInMainHand().setType(stand.getHelmet().getType());
+					player.getInventory().getItemInMainHand().setItemMeta(stand.getHelmet().getItemMeta());
+
+					stand.setHelmet(new ItemStack(Material.AIR));
+				} else {
+					player.getInventory().addItem(stand.getHelmet());
+
+					stand.setHelmet(new ItemStack(Material.AIR));
+				}
 			}
-//			} else {
-//				if(player.getInventory().getItemInMainHand().getItemMeta() == null) {
-//					player.getInventory().getItemInMainHand().setType(stand.getHelmet().getType());
-//					player.getInventory().getItemInMainHand().setItemMeta(stand.getHelmet().getItemMeta());
-//				} else {
-//					player.getInventory().addItem(stand.getHelmet());
-//				}
-//			}
 		}
 	}
 
