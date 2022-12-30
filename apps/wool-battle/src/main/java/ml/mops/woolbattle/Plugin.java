@@ -97,7 +97,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 	boolean testmode = false;
 
-	String connectToIP = "mops.ml";
+	String connectToIP = "mopsnet.ml";
 
 	final String colon = ChatColor.WHITE + ": ";
 
@@ -152,7 +152,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 		translator = new Translation(translation, getLogger(), "woolbattle");
 
-		this.connectToIP = config.getString("ip");
+//		this.connectToIP = config.getString("ip");
 
 		mainworld = Bukkit.getServer().getWorlds().get(0);
 		manager = Bukkit.getScoreboardManager();
