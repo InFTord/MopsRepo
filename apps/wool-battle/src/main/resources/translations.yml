@@ -38,6 +38,9 @@ woolbattle:
   - domination.warning.2:
       rus: "§TEAMCOLOR§Они захватили все генераторы."
       eng: "§TEAMCOLOR§They captured all the generators."
+  - domination.warning:
+      rus: "§TEAMCOLOR§Доминация отменена!"
+      eng: "§TEAMCOLOR§Domination cancelled!"
   - redWool:
       rus: "&cКрасная Шерсть"
       eng: "&cRed Wool"
@@ -201,7 +204,7 @@ woolbattle:
       eng: " &7had a &4final &7death."
   - killRequirement.1:
       rus: "&rНужно сделать"
-      eng: "&rYou need get"
+      eng: "&rYou need to get"
   - killRequirement.2:
       rus: "&r§kills§ киллов."
       eng: "&r§kills§ kills."

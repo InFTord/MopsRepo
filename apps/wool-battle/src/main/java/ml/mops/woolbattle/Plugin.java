@@ -638,7 +638,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 				for(Player allPlayers : Bukkit.getOnlinePlayers()) {
 					Map<String, String> map = Map.of("TEAM", getStringByLang(lang, dominationTeam.getTranslationKey), "TEAMCOLOR", dominationTeam.getChatColor + "");
-					allPlayers.sendTitle(getStringByLang(lang, "domination.warning.1", map), getStringByLang(lang, "domination.warning.2", map), 5, 40, 40);
+					allPlayers.sendTitle(getStringByLang(lang, "domination.warning.1", map), getStringByLang(lang, "domination.warning.2", map), 5, 60, 40);
 					allPlayers.sendMessage(getByLang(lang, "dominationWarning", map));
 					allPlayers.playSound(allPlayers.getLocation(), Sound.ENTITY_IRON_GOLEM_REPAIR, 1, 1);
 					allPlayers.playSound(allPlayers.getLocation(), Sound.ENTITY_IRON_GOLEM_REPAIR, 1, 0);
@@ -1344,6 +1344,14 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 	}
 
+	@EventHandler
+	public void onItemConsume(PlayerItemConsumeEvent event) {
+		try {
+			event.getPlayer().getInventory().removeItem(new ItemStack(Material.GLASS_BOTTLE, 32));
+		} catch (Exception ignored) { }
+	}
+
+
 	public boolean woolRemove(int itemcount, Player player, String teamname) {
 		boolean hasItems = false;
 
@@ -1846,7 +1854,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 			for(Player allPlayers : Bukkit.getOnlinePlayers()) {
 				Map<String, String> map = Map.of("TEAM", getStringByLang(lang, dominationTeam.getTranslationKey), "TEAMCOLOR", dominationTeam.getChatColor + "");
-				allPlayers.sendTitle(getStringByLang(lang, "domination.warning.1", map), getStringByLang(lang, "domination.warning.2", map), 5, 40, 40);
+				allPlayers.sendTitle(getStringByLang(lang, "domination.warning.1", map), getStringByLang(lang, "domination.warning.2", map), 5, 60, 40);
 				allPlayers.sendMessage(getByLang(lang, "dominationWarning", map));
 				allPlayers.playSound(allPlayers.getLocation(), Sound.ENTITY_IRON_GOLEM_REPAIR, 1, 1);
 				allPlayers.playSound(allPlayers.getLocation(), Sound.ENTITY_IRON_GOLEM_REPAIR, 1, 0);
@@ -1887,6 +1895,12 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		dominationTime = 3600;
 		dominationTeam = Teams.SPECTATOR;
 		isDominating = false;
+
+		for(Player allPlayers : Bukkit.getOnlinePlayers()) {
+			Map<String, String> map = Map.of("TEAMCOLOR", dominationTeam.getChatColor + "");
+			allPlayers.sendTitle("", getStringByLang(lang, "domination.cancel.1", map), 5, 60, 40);
+			allPlayers.playSound(allPlayers.getLocation(), Sound.ENTITY_IRON_GOLEM_REPAIR, 1, 1);
+		}
 	}
 
 	public void recoloringGenerators(List<Block> genLONG, List<Block> gen) {
