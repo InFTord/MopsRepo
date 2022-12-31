@@ -630,15 +630,21 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 					secondsCopy -= 60;
 				}
 
+				String colon = ":";
+
+				if(secondsCopy < 10) {
+					colon = ":0";
+				}
+
 				for(Player allPlayers : Bukkit.getOnlinePlayers()) {
 					Map<String, String> map = Map.of("TEAM", getStringByLang(lang, dominationTeam.getTranslationKey), "TEAMCOLOR", dominationTeam.getChatColor + "");
-					allPlayers.sendTitle(getStringByLang(lang, "domination.warning.1", map), getStringByLang(lang, "domination.warning.2", map), 5, 20, 20);
+					allPlayers.sendTitle(getStringByLang(lang, "domination.warning.1", map), getStringByLang(lang, "domination.warning.2", map), 5, 40, 40);
 					allPlayers.sendMessage(getByLang(lang, "dominationWarning", map));
 					allPlayers.playSound(allPlayers.getLocation(), Sound.ENTITY_IRON_GOLEM_REPAIR, 1, 1);
 					allPlayers.playSound(allPlayers.getLocation(), Sound.ENTITY_IRON_GOLEM_REPAIR, 1, 0);
 				}
 
-				dominationEvent = ChatColor.DARK_GRAY + " (" + ChatColor.BOLD + team.getChatColor + team.getName + getStringByLang(lang, "woolbattle.event.domination").substring(0, 3) + minutesCopy + ":" + secondsCopy + ")";
+				dominationEvent = ChatColor.DARK_GRAY + " (" + ChatColor.BOLD + team.getChatColor + team.getName.substring(0, 3) + ChatColor.RESET + getStringByLang(lang, "woolbattle.event.domination") + minutesCopy + ":" + secondsCopy + ")";
 				return true;
 			}
 			if (commandName.equals("cubicstuff")) {
@@ -1832,15 +1838,21 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 				minutesCopy += 1;
 			}
 
+			String colon = ":";
+
+			if(secondsCopy < 10) {
+				colon = ":0";
+			}
+
 			for(Player allPlayers : Bukkit.getOnlinePlayers()) {
 				Map<String, String> map = Map.of("TEAM", getStringByLang(lang, dominationTeam.getTranslationKey), "TEAMCOLOR", dominationTeam.getChatColor + "");
-				allPlayers.sendTitle(getStringByLang(lang, "domination.warning.1", map), getStringByLang(lang, "domination.warning.2", map), 5, 20, 20);
+				allPlayers.sendTitle(getStringByLang(lang, "domination.warning.1", map), getStringByLang(lang, "domination.warning.2", map), 5, 40, 40);
 				allPlayers.sendMessage(getByLang(lang, "dominationWarning", map));
 				allPlayers.playSound(allPlayers.getLocation(), Sound.ENTITY_IRON_GOLEM_REPAIR, 1, 1);
 				allPlayers.playSound(allPlayers.getLocation(), Sound.ENTITY_IRON_GOLEM_REPAIR, 1, 0);
 			}
 
-			dominationEvent = ChatColor.DARK_GRAY + " (" + ChatColor.BOLD + team.getColorString + team.getName + getStringByLang(lang, "woolbattle.event.domination") + minutesCopy + ":" + secondsCopy + ")";
+			dominationEvent = ChatColor.DARK_GRAY + " (" + ChatColor.BOLD + team.getChatColor + team.getName.substring(0, 3) + ChatColor.RESET + getStringByLang(lang, "woolbattle.event.domination") + minutesCopy + colon + secondsCopy + ")";
 		}
 
 		if(oldA.equals(oldB) && oldB.equals(oldC) && oldC.equals(oldD)) {
@@ -1929,9 +1941,9 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		for (Block block : ppbs) {
 			block.setType(Material.AIR);
 		}
-		Bukkit.getScheduler().cancelTask(scoreboardTask);
 
 		for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+			clearScoreboard(onlinePlayer);
 			if(onlinePlayer.getScoreboardTags().contains("ingame")) {
 				onlinePlayer.teleport(new Location(onlinePlayer.getWorld(), 9, -34, 9));
 				// почему при хардмоде не тепает???
@@ -1949,6 +1961,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			onlinePlayer.setAllowFlight(false);
 
 			onlinePlayer.removeScoreboardTag("spectator");
+			clearScoreboard(onlinePlayer);
 		}
 
 		cancelDomination();
@@ -1971,7 +1984,9 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		hardmode = false;
 		gameactive = false;
 
-		requiredKills = 3;
+		requiredKills = 4;
+
+		Bukkit.getScheduler().cancelTask(scoreboardTask);
 
 		try {
 			worldBorderTask.cancel();
@@ -2383,19 +2398,6 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 				actualgametime[0] = actualgametime[0] + 1;
 				actualgametime0[0] = actualgametime0[0] + 1;
 
-				if(actualgametime[0] >= dominationTime && isDominating) {
-					winningBroadcast(dominationTeam.getNumber, "domination");
-
-					for(Player player : Bukkit.getOnlinePlayers()) {
-						resetEveryFuckingKillScoreboard(player);
-						try {
-							deathmsg.get(player).cancel();
-						} catch (Throwable ignored) { }
-					}
-
-					stopGame();
-				}
-
 				// random scoreboard bullshit
 
 				for (Player player1 : Bukkit.getServer().getOnlinePlayers()) {
@@ -2487,7 +2489,6 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 					if(isDominating) {
 						event = dominationEvent;
-						event0 = dominationEvent.replace(":", ":0");
 					}
 
 					if (seconds0[0] < 10) {
@@ -2541,6 +2542,19 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 					fakekills.getScore(ChatColor.DARK_GRAY + connectToIP + ":" + Bukkit.getPort()).setScore(0);
 
 					player1.setScoreboard(fakekills.getScoreboard());
+				}
+
+				if(actualgametime[0] >= dominationTime && isDominating) {
+					winningBroadcast(dominationTeam.getNumber, "domination");
+
+					for(Player player : Bukkit.getOnlinePlayers()) {
+						resetEveryFuckingKillScoreboard(player);
+						try {
+							deathmsg.get(player).cancel();
+						} catch (Throwable ignored) { }
+					}
+
+					stopGame();
 				}
 
 			}
