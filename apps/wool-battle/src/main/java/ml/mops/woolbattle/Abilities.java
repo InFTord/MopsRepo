@@ -33,7 +33,7 @@ public class Abilities {
 		List<String> lore01 = new ArrayList<>(Arrays.asList(MopsUtils.textComponentToString(plugin.getByLang(lang, "shears.lore")).split("\n")));
 		List<String> lore1 = new ArrayList<>();
 		for(String string : lore01) {
-			lore1.add(MopsUtils.convertColorCodes(ChatColor.RESET + string));
+			lore1.add(ChatColor.RESET + string);
 		}
 		meta1.setLore(lore1);
 

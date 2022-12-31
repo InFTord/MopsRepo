@@ -616,16 +616,17 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 				return true;
 			}
 			if(commandName.equals("dominate")) {
-				int seconds = Integer.parseInt(args[0]);
+				int time = Integer.parseInt(args[0]);
 				Teams team = Teams.valueOf(args[1]);
-				int after = actualgametime[0]-seconds;
 
 				dominationTeam = team;
-				dominationTime = seconds;
+				dominationTime = time;
 				isDominating = true;
 
-				player.sendMessage("scheduled a " + team.getName + " domination after " + after + " seconds.");
+				int secondsCopy = seconds[0]+time;
+				int minutesCopy = minutes[0];
 
+				dominationEvent = ChatColor.DARK_GRAY + " (" + ChatColor.BOLD + team.getColorString + team.getName + getStringByLang(lang, "woolbattle.event.domination") + minutesCopy + ":" + secondsCopy + ")";
 				return true;
 			}
 			if (commandName.equals("cubicstuff")) {
@@ -1493,6 +1494,9 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 	public void activateHardmode() {
 		hardmode = true;
 		mainworld.getWorldBorder().setSize(90, 90);
+
+		cancelDomination();
+
 		worldBorderTask = Bukkit.getScheduler().runTaskLater(this, () -> mainworld.getWorldBorder().setSize(17, 70), 2100L);
 		for (Player allPlayers : mainworld.getPlayers()) {
 			allPlayers.sendTitle(getStringByLang(lang, "hardmode.activation.1"), getStringByLang(lang, "hardmode.activation.2"), 5, 30, 15);
@@ -1804,7 +1808,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			String generatorOwner = genAcopy.toUpperCase(Locale.ROOT);
 			Teams team = Teams.valueOf(generatorOwner);
 
-			dominationTime = seconds[0] + 40;
+			dominationTime = actualgametime[0]+40;
 			dominationTeam = team;
 			isDominating = true;
 
@@ -1821,9 +1825,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 		if(oldA.equals(oldB) && oldB.equals(oldC) && oldC.equals(oldD)) {
 			if(!oldA.equals(newA) || !oldB.equals(newB) || !oldC.equals(newC) || !oldD.equals(newD)) {
-				dominationTime = 3600;
-				dominationTeam = Teams.SPECTATOR;
-				isDominating = false;
+				cancelDomination();
 			}
 		}
 	}
@@ -1847,6 +1849,12 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 				player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_LAND, 0.65F, 2);
 			}
 		}
+	}
+
+	public void cancelDomination() {
+		dominationTime = 3600;
+		dominationTeam = Teams.SPECTATOR;
+		isDominating = false;
 	}
 
 	public void recoloringGenerators(List<Block> genLONG, List<Block> gen) {
@@ -1920,6 +1928,8 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 			onlinePlayer.removeScoreboardTag("spectator");
 		}
+
+		cancelDomination();
 
 		recoloringGenerators(genAblocksLONG, genAblocks);
 		recoloringGenerators(genBblocksLONG, genBblocks);
@@ -2359,7 +2369,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 				actualgametime[0] = actualgametime[0] + 1;
 				actualgametime0[0] = actualgametime0[0] + 1;
 
-				if(actualgametime[0] == dominationTime) {
+				if(actualgametime[0] >= dominationTime && isDominating) {
 					winningBroadcast(dominationTeam.getNumber, "domination");
 
 					for(Player player : Bukkit.getOnlinePlayers()) {
@@ -2614,9 +2624,13 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 	}
 
 	public String getStringByLang(String lang, String string, Map<String, String> formatValues) {
-		return LegacyComponentSerializer.legacyAmpersand().serialize(getByLang(lang, string, formatValues)).replaceAll("&", "§");
+		String processedString = LegacyComponentSerializer.legacyAmpersand().serialize(getByLang(lang, string, formatValues)).replaceAll("&", "§");
+		processedString = MopsUtils.convertColorCodes(processedString);
+		return processedString;
 	}
 	public String getStringByLang(String lang, String string) {
-		return getStringByLang(lang, string, Map.of("", ""));
+		String processedString = getStringByLang(lang, string, Map.of("", ""));
+		processedString = MopsUtils.convertColorCodes(processedString);
+		return processedString;
 	}
 }

@@ -227,15 +227,15 @@ woolbattle:
             &cХардмод активирован. Генераторы нельзя перехватить, но
              &cони всё равно будут приносить шерсть. Теперь стрелы и
              &cудары наносят вам урон! Смерти окончательные. Граница
-             &cмира будет сужаться.
+             &cмира будет сужаться. Все доминации отменены.
                          &сВаша цель - выжить.
         &7----------------------------------------------------
       eng: |
         &7----------------------------------------------------
                              &c&lHardmode
             &cHardmode is activated. You cannot re-capture generators,
-             &cbut they are still giving you wool. Now arrows and hits
-             &cdeal damage to you, and all deaths are final. The border
-             &cis going to be shrinking to the middle.
+             &cbut they still give wool. Now arrows and hits deal damage
+             &cto you, and all deaths are final. The border is going
+             &cto be shrinking to the middle. Dominations are cancelled.
                      &cYour goal is to survive.
         &7----------------------------------------------------
