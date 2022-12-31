@@ -67,7 +67,7 @@ public class Abilities {
 		for(String string : lore03) {
 			lore3.add(MopsUtils.convertColorCodes(string));
 		}
-		meta2.setLore(lore3);
+		meta3.setLore(lore3);
 
 		lore3.add(ChatColor.GRAY + "Спасёт тебя при падении." + ChatColor.YELLOW + "" + ChatColor.BOLD + " ПКМ" + ChatColor.DARK_GRAY + " (Шифт чтобы прыгнуть высоко)");
 		lore3.add(ChatColor.AQUA + "Стоимость: 208 шерсти");
