@@ -639,7 +639,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 				int secondsCopy = seconds[0]+time;
 				int minutesCopy = minutes[0];
 
-				if(secondsCopy > 60) {
+				if(secondsCopy >= 60) {
 					minutesCopy++;
 					secondsCopy -= 60;
 				}
@@ -658,7 +658,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 					allPlayers.playSound(allPlayers.getLocation(), Sound.ENTITY_IRON_GOLEM_REPAIR, 1, 0);
 				}
 
-				dominationEvent = ChatColor.DARK_GRAY + " (" + team.getChatColor + ChatColor.BOLD + team.getName.substring(0, 3) + ChatColor.RESET + getStringByLang(lang, "woolbattle.event.domination") + minutesCopy + ":" + secondsCopy + ")";
+				dominationEvent = ChatColor.DARK_GRAY + " (" + team.getChatColor + ChatColor.BOLD + team.getName.substring(0, 3) + ChatColor.RESET + getStringByLang(lang, "woolbattle.event.domination") + minutesCopy + colon + secondsCopy + ")";
 				return true;
 			}
 			if(commandName.equals("infinitewool")) {
@@ -1208,7 +1208,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 					if (hasItems) {
 						Location loc = player.getLocation();
 						int height = (int) (loc.getY() - 30);
-						height = Math.max(height, 170);
+						height = height = Math.min(Math.max(height, 170), 319);
 						loc.setY(height);
 
 						List<Block> blocclist = new ArrayList<>();
@@ -1236,7 +1236,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 					if (hasItems) {
 						Location loc = player.getLocation();
 						int height = (int) (loc.getY() - 10);
-						height = Math.max(height, 170);
+						height = Math.min(Math.max(height, 170), 319);
 						loc.setY(height);
 
 						Material mat = Material.WHITE_WOOL;
@@ -1892,12 +1892,12 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			}
 		}
 
-		String generatorOwner = genAcopy.toUpperCase(Locale.ROOT);
-		Teams team = Teams.valueOf(generatorOwner);
-		ItemStack item = new ItemStack(team.getType);
-		Color leatherColor = team.getLeatherColor;
-
 		if(!oldA.equals(newA)) {
+			String generatorOwner = genAcopy.toUpperCase(Locale.ROOT);
+			Teams team = Teams.valueOf(generatorOwner);
+			ItemStack item = new ItemStack(team.getType);
+			Color leatherColor = team.getLeatherColor;
+
 			for(Entity entity : mainworld.getEntities()) {
 				if(entity.getScoreboardTags().contains("genAtitle")) {
 					ArmorStand stand = (ArmorStand) entity;
@@ -1909,6 +1909,11 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			}
 		}
 		if(!oldB.equals(newB)) {
+			String generatorOwner = genBcopy.toUpperCase(Locale.ROOT);
+			Teams team = Teams.valueOf(generatorOwner);
+			ItemStack item = new ItemStack(team.getType);
+			Color leatherColor = team.getLeatherColor;
+
 			for(Entity entity : mainworld.getEntities()) {
 				if(entity.getScoreboardTags().contains("genBtitle")) {
 					ArmorStand stand = (ArmorStand) entity;
@@ -1920,6 +1925,11 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			}
 		}
 		if(!oldC.equals(newC)) {
+			String generatorOwner = genCcopy.toUpperCase(Locale.ROOT);
+			Teams team = Teams.valueOf(generatorOwner);
+			ItemStack item = new ItemStack(team.getType);
+			Color leatherColor = team.getLeatherColor;
+
 			for(Entity entity : mainworld.getEntities()) {
 				if(entity.getScoreboardTags().contains("genCtitle")) {
 					ArmorStand stand = (ArmorStand) entity;
@@ -1931,6 +1941,11 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			}
 		}
 		if(!oldD.equals(newD)) {
+			String generatorOwner = genDcopy.toUpperCase(Locale.ROOT);
+			Teams team = Teams.valueOf(generatorOwner);
+			ItemStack item = new ItemStack(team.getType);
+			Color leatherColor = team.getLeatherColor;
+
 			for(Entity entity : mainworld.getEntities()) {
 				if(entity.getScoreboardTags().contains("genDtitle")) {
 					ArmorStand stand = (ArmorStand) entity;
@@ -1968,17 +1983,24 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 	public void cancelDomination() {
 		if(isDominating) {
 			dominationTime = 3600;
-			dominationTeam = Teams.SPECTATOR;
-			isDominating = false;
 
 			Bukkit.getScheduler().runTaskLater(this, () -> {
 				for (Player allPlayers : Bukkit.getOnlinePlayers()) {
 					Map<String, String> map = Map.of("TEAMCOLOR", dominationTeam.getChatColor + "");
 					allPlayers.sendTitle("", getStringByLang(lang, "domination.cancel", map), 5, 60, 40);
 					allPlayers.playSound(allPlayers.getLocation(), Sound.ENTITY_IRON_GOLEM_REPAIR, 1, 1);
+
+					dominationTeam = Teams.SPECTATOR;
+					isDominating = false;
 				}
 			}, 80L);
 		}
+	}
+
+	public void stopGameDominationCancel() {
+		dominationTime = 3600;
+		dominationTeam = Teams.SPECTATOR;
+		isDominating = false;
 	}
 
 	public void recoloringGenerators(List<Block> genLONG, List<Block> gen) {
@@ -2063,7 +2085,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			clearScoreboard(onlinePlayer);
 		}
 
-		cancelDomination();
+		stopGameDominationCancel();
 
 		recoloringGenerators(genAblocksLONG, genAblocks);
 		recoloringGenerators(genBblocksLONG, genBblocks);
