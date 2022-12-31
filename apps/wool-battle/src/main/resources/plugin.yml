@@ -36,3 +36,6 @@ commands:
   globallangchange:
     description: ""
     usage: /globallangchange
+  dominate:
+    description: ""
+    usage: /dominate

@@ -131,10 +131,10 @@ woolbattle:
       rus: "&7Лут восстановился"
       eng: "&7Loot regenerated"
   - generator.blocked.1:
-      rus: "&cGenerators"
+      rus: "&cГенераторы"
       eng: "&cGenerators"
   - generator.blocked.2:
-      rus: "&7Blocked!"
+      rus: "&7Заблокированы!"
       eng: "&7Blocked!"
   - team.won:
       rus: "&r&fПобедили!"
@@ -184,6 +184,9 @@ woolbattle:
   - combo.subtitle:
       rus: "&e10 ударов подряд!"
       eng: "&e10 hits in a row!"
+  - death.final:
+      rus: " &4окончательно &7умер."
+      eng: " &7had a &4final &7death."
   - killRequirement.1:
       rus: "&rНужно сделать"
       eng: "&rYou need get"

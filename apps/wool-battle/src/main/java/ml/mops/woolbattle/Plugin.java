@@ -516,6 +516,9 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 	final int[] actualgametime = {0};
 	final int[] actualgametime0 = {-1};
 
+	int dominationTime = 3600;
+	Teams dominationTeam = Teams.SPECTATOR;
+
 	String nextevent = ChatColor.RED + "(NO EVENT | 0:00)";
 	String nextevent0 = ChatColor.RED + "(NO EVENT | 0:00)";
 
@@ -597,6 +600,12 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 				} else if(lang.equals("rus")) {
 					lang = "eng";
 				}
+				return true;
+			}
+			if(commandName.equals("dominate")) {
+				dominationTeam = Teams.valueOf(args[1]);
+				dominationTime = Integer.parseInt(args[0]);
+				return true;
 			}
 			if (commandName.equals("cubicstuff")) {
 				int radius = Integer.parseInt(args[0]);
@@ -2017,7 +2026,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 					color = ChatColor.AQUA;
 				}
 
-				players.sendMessage(ChatColor.RED + "[☠] " + color + dead.getName() + ChatColor.DARK_RED + " окончательно" + ChatColor.GRAY + " умер.");
+				players.sendMessage(ChatColor.RED + "[☠] " + color + dead.getName() + getStringByLang(lang, "woolbattle.death.final"));
 			}
 		}
 	}
@@ -2295,6 +2304,18 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 				actualgametime[0] = actualgametime[0] + 1;
 				actualgametime0[0] = actualgametime0[0] + 1;
 
+				if(actualgametime[0] == dominationTime) {
+					winningBroadcast(dominationTeam.getNumber, "domination");
+
+					for(Player player : Bukkit.getOnlinePlayers()) {
+						resetEveryFuckingKillScoreboard(player);
+						try {
+							deathmsg.get(player).cancel();
+						} catch (Throwable ignored) { }
+					}
+
+					stopGame();
+				}
 
 				// random scoreboard bullshit
 
