@@ -634,6 +634,8 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 					Map<String, String> map = Map.of("TEAM", getStringByLang(lang, dominationTeam.getTranslationKey), "TEAMCOLOR", dominationTeam.getChatColor + "");
 					allPlayers.sendTitle(getStringByLang(lang, "domination.warning.1", map), getStringByLang(lang, "domination.warning.2", map), 5, 20, 20);
 					allPlayers.sendMessage(getByLang(lang, "dominationWarning", map));
+					allPlayers.playSound(allPlayers.getLocation(), Sound.ENTITY_IRON_GOLEM_REPAIR, 1, 1);
+					allPlayers.playSound(allPlayers.getLocation(), Sound.ENTITY_IRON_GOLEM_REPAIR, 1, 0);
 				}
 
 				dominationEvent = ChatColor.DARK_GRAY + " (" + ChatColor.BOLD + team.getChatColor + team.getName + getStringByLang(lang, "woolbattle.event.domination").substring(0, 3) + minutesCopy + ":" + secondsCopy + ")";
@@ -1834,6 +1836,8 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 				Map<String, String> map = Map.of("TEAM", getStringByLang(lang, dominationTeam.getTranslationKey), "TEAMCOLOR", dominationTeam.getChatColor + "");
 				allPlayers.sendTitle(getStringByLang(lang, "domination.warning.1", map), getStringByLang(lang, "domination.warning.2", map), 5, 20, 20);
 				allPlayers.sendMessage(getByLang(lang, "dominationWarning", map));
+				allPlayers.playSound(allPlayers.getLocation(), Sound.ENTITY_IRON_GOLEM_REPAIR, 1, 1);
+				allPlayers.playSound(allPlayers.getLocation(), Sound.ENTITY_IRON_GOLEM_REPAIR, 1, 0);
 			}
 
 			dominationEvent = ChatColor.DARK_GRAY + " (" + ChatColor.BOLD + team.getColorString + team.getName + getStringByLang(lang, "woolbattle.event.domination") + minutesCopy + ":" + secondsCopy + ")";
