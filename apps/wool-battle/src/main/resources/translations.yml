@@ -259,7 +259,7 @@ woolbattle:
       eng: |
         §TEAMCOLOR§----------------------------------------------------
                              §TEAMCOLOR§Domination
-            §TEAM§ §TEAMCOLORhas captured all the generators. You have 40 seconds
+            §TEAM§ §TEAMCOLOR§has captured all the generators. You have 40 seconds
              §TEAMCOLOR§to re-capture them, or else they will win.
                      §TEAMCOLOR§Capture the generator.
         §TEAMCOLOR§----------------------------------------------------
