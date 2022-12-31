@@ -97,6 +97,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 	BukkitTask generatorBlockTask;
 
 	boolean testmode = false;
+	boolean infinitewool = false;
 
 	String connectToIP = "mopsnet.ml";
 
@@ -658,6 +659,12 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 				}
 
 				dominationEvent = ChatColor.DARK_GRAY + " (" + team.getChatColor + ChatColor.BOLD + team.getName.substring(0, 3) + ChatColor.RESET + getStringByLang(lang, "woolbattle.event.domination") + minutesCopy + ":" + secondsCopy + ")";
+				return true;
+			}
+			if(commandName.equals("infinitewool")) {
+				infinitewool = !infinitewool;
+				player.sendMessage("you changed infinite wool to " + infinitewool);
+
 				return true;
 			}
 			if (commandName.equals("cubicstuff")) {
@@ -1360,52 +1367,54 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 	@EventHandler
 	public void onItemConsume(PlayerItemConsumeEvent event) {
 		try {
-			event.getPlayer().getInventory().removeItem(new ItemStack(Material.GLASS_BOTTLE, 32));
+			event.getPlayer().getInventory().removeItem(new ItemStack(Material.GLASS_BOTTLE, 12));
 		} catch (Exception ignored) { }
 	}
 
 
 	public boolean woolRemove(int itemcount, Player player, String teamname) {
-		boolean hasItems = false;
+		boolean hasItems = infinitewool;
 
-		if (teamname.contains("red")) {
-			if (player.getInventory().contains(Material.RED_WOOL, itemcount)) {
-				ItemStack woolitem = new ItemStack(Material.RED_WOOL, itemcount);
-				ItemMeta woolmeta = woolitem.getItemMeta();
-				woolmeta.displayName(getByLang(lang, "woolbattle.redWool"));
-				woolitem.setItemMeta(woolmeta);
-				player.getInventory().removeItem(woolitem);
-				hasItems = true;
+		if(!infinitewool) {
+			if (teamname.contains("red")) {
+				if (player.getInventory().contains(Material.RED_WOOL, itemcount)) {
+					ItemStack woolitem = new ItemStack(Material.RED_WOOL, itemcount);
+					ItemMeta woolmeta = woolitem.getItemMeta();
+					woolmeta.displayName(getByLang(lang, "woolbattle.redWool"));
+					woolitem.setItemMeta(woolmeta);
+					player.getInventory().removeItem(woolitem);
+					hasItems = true;
+				}
 			}
-		}
-		if (teamname.contains("yellow")) {
-			if (player.getInventory().contains(Material.YELLOW_WOOL, itemcount)) {
-				ItemStack woolitem = new ItemStack(Material.YELLOW_WOOL, itemcount);
-				ItemMeta woolmeta = woolitem.getItemMeta();
-				woolmeta.displayName(getByLang(lang, "woolbattle.yellowWool"));
-				woolitem.setItemMeta(woolmeta);
-				player.getInventory().removeItem(woolitem);
-				hasItems = true;
+			if (teamname.contains("yellow")) {
+				if (player.getInventory().contains(Material.YELLOW_WOOL, itemcount)) {
+					ItemStack woolitem = new ItemStack(Material.YELLOW_WOOL, itemcount);
+					ItemMeta woolmeta = woolitem.getItemMeta();
+					woolmeta.displayName(getByLang(lang, "woolbattle.yellowWool"));
+					woolitem.setItemMeta(woolmeta);
+					player.getInventory().removeItem(woolitem);
+					hasItems = true;
+				}
 			}
-		}
-		if (teamname.contains("green")) {
-			if (player.getInventory().contains(Material.LIME_WOOL, itemcount)) {
-				ItemStack woolitem = new ItemStack(Material.LIME_WOOL, itemcount);
-				ItemMeta woolmeta = woolitem.getItemMeta();
-				woolmeta.displayName(getByLang(lang, "woolbattle.greenWool"));
-				woolitem.setItemMeta(woolmeta);
-				player.getInventory().removeItem(woolitem);
-				hasItems = true;
+			if (teamname.contains("green")) {
+				if (player.getInventory().contains(Material.LIME_WOOL, itemcount)) {
+					ItemStack woolitem = new ItemStack(Material.LIME_WOOL, itemcount);
+					ItemMeta woolmeta = woolitem.getItemMeta();
+					woolmeta.displayName(getByLang(lang, "woolbattle.greenWool"));
+					woolitem.setItemMeta(woolmeta);
+					player.getInventory().removeItem(woolitem);
+					hasItems = true;
+				}
 			}
-		}
-		if (teamname.contains("blue")) {
-			if (player.getInventory().contains(Material.LIGHT_BLUE_WOOL, itemcount)) {
-				ItemStack woolitem = new ItemStack(Material.LIGHT_BLUE_WOOL, itemcount);
-				ItemMeta woolmeta = woolitem.getItemMeta();
-				woolmeta.displayName(getByLang(lang, "woolbattle.blueWool"));
-				woolitem.setItemMeta(woolmeta);
-				player.getInventory().removeItem(woolitem);
-				hasItems = true;
+			if (teamname.contains("blue")) {
+				if (player.getInventory().contains(Material.LIGHT_BLUE_WOOL, itemcount)) {
+					ItemStack woolitem = new ItemStack(Material.LIGHT_BLUE_WOOL, itemcount);
+					ItemMeta woolmeta = woolitem.getItemMeta();
+					woolmeta.displayName(getByLang(lang, "woolbattle.blueWool"));
+					woolitem.setItemMeta(woolmeta);
+					player.getInventory().removeItem(woolitem);
+					hasItems = true;
+				}
 			}
 		}
 

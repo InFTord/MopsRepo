@@ -39,3 +39,6 @@ commands:
   dominate:
     description: ""
     usage: /dominate
+  infinitewool:
+    description: ""
+    usage: /infinitewool
