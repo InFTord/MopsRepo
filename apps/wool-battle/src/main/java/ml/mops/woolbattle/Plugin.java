@@ -644,7 +644,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 					allPlayers.playSound(allPlayers.getLocation(), Sound.ENTITY_IRON_GOLEM_REPAIR, 1, 0);
 				}
 
-				dominationEvent = ChatColor.DARK_GRAY + " (" + ChatColor.BOLD + team.getChatColor + team.getName.substring(0, 3) + ChatColor.RESET + getStringByLang(lang, "woolbattle.event.domination") + minutesCopy + ":" + secondsCopy + ")";
+				dominationEvent = ChatColor.DARK_GRAY + " (" + team.getChatColor + ChatColor.BOLD + team.getName.substring(0, 3) + ChatColor.RESET + getStringByLang(lang, "woolbattle.event.domination") + minutesCopy + ":" + secondsCopy + ")";
 				return true;
 			}
 			if (commandName.equals("cubicstuff")) {
@@ -1852,7 +1852,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 				allPlayers.playSound(allPlayers.getLocation(), Sound.ENTITY_IRON_GOLEM_REPAIR, 1, 0);
 			}
 
-			dominationEvent = ChatColor.DARK_GRAY + " (" + ChatColor.BOLD + team.getChatColor + team.getName.substring(0, 3) + ChatColor.RESET + getStringByLang(lang, "woolbattle.event.domination") + minutesCopy + colon + secondsCopy + ")";
+			dominationEvent = ChatColor.DARK_GRAY + " (" + team.getChatColor + ChatColor.BOLD + team.getName.substring(0, 3) + ChatColor.RESET + getStringByLang(lang, "woolbattle.event.domination") + minutesCopy + colon + secondsCopy + ")";
 		}
 
 		if(oldA.equals(oldB) && oldB.equals(oldC) && oldC.equals(oldD)) {
