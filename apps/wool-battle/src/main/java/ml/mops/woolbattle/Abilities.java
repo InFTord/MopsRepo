@@ -60,13 +60,19 @@ public class Abilities {
 
 		ItemStack item3 = new ItemStack(Material.SLIME_BALL);
 		ItemMeta meta3 = item3.getItemMeta();
-		meta3.setDisplayName(ChatColor.GREEN + "Надувной Батут");
+		meta3.displayName(plugin.getByLang(lang, "slimeball.name"));
+
+		List<String> lore03 = new ArrayList<>(Arrays.asList(MopsUtils.textComponentToString(plugin.getByLang(lang, "slimeball.lore")).split("\n")));
 		List<String> lore3 = new ArrayList<>();
+		for(String string : lore03) {
+			lore3.add(MopsUtils.convertColorCodes(string));
+		}
+		meta2.setLore(lore3);
+
 		lore3.add(ChatColor.GRAY + "Спасёт тебя при падении." + ChatColor.YELLOW + "" + ChatColor.BOLD + " ПКМ" + ChatColor.DARK_GRAY + " (Шифт чтобы прыгнуть высоко)");
 		lore3.add(ChatColor.AQUA + "Стоимость: 208 шерсти");
 		meta3.addEnchant(Enchantment.DURABILITY, 1, true);
 		meta3.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-		meta3.setLore(lore3);
 		item3.setItemMeta(meta3);
 		player1.getInventory().setItem(2, item3);
 
@@ -76,7 +82,7 @@ public class Abilities {
 		ItemMeta meta4 = item4.getItemMeta();
 		meta4.displayName(plugin.getByLang(lang, "bow.name"));
 		List<String> lore4 = new ArrayList<>();
-		lore4.add(ChatColor.GRAY + "Лук, может ломать шерсть при попадании.");
+		lore4.add(plugin.getStringByLang(lang, "bow.lore"));
 		meta4.addEnchant(Enchantment.ARROW_KNOCKBACK, 2, true);
 		meta4.addEnchant(Enchantment.ARROW_INFINITE, 1, true);
 		meta4.setUnbreakable(true);
@@ -86,7 +92,7 @@ public class Abilities {
 
 		ItemStack item5 = new ItemStack(Material.ARROW);
 		ItemMeta meta5 = item5.getItemMeta();
-		meta5.setDisplayName(ChatColor.GRAY + "Стрела");
+		meta5.displayName(plugin.getByLang(lang, "arrow.name"));
 		item5.setItemMeta(meta5);
 		player1.getInventory().setItem(17, item5);
 

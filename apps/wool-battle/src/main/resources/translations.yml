@@ -41,6 +41,21 @@ woolbattle:
   - domination.cancel:
       rus: "§TEAMCOLOR§Доминация отменена!"
       eng: "§TEAMCOLOR§Domination cancelled!"
+  - generator.capture:
+      rus: "Генератор §letter§ захвачен"
+      eng: "Generator §letter§ got captured by"
+  - team.RED.2:
+      rus: "&cКРАСНЫМИ"
+      eng: "&cRED"
+  - team.YELLOW.2:
+      rus: "&eЖЁЛТЫМИ"
+      eng: "&eYELLOW"
+  - team.GREEN.2:
+      rus: "&aЗЕЛЁНЫМИ"
+      eng: "&aGREEN"
+  - team.BLUE.2:
+      rus: "&bСИНИМИ"
+      eng: "&bBLUE"
   - redWool:
       rus: "&cКрасная Шерсть"
       eng: "&cRed Wool"
@@ -53,7 +68,7 @@ woolbattle:
   - blueWool:
       rus: "&bСиняя Шерсть"
       eng: "&bBlue Wool"
-  - doubleJumpBoots.name: #у дабл джамп ботинок в названии цвет зависим от команды
+  - doubleJumpBoots.name:
       rus: "§TCC§Дабл-Джамп Ботинки"
       eng: "§TCC§Double-Jump Boots"
   - doubleJumpBoots.lore:
@@ -73,6 +88,16 @@ woolbattle:
       eng: |
         &7Stick that throws you backwards. &e&lRIGHT CLICK &r&8(Aim on a block)
         &bCost: 28 wool
+  - explosionStaffMK2.name:
+      rus: "&eВзрывная Палка (T2)"
+      eng: "&eBoomstick (Mk II)"
+  - explosionStaffMK2.lore:
+      rus: |
+        &7Палка откидывающая тебя назад сильнее. &e&lПКМ &r&8(Нужно наводится на блок)
+        &bСтоимость: 40 шерсти
+      eng: |
+        &7Stick that throws you backwards more. &e&lRIGHT CLICK &r&8(Aim on a block)
+        &bCost: 40 wool
   - shears.name:
       rus: "&bНожницы"
       eng: "&bShears"
@@ -94,6 +119,67 @@ woolbattle:
   - bow.name:
       rus: "&bЛук"
       eng: "&bBow"
+  - bow.lore:
+      rus: "&7Лук, ломает шерсть при попадании."
+      eng: "&7A bow, breaks wool if shot."
+  - arrow.name:
+      rus: "&7Стрела"
+      eng: "&7Arrow"
+  - slimeball.name:
+      rus: "&aНадувной Батут"
+      eng: "&aInflatable Trampoline"
+  - slimeball.lore:
+      rus: |
+        &7Спасёт тебя при падении. &e&lПКМ &8(Шифт чтобы прыгнуть выше)
+        &bСтоимость: 208 шерсти
+      eng: |
+        &7Will save you from falling. &e&lRIGHT CLICK &8(Shift to jump higher)
+        &bCost: 208 wool
+  - platform.name:
+      rus: "&cПлатформа!"
+      eng: "&cPlatform!"
+  - platform.lore:
+      rus: |
+        &7Ставит платформу из шерсти. &e&lПКМ &8(Не пропадает)
+        &bСтоимость: 152 шерсти
+      eng: |
+        &7Spawns a platform of wool. &e&lRIGHT CLICK &8(Doesn't disappear)
+        &bCost: 152 wool
+  - shield.name:
+      rus: "&7Щит"
+      eng: "&7Shield"
+  - shield.lore:
+      rus: |
+        &7Щит для блокировки стрел.
+        &cНачальная прочность - 16
+      eng: |
+        &7Shield to block arrows.
+        &cStarting durability - 16
+  - axe.name:
+      rus: "&bТопор"
+      eng: "&bAxe"
+  - axe.lore:
+      rus: |
+        &7Топор с большим кнокбеком.
+        &cНачальная прочность - 16
+      eng: |
+        &7Axe with a bigger knockback.
+        &cStarting durability - 16
+  - leaves.name:
+      rus: "&2Листья"
+      eng: "&2Leaves"
+  - leaves.lore:
+      rus: "&7Не ломаются стрелами."
+      eng: "&7Resistant to arrows."
+  - enderpearl.name:
+      rus: "&5Эндер Булочка."
+      eng: "&5Ender Pearl"
+  - enderpearl.lore:
+      rus: "&7Телепортирует."
+      eng: "&7Teleports."
+  - jumpboost.name:
+      rus: "&aЗелье Прыгучести (1:30)"
+      eng: "&aJump Boost Potion (1:30)"
   - notEnoughWool:
       rus: "&cНедостаточно шерсти!"
       eng: "&cNot enough wool!"

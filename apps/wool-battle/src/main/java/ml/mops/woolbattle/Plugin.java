@@ -1433,28 +1433,39 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		switch (loot1) {
 			case 1 -> {
 				loot1item.setType(Material.SHIELD);
-				loot1meta.setDisplayName(ChatColor.GRAY + "Щит");
-				loot1lore.add(ChatColor.GRAY + "Щит для блокировки стрел.");
-				loot1lore.add(ChatColor.RED + "Начальная прочность - 16");
-				loot1meta.setLore(loot1lore);
+
+				loot1meta.displayName(getByLang(lang, "shield.name"));
+
+				loot1lore = new ArrayList<>(Arrays.asList(MopsUtils.textComponentToString(getByLang(lang, "shield.lore")).split("\n")));
+				List<String> lore1 = new ArrayList<>();
+				for(String string : loot1lore) {
+					lore1.add(MopsUtils.convertColorCodes(string));
+				}
+				loot1meta.setLore(lore1);
+
 				loot1item.setItemMeta(loot1meta);
 				loot1item.setDurability((short) 320);
 			}
 			case 2 -> {
 				loot1item.setType(Material.OAK_LEAVES);
-				loot1meta.setDisplayName(ChatColor.DARK_GREEN + "Листья");
-				loot1lore.add(ChatColor.GRAY + "Не ломаются стрелами.");
+				loot1meta.displayName(getByLang(lang, "leaves.name"));
+				loot1lore.add(getStringByLang(lang, "leaves.lore"));
 				loot1meta.setLore(loot1lore);
 				loot1item.setItemMeta(loot1meta);
 				loot1item.setAmount(16);
 			}
 			case 3, 11 -> {
 				loot1item.setType(Material.STONE_AXE);
-				loot1meta.setDisplayName(ChatColor.AQUA + "Топор");
-				loot1meta.addEnchant(Enchantment.KNOCKBACK, 3, true);
-				loot1lore.add(ChatColor.GRAY + "Топор с большим кнокбеком.");
-				loot1lore.add(ChatColor.RED + "Начальная прочность - 16");
-				loot1meta.setLore(loot1lore);
+
+				loot1meta.displayName(getByLang(lang, "axe.name"));
+
+				loot1lore = new ArrayList<>(Arrays.asList(MopsUtils.textComponentToString(getByLang(lang, "axe.lore")).split("\n")));
+				List<String> lore1 = new ArrayList<>();
+				for(String string : loot1lore) {
+					lore1.add(MopsUtils.convertColorCodes(string));
+				}
+				loot1meta.setLore(lore1);
+
 				loot1item.setItemMeta(loot1meta);
 				loot1item.setDurability((short) 115);
 			}
@@ -1462,7 +1473,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 				ItemStack potion = new ItemStack(Material.POTION);
 				PotionMeta potionmeta = (PotionMeta) potion.getItemMeta();
 				potionmeta.addCustomEffect(new PotionEffect(PotionEffectType.JUMP, 1800, 1), true);
-				potionmeta.setDisplayName(ChatColor.GREEN + "Зелье Прыгучести (1:30)");
+				potionmeta.displayName(getByLang(lang, "jumpboost.name"));
 				potionmeta.setColor(Color.LIME);
 				potion.setItemMeta(potionmeta);
 				loot1item.setType(Material.POTION);
@@ -1470,28 +1481,34 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			}
 			case 5 -> {
 				loot1item.setType(Material.OAK_LEAVES);
-				loot1meta.setDisplayName(ChatColor.DARK_GREEN + "Листья");
-				loot1lore.add(ChatColor.GRAY + "Не ломаются стрелами.");
+				loot1meta.displayName(getByLang(lang, "leaves.name"));
+				loot1lore.add(getStringByLang(lang, "leaves.lore"));
 				loot1meta.setLore(loot1lore);
 				loot1item.setItemMeta(loot1meta);
 				loot1item.setAmount(32);
 			}
 			case 6 -> {
 				loot1item.setType(Material.BRICK);
-				loot1meta.setDisplayName(ChatColor.RED + "Платформа!");
-				loot1lore.add(ChatColor.GRAY + "Ставит платформу из шерсти." + ChatColor.YELLOW + "" + ChatColor.BOLD + " ПКМ" + ChatColor.DARK_GRAY + " (Не пропадает)");
-				loot1lore.add(ChatColor.AQUA + "Стоимость: 152 шерсти");
+
+				loot1meta.displayName(getByLang(lang, "platform.name"));
+
+				loot1lore = new ArrayList<>(Arrays.asList(MopsUtils.textComponentToString(getByLang(lang, "platform.lore")).split("\n")));
+				List<String> lore1 = new ArrayList<>();
+				for(String string : loot1lore) {
+					lore1.add(MopsUtils.convertColorCodes(string));
+				}
+				loot1meta.setLore(lore1);
+
 				loot1meta.addEnchant(Enchantment.DURABILITY, 1, true);
 				loot1meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-				loot1meta.setLore(loot1lore);
 				loot1item.setItemMeta(loot1meta);
 
 				platforms.add(loot1item);
 			}
 			case 7 -> {
 				loot1item.setType(Material.ENDER_PEARL);
-				loot1meta.setDisplayName(ChatColor.DARK_PURPLE + "Эндер Булочка");
-				loot1lore.add(ChatColor.GRAY + "Телепортирует.");
+				loot1meta.displayName(getByLang(lang, "enderpearl.name"));
+				loot1lore.add(getStringByLang(lang, "enderpearl.lore"));
 				loot1meta.addEnchant(Enchantment.DURABILITY, 1, true);
 				loot1meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
 				loot1meta.setLore(loot1lore);
@@ -1500,8 +1517,8 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			}
 			case 8, 12 -> {
 				loot1item.setType(Material.ENDER_PEARL);
-				loot1meta.setDisplayName(ChatColor.DARK_PURPLE + "Эндер Булочка");
-				loot1lore.add(ChatColor.GRAY + "Телепортирует.");
+				loot1meta.displayName(getByLang(lang, "enderpearl.name"));
+				loot1lore.add(getStringByLang(lang, "enderpearl.lore"));
 				loot1meta.addEnchant(Enchantment.DURABILITY, 1, true);
 				loot1meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
 				loot1meta.setLore(loot1lore);
@@ -1510,20 +1527,25 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			}
 			case 9 -> {
 				loot1item.setType(Material.OAK_LEAVES);
-				loot1meta.setDisplayName(ChatColor.DARK_GREEN + "Листья");
-				loot1lore.add(ChatColor.GRAY + "Не ломаются стрелами.");
+				loot1meta.displayName(getByLang(lang, "leaves.name"));
+				loot1lore.add(getStringByLang(lang, "leaves.lore"));
 				loot1meta.setLore(loot1lore);
 				loot1item.setItemMeta(loot1meta);
 				loot1item.setAmount(8);
 			}
 			case 10 -> {
 				loot1item.setType(Material.BLAZE_ROD);
-				loot1meta.setDisplayName(ChatColor.YELLOW + "Взрывная Палка (T2)");
-				loot1lore.add(ChatColor.GRAY + "Палка откидывающая тебя назад." + ChatColor.YELLOW + "" + ChatColor.BOLD + " ПКМ" + ChatColor.DARK_GRAY + " (Нужно наводится на блок)");
-				loot1lore.add(ChatColor.AQUA + "Стоимость: 40 шерсти");
+				loot1meta.displayName(getByLang(lang, "explosionStaffMK2.name"));
+
+				loot1lore = new ArrayList<>(Arrays.asList(MopsUtils.textComponentToString(getByLang(lang, "explosionStaffMK2.lore")).split("\n")));
+				List<String> lore1 = new ArrayList<>();
+				for(String string : loot1lore) {
+					lore1.add(MopsUtils.convertColorCodes(string));
+				}
+				loot1meta.setLore(lore1);
+
 				loot1meta.addEnchant(Enchantment.DURABILITY, 0, true);
 				loot1meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-				loot1meta.setLore(loot1lore);
 				loot1item.setItemMeta(loot1meta);
 				loot1item.setAmount(1);
 
@@ -1962,20 +1984,20 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 	public void genBroadcast(String genLetter, int genowner) {
 		for(Player player : Bukkit.getOnlinePlayers()) {
 			if(genowner == 1) {
-				player.sendTitle(ChatColor.WHITE + "Генератор " + genLetter + " захвачен", ChatColor.RED + "КРАСНЫМИ", 0, 60, 20);
-				player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_LAND, 0.65F, 2);
+				player.sendTitle(getStringByLang(lang, "generator.capture", Map.of("letter", genLetter)), getStringByLang(lang, "team.RED.2"), 0, 60, 20);
+				player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_LAND, 0.7F, 2);
 			}
 			if(genowner == 2) {
-				player.sendTitle(ChatColor.WHITE + "Генератор " + genLetter + " захвачен", ChatColor.YELLOW + "ЖЁЛТЫМИ", 0, 60, 20);
-				player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_LAND, 0.65F, 2);
+				player.sendTitle(getStringByLang(lang, "generator.capture", Map.of("letter", genLetter)), getStringByLang(lang, "team.YELLOW.2"), 0, 60, 20);
+				player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_LAND, 0.7F, 2);
 			}
 			if(genowner == 3) {
-				player.sendTitle(ChatColor.WHITE + "Генератор " + genLetter + " захвачен", ChatColor.GREEN + "ЗЕЛЁНЫМИ", 0, 60, 20);
-				player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_LAND, 0.65F, 2);
+				player.sendTitle(getStringByLang(lang, "generator.capture", Map.of("letter", genLetter)), getStringByLang(lang, "team.GREEN.2"), 0, 60, 20);
+				player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_LAND, 0.7F, 2);
 			}
 			if(genowner == 4) {
-				player.sendTitle(ChatColor.WHITE + "Генератор " + genLetter + " захвачен", ChatColor.AQUA + "СИНИМИ", 0, 60, 20);
-				player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_LAND, 0.65F, 2);
+				player.sendTitle(getStringByLang(lang, "generator.capture", Map.of("letter", genLetter)), getStringByLang(lang, "team.BLUE.2"), 0, 60, 20);
+				player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_LAND, 0.7F, 2);
 			}
 		}
 	}
