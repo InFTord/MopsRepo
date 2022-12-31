@@ -46,7 +46,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.nio.charset.StandardCharsets;
 import java.util.*;
-import java.util.logging.Logger;
 
 public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
@@ -620,13 +619,24 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 				Teams team = Teams.valueOf(args[1]);
 
 				dominationTeam = team;
-				dominationTime = time;
+				dominationTime = actualgametime[0]+time;
 				isDominating = true;
 
 				int secondsCopy = seconds[0]+time;
 				int minutesCopy = minutes[0];
 
-				dominationEvent = ChatColor.DARK_GRAY + " (" + ChatColor.BOLD + team.getColorString + team.getName + getStringByLang(lang, "woolbattle.event.domination") + minutesCopy + ":" + secondsCopy + ")";
+				if(secondsCopy > 60) {
+					minutesCopy++;
+					secondsCopy -= 60;
+				}
+
+				for(Player allPlayers : Bukkit.getOnlinePlayers()) {
+					Map<String, String> map = Map.of("TEAM", getStringByLang(lang, dominationTeam.getTranslationKey), "TEAMCOLOR", dominationTeam.getChatColor + "");
+					allPlayers.sendTitle(getStringByLang(lang, "domination.warning.1", map), getStringByLang(lang, "domination.warning.2", map), 5, 20, 20);
+					allPlayers.sendMessage(getByLang(lang, "dominationWarning", map));
+				}
+
+				dominationEvent = ChatColor.DARK_GRAY + " (" + ChatColor.BOLD + team.getChatColor + team.getName + getStringByLang(lang, "woolbattle.event.domination").substring(0, 3) + minutesCopy + ":" + secondsCopy + ")";
 				return true;
 			}
 			if (commandName.equals("cubicstuff")) {
@@ -644,7 +654,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 				return true;
 			}
 		} else {
-			player.sendTitle(" ", ChatColor.RED + "У вас нет прав!", 0, 20, 15);
+			player.sendTitle(" ", getStringByLang(lang, "noPerms"), 0, 20, 15);
 			player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_IRON_XYLOPHONE, 1, 1);
 			return true;
 		}
@@ -1820,6 +1830,12 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 				minutesCopy += 1;
 			}
 
+			for(Player allPlayers : Bukkit.getOnlinePlayers()) {
+				Map<String, String> map = Map.of("TEAM", getStringByLang(lang, dominationTeam.getTranslationKey), "TEAMCOLOR", dominationTeam.getChatColor + "");
+				allPlayers.sendTitle(getStringByLang(lang, "domination.warning.1", map), getStringByLang(lang, "domination.warning.2", map), 5, 20, 20);
+				allPlayers.sendMessage(getByLang(lang, "dominationWarning", map));
+			}
+
 			dominationEvent = ChatColor.DARK_GRAY + " (" + ChatColor.BOLD + team.getColorString + team.getName + getStringByLang(lang, "woolbattle.event.domination") + minutesCopy + ":" + secondsCopy + ")";
 		}
 
@@ -1909,6 +1925,8 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		for (Block block : ppbs) {
 			block.setType(Material.AIR);
 		}
+		Bukkit.getScheduler().cancelTask(scoreboardTask);
+
 		for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 			if(onlinePlayer.getScoreboardTags().contains("ingame")) {
 				onlinePlayer.teleport(new Location(onlinePlayer.getWorld(), 9, -34, 9));
@@ -1945,8 +1963,6 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		if(generatorBlockTask != null) {
 			generatorBlockTask.cancel();
 		}
-
-		Bukkit.getScheduler().cancelTask(scoreboardTask);
 
 		hardmode = false;
 		gameactive = false;
@@ -2141,7 +2157,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 	}
 
 	public void gameStartingTitle(Player player1) {
-		int max = 17;
+		int max = 12;
 		int min = 1;
 		int randomtitle = (int) (Math.random() * (max - min + 1)) + min;
 
@@ -2159,14 +2175,8 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			case 8 -> player1.sendTitle(ChatColor.WHITE + "Sponsored by", ChatColor.WHITE + "Astarta", fadeIn, hold, fadeOut);
 			case 9 -> player1.sendTitle(ChatColor.WHITE + "but here's", ChatColor.WHITE + "the woolbattler", fadeIn, hold, fadeOut);
 			case 10 -> player1.sendTitle(ChatColor.WHITE + "gl", ChatColor.WHITE + "hf", fadeIn, hold, fadeOut);
-
-			case 11 -> player1.sendTitle(ChatColor.WHITE + "тут нет", ChatColor.WHITE + "голубей", fadeIn, hold, fadeOut);
-			case 12 -> player1.sendTitle(ChatColor.WHITE + "NO WAY", ChatColor.WHITE + "Крис фумо", fadeIn, hold, fadeOut);
-			case 13 -> player1.sendTitle(ChatColor.WHITE + "тут нет", ChatColor.WHITE + "голубей", fadeIn, hold, fadeOut);
-			case 14 -> player1.sendTitle(ChatColor.WHITE + "ео", ChatColor.WHITE + "плши", fadeIn, hold, fadeOut);
-			case 15 -> player1.sendTitle(ChatColor.WHITE + "мяу, мяри мяри", ChatColor.WHITE + "мяу мяу мяу мяу", fadeIn, hold, fadeOut);
-			case 16 -> player1.sendTitle(ChatColor.WHITE + "пустите торда", ChatColor.WHITE + "на ош", fadeIn, hold, fadeOut);
-			case 17 -> player1.sendTitle(ChatColor.WHITE + "stay", ChatColor.WHITE + "safe", fadeIn, hold, fadeOut);
+			case 11 -> player1.sendTitle(ChatColor.WHITE + "мистер пакетик", ChatColor.WHITE + "иди нахуй", fadeIn, hold, fadeOut);
+			case 12 -> player1.sendTitle(ChatColor.WHITE + "компот", ChatColor.WHITE + "компот", fadeIn, hold, fadeOut);
 		}
 	}
 
@@ -2473,15 +2483,17 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 					if(isDominating) {
 						event = dominationEvent;
-						event0 = dominationEvent;
+						event0 = dominationEvent.replace(":", ":0");
 					}
 
 					if (seconds0[0] < 10) {
 						fakekills.getScoreboard().resetScores(getStringByLang(lang, "scoreboardTime") + colon + ChatColor.YELLOW + minutes0[0] + ":" + "0" + seconds0[0] + event0);
 						fakekills.getScoreboard().resetScores(getStringByLang(lang, "scoreboardTime") + colon + ChatColor.YELLOW + minutes0[0] + ":" + "0" + seconds0[0] + dominationEvent);
+						fakekills.getScoreboard().resetScores(getStringByLang(lang, "scoreboardTime") + colon + ChatColor.YELLOW + minutes0[0] + ":" + "0" + seconds0[0] + nextevent0);
 					} else {
-						fakekills.getScoreboard().resetScores(getStringByLang(lang, "scoreboardTime") + colon + ChatColor.YELLOW + minutes0[0] + ":" + seconds0[0] + event0);
-						fakekills.getScoreboard().resetScores(getStringByLang(lang, "scoreboardTime") + colon + ChatColor.YELLOW + minutes0[0] + ":" + seconds0[0] + dominationEvent);
+						fakekills.getScoreboard().resetScores(getStringByLang(lang, "scoreboardTime") + colon + ChatColor.YELLOW + minutes[0] + ":" + seconds[0] + event);
+						fakekills.getScoreboard().resetScores(getStringByLang(lang, "scoreboardTime") + colon + ChatColor.YELLOW + minutes[0] + ":" + seconds[0] + nextevent);
+						fakekills.getScoreboard().resetScores(getStringByLang(lang, "scoreboardTime") + colon + ChatColor.YELLOW + minutes[0] + ":" + seconds[0] + dominationEvent);
 					}
 
 					fakekills.getScore(getStringByLang(lang, "kills.red") + colon + ChatColor.RED + redkills + redyourteam).setScore(12);

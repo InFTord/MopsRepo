@@ -32,6 +32,12 @@ woolbattle:
   - generator.d:
       rus: "&fГенератор D"
       eng: "&fGenerator D"
+  - domination.warning.1:
+      rus: "§TEAM§ &fдоминируют!"
+      eng: "§TEAM§ &fis dominating!"
+  - domination.warning.2:
+      rus: "§TEAMCOLOR§Они захватили все генераторы."
+      eng: "§TEAMCOLOR§They captured all the generators."
   - redWool:
       rus: "&cКрасная Шерсть"
       eng: "&cRed Wool"
@@ -88,6 +94,9 @@ woolbattle:
   - notEnoughWool:
       rus: "&cНедостаточно шерсти!"
       eng: "&cNot enough wool!"
+  - noPerms:
+      rus: "&cУ вас нет прав!"
+      eng: "&cNot enough permissions!"
   - event.refill.1:
       rus: " &8(Рефилл | 4:00)"
       eng: " &8(Refill | 4:00)"
@@ -239,3 +248,18 @@ woolbattle:
              &cto be shrinking to the middle. Dominations are cancelled.
                      &cYour goal is to survive.
         &7----------------------------------------------------
+  - dominationWarning:
+      rus: |
+        §TEAMCOLOR§----------------------------------------------------
+                             §TEAMCOLOR§&lДоминация
+            §TEAM§ захватили все генераторы. У вас есть 40 секунд чтобы
+             §TEAMCOLOR§перехватить все генераторы, иначе они выиграют.
+                     §TEAMCOLOR§Захватите генератор.
+        §TEAMCOLOR§----------------------------------------------------
+      eng: |
+        §TEAMCOLOR§----------------------------------------------------
+                             §TEAMCOLOR§&lDomination
+            §TEAM§ has captured all the generators. You have 40 seconds
+             §TEAMCOLOR§to re-capture them, or else they will win.
+                     §TEAMCOLOR§Capture the generator.
+        §TEAMCOLOR§----------------------------------------------------
