@@ -98,13 +98,16 @@ public class Abilities {
 		LeatherArmorMeta bootsMeta = (LeatherArmorMeta) bootsItem.getItemMeta();
 
 		bootsMeta.displayName(plugin.getByLang(lang, "doubleJumpBoots.name", Map.of("TCC", colorString)));
+
+		List<String> bootsLore0 = new ArrayList<>(Arrays.asList(MopsUtils.textComponentToString(plugin.getByLang(lang, "doubleJumpBoots.lore")).split("\n")));
 		List<String> bootsLore = new ArrayList<>();
-		bootsLore.add(ChatColor.GRAY + "Позволяют прыгать в воздухе. ");
-		bootsLore.add(ChatColor.DARK_GRAY + "(Нужно нажать пробел дважды в падении)");
-		bootsLore.add(ChatColor.AQUA + "Стоимость: 16 шерсти");
+		for(String string : bootsLore0) {
+			bootsLore.add(MopsUtils.convertColorCodes(string));
+		}
+		bootsMeta.setLore(bootsLore);
+
 		bootsMeta.setUnbreakable(true);
 		bootsMeta.setColor(color);
-		bootsMeta.setLore(bootsLore);
 		bootsItem.setItemMeta(bootsMeta);
 		player1.getInventory().setItem(36, bootsItem);
 

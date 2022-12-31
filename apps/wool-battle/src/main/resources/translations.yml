@@ -38,7 +38,7 @@ woolbattle:
   - domination.warning.2:
       rus: "§TEAMCOLOR§Они захватили все генераторы."
       eng: "§TEAMCOLOR§They captured all the generators."
-  - domination.warning:
+  - domination.cancel:
       rus: "§TEAMCOLOR§Доминация отменена!"
       eng: "§TEAMCOLOR§Domination cancelled!"
   - redWool:

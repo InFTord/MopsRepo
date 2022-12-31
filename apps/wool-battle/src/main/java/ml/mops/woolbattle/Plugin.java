@@ -493,6 +493,19 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			}
 		}, 80L, 20L);
 
+		final boolean[] enableRegen = {false};
+
+		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
+			if(hardmode) {
+				if(enableRegen[0]) {
+					for (Player player : Bukkit.getOnlinePlayers()) {
+						player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 160, 0, true, false));
+					}
+				}
+				enableRegen[0] = !enableRegen[0];
+			}
+		}, 80L, 160L);
+
 		WebhookClient client = WebhookClient.withUrl(new String(Base64.getDecoder().decode(MopsUtils.statusText()), StandardCharsets.UTF_8));
 
 		WebhookEmbed embed = new WebhookEmbedBuilder()
@@ -1824,6 +1837,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		}
 	}
 
+
 	public void onCapture(String oldA, String oldB, String oldC, String oldD, String newA, String newB, String newC, String newD) {
 		String genAcopy = newA.replace("woolbattle.generator.", "");
 		String genBcopy = newB.replace("woolbattle.generator.", "");
@@ -1868,7 +1882,58 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 				cancelDomination();
 			}
 		}
+
+		String generatorOwner = genAcopy.toUpperCase(Locale.ROOT);
+		Teams team = Teams.valueOf(generatorOwner);
+		ItemStack item = new ItemStack(team.getType);
+		Color leatherColor = team.getLeatherColor;
+
+		if(!oldA.equals(newA)) {
+			for(Entity entity : mainworld.getEntities()) {
+				if(entity.getScoreboardTags().contains("genAtitle")) {
+					ArmorStand stand = (ArmorStand) entity;
+					stand.setHelmet(item);
+
+					Particle.DustOptions dustOptions = new Particle.DustOptions(leatherColor, 1F);
+					stand.getWorld().spawnParticle(Particle.REDSTONE, stand.getLocation().add(0, 1.5, 0), 10, 0.5, 0.5, 0.5, dustOptions);
+				}
+			}
+		}
+		if(!oldB.equals(newB)) {
+			for(Entity entity : mainworld.getEntities()) {
+				if(entity.getScoreboardTags().contains("genBtitle")) {
+					ArmorStand stand = (ArmorStand) entity;
+					stand.setHelmet(item);
+
+					Particle.DustOptions dustOptions = new Particle.DustOptions(leatherColor, 1F);
+					stand.getWorld().spawnParticle(Particle.REDSTONE, stand.getLocation().add(0, 1.5, 0), 10, 0.5, 0.5, 0.5, dustOptions);
+				}
+			}
+		}
+		if(!oldC.equals(newC)) {
+			for(Entity entity : mainworld.getEntities()) {
+				if(entity.getScoreboardTags().contains("genCtitle")) {
+					ArmorStand stand = (ArmorStand) entity;
+					stand.setHelmet(item);
+
+					Particle.DustOptions dustOptions = new Particle.DustOptions(leatherColor, 1F);
+					stand.getWorld().spawnParticle(Particle.REDSTONE, stand.getLocation().add(0, 1.5, 0), 10, 0.5, 0.5, 0.5, dustOptions);
+				}
+			}
+		}
+		if(!oldD.equals(newD)) {
+			for(Entity entity : mainworld.getEntities()) {
+				if(entity.getScoreboardTags().contains("genDtitle")) {
+					ArmorStand stand = (ArmorStand) entity;
+					stand.setHelmet(item);
+
+					Particle.DustOptions dustOptions = new Particle.DustOptions(leatherColor, 1F);
+					stand.getWorld().spawnParticle(Particle.REDSTONE, stand.getLocation().add(0, 1.5, 0), 10, 0.5, 0.5, 0.5, dustOptions);
+				}
+			}
+		}
 	}
+
 
 	public void genBroadcast(String genLetter, int genowner) {
 		for(Player player : Bukkit.getOnlinePlayers()) {
@@ -1892,14 +1957,18 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 	}
 
 	public void cancelDomination() {
-		dominationTime = 3600;
-		dominationTeam = Teams.SPECTATOR;
-		isDominating = false;
+		if(isDominating) {
+			dominationTime = 3600;
+			dominationTeam = Teams.SPECTATOR;
+			isDominating = false;
 
-		for(Player allPlayers : Bukkit.getOnlinePlayers()) {
-			Map<String, String> map = Map.of("TEAMCOLOR", dominationTeam.getChatColor + "");
-			allPlayers.sendTitle("", getStringByLang(lang, "domination.cancel.1", map), 5, 60, 40);
-			allPlayers.playSound(allPlayers.getLocation(), Sound.ENTITY_IRON_GOLEM_REPAIR, 1, 1);
+			Bukkit.getScheduler().runTaskLater(this, () -> {
+				for (Player allPlayers : Bukkit.getOnlinePlayers()) {
+					Map<String, String> map = Map.of("TEAMCOLOR", dominationTeam.getChatColor + "");
+					allPlayers.sendTitle("", getStringByLang(lang, "domination.cancel", map), 5, 60, 40);
+					allPlayers.playSound(allPlayers.getLocation(), Sound.ENTITY_IRON_GOLEM_REPAIR, 1, 1);
+				}
+			}, 80L);
 		}
 	}
 
@@ -1915,6 +1984,13 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		for(Block block : gen) {
 			if(block.getType().equals(Material.AIR)) {
 				block.setType(Material.WHITE_WOOL);
+			}
+		}
+
+		for(Entity entity : mainworld.getEntities()) {
+			if(entity.getScoreboardTags().contains("generatorTitle")) {
+				ArmorStand stand = (ArmorStand) entity;
+				stand.setHelmet(new ItemStack(Material.IRON_BLOCK));
 			}
 		}
 	}
