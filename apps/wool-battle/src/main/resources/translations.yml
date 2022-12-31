@@ -84,10 +84,10 @@ woolbattle:
   - explosionStaff.lore:
       rus: |
         &7Палка откидывающая тебя назад. &e&lПКМ &r&8(Нужно наводится на блок)
-        &bСтоимость: 28 шерсти
+        &bСтоимость: 32 шерсти
       eng: |
         &7Stick that throws you backwards. &e&lRIGHT CLICK &r&8(Aim on a block)
-        &bCost: 28 wool
+        &bCost: 32 wool
   - explosionStaffMK2.name:
       rus: "&eВзрывная Палка (T2)"
       eng: "&eBoomstick (Mk II)"
@@ -131,20 +131,20 @@ woolbattle:
   - slimeball.lore:
       rus: |
         &7Спасёт тебя при падении. &e&lПКМ &8(Шифт чтобы прыгнуть выше)
-        &bСтоимость: 208 шерсти
+        &bСтоимость: 192 шерсти
       eng: |
         &7Will save you from falling. &e&lRIGHT CLICK &8(Shift to jump higher)
-        &bCost: 208 wool
+        &bCost: 192 wool
   - platform.name:
       rus: "&cПлатформа!"
       eng: "&cPlatform!"
   - platform.lore:
       rus: |
         &7Ставит платформу из шерсти. &e&lПКМ &8(Не пропадает)
-        &bСтоимость: 152 шерсти
+        &bСтоимость: 144 шерсти
       eng: |
         &7Spawns a platform of wool. &e&lRIGHT CLICK &8(Doesn't disappear)
-        &bCost: 152 wool
+        &bCost: 144 wool
   - shield.name:
       rus: "&7Щит"
       eng: "&7Shield"
@@ -288,15 +288,27 @@ woolbattle:
   - death.final:
       rus: " &4окончательно &7умер."
       eng: " &7had a &4final &7death."
+  - globalChat:
+      rus: "&bТеперь вы пишете в глобальный чат. Начните своё сообщение с ! чтобы писать в вашу команду, или напишите /globalchat чтобы вернуть всё назад."
+      eng: "&bNow you speak in global chat. Start your message with ! to message your team again, or type /globalchat to revert everything back."
+  - globalChat.cancel:
+      rus: "&bВы вернули всё назад."
+      eng: "&bYou reverted everything back."
   - killRequirement.1:
       rus: "&rНужно сделать"
       eng: "&rYou need to get"
   - killRequirement.2:
       rus: "&r§kills§ киллов."
       eng: "&r§kills§ kills."
+  - startsIn:
+      rus: "&fИгра начнётся через"
+      eng: "&fGame starting in"
   - immunity.guideline:
       rus: "&7У этого игрока иммунитет после респавна, подождите 2 секудны."
       eng: "&7This player has respawn immunity, please wait 2 seconds."
+  - chat.guideline:
+      rus: "&7Ваши сообщения видны только вашей команде, поставьте ! вначале чтобы сделать их глобальными, или напишите /globalchat чтобы поменять чаты местами."
+      eng: "&7Your messages are only seen to your team, write ! at the start to make them global, or do /globalchat to change the chats."
   - onStartMessage:
       rus: |
         &e----------------------------------------------------

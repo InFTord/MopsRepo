@@ -82,12 +82,14 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 	private final HashMap<Player, Integer> combo = new HashMap<>();
 	private final HashMap<Player, BukkitTask> deathmsg = new HashMap<>();
+	private final HashMap<Player, Player> lastDamager = new HashMap<>();
+
 	private final HashMap<Player, Boolean> hasWrittenAnything = new HashMap<>();
+	private final HashMap<Player, Boolean> globalChat = new HashMap<>();
 
 	ScoreboardManager manager;
 	Scoreboard mainboard;
 	Scoreboard newboard;
-
 
 	List<Player> redTeamPlayers, yellowTeamPlayers, greenTeamPlayers, blueTeamPlayers = new ArrayList<>();
 
@@ -110,6 +112,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 	List<ItemStack> doubleJumpBoots = new ArrayList<>();
 	List<ItemStack> shears = new ArrayList<>();
 
+	String genApercent, genBpercent, genCpercent, genDpercent = ChatColor.GRAY + " (0%)";
 
 	// Хардкодю значения УРААААА ((Я перенёс это в начало что бы не нужно было постоянно перепросчитывать угол/2/pi))
 	private static final double DEGREES_TO_RADIANS = 0.017453292519943295;
@@ -239,25 +242,25 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 							case 1 -> {
 								redkills = redkills + 1;
 								if(!hardmode) {
-									broadcastDeath(player, getStringByLang(lang, "woolbattle.gotKilledBy") + " " + ChatColor.RED + "" + ChatColor.BOLD + "КРАСНЫМИ" + ChatColor.GRAY + ".");
+									broadcastDeath(player, getStringByLang(lang, "woolbattle.gotKilledBy") + " " + ChatColor.RED + lastDamager.get(player).getName() + ChatColor.GRAY + ".");
 								}
 							}
 							case 2 -> {
 								yellowkills = yellowkills + 1;
 								if(!hardmode) {
-									broadcastDeath(player, getStringByLang(lang, "woolbattle.gotKilledBy") + " " + ChatColor.YELLOW + "" + ChatColor.BOLD + "ЖЁЛТЫМИ" + ChatColor.GRAY + ".");
+									broadcastDeath(player, getStringByLang(lang, "woolbattle.gotKilledBy") + " " + ChatColor.YELLOW + "" + lastDamager.get(player).getName() + ChatColor.GRAY + ".");
 								}
 							}
 							case 3 -> {
 								greenkills = greenkills + 1;
 								if (!hardmode) {
-									broadcastDeath(player, getStringByLang(lang, "woolbattle.gotKilledBy") + " " + ChatColor.GREEN + "" + ChatColor.BOLD + "ЗЕЛЁНЫМИ" + ChatColor.GRAY + ".");
+									broadcastDeath(player, getStringByLang(lang, "woolbattle.gotKilledBy") + " " + ChatColor.GREEN + "" + lastDamager.get(player).getName() + ChatColor.GRAY + ".");
 								}
 							}
 							case 4 -> {
 								bluekills = bluekills + 1;
 								if(!hardmode) {
-									broadcastDeath(player, getStringByLang(lang, "woolbattle.gotKilledBy") + " " + ChatColor.AQUA + "" + ChatColor.BOLD + "СИНИМИ" + ChatColor.GRAY + ".");
+									broadcastDeath(player, getStringByLang(lang, "woolbattle.gotKilledBy") + " " + ChatColor.AQUA + "" + lastDamager.get(player).getName() + ChatColor.GRAY + ".");
 								}
 							}
 
@@ -693,6 +696,17 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 0.4F, 1.5F);
 			return true;
 		}
+		if(commandName.equals("globalchat")) {
+			if(globalChat.get(player)) {
+				player.sendMessage(getByLang(lang, "globalChat.cancel"));
+				globalChat.put(player, false);
+			} else {
+				player.sendMessage(getByLang(lang, "globalChat"));
+				globalChat.put(player, true);
+			}
+			return true;
+		}
+
 		return false;
 	}
 
@@ -782,6 +796,8 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 						if (teamname.contains("blue")) {
 							obj.getScore(victim.getName()).setScore(4);
 						}
+
+						lastDamager.put(victim, attacker);
 					}
 
 					if (damagetask0.get(victim) != null) {
@@ -840,6 +856,8 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 						if (teamname.contains("blue")) {
 							obj.getScore(victim.getName()).setScore(4);
 						}
+
+						lastDamager.put(victim, attacker);
 
 						if (damagetask0.get(victim) != null) {
 							damagetask0.get(victim).cancel();
@@ -990,8 +1008,9 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		Player player = event.getPlayer();
 		Team team = mainboard.getPlayerTeam(player);
 		String teamname = team.getName();
-		String msg = event.getMessage();
+		String msg = event.getMessage().replaceAll("skull", ChatColor.GRAY + "☠");
 		hasWrittenAnything.putIfAbsent(player, false);
+		globalChat.putIfAbsent(player, false);
 
 		event.setCancelled(true);
 
@@ -1011,28 +1030,49 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		}
 
 		if (!player.getScoreboardTags().contains("spectator")) {
-			if (msg.startsWith("!")) {
-				for (Player players : Bukkit.getOnlinePlayers()) {
-					players.sendMessage(ChatColor.AQUA + "[!] " + color + player.getName() + ChatColor.WHITE + ": " + msg.replaceFirst("!", ""));
+			if(globalChat.get(player)) {
+				if (msg.startsWith("!")) {
+					for (Player players : Bukkit.getOnlinePlayers()) {
+						players.sendMessage(ChatColor.AQUA + "[!] " + color + player.getName() + ChatColor.WHITE + ": " + msg.replaceFirst("!", ""));
+					}
 					hasWrittenAnything.put(player, true);
+				} else {
+					if (!hasWrittenAnything.get(player)) {
+						player.sendMessage(getByLang(lang, "chat.guideline"));
+						hasWrittenAnything.put(player, true);
+					}
+
+					for (OfflinePlayer players0 : team.getPlayers()) {
+						if (players0.isOnline()) {
+							Player players = players0.getPlayer();
+							players.sendMessage(ChatColor.DARK_GREEN + "[" + getStringByLang(lang, "woolbattle.team") + "] " + color + player.getName() + ChatColor.WHITE + ": " + color + msg);
+						}
+					}
 				}
 			} else {
-				if(!hasWrittenAnything.get(player)) {
-					player.sendMessage(ChatColor.GRAY + "Your messages are only seen to your team, write ! at the start to make them global.");
-					hasWrittenAnything.put(player, true);
-				}
-
-				for (OfflinePlayer players0 : team.getPlayers()) {
-					if (players0.isOnline()) {
-						Player players = players0.getPlayer();
-						players.sendMessage(ChatColor.DARK_GREEN + "[" + getStringByLang(lang, "woolbattle.team") + "] " + color + player.getName() + ChatColor.WHITE + ": " + color + msg);
+				if (msg.startsWith("!")) {
+					for (OfflinePlayer players0 : team.getPlayers()) {
+						if (players0.isOnline()) {
+							Player players = players0.getPlayer();
+							players.sendMessage(ChatColor.DARK_GREEN + "[" + getStringByLang(lang, "woolbattle.team") + "] " + color + player.getName() + ChatColor.WHITE + ": " + color + msg);
+						}
 					}
+					hasWrittenAnything.put(player, true);
+				} else {
+					for (Player players : Bukkit.getOnlinePlayers()) {
+						players.sendMessage(ChatColor.AQUA + "[!] " + color + player.getName() + ChatColor.WHITE + ": " + msg.replaceFirst("!", ""));
+					}
+					hasWrittenAnything.put(player, true);
 				}
 			}
 		}
 
-		for (Player players : Bukkit.getOnlinePlayers()) {
-			if(player.getScoreboardTags().contains("spectator")) {
+		if(player.getScoreboardTags().contains("spectator")) {
+			for (Player players : Bukkit.getOnlinePlayers()) {
+				if(msg.startsWith("!")) {
+					msg = msg.replaceFirst("!", "");
+				}
+
 				players.sendMessage(ChatColor.GRAY + "[" + getStringByLang(lang, "woolbattle.spectators") + "] " + color + player.getName() + ChatColor.WHITE + ": " + msg);
 			}
 		}
@@ -1203,7 +1243,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 					Team team = mainboard.getPlayerTeam(player);
 					String teamname = team.getName();
 
-					boolean hasItems = woolRemove(208, player, teamname);
+					boolean hasItems = woolRemove(192, player, teamname);
 
 					if (hasItems) {
 						Location loc = player.getLocation();
@@ -1231,7 +1271,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 					Team team = mainboard.getPlayerTeam(player);
 					String teamname = team.getName();
 
-					boolean hasItems = woolRemove(152, player, teamname);
+					boolean hasItems = woolRemove(144, player, teamname);
 
 					if (hasItems) {
 						Location loc = player.getLocation();
@@ -1275,7 +1315,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 					Team team = mainboard.getPlayerTeam(player);
 					String teamname = team.getName();
 
-					boolean hasItems = woolRemove(28, player, teamname);
+					boolean hasItems = woolRemove(32, player, teamname);
 
 					if (hasItems) {
 						double x = player.getEyeLocation().getDirection().getX();
@@ -1367,7 +1407,9 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 	@EventHandler
 	public void onItemConsume(PlayerItemConsumeEvent event) {
 		try {
-			event.getPlayer().getInventory().removeItem(new ItemStack(Material.GLASS_BOTTLE, 12));
+			Bukkit.getScheduler().runTaskLater(this, () -> {
+				event.getPlayer().getInventory().removeItem(new ItemStack(Material.GLASS_BOTTLE, 12));
+			}, 20L);
 		} catch (Exception ignored) { }
 	}
 
@@ -1627,6 +1669,11 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		String Ccopy = getStringByLang(lang, genCstatus);
 		String Dcopy = getStringByLang(lang, genDstatus);
 
+		String Acopy2 = getStringByLang(lang, genAstatus);
+		String Bcopy2 = getStringByLang(lang, genBstatus);
+		String Ccopy2 = getStringByLang(lang, genCstatus);
+		String Dcopy2 = getStringByLang(lang, genDstatus);
+
 		if(gensLocked) {
 			Acopy = Acopy + ChatColor.GRAY + " ⚠";
 			Bcopy = Bcopy + ChatColor.GRAY + " ⚠";
@@ -1634,10 +1681,20 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			Dcopy = Dcopy + ChatColor.GRAY + " ⚠";
 		}
 
+		Acopy2 = Acopy2 + genApercent;
+		Bcopy2 = Bcopy2 + genBpercent;
+		Ccopy2 = Ccopy2 + genCpercent;
+		Dcopy2 = Dcopy2 + genDpercent;
+
 		fakekills.getScoreboard().resetScores(getStringByLang(lang, "woolbattle.generator.a") + " - " + Acopy);
 		fakekills.getScoreboard().resetScores(getStringByLang(lang, "woolbattle.generator.b") + " - " + Bcopy);
 		fakekills.getScoreboard().resetScores(getStringByLang(lang, "woolbattle.generator.c") + " - " + Ccopy);
 		fakekills.getScoreboard().resetScores(getStringByLang(lang, "woolbattle.generator.d") + " - " + Dcopy);
+
+		fakekills.getScoreboard().resetScores(getStringByLang(lang, "woolbattle.generator.a") + " - " + Acopy2);
+		fakekills.getScoreboard().resetScores(getStringByLang(lang, "woolbattle.generator.b") + " - " + Bcopy2);
+		fakekills.getScoreboard().resetScores(getStringByLang(lang, "woolbattle.generator.c") + " - " + Ccopy2);
+		fakekills.getScoreboard().resetScores(getStringByLang(lang, "woolbattle.generator.d") + " - " + Dcopy2);
 
 		actualgametime[0] = 0;
 		actualgametime0[0] = -1;
@@ -1760,21 +1817,69 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 				bluecount = bluecount + 1;
 			}
 
-			if (redcount == 98) {
+			if (redcount >= 80) {
 				integer = 1;
 			}
-			if (yellowcount == 98) {
+			if (yellowcount >= 80) {
 				integer = 2;
 			}
-			if (greencount == 98) {
+			if (greencount >= 80) {
 				integer = 3;
 			}
-			if (bluecount == 98) {
+			if (bluecount >= 80) {
 				integer = 4;
 			}
 
 		}
 		return integer;
+	}
+
+	public String countGenPercents(List<Block> blocklist) {
+		int redcount = 0;
+		int yellowcount = 0;
+		int greencount = 0;
+		int bluecount = 0;
+
+		for (Block block : blocklist) {
+			if (block.getType().equals(Material.RED_WOOL)) {
+				redcount = redcount + 1;
+			}
+			if (block.getType().equals(Material.YELLOW_WOOL)) {
+				yellowcount = yellowcount + 1;
+			}
+			if (block.getType().equals(Material.LIME_WOOL)) {
+				greencount = greencount + 1;
+			}
+			if (block.getType().equals(Material.LIGHT_BLUE_WOOL)) {
+				bluecount = bluecount + 1;
+			}
+		}
+
+		int redpercent = redcount/80*100;
+		int yellowpercent = yellowcount/80*100;
+		int greenpercent = greencount/80*100;
+		int bluepercent = bluecount/80*100;
+
+		int biggestpercentage = Math.max(Math.max(redpercent, yellowpercent), Math.max(greenpercent, bluepercent));
+
+		String truepercentage = ChatColor.GRAY + " (0%)";
+
+		if(biggestpercentage > 0) {
+			if(biggestpercentage == redpercent) {
+				truepercentage = ChatColor.RED + " (" + biggestpercentage + "%)";
+			}
+			if(biggestpercentage == yellowpercent) {
+				truepercentage = ChatColor.YELLOW + " (" + biggestpercentage + "%)";
+			}
+			if(biggestpercentage == greenpercent) {
+				truepercentage = ChatColor.GREEN + " (" + biggestpercentage + "%)";
+			}
+			if(biggestpercentage == bluepercent) {
+				truepercentage = ChatColor.AQUA + " (" + biggestpercentage + "%)";
+			}
+		}
+
+		return truepercentage;
 	}
 
 
@@ -2075,6 +2180,16 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			fakekills.getScoreboard().resetScores(getStringByLang(lang, "woolbattle.generator.b") + " - " + genStatus0);
 			fakekills.getScoreboard().resetScores(getStringByLang(lang, "woolbattle.generator.c") + " - " + genStatus0);
 			fakekills.getScoreboard().resetScores(getStringByLang(lang, "woolbattle.generator.d") + " - " + genStatus0);
+
+			String genStatusA = genStatus0 + genApercent;
+			String genStatusB = genStatus0 + genBpercent;
+			String genStatusC = genStatus0 + genCpercent;
+			String genStatusD = genStatus0 + genDpercent;
+
+			fakekills.getScoreboard().resetScores(getStringByLang(lang, "woolbattle.generator.a") + " - " + genStatusA);
+			fakekills.getScoreboard().resetScores(getStringByLang(lang, "woolbattle.generator.b") + " - " + genStatusB);
+			fakekills.getScoreboard().resetScores(getStringByLang(lang, "woolbattle.generator.c") + " - " + genStatusC);
+			fakekills.getScoreboard().resetScores(getStringByLang(lang, "woolbattle.generator.d") + " - " + genStatusD);
 
 			player.setScoreboard(fakekills.getScoreboard());
 		}
@@ -2409,13 +2524,13 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 	public void timedGameStart(Player player1, String teamname) {
 		Bukkit.getScheduler().runTaskLater(this, () -> {
 			player1.playSound(player1.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 0);
-			player1.sendTitle(ChatColor.WHITE + "Игра начнётся через", ChatColor.RED + "3", 1, 20, 20);
+			player1.sendTitle(getStringByLang(lang, "startsIn"), ChatColor.RED + "3", 1, 20, 20);
 			Bukkit.getScheduler().runTaskLater(this, () -> {
 				player1.playSound(player1.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
-				player1.sendTitle(ChatColor.WHITE + "Игра начнётся через", ChatColor.YELLOW + "2", 1, 20, 20);
+				player1.sendTitle(getStringByLang(lang, "startsIn"), ChatColor.YELLOW + "2", 1, 20, 20);
 				Bukkit.getScheduler().runTaskLater(this, () -> {
 					player1.playSound(player1.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1.5F);
-					player1.sendTitle(ChatColor.WHITE + "Игра начнётся через", ChatColor.GREEN + "1", 1, 20, 20);
+					player1.sendTitle(getStringByLang(lang, "startsIn"), ChatColor.GREEN + "1", 1, 20, 20);
 					Bukkit.getScheduler().runTaskLater(this, () -> gameStartSequence(player1, teamname), 40L);
 				}, 40L);
 			}, 40L);
@@ -2664,6 +2779,11 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 						resetGeneratorText(player);
 					}
 
+					genApercent = countGenPercents(genAblocks);
+					genBpercent = countGenPercents(genBblocks);
+					genCpercent = countGenPercents(genCblocks);
+					genDpercent = countGenPercents(genDblocks);
+
 					String Acopy = getStringByLang(lang, genAstatus);
 					String Bcopy = getStringByLang(lang, genBstatus);
 					String Ccopy = getStringByLang(lang, genCstatus);
@@ -2674,6 +2794,11 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 						Bcopy = Bcopy + ChatColor.GRAY + " ⚠";
 						Ccopy = Ccopy + ChatColor.GRAY + " ⚠";
 						Dcopy = Dcopy + ChatColor.GRAY + " ⚠";
+					} else {
+						Acopy = Acopy + genApercent;
+						Bcopy = Bcopy + genBpercent;
+						Ccopy = Ccopy + genCpercent;
+						Dcopy = Dcopy + genDpercent;
 					}
 
 					fakekills.getScore(getStringByLang(lang, "woolbattle.generator.a") + " - " + Acopy).setScore(5);
