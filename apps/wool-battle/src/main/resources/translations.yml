@@ -103,6 +103,9 @@ woolbattle:
   - event.deathmatch:
       rus: " &8(Сражение до конца)"
       eng: " &8(Deathmatch)"
+  - event.domination:
+      rus: " &8Доминация | "
+      eng: " &8Domination | "
   - scoreboardTime:
       rus: "&fВремя"
       eng: "&fTime"

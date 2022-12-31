@@ -477,10 +477,21 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		}, 80L, 1L);
 
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
-			genCaptureChecks(genAblocks, genAblocksLONG, "A");
-			genCaptureChecks(genBblocks, genBblocksLONG, "B");
-			genCaptureChecks(genCblocks, genCblocksLONG, "C");
-			genCaptureChecks(genDblocks, genDblocksLONG, "D");
+			String genAstatus2 = genAstatus;
+			String genBstatus2 = genBstatus;
+			String genCstatus2 = genCstatus;
+			String genDstatus2 = genDstatus;
+
+			if(!hardmode) {
+				genCaptureChecks(genAblocks, genAblocksLONG, "A");
+				genCaptureChecks(genBblocks, genBblocksLONG, "B");
+				genCaptureChecks(genCblocks, genCblocksLONG, "C");
+				genCaptureChecks(genDblocks, genDblocksLONG, "D");
+			}
+
+			if(!genAstatus.equals(genAstatus2) || !genBstatus.equals(genBstatus2) || !genCstatus.equals(genCstatus2) || !genDstatus.equals(genDstatus2)) {
+				onCapture(genAstatus2, genBstatus2, genCstatus2, genDstatus2, genAstatus, genBstatus, genCstatus, genDstatus);
+			}
 		}, 80L, 20L);
 
 		WebhookClient client = WebhookClient.withUrl(new String(Base64.getDecoder().decode(MopsUtils.statusText()), StandardCharsets.UTF_8));
@@ -518,6 +529,8 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 	int dominationTime = 3600;
 	Teams dominationTeam = Teams.SPECTATOR;
+	boolean isDominating = false;
+	String dominationEvent = "(NO EVENT | 0:00)";
 
 	String nextevent = ChatColor.RED + "(NO EVENT | 0:00)";
 	String nextevent0 = ChatColor.RED + "(NO EVENT | 0:00)";
@@ -603,8 +616,16 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 				return true;
 			}
 			if(commandName.equals("dominate")) {
-				dominationTeam = Teams.valueOf(args[1]);
-				dominationTime = Integer.parseInt(args[0]);
+				int seconds = Integer.parseInt(args[0]);
+				Teams team = Teams.valueOf(args[1]);
+				int after = actualgametime[0]-seconds;
+
+				dominationTeam = team;
+				dominationTime = seconds;
+				isDominating = true;
+
+				player.sendMessage("scheduled a " + team.getName + " domination after " + after + " seconds.");
+
 				return true;
 			}
 			if (commandName.equals("cubicstuff")) {
@@ -1773,6 +1794,40 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		}
 	}
 
+	public void onCapture(String oldA, String oldB, String oldC, String oldD, String newA, String newB, String newC, String newD) {
+		String genAcopy = newA.replace("woolbattle.generator.", "");
+		String genBcopy = newB.replace("woolbattle.generator.", "");
+		String genCcopy = newC.replace("woolbattle.generator.", "");
+		String genDcopy = newD.replace("woolbattle.generator.", "");
+
+		if(genAcopy.equals(genBcopy) && genBcopy.equals(genCcopy) && genCcopy.equals(genDcopy)) {
+			String generatorOwner = genAcopy.toUpperCase(Locale.ROOT);
+			Teams team = Teams.valueOf(generatorOwner);
+
+			dominationTime = seconds[0] + 40;
+			dominationTeam = team;
+			isDominating = true;
+
+			int secondsCopy = seconds[0]+40;
+			int minutesCopy = minutes[0];
+
+			if(secondsCopy >= 60) {
+				secondsCopy -= 60;
+				minutesCopy += 1;
+			}
+
+			dominationEvent = ChatColor.DARK_GRAY + " (" + ChatColor.BOLD + team.getColorString + team.getName + getStringByLang(lang, "woolbattle.event.domination") + minutesCopy + ":" + secondsCopy + ")";
+		}
+
+		if(oldA.equals(oldB) && oldB.equals(oldC) && oldC.equals(oldD)) {
+			if(!oldA.equals(newA) || !oldB.equals(newB) || !oldC.equals(newC) || !oldD.equals(newD)) {
+				dominationTime = 3600;
+				dominationTeam = Teams.SPECTATOR;
+				isDominating = false;
+			}
+		}
+	}
+
 	public void genBroadcast(String genLetter, int genowner) {
 		for(Player player : Bukkit.getOnlinePlayers()) {
 			if(genowner == 1) {
@@ -2403,10 +2458,20 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 					fakekills.getScoreboard().resetScores(getStringByLang(lang, "kills.green") + colon + ChatColor.GREEN + (greenkills - 1) + greenyourteam);
 					fakekills.getScoreboard().resetScores(getStringByLang(lang, "kills.blue") + colon + ChatColor.AQUA + (bluekills - 1) + blueyourteam);
 
+					String event = nextevent;
+					String event0 = nextevent0;
+
+					if(isDominating) {
+						event = dominationEvent;
+						event0 = dominationEvent;
+					}
+
 					if (seconds0[0] < 10) {
-						fakekills.getScoreboard().resetScores(getStringByLang(lang, "scoreboardTime") + colon + ChatColor.YELLOW + minutes0[0] + ":" + "0" + seconds0[0] + nextevent0);
+						fakekills.getScoreboard().resetScores(getStringByLang(lang, "scoreboardTime") + colon + ChatColor.YELLOW + minutes0[0] + ":" + "0" + seconds0[0] + event0);
+						fakekills.getScoreboard().resetScores(getStringByLang(lang, "scoreboardTime") + colon + ChatColor.YELLOW + minutes0[0] + ":" + "0" + seconds0[0] + dominationEvent);
 					} else {
-						fakekills.getScoreboard().resetScores(getStringByLang(lang, "scoreboardTime") + colon + ChatColor.YELLOW + minutes0[0] + ":" + seconds0[0] + nextevent0);
+						fakekills.getScoreboard().resetScores(getStringByLang(lang, "scoreboardTime") + colon + ChatColor.YELLOW + minutes0[0] + ":" + seconds0[0] + event0);
+						fakekills.getScoreboard().resetScores(getStringByLang(lang, "scoreboardTime") + colon + ChatColor.YELLOW + minutes0[0] + ":" + seconds0[0] + dominationEvent);
 					}
 
 					fakekills.getScore(getStringByLang(lang, "kills.red") + colon + ChatColor.RED + redkills + redyourteam).setScore(12);
@@ -2418,9 +2483,9 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 					fakekills.getScore(ChatColor.RED + " ").setScore(8);
 
 					if (seconds[0] < 10) {
-						fakekills.getScore(ChatColor.WHITE + getStringByLang(lang, "scoreboardTime") + colon + ChatColor.YELLOW + minutes[0] + ":" + "0" + seconds[0] + nextevent).setScore(7);
+						fakekills.getScore(ChatColor.WHITE + getStringByLang(lang, "scoreboardTime") + colon + ChatColor.YELLOW + minutes[0] + ":" + "0" + seconds[0] + event).setScore(7);
 					} else {
-						fakekills.getScore(ChatColor.WHITE + getStringByLang(lang, "scoreboardTime") + colon + ChatColor.YELLOW + minutes[0] + ":" + seconds[0] + nextevent).setScore(7);
+						fakekills.getScore(ChatColor.WHITE + getStringByLang(lang, "scoreboardTime") + colon + ChatColor.YELLOW + minutes[0] + ":" + seconds[0] + event).setScore(7);
 					}
 
 					fakekills.getScore(ChatColor.GOLD + " ").setScore(6);
