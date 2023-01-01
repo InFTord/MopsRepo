@@ -371,60 +371,36 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 				if(redkills >= requiredKills && gameactive) {
 					winningBroadcast(1, "win");
-					resetEveryFuckingKillScoreboard(player);
-					try {
-						deathmsg.get(player).cancel(); } catch (Throwable ignored) {}
 					stopGame();
 				}
 				if(yellowkills >= requiredKills && gameactive) {
 					winningBroadcast(2, "win");
-					resetEveryFuckingKillScoreboard(player);
-					try {
-						deathmsg.get(player).cancel(); } catch (Throwable ignored) {}
 					stopGame();
 				}
 				if(greenkills >= requiredKills && gameactive) {
 					winningBroadcast(3, "win");
-					resetEveryFuckingKillScoreboard(player);
-					try {
-						deathmsg.get(player).cancel(); } catch (Throwable ignored) {}
 					stopGame();
 				}
 				if(bluekills >= requiredKills && gameactive) {
 					winningBroadcast(4, "win");
-					resetEveryFuckingKillScoreboard(player);
-					try {
-						deathmsg.get(player).cancel(); } catch (Throwable ignored) {}
 					stopGame();
 				}
 
 
 				if(!redTeamPlayers.isEmpty() && yellowTeamPlayers.isEmpty() && greenTeamPlayers.isEmpty() && blueTeamPlayers.isEmpty() && gameactive && !testmode) {
 					winningBroadcast(1, "wipeout");
-					resetEveryFuckingKillScoreboard(player);
-					try {
-						deathmsg.get(player).cancel(); } catch (Throwable ignored) {}
 					stopGame();
 				}
 				if(redTeamPlayers.isEmpty() && !yellowTeamPlayers.isEmpty() && greenTeamPlayers.isEmpty() && blueTeamPlayers.isEmpty() && gameactive && !testmode) {
 					winningBroadcast(2, "wipeout");
-					resetEveryFuckingKillScoreboard(player);
-					try {
-						deathmsg.get(player).cancel(); } catch (Throwable ignored) {}
 					stopGame();
 				}
 				if(redTeamPlayers.isEmpty() && yellowTeamPlayers.isEmpty() && !greenTeamPlayers.isEmpty() && blueTeamPlayers.isEmpty() && gameactive && !testmode) {
 					winningBroadcast(3, "wipeout");
-					resetEveryFuckingKillScoreboard(player);
-					try {
-						deathmsg.get(player).cancel(); } catch (Throwable ignored) {}
 					stopGame();
 				}
 				if(redTeamPlayers.isEmpty() && yellowTeamPlayers.isEmpty() && greenTeamPlayers.isEmpty() && !blueTeamPlayers.isEmpty()  && gameactive && !testmode) {
 					winningBroadcast(4, "wipeout");
-					resetEveryFuckingKillScoreboard(player);
-					try {
-						deathmsg.get(player).cancel(); } catch (Throwable ignored) {}
 					stopGame();
 				}
 
@@ -658,33 +634,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 				int time = Integer.parseInt(args[0]);
 				Teams team = Teams.valueOf(args[1]);
 
-				dominationTeam = team;
-				dominationTime = actualgametime[0]+time;
-				isDominating = true;
-
-				int secondsCopy = seconds[0]+time;
-				int minutesCopy = minutes[0];
-
-				if(secondsCopy >= 60) {
-					minutesCopy++;
-					secondsCopy -= 60;
-				}
-
-				String colon = ":";
-
-				if(secondsCopy < 10) {
-					colon = ":0";
-				}
-
-				for(Player allPlayers : Bukkit.getOnlinePlayers()) {
-					Map<String, String> map = Map.of("TEAM", getStringByLang(lang, dominationTeam.getTranslationKey), "TEAMCOLOR", dominationTeam.getChatColor + "");
-					allPlayers.sendTitle(getStringByLang(lang, "domination.warning.1", map), getStringByLang(lang, "domination.warning.2", map), 5, 60, 40);
-					allPlayers.sendMessage(getByLang(lang, "dominationWarning", map));
-					allPlayers.playSound(allPlayers.getLocation(), Sound.ENTITY_IRON_GOLEM_REPAIR, 1, 1);
-					allPlayers.playSound(allPlayers.getLocation(), Sound.ENTITY_IRON_GOLEM_REPAIR, 1, 0);
-				}
-
-				dominationEvent = ChatColor.DARK_GRAY + " (" + team.getChatColor + ChatColor.BOLD + team.getName.substring(0, 3) + ChatColor.RESET + getStringByLang(lang, "woolbattle.event.domination") + minutesCopy + colon + secondsCopy + ")";
+				dominate(team, time);
 				return true;
 			}
 			if(commandName.equals("infinitewool")) {
@@ -1322,7 +1272,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 					Team team = mainboard.getPlayerTeam(player);
 					String teamname = team.getName();
 
-					boolean hasItems = woolRemove(32, player, teamname);
+					boolean hasItems = woolRemove(28, player, teamname);
 
 					if (hasItems) {
 						double x = player.getEyeLocation().getDirection().getX();
@@ -1991,33 +1941,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			String generatorOwner = genAcopy.toUpperCase(Locale.ROOT);
 			Teams team = Teams.valueOf(generatorOwner);
 
-			dominationTime = actualgametime[0]+40;
-			dominationTeam = team;
-			isDominating = true;
-
-			int secondsCopy = seconds[0]+40;
-			int minutesCopy = minutes[0];
-
-			if(secondsCopy >= 60) {
-				secondsCopy -= 60;
-				minutesCopy += 1;
-			}
-
-			String colon = ":";
-
-			if(secondsCopy < 10) {
-				colon = ":0";
-			}
-
-			for(Player allPlayers : Bukkit.getOnlinePlayers()) {
-				Map<String, String> map = Map.of("TEAM", getStringByLang(lang, dominationTeam.getTranslationKey), "TEAMCOLOR", dominationTeam.getChatColor + "");
-				allPlayers.sendTitle(getStringByLang(lang, "domination.warning.1", map), getStringByLang(lang, "domination.warning.2", map), 5, 60, 40);
-				allPlayers.sendMessage(getByLang(lang, "dominationWarning", map));
-				allPlayers.playSound(allPlayers.getLocation(), Sound.ENTITY_IRON_GOLEM_REPAIR, 1, 1);
-				allPlayers.playSound(allPlayers.getLocation(), Sound.ENTITY_IRON_GOLEM_REPAIR, 1, 0);
-			}
-
-			dominationEvent = ChatColor.DARK_GRAY + " (" + team.getChatColor + ChatColor.BOLD + team.getName.substring(0, 3) + ChatColor.RESET + getStringByLang(lang, "woolbattle.event.domination") + minutesCopy + colon + secondsCopy + ")";
+			dominate(team, 60);
 		}
 
 		if(oldA.equals(oldB) && oldB.equals(oldC) && oldC.equals(oldD)) {
@@ -2235,7 +2159,6 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			clearScoreboard(onlinePlayer);
 			if(onlinePlayer.getScoreboardTags().contains("ingame")) {
 				onlinePlayer.teleport(new Location(onlinePlayer.getWorld(), 9, -34, 9));
-				// почему при хардмоде не тепает???
 				onlinePlayer.getInventory().clear();
 				onlinePlayer.removePotionEffect(PotionEffectType.JUMP);
 				onlinePlayer.setGameMode(GameMode.SURVIVAL);
@@ -2251,6 +2174,11 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 			onlinePlayer.removeScoreboardTag("spectator");
 			clearScoreboard(onlinePlayer);
+
+			resetEveryFuckingKillScoreboard(onlinePlayer);
+			try {
+				deathmsg.get(onlinePlayer).cancel();
+			} catch (Throwable ignored) { }
 		}
 
 		stopGameDominationCancel();
@@ -2640,6 +2568,36 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		return color;
 	}
 
+	public void dominate(Teams team, int time) {
+		dominationTeam = team;
+		dominationTime = actualgametime[0]+time+1; //+1 так ну для крутых мувов плеев и игры
+		isDominating = true;
+
+		int secondsCopy = seconds[0]+time;
+		int minutesCopy = minutes[0];
+
+		if(secondsCopy >= 60) {
+			minutesCopy++;
+			secondsCopy -= 60;
+		}
+
+		String colon = ":";
+
+		if(secondsCopy < 10) {
+			colon = ":0";
+		}
+
+		for(Player allPlayers : Bukkit.getOnlinePlayers()) {
+			Map<String, String> map = Map.of("TEAM", getStringByLang(lang, dominationTeam.getTranslationKey), "TEAMCOLOR", dominationTeam.getChatColor + "");
+			allPlayers.sendTitle(getStringByLang(lang, "domination.warning.1", map), getStringByLang(lang, "domination.warning.2", map), 5, 60, 40);
+			allPlayers.sendMessage(getByLang(lang, "dominationWarning", map));
+			allPlayers.playSound(allPlayers.getLocation(), Sound.ENTITY_IRON_GOLEM_REPAIR, 1, 1);
+			allPlayers.playSound(allPlayers.getLocation(), Sound.ENTITY_IRON_GOLEM_REPAIR, 1, 0);
+		}
+
+		dominationEvent = ChatColor.DARK_GRAY + " (" + team.getChatColor + ChatColor.BOLD + team.getName.substring(0, 3) + ChatColor.RESET + getStringByLang(lang, "woolbattle.event.domination") + minutesCopy + colon + secondsCopy + ")";
+	}
+
 	public void startGame(String[] args) {
 		mainworld.getWorldBorder().setSize(200, 1);
 		hardmode = false;
@@ -2845,14 +2803,6 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 				if(actualgametime[0] >= dominationTime && isDominating) {
 					winningBroadcast(dominationTeam.getNumber, "domination");
-
-					for(Player player : Bukkit.getOnlinePlayers()) {
-						resetEveryFuckingKillScoreboard(player);
-						try {
-							deathmsg.get(player).cancel();
-						} catch (Throwable ignored) { }
-					}
-
 					stopGame();
 				}
 
