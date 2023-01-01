@@ -42,3 +42,6 @@ commands:
   infinitewool:
     description: ""
     usage: /infinitewool
+  globalchat:
+    description: ""
+    usage: /globalchat
