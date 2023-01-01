@@ -183,7 +183,7 @@ woolbattle:
   - notEnoughWool:
       rus: "&cНедостаточно шерсти!"
       eng: "&cNot enough wool!"
-  - noPermsy:
+  - noPerms:
       rus: "&cУ вас нет прав!"
       eng: "&cNot enough permissions!"
   - event.refill.1:

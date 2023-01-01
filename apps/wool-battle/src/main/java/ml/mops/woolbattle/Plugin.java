@@ -559,6 +559,25 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		Player player = (Player) sender;
 		String commandName = command.getName().toLowerCase(Locale.ROOT);
 
+		if (commandName.equals("spawn") || commandName.equals("lobby") || commandName.equals("l") || commandName.equals("hub")) {
+
+			//ТУТ ДОЛЖНО ВЫКИДЫВАТЬ ИЗ ИГРЫ КОФИЙ ТЫ ПОНЯЛ?
+
+			player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 0.4F, 1.5F);
+			return true;
+		}
+		if(commandName.equals("globalchat")) {
+			if(globalChat.get(player)) {
+				player.sendMessage(getByLang(lang, "globalChat.cancel"));
+				globalChat.put(player, false);
+			} else {
+				player.sendMessage(getByLang(lang, "globalChat"));
+				globalChat.put(player, true);
+			}
+			return true;
+		}
+
+
 		if (perms) {
 			if (commandName.equals("startgame")) {
 				startGame(args);
@@ -687,23 +706,6 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		} else {
 			player.sendTitle(" ", getStringByLang(lang, "noPerms"), 0, 20, 15);
 			player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_IRON_XYLOPHONE, 1, 1);
-			return true;
-		}
-		if (commandName.equals("spawn") || commandName.equals("lobby") || commandName.equals("l") || commandName.equals("hub")) {
-
-			//ТУТ ДОЛЖНО ВЫКИДЫВАТЬ ИЗ ИГРЫ КОФИЙ ТЫ ПОНЯЛ?
-
-			player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 0.4F, 1.5F);
-			return true;
-		}
-		if(commandName.equals("globalchat")) {
-			if(globalChat.get(player)) {
-				player.sendMessage(getByLang(lang, "globalChat.cancel"));
-				globalChat.put(player, false);
-			} else {
-				player.sendMessage(getByLang(lang, "globalChat"));
-				globalChat.put(player, true);
-			}
 			return true;
 		}
 
@@ -1054,13 +1056,13 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 					for (OfflinePlayer players0 : team.getPlayers()) {
 						if (players0.isOnline()) {
 							Player players = players0.getPlayer();
-							players.sendMessage(ChatColor.DARK_GREEN + "[" + getStringByLang(lang, "woolbattle.team") + "] " + color + player.getName() + ChatColor.WHITE + ": " + color + msg);
+							players.sendMessage(ChatColor.DARK_GREEN + "[" + getStringByLang(lang, "woolbattle.team") + "] " + color + player.getName() + ChatColor.WHITE + ": " + color + msg.replaceFirst("!", ""));
 						}
 					}
 					hasWrittenAnything.put(player, true);
 				} else {
 					for (Player players : Bukkit.getOnlinePlayers()) {
-						players.sendMessage(ChatColor.AQUA + "[!] " + color + player.getName() + ChatColor.WHITE + ": " + msg.replaceFirst("!", ""));
+						players.sendMessage(ChatColor.AQUA + "[!] " + color + player.getName() + ChatColor.WHITE + ": " + msg);
 					}
 					hasWrittenAnything.put(player, true);
 				}
@@ -1920,9 +1922,10 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 							if (!genStatus.equals("woolbattle.generator.red")) {
 								genBroadcast(genLetter, 1);
 								genStatus = "woolbattle.generator.red";
-							}
-							if (block.getType().isAir() || block.getType().toString().contains("WOOL")) {
-								block.setType(Material.RED_WOOL);
+
+								if (block.getType().isAir() || block.getType().toString().contains("WOOL")) {
+									block.setType(Material.RED_WOOL);
+								}
 							}
 						}
 						case 2 -> {
@@ -1934,9 +1937,10 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 							if (!genStatus.equals("woolbattle.generator.yellow")) {
 								genBroadcast(genLetter, 2);
 								genStatus = "woolbattle.generator.yellow";
-							}
-							if (block.getType().isAir() || block.getType().toString().contains("WOOL")) {
-								block.setType(Material.YELLOW_WOOL);
+
+								if (block.getType().isAir() || block.getType().toString().contains("WOOL")) {
+									block.setType(Material.YELLOW_WOOL);
+								}
 							}
 						}
 						case 3 -> {
@@ -1948,9 +1952,10 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 							if (!genStatus.equals("woolbattle.generator.green")) {
 								genBroadcast(genLetter, 3);
 								genStatus = "woolbattle.generator.green";
-							}
-							if (block.getType().isAir() || block.getType().toString().contains("WOOL")) {
-								block.setType(Material.LIME_WOOL);
+
+								if (block.getType().isAir() || block.getType().toString().contains("WOOL")) {
+									block.setType(Material.LIME_WOOL);
+								}
 							}
 						}
 						case 4 -> {
@@ -1962,9 +1967,10 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 							if (!genStatus.equals("woolbattle.generator.blue")) {
 								genBroadcast(genLetter, 4);
 								genStatus = "woolbattle.generator.blue";
-							}
-							if (block.getType().isAir() || block.getType().toString().contains("WOOL")) {
-								block.setType(Material.LIGHT_BLUE_WOOL);
+
+								if (block.getType().isAir() || block.getType().toString().contains("WOOL")) {
+									block.setType(Material.LIGHT_BLUE_WOOL);
+								}
 							}
 						}
 					}
