@@ -1261,13 +1261,11 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 						Arrays.stream(HorizontalFaces).map(loc.getBlock()::getRelative).forEach(blocclist::add);
 
 						for (Block blocc : blocclist) {
-							if (blocc.getType() == Material.AIR) {
+							if (blocc.getType().isAir()) {
 								blocc.setType(Material.SLIME_BLOCK);
 								player.playSound(player.getLocation(), Sound.ENTITY_SLIME_ATTACK, 0.25F, 1);
 
 								Bukkit.getScheduler().runTaskLater(this, () -> blocc.setType(Material.AIR), 120L);
-							} else {
-								blocclist.remove(blocc);
 							}
 
 							player.setVelocity(new Vector(0, -1, 0));
