@@ -1862,10 +1862,10 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			}
 		}
 
-		double redpercent = (redcount-18)/80.0*100;
-		double yellowpercent = (yellowcount-18)/80.0*100;
-		double greenpercent = (greencount-18)/80.0*100;
-		double bluepercent = (bluecount-18)/80.0*100;
+		double redpercent = redcount/98.0*100;
+		double yellowpercent = yellowcount/98.0*100;
+		double greenpercent = greencount/98.0*100;
+		double bluepercent = bluecount/98.0*100;
 
 		double biggestpercentage = Math.max(Math.max(redpercent, yellowpercent), Math.max(greenpercent, bluepercent));
 
