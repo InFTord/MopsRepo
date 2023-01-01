@@ -567,6 +567,8 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			return true;
 		}
 		if(commandName.equals("globalchat")) {
+			globalChat.putIfAbsent(player, false);
+
 			if(globalChat.get(player)) {
 				player.sendMessage(getByLang(lang, "globalChat.cancel"));
 				globalChat.put(player, false);
@@ -1922,10 +1924,6 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 							if (!genStatus.equals("woolbattle.generator.red")) {
 								genBroadcast(genLetter, 1);
 								genStatus = "woolbattle.generator.red";
-
-								if (block.getType().isAir() || block.getType().toString().contains("WOOL")) {
-									block.setType(Material.RED_WOOL);
-								}
 							}
 						}
 						case 2 -> {
@@ -1937,10 +1935,6 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 							if (!genStatus.equals("woolbattle.generator.yellow")) {
 								genBroadcast(genLetter, 2);
 								genStatus = "woolbattle.generator.yellow";
-
-								if (block.getType().isAir() || block.getType().toString().contains("WOOL")) {
-									block.setType(Material.YELLOW_WOOL);
-								}
 							}
 						}
 						case 3 -> {
@@ -1952,10 +1946,6 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 							if (!genStatus.equals("woolbattle.generator.green")) {
 								genBroadcast(genLetter, 3);
 								genStatus = "woolbattle.generator.green";
-
-								if (block.getType().isAir() || block.getType().toString().contains("WOOL")) {
-									block.setType(Material.LIME_WOOL);
-								}
 							}
 						}
 						case 4 -> {
@@ -1967,10 +1957,6 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 							if (!genStatus.equals("woolbattle.generator.blue")) {
 								genBroadcast(genLetter, 4);
 								genStatus = "woolbattle.generator.blue";
-
-								if (block.getType().isAir() || block.getType().toString().contains("WOOL")) {
-									block.setType(Material.LIGHT_BLUE_WOOL);
-								}
 							}
 						}
 					}
@@ -2052,6 +2038,12 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 					stand.getWorld().spawnParticle(Particle.REDSTONE, stand.getLocation().add(0, 1.5, 0), 10, 0.5, 0.5, 0.5, dustOptions);
 				}
 			}
+
+			for(Block block : genAblocks) {
+				if (block.getType().isAir() || block.getType().toString().contains("WOOL")) {
+					block.setType(team.getType);
+				}
+			}
 		}
 		if(!oldB.equals(newB)) {
 			String generatorOwner = genBcopy.toUpperCase(Locale.ROOT);
@@ -2066,6 +2058,12 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 					Particle.DustOptions dustOptions = new Particle.DustOptions(leatherColor, 1F);
 					stand.getWorld().spawnParticle(Particle.REDSTONE, stand.getLocation().add(0, 1.5, 0), 10, 0.5, 0.5, 0.5, dustOptions);
+				}
+			}
+
+			for(Block block : genBblocks) {
+				if (block.getType().isAir() || block.getType().toString().contains("WOOL")) {
+					block.setType(team.getType);
 				}
 			}
 		}
@@ -2084,6 +2082,12 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 					stand.getWorld().spawnParticle(Particle.REDSTONE, stand.getLocation().add(0, 1.5, 0), 10, 0.5, 0.5, 0.5, dustOptions);
 				}
 			}
+
+			for(Block block : genCblocks) {
+				if (block.getType().isAir() || block.getType().toString().contains("WOOL")) {
+					block.setType(team.getType);
+				}
+			}
 		}
 		if(!oldD.equals(newD)) {
 			String generatorOwner = genDcopy.toUpperCase(Locale.ROOT);
@@ -2098,6 +2102,12 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 					Particle.DustOptions dustOptions = new Particle.DustOptions(leatherColor, 1F);
 					stand.getWorld().spawnParticle(Particle.REDSTONE, stand.getLocation().add(0, 1.5, 0), 10, 0.5, 0.5, 0.5, dustOptions);
+				}
+			}
+
+			for(Block block : genDblocks) {
+				if (block.getType().isAir() || block.getType().toString().contains("WOOL")) {
+					block.setType(team.getType);
 				}
 			}
 		}
@@ -2808,15 +2818,15 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 					String Dcopy = getStringByLang(lang, genDstatus);
 
 					if(gensLocked) {
-						Acopy = Acopy + ChatColor.GRAY + " ⚠";
-						Bcopy = Bcopy + ChatColor.GRAY + " ⚠";
-						Ccopy = Ccopy + ChatColor.GRAY + " ⚠";
-						Dcopy = Dcopy + ChatColor.GRAY + " ⚠";
+						Acopy += ChatColor.GRAY + " ⚠";
+						Bcopy += ChatColor.GRAY + " ⚠";
+						Ccopy += ChatColor.GRAY + " ⚠";
+						Dcopy += ChatColor.GRAY + " ⚠";
 					} else {
-						Acopy = Acopy + genApercent;
-						Bcopy = Bcopy + genBpercent;
-						Ccopy = Ccopy + genCpercent;
-						Dcopy = Dcopy + genDpercent;
+						Acopy += genApercent;
+						Bcopy += genBpercent;
+						Ccopy += genCpercent;
+						Dcopy += genDpercent;
 					}
 
 					fakekills.getScore(getStringByLang(lang, "woolbattle.generator.a") + " - " + Acopy).setScore(5);
