@@ -56,7 +56,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 	// пододжди два года и сделаю))))
 
 	final MopsUtils utils = new MopsUtils(this);
-	final Abilities abilities = new Abilities(this);
+	final BaseItems baseItems = new BaseItems(this);
 	Translation translator;
 
 	final List<Block> ppbs = new ArrayList<>();
@@ -1422,136 +1422,29 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		return hasItems;
 	}
 
-	public ItemStack randomLoot(ItemStack loot1item) {
+	public ItemStack randomLoot(ItemStack item) {
 		int max = 13;
 		int min = 1;
-		int loot1 = (int) (Math.random() * (max - min + 1)) + min;
-		ItemMeta loot1meta = loot1item.getItemMeta();
-		List<String> loot1lore = new ArrayList<>();
+		int loot = (int) (Math.random() * (max - min + 1)) + min;
 
-		switch (loot1) {
-			case 1 -> {
-				loot1item.setType(Material.SHIELD);
-				loot1meta.displayName(getByLang(lang, "shield.name"));
+		Items items = new Items(this);
 
-				loot1lore = new ArrayList<>(Arrays.asList(MopsUtils.textComponentToString(getByLang(lang, "shield.lore")).split("\n")));
-				List<String> lore1 = new ArrayList<>();
-				for(String string : loot1lore) {
-					lore1.add(MopsUtils.convertColorCodes(string));
-				}
-				loot1meta.setLore(lore1);
-
-				loot1item.setItemMeta(loot1meta);
-				loot1item.setDurability((short) 320);
+		switch (loot) {
+			case 1 -> item = items.shield(lang);
+			case 2, 3 -> item = items.axe(lang);
+			case 4, 5 -> item = items.potion(lang);
+			case 6 -> item = MopsUtils.amount(items.leaves(lang), 8);
+			case 7 -> item = MopsUtils.amount(items.leaves(lang), 16);
+			case 8 -> item = MopsUtils.amount(items.leaves(lang), 32);
+			case 9, 10 -> item = MopsUtils.amount(items.enderpearl(lang), 1);
+			case 11 -> item = MopsUtils.amount(items.enderpearl(lang), 2);
+			case 12 -> {
+				item = items.platform(lang);
+				platforms.add(item);
 			}
-			case 2 -> {
-				loot1item.setType(Material.OAK_LEAVES);
-				loot1meta.displayName(getByLang(lang, "leaves.name"));
-				loot1lore.add(getStringByLang(lang, "leaves.lore"));
-				loot1meta.setLore(loot1lore);
-				loot1item.setItemMeta(loot1meta);
-				loot1item.setAmount(16);
-			}
-			case 3, 11 -> {
-				loot1item.setType(Material.STONE_AXE);
-				loot1meta.displayName(getByLang(lang, "axe.name"));
-
-				loot1lore = new ArrayList<>(Arrays.asList(MopsUtils.textComponentToString(getByLang(lang, "axe.lore")).split("\n")));
-				List<String> lore1 = new ArrayList<>();
-				for(String string : loot1lore) {
-					lore1.add(MopsUtils.convertColorCodes(string));
-				}
-				loot1meta.setLore(lore1);
-
-				loot1meta.addEnchant(Enchantment.KNOCKBACK, 3, true);
-
-				loot1item.setItemMeta(loot1meta);
-				loot1item.setDurability((short) 115);
-			}
-			case 4, 13 -> {
-				ItemStack potion = new ItemStack(Material.POTION);
-				PotionMeta potionmeta = (PotionMeta) potion.getItemMeta();
-				potionmeta.addCustomEffect(new PotionEffect(PotionEffectType.JUMP, 1800, 1), true);
-				potionmeta.displayName(getByLang(lang, "jumpboost.name"));
-				potionmeta.setColor(Color.LIME);
-				potion.setItemMeta(potionmeta);
-				loot1item.setType(Material.POTION);
-				loot1item = potion;
-			}
-			case 5 -> {
-				loot1item.setType(Material.OAK_LEAVES);
-				loot1meta.displayName(getByLang(lang, "leaves.name"));
-				loot1lore.add(getStringByLang(lang, "leaves.lore"));
-				loot1meta.setLore(loot1lore);
-				loot1item.setItemMeta(loot1meta);
-				loot1item.setAmount(32);
-			}
-			case 6 -> {
-				loot1item.setType(Material.BRICK);
-
-				loot1meta.displayName(getByLang(lang, "platform.name"));
-
-				loot1lore = new ArrayList<>(Arrays.asList(MopsUtils.textComponentToString(getByLang(lang, "platform.lore")).split("\n")));
-				List<String> lore1 = new ArrayList<>();
-				for(String string : loot1lore) {
-					lore1.add(MopsUtils.convertColorCodes(string));
-				}
-				loot1meta.setLore(lore1);
-
-				loot1meta.addEnchant(Enchantment.DURABILITY, 1, true);
-				loot1meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-				loot1item.setItemMeta(loot1meta);
-
-				platforms.add(loot1item);
-			}
-			case 7 -> {
-				loot1item.setType(Material.ENDER_PEARL);
-				loot1meta.displayName(getByLang(lang, "enderpearl.name"));
-				loot1lore.add(getStringByLang(lang, "enderpearl.lore"));
-				loot1meta.addEnchant(Enchantment.DURABILITY, 1, true);
-				loot1meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-				loot1meta.setLore(loot1lore);
-				loot1item.setItemMeta(loot1meta);
-				loot1item.setAmount(2);
-			}
-			case 8, 12 -> {
-				loot1item.setType(Material.ENDER_PEARL);
-				loot1meta.displayName(getByLang(lang, "enderpearl.name"));
-				loot1lore.add(getStringByLang(lang, "enderpearl.lore"));
-				loot1meta.addEnchant(Enchantment.DURABILITY, 1, true);
-				loot1meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-				loot1meta.setLore(loot1lore);
-				loot1item.setItemMeta(loot1meta);
-				loot1item.setAmount(1);
-			}
-			case 9 -> {
-				loot1item.setType(Material.OAK_LEAVES);
-				loot1meta.displayName(getByLang(lang, "leaves.name"));
-				loot1lore.add(getStringByLang(lang, "leaves.lore"));
-				loot1meta.setLore(loot1lore);
-				loot1item.setItemMeta(loot1meta);
-				loot1item.setAmount(8);
-			}
-			case 10 -> {
-				loot1item.setType(Material.BLAZE_ROD);
-				loot1meta.displayName(getByLang(lang, "explosionStaffMK2.name"));
-
-				loot1lore = new ArrayList<>(Arrays.asList(MopsUtils.textComponentToString(getByLang(lang, "explosionStaffMK2.lore")).split("\n")));
-				List<String> lore1 = new ArrayList<>();
-				for(String string : loot1lore) {
-					lore1.add(MopsUtils.convertColorCodes(string));
-				}
-				loot1meta.setLore(lore1);
-
-				loot1meta.addEnchant(Enchantment.DURABILITY, 0, true);
-				loot1meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-				loot1item.setItemMeta(loot1meta);
-				loot1item.setAmount(1);
-
-				explosiveSticksMK2.add(loot1item);
-			}
+			case 13 -> item = items.boomstickMK2(lang);
 		}
-		return loot1item;
+		return item;
 	}
 
 	private static final BlockFace[] HorizontalFaces = new BlockFace[]{
@@ -2476,7 +2369,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 		this.gameactive = true;
 
-		abilities.startGame(lang, team, player);
+		baseItems.startGame(lang, team, player);
 	}
 
 	public void timedGameStart(Player player, String teamname) {

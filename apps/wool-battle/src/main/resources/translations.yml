@@ -179,7 +179,7 @@ woolbattle:
       eng: "&7Teleports."
   - jumpboost.name:
       rus: "&aЗелье Прыгучести (1:30)"
-      eng: "&aJump Boost Potion (1:30)"
+      eng: "&aLeaping Potion (1:30)"
   - notEnoughWool:
       rus: "&cНедостаточно шерсти!"
       eng: "&cNot enough wool!"

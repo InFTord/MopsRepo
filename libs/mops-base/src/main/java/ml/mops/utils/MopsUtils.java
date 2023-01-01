@@ -266,6 +266,12 @@ public class MopsUtils <OBJ extends Object, COMPONENT_COLLECTION extends Collect
 		return item;
 	}
 
+	static public ItemStack amount(ItemStack item, int amount) {
+		item.setAmount(amount);
+
+		return item;
+	}
+
 	static public ItemStack colorItem(ItemStack item, String hex) {
 		if(leatherItems().contains(item.getType())) {
 			ItemMeta meta = item.hasItemMeta() ? item.getItemMeta() : Bukkit.getItemFactory().getItemMeta(item.getType());
