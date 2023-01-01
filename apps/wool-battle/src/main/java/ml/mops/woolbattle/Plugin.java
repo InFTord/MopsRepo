@@ -1867,22 +1867,22 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		double greenpercent = (greencount-18)/80.0*100;
 		double bluepercent = (bluecount-18)/80.0*100;
 
-		int biggestpercentage = (int) Math.round(Math.max(Math.max(redpercent, yellowpercent), Math.max(greenpercent, bluepercent)));
+		double biggestpercentage = Math.max(Math.max(redpercent, yellowpercent), Math.max(greenpercent, bluepercent));
 
 		String truepercentage = ChatColor.GRAY + " (0%)";
 
 		if(biggestpercentage > 0) {
 			if(biggestpercentage == redpercent) {
-				truepercentage = ChatColor.RED + " (" + biggestpercentage + "%)";
+				truepercentage = ChatColor.RED + " (" + (int) Math.round(biggestpercentage) + "%)";
 			}
 			if(biggestpercentage == yellowpercent) {
-				truepercentage = ChatColor.YELLOW + " (" + biggestpercentage + "%)";
+				truepercentage = ChatColor.YELLOW + " (" + (int) Math.round(biggestpercentage) + "%)";
 			}
 			if(biggestpercentage == greenpercent) {
-				truepercentage = ChatColor.GREEN + " (" + biggestpercentage + "%)";
+				truepercentage = ChatColor.GREEN + " (" + (int) Math.round(biggestpercentage) + "%)";
 			}
 			if(biggestpercentage == bluepercent) {
-				truepercentage = ChatColor.AQUA + " (" + biggestpercentage + "%)";
+				truepercentage = ChatColor.AQUA + " (" + (int) Math.round(biggestpercentage) + "%)";
 			}
 		}
 
