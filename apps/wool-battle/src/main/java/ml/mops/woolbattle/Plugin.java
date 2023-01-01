@@ -490,10 +490,10 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 				genCaptureChecks(genBblocks, genBblocksLONG, "B");
 				genCaptureChecks(genCblocks, genCblocksLONG, "C");
 				genCaptureChecks(genDblocks, genDblocksLONG, "D");
-			}
 
-			if(!genAstatus.equals(genAstatus2) || !genBstatus.equals(genBstatus2) || !genCstatus.equals(genCstatus2) || !genDstatus.equals(genDstatus2)) {
-				onCapture(genAstatus2, genBstatus2, genCstatus2, genDstatus2, genAstatus, genBstatus, genCstatus, genDstatus);
+				if(!genAstatus.equals(genAstatus2) || !genBstatus.equals(genBstatus2) || !genCstatus.equals(genCstatus2) || !genDstatus.equals(genDstatus2)) {
+					onCapture(genAstatus2, genBstatus2, genCstatus2, genDstatus2, genAstatus, genBstatus, genCstatus, genDstatus);
+				}
 			}
 		}, 80L, 20L);
 
@@ -1008,7 +1008,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		Player player = event.getPlayer();
 		Team team = mainboard.getPlayerTeam(player);
 		String teamname = team.getName();
-		String msg = event.getMessage().replaceAll("skull", ChatColor.GRAY + "☠");
+		String msg = event.getMessage().replaceAll(":skull:", ChatColor.GRAY + "☠" + ChatColor.RESET);
 		hasWrittenAnything.putIfAbsent(player, false);
 		globalChat.putIfAbsent(player, false);
 
@@ -1030,7 +1030,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		}
 
 		if (!player.getScoreboardTags().contains("spectator")) {
-			if(globalChat.get(player)) {
+			if(!globalChat.get(player)) {
 				if (msg.startsWith("!")) {
 					for (Player players : Bukkit.getOnlinePlayers()) {
 						players.sendMessage(ChatColor.AQUA + "[!] " + color + player.getName() + ChatColor.WHITE + ": " + msg.replaceFirst("!", ""));
@@ -1805,16 +1805,16 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 		for (Block block : blocklist) {
 			if (block.getType().equals(Material.RED_WOOL)) {
-				redcount = redcount + 1;
+				redcount++;
 			}
 			if (block.getType().equals(Material.YELLOW_WOOL)) {
-				yellowcount = yellowcount + 1;
+				yellowcount++;
 			}
 			if (block.getType().equals(Material.LIME_WOOL)) {
-				greencount = greencount + 1;
+				greencount++;
 			}
 			if (block.getType().equals(Material.LIGHT_BLUE_WOOL)) {
-				bluecount = bluecount + 1;
+				bluecount++;
 			}
 
 			if (redcount >= 80) {
@@ -1842,23 +1842,23 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 		for (Block block : blocklist) {
 			if (block.getType().equals(Material.RED_WOOL)) {
-				redcount = redcount + 1;
+				redcount++;
 			}
 			if (block.getType().equals(Material.YELLOW_WOOL)) {
-				yellowcount = yellowcount + 1;
+				yellowcount++;
 			}
 			if (block.getType().equals(Material.LIME_WOOL)) {
-				greencount = greencount + 1;
+				greencount++;
 			}
 			if (block.getType().equals(Material.LIGHT_BLUE_WOOL)) {
-				bluecount = bluecount + 1;
+				bluecount++;
 			}
 		}
 
-		int redpercent = redcount/80*100;
-		int yellowpercent = yellowcount/80*100;
-		int greenpercent = greencount/80*100;
-		int bluepercent = bluecount/80*100;
+		int redpercent = Math.round(redcount/80*100);
+		int yellowpercent = Math.round(yellowcount/80*100);
+		int greenpercent = Math.round(greencount/80*100);
+		int bluepercent = Math.round(bluecount/80*100);
 
 		int biggestpercentage = Math.max(Math.max(redpercent, yellowpercent), Math.max(greenpercent, bluepercent));
 
@@ -1911,50 +1911,62 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 					int genowner = countGenWool(redcount, yellowcount, greencount, bluecount, gen);
 
 					switch (genowner) {
-						case 1:
+						case 1 -> {
 							for (Block blocc : genLONG) {
 								if (String.valueOf(blocc.getType()).contains("CONCRETE") && blocc.getType() != Material.AIR) {
 									blocc.setType(Material.RED_CONCRETE);
 								}
-								if (!genStatus.equals("woolbattle.generator.red")) {
-									genBroadcast(genLetter, 1);
-									genStatus = "woolbattle.generator.red";
-								}
 							}
-							break;
-						case 2:
+							if (!genStatus.equals("woolbattle.generator.red")) {
+								genBroadcast(genLetter, 1);
+								genStatus = "woolbattle.generator.red";
+							}
+							if (block.getType().isAir() || block.getType().toString().contains("WOOL")) {
+								block.setType(Material.RED_WOOL);
+							}
+						}
+						case 2 -> {
 							for (Block blocc : genLONG) {
 								if (String.valueOf(blocc.getType()).contains("CONCRETE") && blocc.getType() != Material.AIR) {
 									blocc.setType(Material.YELLOW_CONCRETE);
 								}
-								if (!genStatus.equals("woolbattle.generator.yellow")) {
-									genBroadcast(genLetter, 2);
-									genStatus = "woolbattle.generator.yellow";
-								}
 							}
-							break;
-						case 3:
+							if (!genStatus.equals("woolbattle.generator.yellow")) {
+								genBroadcast(genLetter, 2);
+								genStatus = "woolbattle.generator.yellow";
+							}
+							if (block.getType().isAir() || block.getType().toString().contains("WOOL")) {
+								block.setType(Material.YELLOW_WOOL);
+							}
+						}
+						case 3 -> {
 							for (Block blocc : genLONG) {
 								if (String.valueOf(blocc.getType()).contains("CONCRETE") && blocc.getType() != Material.AIR) {
 									blocc.setType(Material.LIME_CONCRETE);
 								}
-								if (!genStatus.equals("woolbattle.generator.green")) {
-									genBroadcast(genLetter, 3);
-									genStatus = "woolbattle.generator.green";
-								}
 							}
-							break;
-						case 4:
+							if (!genStatus.equals("woolbattle.generator.green")) {
+								genBroadcast(genLetter, 3);
+								genStatus = "woolbattle.generator.green";
+							}
+							if (block.getType().isAir() || block.getType().toString().contains("WOOL")) {
+								block.setType(Material.LIME_WOOL);
+							}
+						}
+						case 4 -> {
 							for (Block blocc : genLONG) {
 								if (String.valueOf(blocc.getType()).contains("CONCRETE") && blocc.getType() != Material.AIR) {
 									blocc.setType(Material.LIGHT_BLUE_CONCRETE);
 								}
-								if (!genStatus.equals("woolbattle.generator.blue")) {
-									genBroadcast(genLetter, 4);
-									genStatus = "woolbattle.generator.blue";
-								}
 							}
-							break;
+							if (!genStatus.equals("woolbattle.generator.blue")) {
+								genBroadcast(genLetter, 4);
+								genStatus = "woolbattle.generator.blue";
+							}
+							if (block.getType().isAir() || block.getType().toString().contains("WOOL")) {
+								block.setType(Material.LIGHT_BLUE_WOOL);
+							}
+						}
 					}
 				}
 			}
