@@ -514,7 +514,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 		WebhookEmbed embed = new WebhookEmbedBuilder()
 				.setColor(java.awt.Color.GREEN.getRGB())
-				.setDescription("\uD83D\uDFE2 woolbattle запущен.")
+				.setDescription("\uD83D\uDFE2 `wool-battle` is turned on")
 				.build();
 		client.send(embed);
 	}
@@ -527,7 +527,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 		WebhookEmbed embed = new WebhookEmbedBuilder()
 				.setColor(java.awt.Color.RED.getRGB())
-				.setDescription("\uD83D\uDD34 woolbattle выключен.")
+				.setDescription("\uD83D\uDD34 `wool-battle` is turned off.")
 				.build();
 		client.send(embed);
 

@@ -33,7 +33,7 @@ public class Plugin extends JavaPlugin implements Listener {
 
         WebhookEmbed embed = new WebhookEmbedBuilder()
                 .setColor(Color.GREEN.getRGB())
-                .setDescription("\uD83D\uDFE2 mopsmaps запущен.")
+                .setDescription("\uD83D\uDFE2 `mops-maps` is turned on.")
                 .build();
         client.send(embed);
     }
@@ -44,7 +44,7 @@ public class Plugin extends JavaPlugin implements Listener {
 
         WebhookEmbed embed = new WebhookEmbedBuilder()
                 .setColor(Color.RED.getRGB())
-                .setDescription("\uD83D\uDD34 mopsmaps выключен.")
+                .setDescription("\uD83D\uDD34 `mops-maps` is turned off.")
                 .build();
         client.send(embed);
     }
