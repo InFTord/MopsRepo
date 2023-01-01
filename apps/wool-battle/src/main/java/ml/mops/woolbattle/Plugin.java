@@ -2485,81 +2485,81 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		}
 	}
 
-	public void gameStartSequence(Player player1, String teamname) {
+	public void gameStartSequence(Player player, String teamname) {
 		Teams team;
 
 		if (teamname.contains("red")) {
-			Location loc = new Location(player1.getWorld(), 9.5, 258, -27.5);
-			player1.teleport(loc);
+			Location loc = new Location(player.getWorld(), 9.5, 258, -27.5);
+			player.teleport(loc);
 			team = Teams.RED;
 		} else if (teamname.contains("yellow")) {
-			Location loc = new Location(player1.getWorld(), -27.5, 258, 9.5);
+			Location loc = new Location(player.getWorld(), -27.5, 258, 9.5);
 			loc.setYaw(-90);
-			player1.teleport(loc);
+			player.teleport(loc);
 			team = Teams.YELLOW;
 		} else if (teamname.contains("green")) {
-			Location loc = new Location(player1.getWorld(), 9.5, 258, 46.5);
+			Location loc = new Location(player.getWorld(), 9.5, 258, 46.5);
 			loc.setYaw(-180);
-			player1.teleport(loc);
+			player.teleport(loc);
 			team = Teams.GREEN;
 		} else if (teamname.contains("blue")) {
-			Location loc = new Location(player1.getWorld(), 46.5, 258, 9.5);
+			Location loc = new Location(player.getWorld(), 46.5, 258, 9.5);
 			loc.setYaw(90);
-			player1.teleport(loc);
+			player.teleport(loc);
 			team = Teams.BLUE;
 		} else {
 			team = Teams.SPECTATOR;
 		}
 
-		gameStartingTitle(player1);
+		gameStartingTitle(player);
 		requiredKills = (int) (Math.round(4 * (Bukkit.getOnlinePlayers().size() * 0.7))) + 1;
 
 		Bukkit.getScheduler().runTaskLater(this, () -> {
-			player1.sendTitle(getStringByLang(lang, "killRequirement.1"), getStringByLang(lang, "killRequirement.2", Map.of("kills", String.valueOf(requiredKills))), 5, 40, 30);
+			player.sendTitle(getStringByLang(lang, "killRequirement.1"), getStringByLang(lang, "killRequirement.2", Map.of("kills", String.valueOf(requiredKills))), 5, 40, 30);
 
-			player1.playSound(player1.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 0);
-			player1.playSound(player1.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 0.2F);
+			player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 0);
+			player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 0.2F);
 			Bukkit.getScheduler().runTaskLater(this, () -> {
-				player1.playSound(player1.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 0.25F);
-				player1.playSound(player1.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 0.5F);
+				player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 0.25F);
+				player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 0.5F);
 				Bukkit.getScheduler().runTaskLater(this, () -> {
-					player1.playSound(player1.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 0.6F);
-					player1.playSound(player1.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 0.8F);
+					player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 0.6F);
+					player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 0.8F);
 
-					player1.sendMessage(getByLang(lang, "onStartMessage", Map.of("kills", String.valueOf(requiredKills))));
+					player.sendMessage(getByLang(lang, "onStartMessage", Map.of("kills", String.valueOf(requiredKills))));
 				}, 3L);
 			}, 3L);
 
 		}, 60L);
 
-		player1.playSound(player1.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
-		player1.removeScoreboardTag("onspawn");
-		player1.removeScoreboardTag("canbreak");
-		player1.addScoreboardTag("ingame");
-		player1.setHealth(player1.getMaxHealth());
-		player1.setGameMode(GameMode.SURVIVAL);
+		player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
+		player.removeScoreboardTag("onspawn");
+		player.removeScoreboardTag("canbreak");
+		player.addScoreboardTag("ingame");
+		player.setHealth(player.getMaxHealth());
+		player.setGameMode(GameMode.SURVIVAL);
 
 		try {
-			damagetask0.get(player1).cancel();
+			damagetask0.get(player).cancel();
 		} catch (Throwable ignored) {}
 
 		this.gameactive = true;
 
-		abilities.startGame(lang, team, player1);
-
+		abilities.startGame(lang, team, player);
 	}
 
-	public void timedGameStart(Player player1, String teamname) {
+	public void timedGameStart(Player player, String teamname) {
 		Bukkit.getScheduler().runTaskLater(this, () -> {
-			player1.playSound(player1.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 0);
-			player1.sendTitle(getStringByLang(lang, "startsIn"), ChatColor.RED + "3", 1, 20, 20);
+			player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 0);
+			player.sendTitle(getStringByLang(lang, "startsIn"), ChatColor.RED + "3", 1, 20, 20);
 			Bukkit.getScheduler().runTaskLater(this, () -> {
-				player1.playSound(player1.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
-				player1.sendTitle(getStringByLang(lang, "startsIn"), ChatColor.YELLOW + "2", 1, 20, 20);
+				player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
+				player.sendTitle(getStringByLang(lang, "startsIn"), ChatColor.YELLOW + "2", 1, 20, 20);
 				Bukkit.getScheduler().runTaskLater(this, () -> {
-					player1.playSound(player1.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1.5F);
-					player1.sendTitle(getStringByLang(lang, "startsIn"), ChatColor.GREEN + "1", 1, 20, 20);
-					Bukkit.getScheduler().runTaskLater(this, () -> gameStartSequence(player1, teamname), 40L);
+					player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1.5F);
+					player.sendTitle(getStringByLang(lang, "startsIn"), ChatColor.GREEN + "1", 1, 20, 20);
+
+					Bukkit.getScheduler().runTaskLater(this, () -> gameStartSequence(player, teamname), 40L);
 				}, 40L);
 			}, 40L);
 		}, 40L);
