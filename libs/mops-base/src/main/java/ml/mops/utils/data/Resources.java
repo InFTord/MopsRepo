@@ -1,4 +1,4 @@
-package ml.mops.utils;
+package ml.mops.utils.data;
 
 import org.bukkit.plugin.Plugin;
 

@@ -4,7 +4,7 @@ import club.minnced.discord.webhook.WebhookClient;
 import club.minnced.discord.webhook.send.WebhookEmbed;
 import club.minnced.discord.webhook.send.WebhookEmbedBuilder;
 import ml.mops.base.MopsPlugin;
-import ml.mops.utils.Translation;
+import ml.mops.utils.data.Translation;
 import ml.mops.utils.MopsUtils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
@@ -27,7 +27,6 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemFlag;
@@ -120,8 +119,13 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 	final double BLOCK_ROTATION_RADIANS = BLOCK_ROTATION_DEGREES * DEGREES_TO_RADIANS;
 	final double PI_TIMES_TWO = Math.PI * 2;
 
-	@Override
-	public void onEnable() {
+	protected Map<Object, String> doOnEnableMethodName = new HashMap<Object, String>() {{
+		put(this.getClass(), "onEnableRoutine");
+		putAll(Plugin.super.doOnEnableMethodName);
+	}};
+
+
+	public void onEnableRoutine() {
 		super.onEnable();
 		Bukkit.getServer().getPluginManager().registerEvents(this, this);
 
@@ -2929,14 +2933,14 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 
 	@Override
-	public TextComponent getByLang(String lang, String string) {
+	public TextComponent getByLang(String lang, String string, @Nullable Object customFormat, @Nullable Object fromRoot) {
 //		getLogger().info("WoolBattle:Plugin | getByLang: \n" + lang + "\n" + string);
 		return translator.getTranslation(lang, string.replaceFirst("woolbattle.", "")).decoration(TextDecoration.ITALIC, false);
 	}
 	@Override
 	public TextComponent getByLang(String lang, String string, Map<String, String> formatV) {
 //		getLogger().info("WoolBattle:Plugin | getByLang: \n" + lang + "\n" + string + "\n" + formatV.toString());
-		return translator.getTranslation(lang, string.replaceFirst("woolbattle.", ""), formatV).decoration(TextDecoration.ITALIC, false);
+		return translator.getTranslation(lang, string.replaceFirst("woolbattle.", ""), formatV, false).decoration(TextDecoration.ITALIC, false);
 
 	}
 	public Title genTitle(@NotNull String lang, @Nullable String id, @Nullable String id2nd, int i, int j, int k) {

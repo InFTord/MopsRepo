@@ -39,7 +39,7 @@ import java.util.*;
 
 import static net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacyAmpersand;
 
-public class MopsUtils <OBJ extends Object, COMPONENT_COLLECTION extends Collection<Component>, COLLECTION extends Collection<OBJ>> {
+public class MopsUtils <OBJ extends Object, COMPONENT_COLLECTION extends Collection<Component>, COLLECTION extends Collection<OBJ>, COMPONENT extends Collection<Component>> {
 	MopsPlugin plugin;
 
 
@@ -90,6 +90,8 @@ public class MopsUtils <OBJ extends Object, COMPONENT_COLLECTION extends Collect
 
 		return Title.title(c1, c2, times);
 	}
+
+
 
 	static public List<String> componentsToStrings(List<Component> textComponents) {
 		List<String> strings = null;
