@@ -572,9 +572,11 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			if(globalChat.get(player)) {
 				player.sendMessage(getByLang(lang, "globalChat.cancel"));
 				globalChat.put(player, false);
+				player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
 			} else {
 				player.sendMessage(getByLang(lang, "globalChat"));
 				globalChat.put(player, true);
+				player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
 			}
 			return true;
 		}
@@ -1252,7 +1254,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 					if (hasItems) {
 						Location loc = player.getLocation();
 						int height = (int) (loc.getY() - 30);
-						height = height = Math.min(Math.max(height, 170), 319);
+						height = Math.min(Math.max(height, 170), 319);
 						loc.setY(height);
 
 						List<Block> blocclist = new ArrayList<>();
@@ -1262,8 +1264,11 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 							if (blocc.getType() == Material.AIR) {
 								blocc.setType(Material.SLIME_BLOCK);
 								player.playSound(player.getLocation(), Sound.ENTITY_SLIME_ATTACK, 0.25F, 1);
+
+								Bukkit.getScheduler().runTaskLater(this, () -> blocc.setType(Material.AIR), 120L);
+							} else {
+								blocclist.remove(blocc);
 							}
-							Bukkit.getScheduler().runTaskLater(this, () -> blocc.setType(Material.AIR), 120L);
 
 							player.setVelocity(new Vector(0, -1, 0));
 						}
@@ -1859,12 +1864,18 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			}
 		}
 
-		int redpercent = Math.round(redcount/80*100);
-		int yellowpercent = Math.round(yellowcount/80*100);
-		int greenpercent = Math.round(greencount/80*100);
-		int bluepercent = Math.round(bluecount/80*100);
+		int redpercent = Math.min(Math.round(redcount/80*100), 100);
+		int yellowpercent = Math.min(Math.round(yellowcount/80*100), 100);
+		int greenpercent = Math.min(Math.round(greencount/80*100), 100);
+		int bluepercent = Math.min(Math.round(bluecount/80*100), 100);
 
 		int biggestpercentage = Math.max(Math.max(redpercent, yellowpercent), Math.max(greenpercent, bluepercent));
+
+		System.out.println("redpercent: " + redpercent);
+		System.out.println("yellowpercent: " + yellowpercent);
+		System.out.println("greenpercent: " + greenpercent);
+		System.out.println("bluepercent: " + bluepercent);
+		System.out.println("biggestpercent: " + biggestpercentage);
 
 		String truepercentage = ChatColor.GRAY + " (0%)";
 
