@@ -1482,7 +1482,6 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		switch (loot1) {
 			case 1 -> {
 				loot1item.setType(Material.SHIELD);
-
 				loot1meta.displayName(getByLang(lang, "shield.name"));
 
 				loot1lore = new ArrayList<>(Arrays.asList(MopsUtils.textComponentToString(getByLang(lang, "shield.lore")).split("\n")));
@@ -1505,7 +1504,6 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			}
 			case 3, 11 -> {
 				loot1item.setType(Material.STONE_AXE);
-
 				loot1meta.displayName(getByLang(lang, "axe.name"));
 
 				loot1lore = new ArrayList<>(Arrays.asList(MopsUtils.textComponentToString(getByLang(lang, "axe.lore")).split("\n")));
@@ -1514,6 +1512,8 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 					lore1.add(MopsUtils.convertColorCodes(string));
 				}
 				loot1meta.setLore(lore1);
+
+				loot1meta.addEnchant(Enchantment.KNOCKBACK, 3, true);
 
 				loot1item.setItemMeta(loot1meta);
 				loot1item.setDurability((short) 115);
