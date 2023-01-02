@@ -939,7 +939,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		Team team = mainboard.getPlayerTeam(player);
 		String teamname = team.getName();
 
-		player.setDisplayName(ChatColor.WHITE + player.getName());
+		player.setPlayerListName(ChatColor.WHITE + player.getName());
 
 		event.setJoinMessage("");
 		for(Player players : Bukkit.getOnlinePlayers()) {
@@ -2186,7 +2186,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			onlinePlayer.removeScoreboardTag("spectator");
 			clearScoreboard(onlinePlayer);
 
-			onlinePlayer.setDisplayName(ChatColor.WHITE + onlinePlayer.getName());
+			onlinePlayer.setPlayerListName(ChatColor.WHITE + onlinePlayer.getName());
 
 			resetEveryFuckingKillScoreboard(onlinePlayer);
 			try {
@@ -2457,7 +2457,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			team = Teams.SPECTATOR;
 		}
 
-		player.setDisplayName(team.getChatColor + player.getName());
+		player.setPlayerListName(team.getChatColor + player.getName());
 
 		gameStartingTitle(player);
 		requiredKills = (int) (Math.round(4 * (Bukkit.getOnlinePlayers().size() * 0.7))) + 1;
@@ -2683,6 +2683,12 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 				}
 			}
 		}
+
+		Items items = new Items(this);
+		platforms.add(items.platform(lang));
+		platforms3d.add(items.platform3d(lang));
+		boomsticksMK2.add(items.boomstickMK2(lang));
+		boomsticksMK3.add(items.boomstickMK3(lang));
 
 		lootGenerator();
 
