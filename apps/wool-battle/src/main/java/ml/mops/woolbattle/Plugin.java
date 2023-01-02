@@ -1279,7 +1279,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 					if (hasItems) {
 						Location loc = player.getLocation();
 						int height = (int) (loc.getY() - 10);
-						height = Math.min(Math.max(height, 170), 319);
+						height = Math.min(Math.max(height, 170), 318);
 						loc.setY(height);
 
 						Material mat = Material.WHITE_WOOL;
