@@ -208,7 +208,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
         WebhookEmbed embed = new WebhookEmbedBuilder()
                 .setColor(Color.GREEN.asRGB())
-                .setDescription("\uD83D\uDFE2 mopslobby запущен.")
+                .setDescription("\uD83D\uDFE2 `mops-lobby` is turned on.")
                 .build();
         client.send(embed);
     }
@@ -230,7 +230,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
         WebhookEmbed embed = new WebhookEmbedBuilder()
                 .setColor(Color.RED.asRGB())
-                .setDescription("\uD83D\uDD34 mopslobby выключен.")
+                .setDescription("\uD83D\uDD34 `mops-lobby` is turned off.")
                 .build();
         client.send(embed);
     }
