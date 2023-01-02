@@ -123,7 +123,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 	final double BLOCK_ROTATION_RADIANS = BLOCK_ROTATION_DEGREES * DEGREES_TO_RADIANS;
 	final double PI_TIMES_TWO = Math.PI * 2;
 
-	ItemGUI itemGUI = new ItemGUI(this);
+	ItemGUI itemGUI = null;
 
 	@Override
 	public void onEnable() {
@@ -168,6 +168,8 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		translator = new Translation(translation, getLogger(), "woolbattle");
 
 //		this.connectToIP = config.getString("ip");
+
+		itemGUI = new ItemGUI(this);
 
 		mainworld = Bukkit.getServer().getWorlds().get(0);
 		manager = Bukkit.getScoreboardManager();
