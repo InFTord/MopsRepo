@@ -31,7 +31,7 @@ public class BaseItems {
 
 		ItemStack boomstickMK1 = items.boomstickMK1(lang);
 		player.getInventory().setItem(1, boomstickMK1);
-		plugin.explosiveSticks.add(boomstickMK1);
+		plugin.boomsticks.add(boomstickMK1);
 
 		ItemStack slimeball = items.slimeball(lang);
 		player.getInventory().setItem(2, slimeball);

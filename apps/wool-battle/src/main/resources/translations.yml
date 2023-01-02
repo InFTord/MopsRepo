@@ -78,26 +78,36 @@ woolbattle:
       eng: |
         &7Lets you jump in the air. &8(Requires double tapping space)
         &bCost: 16 wool
-  - explosionStaff.name:
+  - boomstick.name:
       rus: "&eВзрывная Палка"
       eng: "&eBoomstick"
-  - explosionStaff.lore:
+  - boomstick.lore:
       rus: |
         &7Палка откидывающая тебя назад. &e&lПКМ &r&8(Нужно наводится на блок)
         &bСтоимость: 28 шерсти
       eng: |
         &7Stick that throws you backwards. &e&lRIGHT CLICK &r&8(Aim on a block)
         &bCost: 28 wool
-  - explosionStaffMK2.name:
+  - boomstickMK2.name:
       rus: "&eВзрывная Палка (T2)"
       eng: "&eBoomstick (Mk II)"
-  - explosionStaffMK2.lore:
+  - boomstickMK2.lore:
       rus: |
         &7Палка откидывающая тебя назад сильнее. &e&lПКМ &r&8(Нужно наводится на блок)
         &bСтоимость: 40 шерсти
       eng: |
         &7Stick that throws you backwards more. &e&lRIGHT CLICK &r&8(Aim on a block)
         &bCost: 40 wool
+  - boomstickMK3.name:
+      rus: "&3Взрывная Палка (T3)"
+      eng: "&3Boomstick (Mk III)"
+  - boomstickMK3.lore:
+      rus: |
+        &7Палка откидывающая тебя назад очень сильно. &e&lПКМ &r&8(Нужно наводится на блок)
+        &bСтоимость: 100 шерсти
+      eng: |
+        &7Stick that throws you with extreme force. &e&lRIGHT CLICK &r&8(Aim on a block)
+        &bCost: 100 wool
   - shears.name:
       rus: "&bНожницы"
       eng: "&bShears"
@@ -145,6 +155,16 @@ woolbattle:
       eng: |
         &7Spawns a platform of wool. &e&lRIGHT CLICK &8(Doesn't disappear)
         &bCost: 144 wool
+  - platform3d.name:
+      rus: "&cПлатформа!³"
+      eng: "&cPlatform!³"
+  - platform3d.lore:
+      rus: |
+        &7Ставит куб из шерсти. &e&lПКМ &8(Не пропадает)
+        &bСтоимость: 256 шерсти
+      eng: |
+        &7Spawns a cube of wool. &e&lRIGHT CLICK &8(Doesn't disappear)
+        &bCost: 256 wool
   - shield.name:
       rus: "&7Щит"
       eng: "&7Shield"

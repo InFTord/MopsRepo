@@ -5,7 +5,7 @@ import org.bukkit.Color;
 import org.bukkit.Material;
 
 public enum Teams {
-	RED(Color.fromRGB(255, 10, 10), "&4", "RED", 1, ChatColor.RED, "team.RED", Material.RED_WOOL),
+	RED(Color.fromRGB(255, 10, 10), "&c", "RED", 1, ChatColor.RED, "team.RED", Material.RED_WOOL),
 	YELLOW(Color.fromRGB(255, 207, 36), "&e", "YELLOW", 2, ChatColor.YELLOW, "team.YELLOW", Material.YELLOW_WOOL),
 	GREEN(Color.fromRGB(105, 255, 82), "&a", "GREEN", 3, ChatColor.GREEN, "team.GREEN", Material.LIME_WOOL),
 	BLUE(Color.fromRGB(47, 247, 227), "&b", "BLUE", 4, ChatColor.AQUA, "team.BLUE", Material.LIGHT_BLUE_WOOL),

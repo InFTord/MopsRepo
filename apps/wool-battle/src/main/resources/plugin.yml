@@ -45,3 +45,6 @@ commands:
   globalchat:
     description: ""
     usage: /globalchat
+  items:
+    description: ""
+    usage: /items

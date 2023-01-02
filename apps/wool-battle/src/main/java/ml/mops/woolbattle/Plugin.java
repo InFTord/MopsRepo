@@ -29,6 +29,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -105,9 +106,11 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 	final String colon = ChatColor.WHITE + ": ";
 
-	final List<ItemStack> explosiveSticks = new ArrayList<>();
-	 final List<ItemStack> explosiveSticksMK2 = new ArrayList<>();
+	final List<ItemStack> boomsticks = new ArrayList<>();
+	final List<ItemStack> boomsticksMK2 = new ArrayList<>();
+	final List<ItemStack> boomsticksMK3 = new ArrayList<>();
 	List<ItemStack> platforms = new ArrayList<>();
+	List<ItemStack> platforms3d = new ArrayList<>();
 	List<ItemStack> slimeballs = new ArrayList<>();
 	List<ItemStack> doubleJumpBoots = new ArrayList<>();
 	List<ItemStack> shears = new ArrayList<>();
@@ -119,6 +122,8 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 	final double BLOCK_ROTATION_DEGREES = 15;
 	final double BLOCK_ROTATION_RADIANS = BLOCK_ROTATION_DEGREES * DEGREES_TO_RADIANS;
 	final double PI_TIMES_TWO = Math.PI * 2;
+
+	ItemGUI itemGUI = new ItemGUI(this);
 
 	@Override
 	public void onEnable() {
@@ -169,15 +174,15 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		mainboard = manager.getMainScoreboard();
 		newboard = manager.getNewScoreboard();
 
-		genAblocks = getBlox(new Location(mainworld, 46, 254, -28).getBlock(), 2);
-		genBblocks = getBlox(new Location(mainworld, -28, 254, -28).getBlock(), 2);
-		genCblocks = getBlox(new Location(mainworld, -28, 254, 46).getBlock(), 2);
-		genDblocks = getBlox(new Location(mainworld, 46, 254, 46).getBlock(), 2);
+		genAblocks = getBlockCube(new Location(mainworld, 46, 254, -28).getBlock(), 2);
+		genBblocks = getBlockCube(new Location(mainworld, -28, 254, -28).getBlock(), 2);
+		genCblocks = getBlockCube(new Location(mainworld, -28, 254, 46).getBlock(), 2);
+		genDblocks = getBlockCube(new Location(mainworld, 46, 254, 46).getBlock(), 2);
 
-		genAblocksLONG = getBlox(new Location(mainworld, 46, 254, -28).getBlock(), 3);
-		genBblocksLONG = getBlox(new Location(mainworld, -28, 254, -28).getBlock(), 3);
-		genCblocksLONG = getBlox(new Location(mainworld, -28, 254, 46).getBlock(), 3);
-		genDblocksLONG = getBlox(new Location(mainworld, 46, 254, 46).getBlock(), 3);
+		genAblocksLONG = getBlockCube(new Location(mainworld, 46, 254, -28).getBlock(), 3);
+		genBblocksLONG = getBlockCube(new Location(mainworld, -28, 254, -28).getBlock(), 3);
+		genCblocksLONG = getBlockCube(new Location(mainworld, -28, 254, 46).getBlock(), 3);
+		genDblocksLONG = getBlockCube(new Location(mainworld, 46, 254, 46).getBlock(), 3);
 
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
 			for (Player player : Bukkit.getOnlinePlayers()) {
@@ -647,7 +652,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 				int radius = Integer.parseInt(args[0]);
 				Material material = Material.valueOf(args[1]);
 
-				List<Block> blocclist = getBlox(player.getLocation().getBlock(), radius);
+				List<Block> blocclist = getBlockCube(player.getLocation().getBlock(), radius);
 
 				for (Block blocc : blocclist) {
 					if (blocc.getType() == Material.AIR) {
@@ -655,6 +660,10 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 						ppbs.add(blocc);
 					}
 				}
+				return true;
+			}
+			if (commandName.equals("items")) {
+				player.openInventory(itemGUI.getInventory());
 				return true;
 			}
 		} else {
@@ -690,6 +699,16 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			event.setCancelled(true);
 		}
 	}
+
+	@EventHandler
+	public void onInventoryClick(InventoryClickEvent event) {
+		if(event.getInventory() == itemGUI.getInventory()) {
+			try {
+				event.getWhoClicked().getInventory().addItem(itemGUI.getInventory().getItem(event.getSlot()));
+			} catch (Exception ignored) { }
+		}
+	}
+
 
 
 	@EventHandler
@@ -1188,12 +1207,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			Player player = event.getPlayer();
 			ItemStack item = Objects.requireNonNull(event.getItem());
 
-			if (event.getAction() == Action.RIGHT_CLICK_AIR) {
-
-				try {
-					ItemStack item0 = player.getItemInHand();
-
-				} catch (Throwable ignored) {}
+			if (event.getAction().isRightClick()) {
 
 				if (slimeballs.contains(item)) {
 					Team team = mainboard.getPlayerTeam(player);
@@ -1251,10 +1265,10 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 							mat = Material.LIGHT_BLUE_WOOL;
 						}
 
-						List<Block> blocclist = new ArrayList<>();
-						Arrays.stream(HorizontalFaces).map(loc.getBlock()::getRelative).forEach(blocclist::add);
+						List<Block> blocklist = new ArrayList<>();
+						Arrays.stream(HorizontalFaces).map(loc.getBlock()::getRelative).forEach(blocklist::add);
 
-						for (Block blocc : blocclist) {
+						for (Block blocc : blocklist) {
 							if (blocc.getType() == Material.AIR) {
 								blocc.setType(mat);
 								ppbs.add(blocc);
@@ -1264,11 +1278,51 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 					} else {
 						player.sendActionBar(getByLang(lang, "woolbattle.notEnoughWool"));
 					}
+				}
+				if (platforms3d.contains(item)) {
+					Team team = mainboard.getPlayerTeam(player);
+					String teamname = team.getName();
 
+					boolean hasItems = woolRemove(256, player, teamname);
+
+					if (hasItems) {
+						Location loc = player.getLocation();
+						int height = (int) (loc.getY() - 10);
+						height = Math.min(Math.max(height, 170), 319);
+						loc.setY(height);
+
+						Material mat = Material.WHITE_WOOL;
+
+						if (teamname.contains("red")) {
+							mat = Material.RED_WOOL;
+						}
+						if (teamname.contains("yellow")) {
+							mat = Material.YELLOW_WOOL;
+						}
+						if (teamname.contains("green")) {
+							mat = Material.LIME_WOOL;
+						}
+						if (teamname.contains("blue")) {
+							mat = Material.LIGHT_BLUE_WOOL;
+						}
+
+						List<Block> blocklist = new ArrayList<>(getBlockCube(loc.getBlock(), 3));
+
+						for (Block blocc : blocklist) {
+							if (blocc.getType() == Material.AIR) {
+								blocc.setType(mat);
+								ppbs.add(blocc);
+								player.playSound(player.getLocation(), Sound.BLOCK_WOOL_PLACE, 0.5F, 1);
+							}
+						}
+					} else {
+						player.sendActionBar(getByLang(lang, "woolbattle.notEnoughWool"));
+					}
 				}
 			}
+
 			if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-				if (explosiveSticks.contains(item)) {
+				if (boomsticks.contains(item)) {
 					Team team = mainboard.getPlayerTeam(player);
 					String teamname = team.getName();
 
@@ -1295,7 +1349,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 					} else {
 						player.sendActionBar(getByLang(lang, "woolbattle.notEnoughWool"));
 					}
-				} else if (explosiveSticksMK2.contains(item)) {
+				} else if (boomsticksMK2.contains(item)) {
 					Team team = mainboard.getPlayerTeam(player);
 					String teamname = team.getName();
 
@@ -1309,6 +1363,34 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 						x = x * 2.3;
 						z = z * 2.3;
+
+						x = -x;
+						z = -z;
+
+						player.setVelocity(player.getVelocity().add((new Vector(x, y, z))));
+
+						Location loc = event.getClickedBlock().getLocation();
+						loc.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, loc, 1);
+						for (Player players : Bukkit.getOnlinePlayers()) {
+							players.playSound(players.getLocation(), Sound.ITEM_TRIDENT_THUNDER, 1F, 2);
+						}
+					} else {
+						player.sendActionBar(getByLang(lang, "woolbattle.notEnoughWool"));
+					}
+				} else if (boomsticksMK3.contains(item)) {
+					Team team = mainboard.getPlayerTeam(player);
+					String teamname = team.getName();
+
+					boolean hasItems = woolRemove(100, player, teamname);
+
+					if (hasItems) {
+
+						double x = player.getEyeLocation().getDirection().getX();
+						double z = player.getEyeLocation().getDirection().getZ();
+						double y = 1;
+
+						x = x * 4;
+						z = z * 4;
 
 						x = -x;
 						z = -z;
@@ -1355,8 +1437,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 					}
 				}
 			}
-		} catch (Exception | Error ignored) {
-		}
+		} catch (Exception | Error ignored) { }
 
 
 	}
@@ -1442,7 +1523,10 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 				item = items.platform(lang);
 				platforms.add(item);
 			}
-			case 13 -> item = items.boomstickMK2(lang);
+			case 13 -> {
+				item = items.boomstickMK2(lang);
+				boomsticksMK2.add(item);
+			}
 		}
 		return item;
 	}
@@ -1637,7 +1721,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		player.setLevel(Math.min(woolcount, 512));
 	}
 
-	public ArrayList<Block> getBlox(Block start, int radius) {
+	public ArrayList<Block> getBlockCube(Block start, int radius) {
 		ArrayList<Block> blocks = new ArrayList<>();
 		for (double x = start.getLocation().getX() - radius; x <= start.getLocation().getX() + radius; x++) {
 			for (double y = start.getLocation().getY() - radius; y <= start.getLocation().getY() + radius; y++) {
@@ -2104,9 +2188,11 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 
 		shears.clear();
-		explosiveSticks.clear();
+		boomsticks.clear();
+		boomsticksMK2.clear();
+		boomsticksMK3.clear();
 		platforms.clear();
-		explosiveSticksMK2.clear();
+		platforms3d.clear();
 		slimeballs.clear();
 		doubleJumpBoots.clear();
 	}

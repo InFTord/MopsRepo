@@ -51,9 +51,9 @@ public class Items {
     public ItemStack boomstickMK1(String lang) {
         ItemStack item = new ItemStack(Material.STICK);
         ItemMeta meta = item.getItemMeta();
-        meta.displayName(plugin.getByLang(lang, "explosionStaff.name"));
+        meta.displayName(plugin.getByLang(lang, "boomstick.name"));
 
-        List<String> lore = new ArrayList<>(Arrays.asList(MopsUtils.textComponentToString(plugin.getByLang(lang, "explosionStaff.lore")).split("\n")));
+        List<String> lore = new ArrayList<>(Arrays.asList(MopsUtils.textComponentToString(plugin.getByLang(lang, "boomstick.lore")).split("\n")));
         int i = 0;
         while(i < lore.size()) {
             lore.set(i, MopsUtils.convertColorCodes(ChatColor.RESET + "" + ChatColor.GRAY + lore.get(i)));
@@ -141,6 +141,8 @@ public class Items {
 
 
 
+
+
     public ItemStack shield(String lang) {
         ItemStack item = new ItemStack(Material.SHIELD);
         ItemMeta meta = item.getItemMeta();
@@ -220,12 +222,11 @@ public class Items {
         meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         item.setItemMeta(meta);
 
-        net.minecraft.world.item.ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
-        NBTTagCompound nbtTag = new NBTTagCompound();
-        nbtTag.a("item", "platform");
-        nmsItem.b(nbtTag);
-        item = CraftItemStack.asCraftMirror(nmsItem);
-//        nmsItem.a("item").e_();
+//        net.minecraft.world.item.ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
+//        NBTTagCompound nbtTag = new NBTTagCompound();
+//        nbtTag.a("itemId", "platform");
+//        nmsItem.b(nbtTag);
+//        item = CraftItemStack.asCraftMirror(nmsItem);
 
         return item;
     }
@@ -249,9 +250,9 @@ public class Items {
     public ItemStack boomstickMK2(String lang) {
         ItemStack item = new ItemStack(Material.BLAZE_ROD);
         ItemMeta meta = item.getItemMeta();
-        meta.displayName(plugin.getByLang(lang, "explosionStaffMK2.name"));
+        meta.displayName(plugin.getByLang(lang, "boomstickMK2.name"));
 
-        List<String> lore = new ArrayList<>(Arrays.asList(MopsUtils.textComponentToString(plugin.getByLang(lang, "explosionStaffMK2.lore")).split("\n")));
+        List<String> lore = new ArrayList<>(Arrays.asList(MopsUtils.textComponentToString(plugin.getByLang(lang, "boomstickMK2.lore")).split("\n")));
         int i = 0;
         while(i < lore.size()) {
             lore.set(i, MopsUtils.convertColorCodes(ChatColor.RESET + "" + ChatColor.GRAY + lore.get(i)));
@@ -264,6 +265,54 @@ public class Items {
         item.setItemMeta(meta);
 
         item.setAmount(1);
+
+        return item;
+    }
+
+
+
+
+
+
+
+
+
+    public ItemStack platform3d(String lang) {
+        ItemStack item = new ItemStack(Material.BRICKS);
+        ItemMeta meta = item.getItemMeta();
+        meta.displayName(plugin.getByLang(lang, "platform3d.name"));
+
+        List<String> lore = new ArrayList<>(Arrays.asList(MopsUtils.textComponentToString(plugin.getByLang(lang, "platform3d.lore")).split("\n")));
+        int i = 0;
+        while(i < lore.size()) {
+            lore.set(i, MopsUtils.convertColorCodes(ChatColor.RESET + "" + ChatColor.GRAY + lore.get(i)));
+            i++;
+        }
+        meta.setLore(lore);
+
+        meta.addEnchant(Enchantment.DURABILITY, 1, true);
+        meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        item.setItemMeta(meta);
+
+        return item;
+    }
+
+    public ItemStack boomstickMK3(String lang) {
+        ItemStack item = new ItemStack(Material.ECHO_SHARD);
+        ItemMeta meta = item.getItemMeta();
+        meta.displayName(plugin.getByLang(lang, "boomstickMK3.name"));
+
+        List<String> lore = new ArrayList<>(Arrays.asList(MopsUtils.textComponentToString(plugin.getByLang(lang, "boomstickMK3.lore")).split("\n")));
+        int i = 0;
+        while(i < lore.size()) {
+            lore.set(i, MopsUtils.convertColorCodes(ChatColor.RESET + "" + ChatColor.GRAY + lore.get(i)));
+            i++;
+        }
+        meta.setLore(lore);
+
+        meta.addEnchant(Enchantment.DURABILITY, 1, true);
+        meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
+        item.setItemMeta(meta);
 
         return item;
     }
