@@ -2166,6 +2166,8 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			block.setType(Material.AIR);
 		}
 
+		ppbs.clear();
+
 		for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 			clearScoreboard(onlinePlayer);
 			if(onlinePlayer.getScoreboardTags().contains("ingame")) {
