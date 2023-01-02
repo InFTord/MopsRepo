@@ -1503,7 +1503,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		try {
 			Bukkit.getScheduler().runTaskLater(this, () -> {
 				event.getPlayer().getInventory().removeItem(new ItemStack(Material.GLASS_BOTTLE, 12));
-			}, 20L);
+			}, 10L);
 		} catch (Exception ignored) { }
 	}
 
