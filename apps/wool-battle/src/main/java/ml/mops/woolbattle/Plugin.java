@@ -939,24 +939,11 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		Team team = mainboard.getPlayerTeam(player);
 		String teamname = team.getName();
 
+		player.setDisplayName(ChatColor.WHITE + player.getName());
+
 		event.setJoinMessage("");
 		for(Player players : Bukkit.getOnlinePlayers()) {
-			ChatColor color = ChatColor.WHITE;
-
-			if(teamname.contains("red")) {
-				color = ChatColor.RED;
-			}
-			if(teamname.contains("yellow")) {
-				color = ChatColor.YELLOW;
-			}
-			if(teamname.contains("green")) {
-				color = ChatColor.GREEN;
-			}
-			if(teamname.contains("blue")) {
-				color = ChatColor.AQUA;
-			}
-
-			players.sendMessage(color + player.getName() + " зашёл на сервер.");
+			players.sendMessage(player.getName() + " joined the game.");
 		}
 	}
 
@@ -968,22 +955,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 		event.setQuitMessage("");
 		for(Player players : Bukkit.getOnlinePlayers()) {
-			ChatColor color = ChatColor.WHITE;
-
-			if(teamname.contains("red")) {
-				color = ChatColor.RED;
-			}
-			if(teamname.contains("yellow")) {
-				color = ChatColor.YELLOW;
-			}
-			if(teamname.contains("green")) {
-				color = ChatColor.GREEN;
-			}
-			if(teamname.contains("blue")) {
-				color = ChatColor.AQUA;
-			}
-
-			players.sendMessage(color + player.getName() + " вышел с сервера.");
+			players.sendMessage(player.getName() + " left the game.");
 		}
 	}
 
@@ -1013,51 +985,57 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			color = ChatColor.AQUA;
 		}
 
-		if (!player.getScoreboardTags().contains("spectator")) {
-			if(!globalChat.get(player)) {
-				if (msg.startsWith("!")) {
-					for (Player players : Bukkit.getOnlinePlayers()) {
-						players.sendMessage(ChatColor.AQUA + "[!] " + color + player.getName() + ChatColor.WHITE + ": " + msg.replaceFirst("!", ""));
+		if(gameactive) {
+			if (!player.getScoreboardTags().contains("spectator")) {
+				if (!globalChat.get(player)) {
+					if (msg.startsWith("!")) {
+						for (Player players : Bukkit.getOnlinePlayers()) {
+							players.sendMessage(ChatColor.AQUA + "[!] " + color + player.getName() + ChatColor.WHITE + ": " + msg.replaceFirst("!", ""));
+						}
+						hasWrittenAnything.put(player, true);
+					} else {
+						if (!hasWrittenAnything.get(player)) {
+							player.sendMessage(getByLang(lang, "chat.guideline"));
+							hasWrittenAnything.put(player, true);
+						}
+
+						for (OfflinePlayer players0 : team.getPlayers()) {
+							if (players0.isOnline()) {
+								Player players = players0.getPlayer();
+								players.sendMessage(ChatColor.DARK_GREEN + "[" + getStringByLang(lang, "woolbattle.team") + "] " + color + player.getName() + ChatColor.WHITE + ": " + color + msg);
+							}
+						}
 					}
-					hasWrittenAnything.put(player, true);
 				} else {
-					if (!hasWrittenAnything.get(player)) {
-						player.sendMessage(getByLang(lang, "chat.guideline"));
+					if (msg.startsWith("!")) {
+						for (OfflinePlayer players0 : team.getPlayers()) {
+							if (players0.isOnline()) {
+								Player players = players0.getPlayer();
+								players.sendMessage(ChatColor.DARK_GREEN + "[" + getStringByLang(lang, "woolbattle.team") + "] " + color + player.getName() + ChatColor.WHITE + ": " + color + msg.replaceFirst("!", ""));
+							}
+						}
+						hasWrittenAnything.put(player, true);
+					} else {
+						for (Player players : Bukkit.getOnlinePlayers()) {
+							players.sendMessage(ChatColor.AQUA + "[!] " + color + player.getName() + ChatColor.WHITE + ": " + msg);
+						}
 						hasWrittenAnything.put(player, true);
 					}
-
-					for (OfflinePlayer players0 : team.getPlayers()) {
-						if (players0.isOnline()) {
-							Player players = players0.getPlayer();
-							players.sendMessage(ChatColor.DARK_GREEN + "[" + getStringByLang(lang, "woolbattle.team") + "] " + color + player.getName() + ChatColor.WHITE + ": " + color + msg);
-						}
-					}
-				}
-			} else {
-				if (msg.startsWith("!")) {
-					for (OfflinePlayer players0 : team.getPlayers()) {
-						if (players0.isOnline()) {
-							Player players = players0.getPlayer();
-							players.sendMessage(ChatColor.DARK_GREEN + "[" + getStringByLang(lang, "woolbattle.team") + "] " + color + player.getName() + ChatColor.WHITE + ": " + color + msg.replaceFirst("!", ""));
-						}
-					}
-					hasWrittenAnything.put(player, true);
-				} else {
-					for (Player players : Bukkit.getOnlinePlayers()) {
-						players.sendMessage(ChatColor.AQUA + "[!] " + color + player.getName() + ChatColor.WHITE + ": " + msg);
-					}
-					hasWrittenAnything.put(player, true);
 				}
 			}
-		}
 
-		if(player.getScoreboardTags().contains("spectator")) {
-			for (Player players : Bukkit.getOnlinePlayers()) {
-				if(msg.startsWith("!")) {
-					msg = msg.replaceFirst("!", "");
+			if (player.getScoreboardTags().contains("spectator")) {
+				for (Player players : Bukkit.getOnlinePlayers()) {
+					if (msg.startsWith("!")) {
+						msg = msg.replaceFirst("!", "");
+					}
+
+					players.sendMessage(ChatColor.GRAY + "[" + getStringByLang(lang, "woolbattle.spectators") + "] " + color + player.getName() + ChatColor.WHITE + ": " + msg);
 				}
-
-				players.sendMessage(ChatColor.GRAY + "[" + getStringByLang(lang, "woolbattle.spectators") + "] " + color + player.getName() + ChatColor.WHITE + ": " + msg);
+			}
+		} else {
+			for (Player players : Bukkit.getOnlinePlayers()) {
+				players.sendMessage(player.getName() + ChatColor.WHITE + ": " + msg);
 			}
 		}
 	}
@@ -2208,6 +2186,8 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			onlinePlayer.removeScoreboardTag("spectator");
 			clearScoreboard(onlinePlayer);
 
+			onlinePlayer.setDisplayName(ChatColor.WHITE + onlinePlayer.getName());
+
 			resetEveryFuckingKillScoreboard(onlinePlayer);
 			try {
 				deathmsg.get(onlinePlayer).cancel();
@@ -2477,6 +2457,8 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			team = Teams.SPECTATOR;
 		}
 
+		player.setDisplayName(team.getChatColor + player.getName());
+
 		gameStartingTitle(player);
 		requiredKills = (int) (Math.round(4 * (Bukkit.getOnlinePlayers().size() * 0.7))) + 1;
 
@@ -2633,26 +2615,70 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		dominationEvent = ChatColor.DARK_GRAY + " (" + team.getChatColor + ChatColor.BOLD + team.getName.substring(0, 3) + ChatColor.RESET + getStringByLang(lang, "woolbattle.event.domination") + minutesCopy + colon + secondsCopy + ")";
 	}
 
+	public void assignTeams(List<Player> playerList) {
+		int size = playerList.size();
+		Teams team = Teams.SPECTATOR;
+
+		if(size == 1) {
+			List<Teams> teamList = new ArrayList<>(Arrays.asList(Teams.RED, Teams.YELLOW, Teams.GREEN, Teams.BLUE));
+			int random = (int) (Math.random() * (4 - 1 + 1)) + 1;
+			switch (random) {
+				case 1 -> team = teamList.get(0);
+				case 2 -> team = teamList.get(1);
+				case 3 -> team = teamList.get(2);
+				case 4 -> team = teamList.get(3);
+			}
+			mainboard.getTeam(team.getID).addPlayer(playerList.get(0));
+		}
+		if(size == 2) {
+			List<Teams> teamList = new ArrayList<>(Arrays.asList(Teams.RED, Teams.YELLOW, Teams.GREEN, Teams.BLUE));
+			int random = (int) (Math.random() * (4 - 1 + 1)) + 1;
+			switch (random) {
+				case 1 -> team = teamList.get(0);
+				case 2 -> team = teamList.get(1);
+				case 3 -> team = teamList.get(2);
+				case 4 -> team = teamList.get(3);
+			}
+			mainboard.getTeam(team.getID).addPlayer(playerList.get(0));
+			mainboard.getTeam(getOppositeTeam(team).getID).addPlayer(playerList.get(1));
+		}
+
+		if(size == 3) {
+			mainboard.getTeam(Teams.RED.getID).addPlayer(playerList.get(0));
+			mainboard.getTeam(Teams.YELLOW.getID).addPlayer(playerList.get(1));
+			mainboard.getTeam(Teams.GREEN.getID).addPlayer(playerList.get(2));
+		}
+		if(size == 4) {
+			mainboard.getTeam(Teams.RED.getID).addPlayer(playerList.get(0));
+			mainboard.getTeam(Teams.YELLOW.getID).addPlayer(playerList.get(1));
+			mainboard.getTeam(Teams.GREEN.getID).addPlayer(playerList.get(2));
+			mainboard.getTeam(Teams.GREEN.getID).addPlayer(playerList.get(3));
+		}
+	}
+
 	public void startGame(String[] args) {
 		mainworld.getWorldBorder().setSize(200, 1);
 		hardmode = false;
-		for (Player player1 : Bukkit.getOnlinePlayers()) {
-			if (!(mainboard.getPlayerTeam(player1) == null)) {
-				Team team = mainboard.getPlayerTeam(player1);
+
+		assignTeams(new ArrayList<>(Bukkit.getOnlinePlayers()));
+
+		for (Player player : Bukkit.getOnlinePlayers()) {
+			if (!(mainboard.getPlayerTeam(player) == null)) {
+				Team team = mainboard.getPlayerTeam(player);
 				assert team != null;
 				String teamname = team.getName();
 
 				try {
 					if (args[0].equals("instant")) {
-						gameStartSequence(player1, teamname);
+						gameStartSequence(player, teamname);
 					} else {
 						if(!testmode) {
-							timedGameStart(player1, teamname);
+							timedGameStart(player, teamname);
 						}
 					}
 				} catch (IndexOutOfBoundsException error) {
 					if(!testmode) {
-						timedGameStart(player1, teamname);
+						timedGameStart(player, teamname);
 					}
 				}
 			}
@@ -2912,6 +2938,22 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 				updateLevels(player1);
 			}
 		}, 0L, 20L);
+	}
+
+	public Teams getOppositeTeam(Teams team) {
+		if(team == Teams.RED) {
+			return Teams.GREEN;
+		}
+		if(team == Teams.GREEN) {
+			return Teams.RED;
+		}
+		if(team == Teams.YELLOW) {
+			return Teams.BLUE;
+		}
+		if(team == Teams.BLUE) {
+			return Teams.YELLOW;
+		}
+		return Teams.SPECTATOR;
 	}
 
 
