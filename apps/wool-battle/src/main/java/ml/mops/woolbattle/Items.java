@@ -1,9 +1,11 @@
 package ml.mops.woolbattle;
 
 import ml.mops.utils.MopsUtils;
+import net.minecraft.nbt.NBTTagCompound;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Material;
+import org.bukkit.craftbukkit.v1_19_R1.inventory.CraftItemStack;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -217,6 +219,13 @@ public class Items {
         meta.addEnchant(Enchantment.DURABILITY, 1, true);
         meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
         item.setItemMeta(meta);
+
+        net.minecraft.world.item.ItemStack nmsItem = CraftItemStack.asNMSCopy(item);
+        NBTTagCompound nbtTag = new NBTTagCompound();
+        nbtTag.a("item", "platform");
+        nmsItem.b(nbtTag);
+        item = CraftItemStack.asCraftMirror(nmsItem);
+//        nmsItem.a("item").e_();
 
         return item;
     }
