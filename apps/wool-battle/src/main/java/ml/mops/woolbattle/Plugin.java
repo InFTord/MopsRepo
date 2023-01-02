@@ -171,6 +171,12 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 		itemGUI = new ItemGUI(this);
 
+		Items items = new Items(this);
+		platforms.add(items.platform(lang));
+		platforms3d.add(items.platform3d(lang));
+		boomsticksMK2.add(items.boomstickMK2(lang));
+		boomsticksMK3.add(items.boomstickMK3(lang));
+
 		mainworld = Bukkit.getServer().getWorlds().get(0);
 		manager = Bukkit.getScoreboardManager();
 		mainboard = manager.getMainScoreboard();
@@ -705,6 +711,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 	@EventHandler
 	public void onInventoryClick(InventoryClickEvent event) {
 		if(event.getInventory() == itemGUI.getInventory()) {
+			event.setCancelled(true);
 			try {
 				event.getWhoClicked().getInventory().addItem(itemGUI.getInventory().getItem(event.getSlot()));
 			} catch (Exception ignored) { }
