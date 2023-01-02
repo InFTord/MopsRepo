@@ -104,10 +104,10 @@ woolbattle:
   - boomstickMK3.lore:
       rus: |
         &7Палка откидывающая тебя назад очень сильно. &e&lПКМ &r&8(Нужно наводится на блок)
-        &bСтоимость: 100 шерсти
+        &bСтоимость: 120 шерсти
       eng: |
         &7Stick that throws you with extreme force. &e&lRIGHT CLICK &r&8(Aim on a block)
-        &bCost: 100 wool
+        &bCost: 120 wool
   - shears.name:
       rus: "&bНожницы"
       eng: "&bShears"

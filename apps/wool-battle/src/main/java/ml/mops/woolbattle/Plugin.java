@@ -1067,6 +1067,10 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		Player player = event.getPlayer();
 		Block block = event.getBlock();
 
+		if(block.getType() == Material.BRICKS) {
+			event.setCancelled(true);
+		}
+
 		if(player.getScoreboardTags().contains("spectator")) {
 			event.setCancelled(true);
 		} else {
@@ -1315,13 +1319,13 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 							mat = Material.LIGHT_BLUE_WOOL;
 						}
 
-						List<Block> blocklist = new ArrayList<>(getBlockCube(loc.getBlock(), 3));
+						List<Block> blocklist = new ArrayList<>(getBlockCube(loc.getBlock(), 1));
 
 						for (Block blocc : blocklist) {
 							if (blocc.getType() == Material.AIR) {
 								blocc.setType(mat);
 								ppbs.add(blocc);
-								player.playSound(player.getLocation(), Sound.BLOCK_WOOL_PLACE, 0.5F, 1);
+								player.playSound(player.getLocation(), Sound.BLOCK_WOOL_PLACE, 0.2F, 1);
 							}
 						}
 					} else {
@@ -1381,7 +1385,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 						Location loc = event.getClickedBlock().getLocation();
 						loc.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, loc, 1);
 						for (Player players : Bukkit.getOnlinePlayers()) {
-							players.playSound(players.getLocation(), Sound.ITEM_TRIDENT_THUNDER, 1F, 2);
+							players.playSound(player.getLocation(), Sound.ITEM_TRIDENT_THUNDER, 1F, 2);
 						}
 					} else {
 						player.sendActionBar(getByLang(lang, "woolbattle.notEnoughWool"));
@@ -1390,30 +1394,73 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 					Team team = mainboard.getPlayerTeam(player);
 					String teamname = team.getName();
 
-					boolean hasItems = woolRemove(100, player, teamname);
+					boolean hasItems = woolRemove(120, player, teamname);
 
 					if (hasItems) {
 
 						double x = player.getEyeLocation().getDirection().getX();
 						double z = player.getEyeLocation().getDirection().getZ();
-						double y = 1;
+						double y = 0.8;
 
-						x = x * 4;
-						z = z * 4;
+						x = x * 4.6;
+						z = z * 4.6;
 
 						x = -x;
 						z = -z;
 
-						player.setVelocity(player.getVelocity().add((new Vector(x, y, z))));
-
 						Location loc = event.getClickedBlock().getLocation();
 						loc.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, loc, 1);
-						for (Player players : Bukkit.getOnlinePlayers()) {
-							players.playSound(players.getLocation(), Sound.ITEM_TRIDENT_THUNDER, 1F, 2);
-						}
+
+						player.playSound(player.getLocation(), Sound.BLOCK_PISTON_EXTEND, 1, 0);
+						player.playSound(player.getLocation(), Sound.WEATHER_RAIN, 0.5F, 0);
+						double finalZ = z;
+						double finalX = x;
+
+						Bukkit.getScheduler().runTaskLater(this, () -> {
+							loc.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, loc, 1);
+							player.playSound(player.getLocation(), Sound.BLOCK_PISTON_EXTEND, 1, 0);
+							Bukkit.getScheduler().runTaskLater(this, () -> {
+								loc.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, loc, 1);
+								player.playSound(player.getLocation(), Sound.BLOCK_PISTON_EXTEND, 1, 0);
+								player.playSound(player.getLocation(), Sound.ENTITY_WARDEN_AGITATED, 1, 2);
+								Bukkit.getScheduler().runTaskLater(this, () -> {
+									loc.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, loc, 1);
+									player.playSound(player.getLocation(), Sound.ENTITY_WARDEN_SONIC_CHARGE, 1, 0);
+									player.playSound(player.getLocation(), Sound.ENTITY_WARDEN_SONIC_CHARGE, 1, 1);
+									Bukkit.getScheduler().runTaskLater(this, () -> {
+										loc.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, loc, 1);
+										player.playSound(player.getLocation(), Sound.ENTITY_WARDEN_SONIC_CHARGE, 1, 1);
+										Bukkit.getScheduler().runTaskLater(this, () -> {
+											loc.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, loc, 1);
+											player.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_ROCKET_SHOOT, 1, 1);
+											player.playSound(player.getLocation(), Sound.ENTITY_WARDEN_SONIC_BOOM, 1, 0);
+											player.playSound(player.getLocation(), Sound.ENTITY_WARDEN_SONIC_BOOM, 1, 1);
+											player.playSound(player.getLocation(), Sound.ENTITY_WARDEN_SONIC_BOOM, 1, 2);
+											Bukkit.getScheduler().runTaskLater(this, () -> {
+												player.playSound(player.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, 1, 2);
+												for (Player players : Bukkit.getOnlinePlayers()) {
+													players.playSound(player.getLocation(), Sound.ITEM_TRIDENT_THUNDER, 1, 2);
+												}
+												player.playSound(player.getLocation(), Sound.ITEM_TRIDENT_THUNDER, 1, 2);
+												player.playSound(player.getLocation(), Sound.ITEM_TRIDENT_THUNDER, 1, 2);
+												player.playSound(player.getLocation(), Sound.ITEM_TOTEM_USE, 1, 1);
+												player.playSound(player.getLocation(), Sound.ENTITY_WARDEN_SONIC_BOOM, 1, 1);
+												player.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_ROCKET_LAUNCH, 1, 1);
+												player.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_ROCKET_LAUNCH, 1, 0);
+
+												loc.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, loc, 1);
+												player.setVelocity(player.getVelocity().add((new Vector(finalX, y, finalZ))));
+											}, 16L);
+										}, 8L);
+									}, 2L);
+								}, 4L);
+							}, 4L);
+						}, 4L);
 					} else {
 						player.sendActionBar(getByLang(lang, "woolbattle.notEnoughWool"));
 					}
+
+
 				} else if(shears.contains(item)) {
 					Block block = event.getClickedBlock();
 					if(genAblocks.contains(block) || genBblocks.contains(block) || genCblocks.contains(block) || genDblocks.contains(block)) {
