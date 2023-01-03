@@ -141,10 +141,10 @@ woolbattle:
   - slimeball.lore:
       rus: |
         &7Спасёт тебя при падении. &e&lПКМ &8(Шифт чтобы прыгнуть выше)
-        &bСтоимость: 192 шерсти
+        &bСтоимость: 160 шерсти
       eng: |
         &7Will save you from falling. &e&lRIGHT CLICK &8(Shift to jump higher)
-        &bCost: 192 wool
+        &bCost: 160 wool
   - platform.name:
       rus: "&cПлатформа!"
       eng: "&cPlatform!"
@@ -303,8 +303,8 @@ woolbattle:
       rus: "&eКОМБО!"
       eng: "&eCOMBO!"
   - combo.subtitle:
-      rus: "&e10 ударов подряд!"
-      eng: "&e10 hits in a row!"
+      rus: "&e8 ударов подряд!"
+      eng: "&e8 hits in a row!"
   - death.final:
       rus: " &4окончательно &7умер."
       eng: " &7had a &4final &7death."
@@ -373,14 +373,14 @@ woolbattle:
       rus: |
         §TEAMCOLOR§----------------------------------------------------
                              §TEAMCOLOR§Доминация
-            §TEAM§ §TEAMCOLOR§захватили все генераторы. У вас есть 60 секунд чтобы
+            §TEAM§ §TEAMCOLOR§захватили все генераторы. У вас есть 90 секунд чтобы
              §TEAMCOLOR§перехватить все генераторы, иначе они выиграют.
                      §TEAMCOLOR§Захватите генератор.
         §TEAMCOLOR§----------------------------------------------------
       eng: |
         §TEAMCOLOR§----------------------------------------------------
                              §TEAMCOLOR§Domination
-            §TEAM§ §TEAMCOLOR§has captured all the generators. You have 60 seconds
+            §TEAM§ §TEAMCOLOR§has captured all the generators. You have 90 seconds
              §TEAMCOLOR§to re-capture them, or else they will win.
                      §TEAMCOLOR§Capture the generator.
         §TEAMCOLOR§----------------------------------------------------

@@ -192,6 +192,11 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		genCblocksLONG = getBlockCube(new Location(mainworld, -28, 254, 46).getBlock(), 3);
 		genDblocksLONG = getBlockCube(new Location(mainworld, 46, 254, 46).getBlock(), 3);
 
+		Bukkit.removeRecipe(NamespacedKey.minecraft("red_carpet"));
+		Bukkit.removeRecipe(NamespacedKey.minecraft("yellow_carpet"));
+		Bukkit.removeRecipe(NamespacedKey.minecraft("lime_carpet"));
+		Bukkit.removeRecipe(NamespacedKey.minecraft("light_blue_carpet"));
+
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
 			for (Player player : Bukkit.getOnlinePlayers()) {
 				Team team = mainboard.getPlayerTeam(player);
@@ -455,7 +460,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 						boolean hasItems = woolRemove(16, player, teamname);
 
 						if (hasItems) {
-							player.setVelocity((player.getEyeLocation().getDirection().multiply(0.9)).add(new Vector(0, 0.45, 0)));
+							player.setVelocity((player.getEyeLocation().getDirection().multiply(0.95)).add(new Vector(0, 0.45, 0)));
 							player.playSound(player.getLocation(), Sound.ENTITY_ENDER_DRAGON_FLAP, 0.2F, 1);
 							player.setAllowFlight(false);
 						} else {
@@ -760,8 +765,8 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 					Team team = mainboard.getPlayerTeam(attacker);
 					String teamname = team.getName();
 
-					if (combo.get(attacker) >= 10) {
-						victim.setVelocity(attacker.getEyeLocation().getDirection().multiply(0.7).add(victim.getVelocity()).add(new Vector(0, 0.7, 0)));
+					if (combo.get(attacker) >= 8) {
+						victim.setVelocity(attacker.getEyeLocation().getDirection().multiply(0.75).add(victim.getVelocity()).add(new Vector(0, 0.75, 0)));
 						attacker.showTitle(genTitle(lang, "woolbattle.combo.title", "woolbattle.combo.subtitle", 2, 20, 15));
 						attacker.playSound(attacker.getLocation(), Sound.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, 1, 2);
 						combo.put(attacker, 0);
@@ -1204,11 +1209,11 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 					Team team = mainboard.getPlayerTeam(player);
 					String teamname = team.getName();
 
-					boolean hasItems = woolRemove(192, player, teamname);
+					boolean hasItems = woolRemove(160, player, teamname);
 
 					if (hasItems) {
 						Location loc = player.getLocation();
-						int height = (int) (loc.getY() - 30);
+						int height = (int) (loc.getY() - 25);
 						height = Math.min(Math.max(height, 170), 319);
 						loc.setY(height);
 
@@ -1237,7 +1242,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 					if (hasItems) {
 						Location loc = player.getLocation();
-						int height = (int) (loc.getY() - 10);
+						int height = (int) (loc.getY() - 5);
 						height = Math.min(Math.max(height, 170), 319);
 						loc.setY(height);
 
@@ -1952,7 +1957,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			String generatorOwner = genAcopy.toUpperCase(Locale.ROOT);
 			Teams team = Teams.valueOf(generatorOwner);
 
-			dominate(team, 60);
+			dominate(team, 90);
 		}
 
 		if(oldA.equals(oldB) && oldB.equals(oldC) && oldC.equals(oldD)) {
