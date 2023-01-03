@@ -2221,7 +2221,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		hardmode = false;
 		gameactive = false;
 
-		requiredKills = 4;
+		requiredKills = 3;
 
 		Bukkit.getScheduler().cancelTask(scoreboardTask);
 
@@ -2467,7 +2467,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		player.setPlayerListName(team.getChatColor + player.getName());
 
 		gameStartingTitle(player);
-		requiredKills = (int) (Math.round(4 * (Bukkit.getOnlinePlayers().size() * 0.7))) + 1;
+		requiredKills = (int) (Math.round(4 * (Bukkit.getOnlinePlayers().size() * 0.7)));
 
 		Bukkit.getScheduler().runTaskLater(this, () -> {
 			player.sendTitle(getStringByLang(lang, "killRequirement.1"), getStringByLang(lang, "killRequirement.2", Map.of("kills", String.valueOf(requiredKills))), 5, 40, 30);
