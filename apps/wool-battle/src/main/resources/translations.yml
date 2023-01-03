@@ -151,10 +151,10 @@ woolbattle:
   - platform.lore:
       rus: |
         &7Ставит платформу из шерсти. &e&lПКМ &8(Не пропадает)
-        &bСтоимость: 144 шерсти
+        &bСтоимость: 128 шерсти
       eng: |
         &7Spawns a platform of wool. &e&lRIGHT CLICK &8(Doesn't disappear)
-        &bCost: 144 wool
+        &bCost: 128 wool
   - platform3d.name:
       rus: "&cПлатформа!³"
       eng: "&cPlatform!³"

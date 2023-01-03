@@ -73,7 +73,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
         for(Entity entity : mainworld.getEntities()) {
             if(entity.getScoreboardTags().contains("killOnDisable")) {
-                entity.teleport(new Location(mainworld, 0, -1000, 0));
+                entity.remove();
             }
         }
 
@@ -219,7 +219,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         World mainworld = Bukkit.getServer().getWorlds().get(0);
         for(Entity entity : mainworld.getEntities()) {
             if(entity.getScoreboardTags().contains("killOnDisable")) {
-                entity.teleport(new Location(mainworld, 0, -1000, 0));
+                entity.remove();
             }
         }
         for(Player player : Bukkit.getOnlinePlayers()) {

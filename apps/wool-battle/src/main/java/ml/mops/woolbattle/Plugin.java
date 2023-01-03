@@ -420,11 +420,11 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			}
 			for (Entity entity : mainworld.getEntities()) {
 				if (entity.getType() == EntityType.ENDERMITE) {
-					entity.teleport(entity.getLocation().add(0, -1000, 0));
+					entity.remove();
 				}
 				if(entity instanceof Projectile) {
 					if (entity.getLocation().getY() > 143 && entity.getLocation().getY() < 160) {
-						entity.teleport(entity.getLocation().add(0, -1000, 0));
+						entity.remove();
 					}
 				}
 
@@ -1233,7 +1233,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 					Team team = mainboard.getPlayerTeam(player);
 					String teamname = team.getName();
 
-					boolean hasItems = woolRemove(144, player, teamname);
+					boolean hasItems = woolRemove(128, player, teamname);
 
 					if (hasItems) {
 						Location loc = player.getLocation();

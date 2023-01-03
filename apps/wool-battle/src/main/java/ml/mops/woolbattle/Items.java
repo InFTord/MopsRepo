@@ -186,6 +186,7 @@ public class Items {
         }
         meta.setLore(lore);
 
+        meta.addEnchant(Enchantment.KNOCKBACK, 2, true);
         item.setItemMeta(meta);
         item.setDurability((short) 115);
 
