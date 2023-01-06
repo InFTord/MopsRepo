@@ -37,7 +37,7 @@ jobs:
       - name: 'Remove unnecessary jar'
         run: rm apps/mops-pvps/target/original-*.jar
       - name: 'Upload .jar artefact of plugin'
-        uses: actions/upload-artifact@v3.1.1
+        uses: actions/upload-artifact@v3.1.2
         with:
           name: MopsPVP Plugin JAR
           path: apps/mops-pvps/target/*.jar

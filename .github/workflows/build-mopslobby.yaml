@@ -48,7 +48,7 @@ jobs:
       - name: 'Remove unnecessary jar'
         run: rm apps/mops-lobby/target/original-*.jar
       - name: 'Upload .jar artefact of plugin'
-        uses: actions/upload-artifact@v3.1.1
+        uses: actions/upload-artifact@v3.1.2
         with:
           name: Lobby Plugin JAR
           path: apps/mops-lobby/target/*.jar
