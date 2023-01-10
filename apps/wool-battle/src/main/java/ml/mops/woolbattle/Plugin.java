@@ -77,8 +77,6 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 	boolean gensLocked = false;
 
 	List<Block> genAblocks, genBblocks, genCblocks, genDblocks;
-
-
 	List<Block> genAblocksLONG, genBblocksLONG, genCblocksLONG, genDblocksLONG;
 
 	private final HashMap<Player, Integer> combo = new HashMap<>();
@@ -369,7 +367,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 										player.addScoreboardTag("immunity");
 										Bukkit.getScheduler().runTaskLater(this, () -> {
 											player.removeScoreboardTag("immunity");
-										}, 40L);
+										}, 80L);
 
 									}, 20L));
 								}, 20L));
@@ -1957,7 +1955,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			String generatorOwner = genAcopy.toUpperCase(Locale.ROOT);
 			Teams team = Teams.valueOf(generatorOwner);
 
-			dominate(team, 90);
+			dominate(team, 120);
 		}
 
 		if(oldA.equals(oldB) && oldB.equals(oldC) && oldC.equals(oldD)) {
@@ -2580,7 +2578,8 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 	}
 
 	public ChatColor getGeneratorChatColor(String string) {
-		ChatColor color = switch (string) {
+
+		return switch (string) {
 			case ("woolbattle.generator.uncaptured") -> ChatColor.GRAY;
 			case ("woolbattle.generator.red") -> ChatColor.RED;
 			case ("woolbattle.generator.yellow") -> ChatColor.YELLOW;
@@ -2588,8 +2587,6 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			case ("woolbattle.generator.blue") -> ChatColor.AQUA;
 			default -> ChatColor.DARK_GRAY;
 		};
-		
-		return color;
 	}
 
 	public void dominate(Teams team, int time) {
@@ -2600,6 +2597,14 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		int secondsCopy = seconds[0]+time;
 		int minutesCopy = minutes[0];
 
+		if(secondsCopy >= 60) {
+			minutesCopy++;
+			secondsCopy -= 60;
+		}
+		if(secondsCopy >= 60) {
+			minutesCopy++;
+			secondsCopy -= 60;
+		}
 		if(secondsCopy >= 60) {
 			minutesCopy++;
 			secondsCopy -= 60;
