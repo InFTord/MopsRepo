@@ -69,15 +69,17 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 	int requiredKills = 0;
 
+	boolean gensLocked = false;
+
 	String genAstatus  = "woolbattle.generator.uncaptured";
 	String genBstatus  = "woolbattle.generator.uncaptured";
 	String genCstatus  = "woolbattle.generator.uncaptured";
 	String genDstatus  = "woolbattle.generator.uncaptured";
 
-	boolean gensLocked = false;
-
 	List<Block> genAblocks, genBblocks, genCblocks, genDblocks;
 	List<Block> genAblocksLONG, genBblocksLONG, genCblocksLONG, genDblocksLONG;
+
+	String genApercent, genBpercent, genCpercent, genDpercent = ChatColor.GRAY + " (0%)";
 
 	private final HashMap<Player, Integer> combo = new HashMap<>();
 	private final HashMap<Player, BukkitTask> deathmsg = new HashMap<>();
@@ -112,8 +114,6 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 	List<ItemStack> slimeballs = new ArrayList<>();
 	List<ItemStack> doubleJumpBoots = new ArrayList<>();
 	List<ItemStack> shears = new ArrayList<>();
-
-	String genApercent, genBpercent, genCpercent, genDpercent = ChatColor.GRAY + " (0%)";
 
 	// Хардкодю значения УРААААА ((Я перенёс это в начало что бы не нужно было постоянно перепросчитывать угол/2/pi))
 	private static final double DEGREES_TO_RADIANS = 0.017453292519943295;
