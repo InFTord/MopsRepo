@@ -71,15 +71,10 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 	boolean gensLocked = false;
 
-	String genAstatus  = "woolbattle.generator.uncaptured";
-	String genBstatus  = "woolbattle.generator.uncaptured";
-	String genCstatus  = "woolbattle.generator.uncaptured";
-	String genDstatus  = "woolbattle.generator.uncaptured";
-
-	List<Block> genAblocks, genBblocks, genCblocks, genDblocks;
-	List<Block> genAblocksLONG, genBblocksLONG, genCblocksLONG, genDblocksLONG;
-
-	String genApercent, genBpercent, genCpercent, genDpercent = ChatColor.GRAY + " (0%)";
+	Generator genA = new Generator("A");
+	Generator genB = new Generator("B");
+	Generator genC = new Generator("C");
+	Generator genD = new Generator("D");
 
 	private final HashMap<Player, Integer> combo = new HashMap<>();
 	private final HashMap<Player, BukkitTask> deathmsg = new HashMap<>();
@@ -180,15 +175,15 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		mainboard = manager.getMainScoreboard();
 		newboard = manager.getNewScoreboard();
 
-		genAblocks = getBlockCube(new Location(mainworld, 46, 254, -28).getBlock(), 2);
-		genBblocks = getBlockCube(new Location(mainworld, -28, 254, -28).getBlock(), 2);
-		genCblocks = getBlockCube(new Location(mainworld, -28, 254, 46).getBlock(), 2);
-		genDblocks = getBlockCube(new Location(mainworld, 46, 254, 46).getBlock(), 2);
+		genA.setBlocks(getBlockCube(new Location(mainworld, 46, 254, -28).getBlock(), 2));
+		genB.setBlocks(getBlockCube(new Location(mainworld, -28, 254, -28).getBlock(), 2));
+		genC.setBlocks(getBlockCube(new Location(mainworld, -28, 254, 46).getBlock(), 2));
+		genD.setBlocks(getBlockCube(new Location(mainworld, 46, 254, 46).getBlock(), 2));
 
-		genAblocksLONG = getBlockCube(new Location(mainworld, 46, 254, -28).getBlock(), 3);
-		genBblocksLONG = getBlockCube(new Location(mainworld, -28, 254, -28).getBlock(), 3);
-		genCblocksLONG = getBlockCube(new Location(mainworld, -28, 254, 46).getBlock(), 3);
-		genDblocksLONG = getBlockCube(new Location(mainworld, 46, 254, 46).getBlock(), 3);
+		genA.setLongBlocks(getBlockCube(new Location(mainworld, 46, 254, -28).getBlock(), 3));
+		genB.setLongBlocks(getBlockCube(new Location(mainworld, -28, 254, -28).getBlock(), 3));
+		genC.setLongBlocks(getBlockCube(new Location(mainworld, -28, 254, 46).getBlock(), 3));
+		genD.setLongBlocks(getBlockCube(new Location(mainworld, 46, 254, 46).getBlock(), 3));
 
 		Bukkit.removeRecipe(NamespacedKey.minecraft("red_carpet"));
 		Bukkit.removeRecipe(NamespacedKey.minecraft("yellow_carpet"));
@@ -472,19 +467,19 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		}, 80L, 1L);
 
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
-			String genAstatus2 = genAstatus;
-			String genBstatus2 = genBstatus;
-			String genCstatus2 = genCstatus;
-			String genDstatus2 = genDstatus;
+			String genAstatus = genA.getStatus();
+			String genBstatus = genB.getStatus();
+			String genCstatus = genC.getStatus();
+			String genDstatus = genD.getStatus();
 
 			if(!hardmode) {
-				genCaptureChecks(genAblocks, genAblocksLONG, "A");
-				genCaptureChecks(genBblocks, genBblocksLONG, "B");
-				genCaptureChecks(genCblocks, genCblocksLONG, "C");
-				genCaptureChecks(genDblocks, genDblocksLONG, "D");
+				genCaptureChecks(genA.getBlocks(), genA.getLongBlocks(), "A");
+				genCaptureChecks(genB.getBlocks(), genB.getLongBlocks(), "B");
+				genCaptureChecks(genC.getBlocks(), genC.getLongBlocks(), "C");
+				genCaptureChecks(genD.getBlocks(), genD.getLongBlocks(), "D");
 
-				if(!genAstatus.equals(genAstatus2) || !genBstatus.equals(genBstatus2) || !genCstatus.equals(genCstatus2) || !genDstatus.equals(genDstatus2)) {
-					onCapture(genAstatus2, genBstatus2, genCstatus2, genDstatus2, genAstatus, genBstatus, genCstatus, genDstatus);
+				if(!genA.getStatus().equals(genAstatus) || !genB.getStatus().equals(genBstatus) || !genC.getStatus().equals(genCstatus) || !genD.getStatus().equals(genDstatus)) {
+					onCapture(genAstatus, genBstatus, genCstatus, genDstatus, genA.getStatus(), genB.getStatus(), genC.getStatus(), genD.getStatus());
 				}
 			}
 		}, 80L, 20L);
@@ -1056,10 +1051,10 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			event.setCancelled(true);
 		} else {
 
-			List<Block> genBlockList = new ArrayList<>(genAblocks);
-			genBlockList.addAll(genBblocks);
-			genBlockList.addAll(genCblocks);
-			genBlockList.addAll(genDblocks);
+			List<Block> genBlockList = new ArrayList<>(genA.getBlocks());
+			genBlockList.addAll(genB.getBlocks());
+			genBlockList.addAll(genC.getBlocks());
+			genBlockList.addAll(genD.getBlocks());
 
 			if (!genBlockList.contains(block)) {
 				ppbs.add(block);
@@ -1082,10 +1077,10 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			event.setCancelled(true);
 		} else {
 
-			List<Block> genBlockList = new ArrayList<>(genAblocks);
-			genBlockList.addAll(genBblocks);
-			genBlockList.addAll(genCblocks);
-			genBlockList.addAll(genDblocks);
+			List<Block> genBlockList = new ArrayList<>(genA.getBlocks());
+			genBlockList.addAll(genB.getBlocks());
+			genBlockList.addAll(genC.getBlocks());
+			genBlockList.addAll(genD.getBlocks());
 
 			if (!player.getScoreboardTags().contains("canbreak") && !genBlockList.contains(block)) {
 				event.setCancelled(true);
@@ -1444,7 +1439,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 				} else if(shears.contains(item)) {
 					Block block = event.getClickedBlock();
-					if(genAblocks.contains(block) || genBblocks.contains(block) || genCblocks.contains(block) || genDblocks.contains(block)) {
+					if(genA.getBlocks().contains(block) || genB.getBlocks().contains(block) || genC.getBlocks().contains(block) || genD.getBlocks().contains(block)) {
 						Team team = mainboard.getPlayerTeam(player);
 						String teamname = team.getName();
 
@@ -1635,15 +1630,15 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 		fakekills.getScoreboard().resetScores(ChatColor.GOLD + " ");
 
-		String Acopy = getStringByLang(lang, genAstatus);
-		String Bcopy = getStringByLang(lang, genBstatus);
-		String Ccopy = getStringByLang(lang, genCstatus);
-		String Dcopy = getStringByLang(lang, genDstatus);
+		String Acopy = getStringByLang(lang, genA.getStatus());
+		String Bcopy = getStringByLang(lang, genB.getStatus());
+		String Ccopy = getStringByLang(lang, genC.getStatus());
+		String Dcopy = getStringByLang(lang, genD.getStatus());
 
-		String Acopy2 = getStringByLang(lang, genAstatus);
-		String Bcopy2 = getStringByLang(lang, genBstatus);
-		String Ccopy2 = getStringByLang(lang, genCstatus);
-		String Dcopy2 = getStringByLang(lang, genDstatus);
+		String Acopy2 = getStringByLang(lang, genA.getStatus());
+		String Bcopy2 = getStringByLang(lang, genB.getStatus());
+		String Ccopy2 = getStringByLang(lang, genC.getStatus());
+		String Dcopy2 = getStringByLang(lang, genD.getStatus());
 
 		if(gensLocked) {
 			Acopy = Acopy + ChatColor.GRAY + " ⚠";
@@ -1652,10 +1647,10 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			Dcopy = Dcopy + ChatColor.GRAY + " ⚠";
 		}
 
-		Acopy2 = Acopy2 + genApercent;
-		Bcopy2 = Bcopy2 + genBpercent;
-		Ccopy2 = Ccopy2 + genCpercent;
-		Dcopy2 = Dcopy2 + genDpercent;
+		Acopy2 = Acopy2 + genA.getPercent();
+		Bcopy2 = Bcopy2 + genB.getPercent();
+		Ccopy2 = Ccopy2 + genC.getPercent();
+		Dcopy2 = Dcopy2 + genD.getPercent();
 
 		fakekills.getScoreboard().resetScores(getStringByLang(lang, "woolbattle.generator.a") + " - " + Acopy);
 		fakekills.getScoreboard().resetScores(getStringByLang(lang, "woolbattle.generator.b") + " - " + Bcopy);
@@ -1674,10 +1669,10 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		minutes[0] = 0;
 		minutes0[0] = 0;
 
-		genAstatus = "woolbattle.generator.uncaptured";
-		genBstatus = "woolbattle.generator.uncaptured";
-		genCstatus = "woolbattle.generator.uncaptured";
-		genDstatus = "woolbattle.generator.uncaptured";
+		genA.setStatus("woolbattle.generator.uncaptured");
+		genB.setStatus("woolbattle.generator.uncaptured");
+		genC.setStatus("woolbattle.generator.uncaptured");
+		genD.setStatus("woolbattle.generator.uncaptured");
 
 		nextevent = getStringByLang(lang, "event.refill.1");
 		nextevent0 = getStringByLang(lang, "event.refill.1");
@@ -1858,17 +1853,17 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		if(!hardmode) {
 			String genStatus = "woolbattle.generator.uncaptured";
 
-			if (gen == genAblocks) {
-				genStatus = genAstatus;
+			if (gen == genA.getBlocks()) {
+				genStatus = genA.getStatus();
 			}
-			if (gen == genBblocks) {
-				genStatus = genBstatus;
+			if (gen == genB.getBlocks()) {
+				genStatus = genB.getStatus();
 			}
-			if (gen == genCblocks) {
-				genStatus = genCstatus;
+			if (gen == genC.getBlocks()) {
+				genStatus = genC.getStatus();
 			}
-			if (gen == genDblocks) {
-				genStatus = genDstatus;
+			if (gen == genD.getBlocks()) {
+				genStatus = genD.getStatus();
 			}
 
 			int redcount = 0;
@@ -1876,70 +1871,66 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			int greencount = 0;
 			int bluecount = 0;
 
-			for (Player player : Bukkit.getOnlinePlayers()) {
-				for (Block block : gen) {
+			int genowner = countGenWool(redcount, yellowcount, greencount, bluecount, gen);
 
-					int genowner = countGenWool(redcount, yellowcount, greencount, bluecount, gen);
-
-					switch (genowner) {
-						case 1 -> {
-							for (Block blocc : genLONG) {
-								if (String.valueOf(blocc.getType()).contains("CONCRETE") && blocc.getType() != Material.AIR) {
-									blocc.setType(Material.RED_CONCRETE);
-								}
-							}
-							if (!genStatus.equals("woolbattle.generator.red")) {
-								genBroadcast(genLetter, 1);
-								genStatus = "woolbattle.generator.red";
-							}
+			switch (genowner) {
+				case 1 -> {
+					for (Block block : genLONG) {
+						if (String.valueOf(block.getType()).contains("CONCRETE") && block.getType() != Material.AIR) {
+							block.setType(Material.RED_CONCRETE);
 						}
-						case 2 -> {
-							for (Block blocc : genLONG) {
-								if (String.valueOf(blocc.getType()).contains("CONCRETE") && blocc.getType() != Material.AIR) {
-									blocc.setType(Material.YELLOW_CONCRETE);
-								}
-							}
-							if (!genStatus.equals("woolbattle.generator.yellow")) {
-								genBroadcast(genLetter, 2);
-								genStatus = "woolbattle.generator.yellow";
-							}
+					}
+					if (!genStatus.equals("woolbattle.generator.red")) {
+						genBroadcast(genLetter, 1);
+						genStatus = "woolbattle.generator.red";
+					}
+				}
+				case 2 -> {
+					for (Block block : genLONG) {
+						if (String.valueOf(block.getType()).contains("CONCRETE") && block.getType() != Material.AIR) {
+							block.setType(Material.YELLOW_CONCRETE);
 						}
-						case 3 -> {
-							for (Block blocc : genLONG) {
-								if (String.valueOf(blocc.getType()).contains("CONCRETE") && blocc.getType() != Material.AIR) {
-									blocc.setType(Material.LIME_CONCRETE);
-								}
-							}
-							if (!genStatus.equals("woolbattle.generator.green")) {
-								genBroadcast(genLetter, 3);
-								genStatus = "woolbattle.generator.green";
-							}
+					}
+					if (!genStatus.equals("woolbattle.generator.yellow")) {
+						genBroadcast(genLetter, 2);
+						genStatus = "woolbattle.generator.yellow";
+					}
+				}
+				case 3 -> {
+					for (Block block : genLONG) {
+						if (String.valueOf(block.getType()).contains("CONCRETE") && block.getType() != Material.AIR) {
+							block.setType(Material.LIME_CONCRETE);
 						}
-						case 4 -> {
-							for (Block blocc : genLONG) {
-								if (String.valueOf(blocc.getType()).contains("CONCRETE") && blocc.getType() != Material.AIR) {
-									blocc.setType(Material.LIGHT_BLUE_CONCRETE);
-								}
-							}
-							if (!genStatus.equals("woolbattle.generator.blue")) {
-								genBroadcast(genLetter, 4);
-								genStatus = "woolbattle.generator.blue";
-							}
+					}
+					if (!genStatus.equals("woolbattle.generator.green")) {
+						genBroadcast(genLetter, 3);
+						genStatus = "woolbattle.generator.green";
+					}
+				}
+				case 4 -> {
+					for (Block block : genLONG) {
+						if (String.valueOf(block.getType()).contains("CONCRETE") && block.getType() != Material.AIR) {
+							block.setType(Material.LIGHT_BLUE_CONCRETE);
 						}
+					}
+					if (!genStatus.equals("woolbattle.generator.blue")) {
+						genBroadcast(genLetter, 4);
+						genStatus = "woolbattle.generator.blue";
 					}
 				}
 			}
-			if (gen == genAblocks) {
-				genAstatus = genStatus;
+
+			if (gen == genA.getBlocks()) {
+				genA.setStatus(genStatus);;
 			}
-			if (gen == genBblocks) {
-				genBstatus = genStatus;
+			if (gen == genB.getBlocks()) {
+				genB.setStatus(genStatus);;
 			}
-			if (gen == genCblocks) {
-				genCstatus = genStatus;
+			if (gen == genC.getBlocks()) {
+				genC.setStatus(genStatus);;
 			}
-			if (gen == genDblocks) {
-				genDstatus = genStatus;
+			if (gen == genD.getBlocks()) {
+				genD.setStatus(genStatus);;
 			}
 		}
 	}
@@ -1980,7 +1971,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 				}
 			}
 
-			for(Block block : genAblocks) {
+			for(Block block : genA.getBlocks()) {
 				if (block.getType().isAir() || block.getType().toString().contains("WOOL")) {
 					block.setType(team.getType);
 				}
@@ -2002,7 +1993,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 				}
 			}
 
-			for(Block block : genBblocks) {
+			for(Block block : genB.getBlocks()) {
 				if (block.getType().isAir() || block.getType().toString().contains("WOOL")) {
 					block.setType(team.getType);
 				}
@@ -2024,7 +2015,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 				}
 			}
 
-			for(Block block : genCblocks) {
+			for(Block block : genC.getBlocks()) {
 				if (block.getType().isAir() || block.getType().toString().contains("WOOL")) {
 					block.setType(team.getType);
 				}
@@ -2046,7 +2037,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 				}
 			}
 
-			for(Block block : genDblocks) {
+			for(Block block : genD.getBlocks()) {
 				if (block.getType().isAir() || block.getType().toString().contains("WOOL")) {
 					block.setType(team.getType);
 				}
@@ -2099,7 +2090,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		isDominating = false;
 	}
 
-	public void recoloringGenerators(List<Block> genLONG, List<Block> gen) {
+	public void recoloringGenerators(List<Block> gen, List<Block> genLONG) {
 		for(Block block : genLONG) {
 			if(String.valueOf(block.getType()).contains("CONCRETE")) {
 				block.setType(Material.WHITE_CONCRETE);
@@ -2150,10 +2141,10 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			fakekills.getScoreboard().resetScores(getStringByLang(lang, "woolbattle.generator.c") + " - " + genStatus0);
 			fakekills.getScoreboard().resetScores(getStringByLang(lang, "woolbattle.generator.d") + " - " + genStatus0);
 
-			String genStatusA = genStatus0 + genApercent;
-			String genStatusB = genStatus0 + genBpercent;
-			String genStatusC = genStatus0 + genCpercent;
-			String genStatusD = genStatus0 + genDpercent;
+			String genStatusA = genStatus0 + genA.getPercent();
+			String genStatusB = genStatus0 + genB.getPercent();
+			String genStatusC = genStatus0 + genC.getPercent();
+			String genStatusD = genStatus0 + genD.getPercent();
 
 			fakekills.getScoreboard().resetScores(getStringByLang(lang, "woolbattle.generator.a") + " - " + genStatusA);
 			fakekills.getScoreboard().resetScores(getStringByLang(lang, "woolbattle.generator.b") + " - " + genStatusB);
@@ -2201,10 +2192,10 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 		stopGameDominationCancel();
 
-		recoloringGenerators(genAblocksLONG, genAblocks);
-		recoloringGenerators(genBblocksLONG, genBblocks);
-		recoloringGenerators(genCblocksLONG, genCblocks);
-		recoloringGenerators(genDblocksLONG, genDblocks);
+		recoloringGenerators(genA.getBlocks(), genA.getLongBlocks());
+		recoloringGenerators(genB.getBlocks(), genB.getLongBlocks());
+		recoloringGenerators(genC.getBlocks(), genC.getLongBlocks());
+		recoloringGenerators(genD.getBlocks(), genD.getLongBlocks());
 		gensLocked = false;
 
 		mainworld.getWorldBorder().setSize(200, 1);
@@ -2847,15 +2838,15 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 						resetGeneratorText(player);
 					}
 
-					genApercent = countGenPercents(genAblocks);
-					genBpercent = countGenPercents(genBblocks);
-					genCpercent = countGenPercents(genCblocks);
-					genDpercent = countGenPercents(genDblocks);
+					genA.setPercent(countGenPercents(genA.getBlocks()));;
+					genB.setPercent(countGenPercents(genB.getBlocks()));;
+					genC.setPercent(countGenPercents(genC.getBlocks()));;
+					genD.setPercent(countGenPercents(genD.getBlocks()));;
 
-					String Acopy = getStringByLang(lang, genAstatus);
-					String Bcopy = getStringByLang(lang, genBstatus);
-					String Ccopy = getStringByLang(lang, genCstatus);
-					String Dcopy = getStringByLang(lang, genDstatus);
+					String Acopy = getStringByLang(lang, genA.getStatus());
+					String Bcopy = getStringByLang(lang, genB.getStatus());
+					String Ccopy = getStringByLang(lang, genC.getStatus());
+					String Dcopy = getStringByLang(lang, genD.getStatus());
 
 					if(gensLocked) {
 						Acopy += ChatColor.GRAY + " ⚠";
@@ -2863,10 +2854,10 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 						Ccopy += ChatColor.GRAY + " ⚠";
 						Dcopy += ChatColor.GRAY + " ⚠";
 					} else {
-						Acopy += genApercent;
-						Bcopy += genBpercent;
-						Ccopy += genCpercent;
-						Dcopy += genDpercent;
+						Acopy += genA.getPercent();
+						Bcopy += genB.getPercent();
+						Ccopy += genC.getPercent();
+						Dcopy += genD.getPercent();
 					}
 
 					fakekills.getScore(getStringByLang(lang, "woolbattle.generator.a") + " - " + Acopy).setScore(5);
@@ -2898,10 +2889,10 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 				String teamname = team.getName();
 
 				List<String> genStatuses = new ArrayList<>();
-				genStatuses.add(genAstatus);
-				genStatuses.add(genBstatus);
-				genStatuses.add(genCstatus);
-				genStatuses.add(genDstatus);
+				genStatuses.add(genA.getStatus());
+				genStatuses.add(genB.getStatus());
+				genStatuses.add(genC.getStatus());
+				genStatuses.add(genD.getStatus());
 
 				for (String genStatus : genStatuses) {
 					if (genStatus == null || genStatus.isBlank()) {
