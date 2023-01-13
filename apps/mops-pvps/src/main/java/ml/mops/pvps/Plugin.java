@@ -3,7 +3,7 @@ package ml.mops.pvps;
 import club.minnced.discord.webhook.WebhookClient;
 import club.minnced.discord.webhook.send.WebhookEmbed;
 import club.minnced.discord.webhook.send.WebhookEmbedBuilder;
-import ml.mops.base.Kit;
+import ml.mops.base.kits.Kit;
 import ml.mops.base.commands.Commands;
 import ml.mops.base.maps.Map;
 import ml.mops.utils.Cuboid;
@@ -23,12 +23,8 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.awt.Color;
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 

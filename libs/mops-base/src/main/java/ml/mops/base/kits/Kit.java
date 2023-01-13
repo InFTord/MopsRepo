@@ -1,4 +1,4 @@
-package ml.mops.base;
+package ml.mops.base.kits;
 
 import ml.mops.utils.MopsColor;
 import org.bukkit.Bukkit;

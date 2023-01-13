@@ -1,11 +1,8 @@
 package ml.mops.pvps;
 
-import ml.mops.base.Kit;
-import ml.mops.base.maps.Map;
-import ml.mops.base.maps.MapManager;
+import ml.mops.base.kits.Kit;
 import ml.mops.utils.MopsUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.block.ShulkerBox;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;

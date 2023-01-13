@@ -1,4 +1,4 @@
-package ml.mops.base;
+package ml.mops.base.kits;
 
 public enum KitType {
     BASE,
