@@ -140,10 +140,10 @@ woolbattle:
       eng: "&aInflatable Trampoline"
   - slimeball.lore:
       rus: |
-        &7Спасёт тебя при падении. &e&lПКМ &8(Шифт чтобы прыгнуть выше)
+        &7Спасает тебя при падении. &e&lПКМ &8(Шифт чтобы прыгнуть выше)
         &bСтоимость: 160 шерсти
       eng: |
-        &7Will save you from falling. &e&lRIGHT CLICK &8(Shift to jump higher)
+        &7Saves you from falling. &e&lRIGHT CLICK &8(Shift to jump higher)
         &bCost: 160 wool
   - platform.name:
       rus: "&cПлатформа!"
@@ -244,7 +244,7 @@ woolbattle:
       eng: "&cHardmode!"
   - hardmode.activation.2:
       rus: "&7Постарайся выжить!"
-      eng: "&7Try to survive!!"
+      eng: "&7Try to survive!"
   - refill.activation.1:
       rus: "&eРефилл!"
       eng: "&eRefill!"
