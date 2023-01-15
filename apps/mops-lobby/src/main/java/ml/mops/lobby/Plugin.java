@@ -173,8 +173,8 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
                 for (Player player : Bukkit.getOnlinePlayers()) {
                     if (player.getName().equals("SirCat07")) {
-                        player.spawnParticle(Particle.FLAME, player.getLocation().add(x, 0.1, sausageY), 1, 0, 0, 0, 0);
-                        player.spawnParticle(Particle.FLAME, player.getLocation().add(x, 0.1, circleY), 1, 0, 0, 0, 0);
+                        player.spawnParticle(Particle.FLAME, player.getLocation().add(x, 0.1, sausageY), 1, 0, 0, 0, 0.001);
+                        player.spawnParticle(Particle.FLAME, player.getLocation().add(x, 0.1, circleY), 1, 0, 0, 0, 0.001);
                     }
                 }
             }

@@ -90,7 +90,7 @@ public class AdminUtils {
 
                                     r[0] += 0.2;
 
-                                    playerCopy.spawnParticle(Particle.FLAME, playerCopy.getLocation().add(x, 0.1, y), 1, 0, 0, 0, 0);
+                                    playerCopy.spawnParticle(Particle.FLAME, playerCopy.getLocation().add(x, 0.1, y), 1, 0, 0, 0, 0.001);
                                 }
                             }.runTaskTimerAsynchronously(plugin, 0, 1);
                         }
@@ -109,7 +109,23 @@ public class AdminUtils {
 
                                     r[0] += 0.2;
 
-                                    playerCopy.spawnParticle(Particle.FLAME, playerCopy.getLocation().add(x, 0.1, y), 1, 0, 0, 0, 0);
+                                    playerCopy.spawnParticle(Particle.FLAME, playerCopy.getLocation().add(x, 0.1, y), 1, 0, 0, 0, 0.001);
+                                }
+                            }.runTaskTimerAsynchronously(plugin, 0, 1);
+                        }
+                        if(args[0].equals("square")) {
+                            final double[] changingThing = {0};
+
+                            Player playerCopy = player;
+
+                            new BukkitRunnable() {
+                                @Override
+                                public void run() {
+                                    double thing = (Math.cos(changingThing[0]-0.7)+Math.sin(changingThing[0]-0.87))*0.78;
+
+                                    changingThing[0] += 0.2;
+
+                                    playerCopy.spawnParticle(Particle.VILLAGER_HAPPY, playerCopy.getLocation().add(thing, thing, thing), 1, 0, 0, 0, 0.001);
                                 }
                             }.runTaskTimerAsynchronously(plugin, 0, 1);
                         }
