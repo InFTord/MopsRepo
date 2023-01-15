@@ -76,23 +76,24 @@ public class AdminUtils {
                             player.banPlayer(ChatColor.RED + "You have been banned from MopsNetwork.");
                         }
                         if(args[0].equals("particle")) {
-                            double radius = 0.2;
-                            final double[] y = {0};
                             Location location = player.getLocation();
-                            Player player1 = player;
+                            int a = 0;
+                            int b = 2;
+                            final double[] r = {0};
 
-                            boolean up = true;
+                            Player playerCopy = player;
 
                             new BukkitRunnable() {
                                 @Override
                                 public void run() {
-                                    double x = radius * Math.cos(y[0]);
-                                    double z = radius * Math.sin(y[0]);
+                                    double x = Math.cos(r[0])*(a)+b*Math.sin(r[0]);
+                                    double y = x - Math.sin(r[0])*(a)+Math.cos(r[0])*(b);
 
-                                    player1.spawnParticle(Particle.TOTEM, location.add(x, y[0], z), 2, 0, 0, 0, 0);
-                                    y[0] = y[0] + 0.01;
+                                    r[0] += 0.1;
+
+                                    playerCopy.spawnParticle(Particle.FLAME, playerCopy.getLocation().add(x, 0.1, y), 2);
                                 }
-                            }.runTaskTimerAsynchronously(plugin, 0, 4);
+                            }.runTaskTimerAsynchronously(plugin, 0, 8);
                         }
                         if(args[0].equals("getskullid")) {
                             ItemStack item = player.getItemInHand();
