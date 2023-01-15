@@ -68,6 +68,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     ArmorStand ball;
 
     int particleTimer = 8;
+    final double[] r = {0};
 
 
 
@@ -162,7 +163,6 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
             int a = 0;
             double b = 1.5;
-            final double[] r = {0};
 
             double x = Math.cos(r[0])*(a)+b*Math.sin(r[0]);
             double sausageY = x - Math.sin(r[0])*(a)+Math.cos(r[0])*(b);
