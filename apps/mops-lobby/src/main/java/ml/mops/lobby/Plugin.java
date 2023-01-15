@@ -291,8 +291,10 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
         if (player.getName().equals("SirCat07")) {
             if(particleTimer != 2) {
-                if(event.getTo().getX() != event.getFrom().getX() || event.getTo().getY() != event.getFrom().getY() || event.getTo().getZ() != event.getFrom().getZ() )
-                particleTimer = 2;
+                if(event.getTo().getX() != event.getFrom().getX() || event.getTo().getY() != event.getFrom().getY() || event.getTo().getZ() != event.getFrom().getZ()) {
+                    particleTimer = 2;
+                    r[0] = 0;
+                }
             }
         }
     }
