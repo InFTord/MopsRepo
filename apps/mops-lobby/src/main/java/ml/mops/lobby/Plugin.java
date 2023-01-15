@@ -67,7 +67,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
     ArmorStand ball;
 
-    int particleTimer = 8;
+    int particleTimer = 4;
     final double[] r = {0};
 
 
@@ -290,9 +290,9 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         }
 
         if (player.getName().equals("SirCat07")) {
-            if(particleTimer != 6) {
+            if(particleTimer != 2) {
                 if(event.getTo().getX() != event.getFrom().getX() || event.getTo().getY() != event.getFrom().getY() || event.getTo().getZ() != event.getFrom().getZ() )
-                particleTimer = 6;
+                particleTimer = 2;
             }
         }
     }
