@@ -125,9 +125,9 @@ public class AdminUtils {
 
                                     changingThing[0] += 0.1;
 
-                                    playerCopy.spawnParticle(Particle.VILLAGER_HAPPY, playerCopy.getLocation().add(thing, 0, -thing), 1, 0, 0, 0, 0.001);
-                                    playerCopy.spawnParticle(Particle.VILLAGER_HAPPY, playerCopy.getLocation().add(-thing, 0, thing), 1, 0, 0, 0, 0.001);
-                                    playerCopy.spawnParticle(Particle.VILLAGER_HAPPY, playerCopy.getLocation().add(thing, thing, -thing), 1, 0, 0, 0, 0.001);
+                                    playerCopy.spawnParticle(Particle.VILLAGER_HAPPY, playerCopy.getLocation().add(thing, 0, 1), 1, 0, 0, 0, 0.001);
+                                    playerCopy.spawnParticle(Particle.VILLAGER_HAPPY, playerCopy.getLocation().add(1, 0, thing), 1, 0, 0, 0, 0.001);
+                                    playerCopy.spawnParticle(Particle.VILLAGER_HAPPY, playerCopy.getLocation().add(thing, thing, thing), 1, 0, 0, 0, 0.001);
                                 }
                             }.runTaskTimerAsynchronously(plugin, 0, 1);
                         }
