@@ -289,8 +289,9 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             player.playSound(player.getLocation(), Sound.BLOCK_BAMBOO_HIT, 1, 1);
         }
 
-        if(particleTimer != 6) {
-            if (player.getName().equals("SirCat07")) {
+        if (player.getName().equals("SirCat07")) {
+            if(particleTimer != 6) {
+                if(event.getTo().getX() != event.getFrom().getX() || event.getTo().getY() != event.getFrom().getY() || event.getTo().getZ() != event.getFrom().getZ() )
                 particleTimer = 6;
             }
         }
