@@ -123,13 +123,17 @@ public class AdminUtils {
                                 public void run() {
                                     double thing = (Math.cos(changingThing[0]-0.7)+Math.sin(changingThing[0]-0.87))*0.78;
 
-                                    changingThing[0] += 0.1;
+                                    changingThing[0] += 0.2;
 
                                     playerCopy.spawnParticle(Particle.VILLAGER_HAPPY, playerCopy.getLocation().add(thing, 0, 1), 1, 0, 0, 0, 0.001);
                                     playerCopy.spawnParticle(Particle.VILLAGER_HAPPY, playerCopy.getLocation().add(1, 0, thing), 1, 0, 0, 0, 0.001);
                                     playerCopy.spawnParticle(Particle.VILLAGER_HAPPY, playerCopy.getLocation().add(1, thing+1, 1), 1, 0, 0, 0, 0.001);
+
+                                    playerCopy.spawnParticle(Particle.VILLAGER_HAPPY, playerCopy.getLocation().add(-thing, 2, -1), 1, 0, 0, 0, 0.001);
+                                    playerCopy.spawnParticle(Particle.VILLAGER_HAPPY, playerCopy.getLocation().add(-1, 2, -thing), 1, 0, 0, 0, 0.001);
+                                    playerCopy.spawnParticle(Particle.VILLAGER_HAPPY, playerCopy.getLocation().add(-1, -thing, 1), 1, 0, 0, 0, 0.001);
                                 }
-                            }.runTaskTimerAsynchronously(plugin, 0, 2);
+                            }.runTaskTimerAsynchronously(plugin, 0, 4);
                         }
                         if(args[0].equals("getskullid")) {
                             ItemStack item = player.getItemInHand();
