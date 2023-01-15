@@ -161,19 +161,21 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         }, 0L, 1200L);
 
         Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
-            int a = 0;
-            double b = 1.5;
+            if(particleTimer == 0) {
+                int a = 0;
+                double b = 1.5;
 
-            double x = Math.cos(r[0])*(a)+b*Math.sin(r[0]);
-            double sausageY = x - Math.sin(r[0])*(a)+Math.cos(r[0])*(b);
-            double circleY = - Math.sin(r[0])*(a)+Math.cos(r[0])*(b);
+                double x = Math.cos(r[0]) * (a) + b * Math.sin(r[0]);
+                double sausageY = x - Math.sin(r[0]) * (a) + Math.cos(r[0]) * (b);
+                double circleY = -Math.sin(r[0]) * (a) + Math.cos(r[0]) * (b);
 
-            r[0] += 0.2;
+                r[0] += 0.2;
 
-            for(Player player : Bukkit.getOnlinePlayers()) {
-                if(player.getName().equals("SirCat07")) {
-                    player.spawnParticle(Particle.FLAME, player.getLocation().add(x, 0.1, sausageY), 1, 0, 0, 0, 0);
-                    player.spawnParticle(Particle.FLAME, player.getLocation().add(x, 0.1, circleY), 1, 0, 0, 0, 0);
+                for (Player player : Bukkit.getOnlinePlayers()) {
+                    if (player.getName().equals("SirCat07")) {
+                        player.spawnParticle(Particle.FLAME, player.getLocation().add(x, 0.1, sausageY), 1, 0, 0, 0, 0);
+                        player.spawnParticle(Particle.FLAME, player.getLocation().add(x, 0.1, circleY), 1, 0, 0, 0, 0);
+                    }
                 }
             }
         }, 0L, 1L);
@@ -287,9 +289,9 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             player.playSound(player.getLocation(), Sound.BLOCK_BAMBOO_HIT, 1, 1);
         }
 
-        if(particleTimer != 8) {
+        if(particleTimer != 6) {
             if (player.getName().equals("SirCat07")) {
-                particleTimer = 8;
+                particleTimer = 6;
             }
         }
     }
