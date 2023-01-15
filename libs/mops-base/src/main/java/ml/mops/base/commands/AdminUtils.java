@@ -127,9 +127,9 @@ public class AdminUtils {
 
                                     playerCopy.spawnParticle(Particle.VILLAGER_HAPPY, playerCopy.getLocation().add(thing, 0, 1), 1, 0, 0, 0, 0.001);
                                     playerCopy.spawnParticle(Particle.VILLAGER_HAPPY, playerCopy.getLocation().add(1, 0, thing), 1, 0, 0, 0, 0.001);
-                                    playerCopy.spawnParticle(Particle.VILLAGER_HAPPY, playerCopy.getLocation().add(thing, thing, thing), 1, 0, 0, 0, 0.001);
+                                    playerCopy.spawnParticle(Particle.VILLAGER_HAPPY, playerCopy.getLocation().add(1, thing+1, 1), 1, 0, 0, 0, 0.001);
                                 }
-                            }.runTaskTimerAsynchronously(plugin, 0, 1);
+                            }.runTaskTimerAsynchronously(plugin, 0, 2);
                         }
                         if(args[0].equals("getskullid")) {
                             ItemStack item = player.getItemInHand();
