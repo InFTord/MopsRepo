@@ -76,10 +76,11 @@ public class AdminUtils {
                             player.banPlayer(ChatColor.RED + "You have been banned from MopsNetwork.");
                         }
                         if(args[0].equals("sausage")) {
-                            Location location = player.getLocation();
                             int a = 0;
                             int b = 1;
                             final double[] r = {0};
+
+                            Player playerCopy = player;
 
                             new BukkitRunnable() {
                                 @Override
@@ -89,15 +90,16 @@ public class AdminUtils {
 
                                     r[0] += 0.1;
 
-                                    location.getWorld().spawnParticle(Particle.FLAME, location.add(x, 0.1, y), 2, 0, 0, 0, 0);
+                                    playerCopy.spawnParticle(Particle.FLAME, playerCopy.getLocation().add(x, 0.1, y), 2, 0, 0, 0, 0);
                                 }
                             }.runTaskTimerAsynchronously(plugin, 0, 1);
                         }
                         if(args[0].equals("circle")) {
-                            Location location = player.getLocation();
                             int a = 0;
                             int b = 1;
                             final double[] r = {0};
+
+                            Player playerCopy = player;
 
                             new BukkitRunnable() {
                                 @Override
@@ -107,7 +109,7 @@ public class AdminUtils {
 
                                     r[0] += 0.1;
 
-                                    location.getWorld().spawnParticle(Particle.FLAME, location.add(x, 0.1, y), 2, 0, 0, 0, 0);
+                                    playerCopy.spawnParticle(Particle.FLAME, playerCopy.getLocation().add(x, 0.1, y), 2, 0, 0, 0, 0);
                                 }
                             }.runTaskTimerAsynchronously(plugin, 0, 1);
                         }
