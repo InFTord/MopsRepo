@@ -128,11 +128,11 @@ public class AdminUtils {
                                     playerCopy.spawnParticle(Particle.VILLAGER_HAPPY, playerCopy.getLocation().add(thing, 0, 1), 1, 0, 0, 0, 0.001);
                                     playerCopy.spawnParticle(Particle.VILLAGER_HAPPY, playerCopy.getLocation().add(-thing, 2, -1), 1, 0, 0, 0, 0.001);
                                     playerCopy.spawnParticle(Particle.VILLAGER_HAPPY, playerCopy.getLocation().add(thing, 0, -1), 1, 0, 0, 0, 0.001);
-                                    playerCopy.spawnParticle(Particle.VILLAGER_HAPPY, playerCopy.getLocation().add(-thing, 2, 1), 1, 0, 0, 0, 0.001);
+                                    playerCopy.spawnParticle(Particle.VILLAGER_HAPPY, playerCopy.getLocation().add(-thing, 2, -1), 1, 0, 0, 0, 0.001);
 
                                     playerCopy.spawnParticle(Particle.VILLAGER_HAPPY, playerCopy.getLocation().add(1, 0, thing), 1, 0, 0, 0, 0.001);
                                     playerCopy.spawnParticle(Particle.VILLAGER_HAPPY, playerCopy.getLocation().add(-1, 2, -thing), 1, 0, 0, 0, 0.001);
-                                    playerCopy.spawnParticle(Particle.VILLAGER_HAPPY, playerCopy.getLocation().add(1, 0, -thing), 1, 0, 0, 0, 0.001);
+                                    playerCopy.spawnParticle(Particle.VILLAGER_HAPPY, playerCopy.getLocation().add(-1, 0, -thing), 1, 0, 0, 0, 0.001);
                                     playerCopy.spawnParticle(Particle.VILLAGER_HAPPY, playerCopy.getLocation().add(-1, 2, thing), 1, 0, 0, 0, 0.001);
 
                                     playerCopy.spawnParticle(Particle.VILLAGER_HAPPY, playerCopy.getLocation().add(1, -thing+1, 1), 1, 0, 0, 0, 0.001);
