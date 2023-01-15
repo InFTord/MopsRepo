@@ -35,6 +35,7 @@ import org.bukkit.material.MaterialData;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
@@ -65,6 +66,10 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     Inventory mapGUI = new MapGUI().getInventory();
 
     ArmorStand ball;
+
+    int particleTimer = 8;
+
+
 
     @Override
     public void onEnable() {
@@ -134,6 +139,10 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                     player.getWorld().spawnParticle(Particle.SNOWFLAKE, player.getLocation().add(0, 7, 0), 450, 15, 6, 15, 0);
                 }
             }
+
+            if(particleTimer != 0) {
+                particleTimer--;
+            }
         }, 0L, 10L);
 
         Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
@@ -149,6 +158,25 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 mainworld.setStorm(true);
             }
         }, 0L, 1200L);
+
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
+            int a = 0;
+            double b = 1.5;
+            final double[] r = {0};
+
+            double x = Math.cos(r[0])*(a)+b*Math.sin(r[0]);
+            double sausageY = x - Math.sin(r[0])*(a)+Math.cos(r[0])*(b);
+            double circleY = - Math.sin(r[0])*(a)+Math.cos(r[0])*(b);
+
+            r[0] += 0.2;
+
+            for(Player player : Bukkit.getOnlinePlayers()) {
+                if(player.getName().equals("SirCat07")) {
+                    player.spawnParticle(Particle.FLAME, player.getLocation().add(x, 0.1, sausageY), 1, 0, 0, 0, 0);
+                    player.spawnParticle(Particle.FLAME, player.getLocation().add(x, 0.1, circleY), 1, 0, 0, 0, 0);
+                }
+            }
+        }, 0L, 1L);
 
 
         Location block1 = new Location(mainworld, -77.5, 11, -207.5);
@@ -257,6 +285,12 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 ball.setVelocity(player.getEyeLocation().getDirection().multiply(random));
             }
             player.playSound(player.getLocation(), Sound.BLOCK_BAMBOO_HIT, 1, 1);
+        }
+
+        if(particleTimer != 8) {
+            if (player.getName().equals("SirCat07")) {
+                particleTimer = 8;
+            }
         }
     }
 
