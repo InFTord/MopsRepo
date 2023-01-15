@@ -91,9 +91,9 @@ public class AdminUtils {
 
                                     r[0] += 0.1;
 
-                                    playerCopy.spawnParticle(Particle.FLAME, playerCopy.getLocation().add(x, 0.1, y), 2);
+                                    playerCopy.spawnParticle(Particle.FLAME, playerCopy.getLocation().add(x, 0.1, y), 2, 0, 0, 0, 0);
                                 }
-                            }.runTaskTimerAsynchronously(plugin, 0, 8);
+                            }.runTaskTimerAsynchronously(plugin, 0, 4);
                         }
                         if(args[0].equals("getskullid")) {
                             ItemStack item = player.getItemInHand();
