@@ -89,11 +89,11 @@ public class AdminUtils {
                                     double x = Math.cos(r[0])*(a)+b*Math.sin(r[0]);
                                     double y = x - Math.sin(r[0])*(a)+Math.cos(r[0])*(b);
 
-                                    r[0] += 0.1;
+                                    r[0] += 0.2;
 
-                                    playerCopy.spawnParticle(Particle.FLAME, playerCopy.getLocation().add(x, 0.1, y), 2, 0, 0, 0, 0);
+                                    playerCopy.spawnParticle(Particle.FLAME, playerCopy.getLocation().add(x, 0.1, y), 3, 0, 0, 0, 0);
                                 }
-                            }.runTaskTimerAsynchronously(plugin, 0, 4);
+                            }.runTaskTimerAsynchronously(plugin, 0, 1);
                         }
                         if(args[0].equals("getskullid")) {
                             ItemStack item = player.getItemInHand();
