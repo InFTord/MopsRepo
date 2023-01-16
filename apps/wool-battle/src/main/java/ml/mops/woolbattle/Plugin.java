@@ -273,63 +273,66 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 							player.teleport(mid);
 							lastdamage.getScore(player.getName()).setScore(0);
 
-							player.sendTitle(ChatColor.RED + "3", "", 1, 10, 10);
+							player.sendTitle(ChatColor.RED + "4", "", 1, 10, 10);
 							player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 0);
-
 							deathmsg.put(player, Bukkit.getScheduler().runTaskLater(this, () -> {
-								player.sendTitle(ChatColor.YELLOW + "2", "", 1, 10, 10);
+								player.sendTitle(ChatColor.GOLD + "3", "", 1, 10, 10);
 								player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
 								deathmsg.put(player, Bukkit.getScheduler().runTaskLater(this, () -> {
-									player.sendTitle(ChatColor.GREEN + "1", "", 1, 10, 10);
-									player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1.5F);
+									player.sendTitle(ChatColor.YELLOW + "2", "", 1, 10, 10);
+									player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
 									deathmsg.put(player, Bukkit.getScheduler().runTaskLater(this, () -> {
-										player.setGameMode(GameMode.SURVIVAL);
-										updateLevels(player);
+										player.sendTitle(ChatColor.GREEN + "1", "", 1, 10, 10);
+										player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1.5F);
+										deathmsg.put(player, Bukkit.getScheduler().runTaskLater(this, () -> {
+											player.setGameMode(GameMode.SURVIVAL);
+											updateLevels(player);
 
-										if (teamname.contains("red")) {
-											Location loc = new Location(player.getWorld(), 9, 257, -28);
-											while (loc.getBlock().getType() != Material.AIR && !(loc.getY() >= 319)) {
-												loc = loc.add(0, 1, 0);
+											if (teamname.contains("red")) {
+												Location loc = new Location(player.getWorld(), 9, 257, -28);
+												while (loc.getBlock().getType() != Material.AIR && !(loc.getY() >= 319)) {
+													loc = loc.add(0, 1, 0);
+												}
+												player.teleport(loc.add(0.5, 1, 0.5));
 											}
-											player.teleport(loc.add(0.5, 1, 0.5));
-										}
-										if (teamname.contains("yellow")) {
-											Location loc = new Location(player.getWorld(), -28, 257, 9);
-											while (loc.getBlock().getType() != Material.AIR && !(loc.getY() >= 319)) {
-												loc = loc.add(0, 1, 0);
+											if (teamname.contains("yellow")) {
+												Location loc = new Location(player.getWorld(), -28, 257, 9);
+												while (loc.getBlock().getType() != Material.AIR && !(loc.getY() >= 319)) {
+													loc = loc.add(0, 1, 0);
+												}
+												loc.setYaw(-90);
+												player.teleport(loc.add(0.5, 1, 0.5));
 											}
-											loc.setYaw(-90);
-											player.teleport(loc.add(0.5, 1, 0.5));
-										}
-										if (teamname.contains("green")) {
-											Location loc = new Location(player.getWorld(), 9, 257, 46);
-											while (loc.getBlock().getType() != Material.AIR && !(loc.getY() >= 319)) {
-												loc = loc.add(0, 1, 0);
+											if (teamname.contains("green")) {
+												Location loc = new Location(player.getWorld(), 9, 257, 46);
+												while (loc.getBlock().getType() != Material.AIR && !(loc.getY() >= 319)) {
+													loc = loc.add(0, 1, 0);
+												}
+												loc.setYaw(-180);
+												player.teleport(loc.add(0.5, 1, 0.5));
 											}
-											loc.setYaw(-180);
-											player.teleport(loc.add(0.5, 1, 0.5));
-										}
-										if (teamname.contains("blue")) {
-											Location loc = new Location(player.getWorld(), 46, 257, 9);
-											while (loc.getBlock().getType() != Material.AIR && !(loc.getY() >= 319)) {
-												loc = loc.add(0, 1, 0);
+											if (teamname.contains("blue")) {
+												Location loc = new Location(player.getWorld(), 46, 257, 9);
+												while (loc.getBlock().getType() != Material.AIR && !(loc.getY() >= 319)) {
+													loc = loc.add(0, 1, 0);
+												}
+												loc.setYaw(90);
+												player.teleport(loc.add(0.5, 1, 0.5));
 											}
-											loc.setYaw(90);
-											player.teleport(loc.add(0.5, 1, 0.5));
-										}
 
-										player.setAllowFlight(false);
-										player.setFlying(false);
-										player.removeScoreboardTag("spectator");
+											player.setAllowFlight(false);
+											player.setFlying(false);
+											player.removeScoreboardTag("spectator");
 
-										player.getInventory().setContents(finalSavedInventory);
-										player.updateInventory();
+											player.getInventory().setContents(finalSavedInventory);
+											player.updateInventory();
 
-										player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
+											player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
 
-										player.addScoreboardTag("immunity");
-										Bukkit.getScheduler().runTaskLater(this, () -> player.removeScoreboardTag("immunity"), 80L);
+											player.addScoreboardTag("immunity");
+											Bukkit.getScheduler().runTaskLater(this, () -> player.removeScoreboardTag("immunity"), 80L);
 
+										}, 20L));
 									}, 20L));
 								}, 20L));
 							}, 20L));
@@ -948,19 +951,17 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 							hasWrittenAnything.put(player, true);
 						}
 
-						for (OfflinePlayer players0 : team.getPlayers()) {
-							if (players0.isOnline()) {
-								Player players = players0.getPlayer();
-								players.sendMessage(ChatColor.DARK_GREEN + "[" + getStringByLang(lang, "woolbattle.team") + "] " + color + player.getName() + ChatColor.WHITE + ": " + color + msg);
+						for (OfflinePlayer teamPlayer : team.getPlayers()) {
+							if (teamPlayer.isOnline()) {
+								teamPlayer.getPlayer().sendMessage(ChatColor.DARK_GREEN + "[" + getStringByLang(lang, "woolbattle.team") + "] " + color + player.getName() + ChatColor.WHITE + ": " + color + msg);
 							}
 						}
 					}
 				} else {
 					if (msg.startsWith("!")) {
-						for (OfflinePlayer players0 : team.getPlayers()) {
-							if (players0.isOnline()) {
-								Player players = players0.getPlayer();
-								players.sendMessage(ChatColor.DARK_GREEN + "[" + getStringByLang(lang, "woolbattle.team") + "] " + color + player.getName() + ChatColor.WHITE + ": " + color + msg.replaceFirst("!", ""));
+						for (OfflinePlayer teamPlayer : team.getPlayers()) {
+							if (teamPlayer.isOnline()) {
+								teamPlayer.getPlayer().sendMessage(ChatColor.DARK_GREEN + "[" + getStringByLang(lang, "woolbattle.team") + "] " + color + player.getName() + ChatColor.WHITE + ": " + color + msg.replaceFirst("!", ""));
 							}
 						}
 					} else {
@@ -2367,7 +2368,10 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		player.setPlayerListName(team.getChatColor + player.getName());
 
 		gameStartingTitle(player);
-		requiredKills = (int) (Math.round(4 * (Bukkit.getOnlinePlayers().size() * 0.7)));
+
+		double s = Bukkit.getOnlinePlayers().size();
+		double equation = (s * 3 + (s*s)/10) / 15;
+		requiredKills = (int) (Math.round(equation));
 
 		Bukkit.getScheduler().runTaskLater(this, () -> {
 			player.sendTitle(getStringByLang(lang, "killRequirement.1"), getStringByLang(lang, "killRequirement.2", Map.of("kills", String.valueOf(requiredKills))), 5, 40, 30);
