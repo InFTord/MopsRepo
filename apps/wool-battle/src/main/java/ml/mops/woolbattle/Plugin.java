@@ -2290,7 +2290,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			Team team = mainboard.getPlayerTeam(player);
 			String teamname = team.getName();
 
-			boolean letCounting = !player.getScoreboardTags().contains("spectator") || !hardmode;
+			boolean letCounting = !(player.getScoreboardTags().contains("spectator") && hardmode);
 
 			if(letCounting) {
 				if (teamname.contains("red")) {
