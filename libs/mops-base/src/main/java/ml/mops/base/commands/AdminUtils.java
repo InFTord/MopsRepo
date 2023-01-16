@@ -90,7 +90,7 @@ public class AdminUtils {
 
                                     r[0] += 0.2;
 
-                                    playerCopy.spawnParticle(Particle.FLAME, playerCopy.getLocation().add(x, 0.1, y), 1, 0, 0, 0, 0.001);
+                                    playerCopy.getWorld().spawnParticle(Particle.FLAME, playerCopy.getLocation().add(x, 0.1, y), 1, 0, 0, 0, 0.001);
                                 }
                             }.runTaskTimerAsynchronously(plugin, 0, 1);
                         }
@@ -109,7 +109,7 @@ public class AdminUtils {
 
                                     r[0] += 0.2;
 
-                                    playerCopy.spawnParticle(Particle.FLAME, playerCopy.getLocation().add(x, 0.1, y), 1, 0, 0, 0, 0.001);
+                                    playerCopy.getWorld().spawnParticle(Particle.FLAME, playerCopy.getLocation().add(x, 0.1, y), 1, 0, 0, 0, 0.001);
                                 }
                             }.runTaskTimerAsynchronously(plugin, 0, 1);
                         }
@@ -125,20 +125,20 @@ public class AdminUtils {
 
                                     changingThing[0] += 0.1;
 
-                                    playerCopy.spawnParticle(Particle.VILLAGER_HAPPY, playerCopy.getLocation().add(thing, 0, 1), 2, 0, 0, 0, 0.001);
-                                    playerCopy.spawnParticle(Particle.VILLAGER_HAPPY, playerCopy.getLocation().add(-thing, 2, -1), 2, 0, 0, 0, 0.001);
-                                    playerCopy.spawnParticle(Particle.VILLAGER_HAPPY, playerCopy.getLocation().add(thing, 0, -1), 2, 0, 0, 0, 0.001);
-                                    playerCopy.spawnParticle(Particle.VILLAGER_HAPPY, playerCopy.getLocation().add(-thing, 2, 1), 2, 0, 0, 0, 0.001);
+                                    playerCopy.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, playerCopy.getLocation().add(thing, 0, 1), 1, 0, 0, 0, 0.001);
+                                    playerCopy.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, playerCopy.getLocation().add(-thing, 2, -1), 1, 0, 0, 0, 0.001);
+                                    playerCopy.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, playerCopy.getLocation().add(thing, 0, -1), 1, 0, 0, 0, 0.001);
+                                    playerCopy.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, playerCopy.getLocation().add(-thing, 2, 1), 1, 0, 0, 0, 0.001);
 
-                                    playerCopy.spawnParticle(Particle.VILLAGER_HAPPY, playerCopy.getLocation().add(1, 0, thing), 2, 0, 0, 0, 0.001);
-                                    playerCopy.spawnParticle(Particle.VILLAGER_HAPPY, playerCopy.getLocation().add(-1, 2, -thing), 2, 0, 0, 0, 0.001);
-                                    playerCopy.spawnParticle(Particle.VILLAGER_HAPPY, playerCopy.getLocation().add(1, 2, -thing), 2, 0, 0, 0, 0.001);
-                                    playerCopy.spawnParticle(Particle.VILLAGER_HAPPY, playerCopy.getLocation().add(-1, 0, thing), 2, 0, 0, 0, 0.001);
+                                    playerCopy.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, playerCopy.getLocation().add(1, 0, thing), 1, 0, 0, 0, 0.001);
+                                    playerCopy.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, playerCopy.getLocation().add(-1, 2, -thing), 1, 0, 0, 0, 0.001);
+                                    playerCopy.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, playerCopy.getLocation().add(1, 2, -thing), 1, 0, 0, 0, 0.001);
+                                    playerCopy.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, playerCopy.getLocation().add(-1, 0, thing), 1, 0, 0, 0, 0.001);
 
-                                    playerCopy.spawnParticle(Particle.VILLAGER_HAPPY, playerCopy.getLocation().add(1, -thing+1, 1), 2, 0, 0, 0, 0.001);
-                                    playerCopy.spawnParticle(Particle.VILLAGER_HAPPY, playerCopy.getLocation().add(-1, thing+1, -1), 2, 0, 0, 0, 0.001);
-                                    playerCopy.spawnParticle(Particle.VILLAGER_HAPPY, playerCopy.getLocation().add(1, -thing+1, -1), 2, 0, 0, 0, 0.001);
-                                    playerCopy.spawnParticle(Particle.VILLAGER_HAPPY, playerCopy.getLocation().add(-1, thing+1, 1), 2, 0, 0, 0, 0.001);
+                                    playerCopy.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, playerCopy.getLocation().add(1, -thing+1, 1), 1, 0, 0, 0, 0.001);
+                                    playerCopy.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, playerCopy.getLocation().add(-1, thing+1, -1), 1, 0, 0, 0, 0.001);
+                                    playerCopy.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, playerCopy.getLocation().add(1, -thing+1, -1), 1, 0, 0, 0, 0.001);
+                                    playerCopy.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, playerCopy.getLocation().add(-1, thing+1, 1), 1, 0, 0, 0, 0.001);
 
                                 }
                             }.runTaskTimerAsynchronously(plugin, 0, 2);
