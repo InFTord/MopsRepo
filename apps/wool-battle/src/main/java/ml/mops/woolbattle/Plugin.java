@@ -277,7 +277,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 							player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 0);
 							deathmsg.put(player, Bukkit.getScheduler().runTaskLater(this, () -> {
 								player.sendTitle(ChatColor.GOLD + "3", "", 1, 10, 10);
-								player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
+								player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 0.5F);
 								deathmsg.put(player, Bukkit.getScheduler().runTaskLater(this, () -> {
 									player.sendTitle(ChatColor.YELLOW + "2", "", 1, 10, 10);
 									player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
@@ -665,6 +665,10 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 	public void onFoodLevelChange(FoodLevelChangeEvent event) {
 		if(!hardmode) {
 			event.setCancelled(true);
+		} else {
+			if(event.getFoodLevel() < 14) {
+				event.setFoodLevel(14);
+			}
 		}
 	}
 
@@ -2032,6 +2036,9 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		}
 		for(Block block : gen) {
 			if(block.getType().equals(Material.AIR)) {
+				block.setType(Material.WHITE_WOOL);
+			}
+			if(block.getType().equals(Material.OAK_LEAVES)) {
 				block.setType(Material.WHITE_WOOL);
 			}
 		}
