@@ -180,6 +180,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             }
         }, 0L, 1L);
 
+        // как тебя скачать
 
         Location block1 = new Location(mainworld, -77.5, 11, -207.5);
         Location block2 = new Location(mainworld, -77.5, 10, -207.5);
