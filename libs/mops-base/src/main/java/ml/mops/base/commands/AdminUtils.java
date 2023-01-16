@@ -113,7 +113,7 @@ public class AdminUtils {
                                 }
                             }.runTaskTimerAsynchronously(plugin, 0, 1);
                         }
-                        if(args[0].equals("square")) {
+                        if(args[0].equals("cube")) {
                             final double[] changingThing = {0};
 
                             Player playerCopy = player;
@@ -123,25 +123,25 @@ public class AdminUtils {
                                 public void run() {
                                     double thing = (Math.cos(changingThing[0]-0.7)+Math.sin(changingThing[0]-0.87))*0.78;
 
-                                    changingThing[0] += 0.2;
+                                    changingThing[0] += 0.1;
 
-                                    playerCopy.spawnParticle(Particle.VILLAGER_HAPPY, playerCopy.getLocation().add(thing, 0, 1), 1, 0, 0, 0, 0.001);
-                                    playerCopy.spawnParticle(Particle.VILLAGER_HAPPY, playerCopy.getLocation().add(-thing, 2, -1), 1, 0, 0, 0, 0.001);
-                                    playerCopy.spawnParticle(Particle.VILLAGER_HAPPY, playerCopy.getLocation().add(thing, 0, -1), 1, 0, 0, 0, 0.001);
-                                    playerCopy.spawnParticle(Particle.VILLAGER_HAPPY, playerCopy.getLocation().add(-thing, 2, 1), 1, 0, 0, 0, 0.001);
+                                    playerCopy.spawnParticle(Particle.VILLAGER_HAPPY, playerCopy.getLocation().add(thing, 0, 1), 2, 0, 0, 0, 0.001);
+                                    playerCopy.spawnParticle(Particle.VILLAGER_HAPPY, playerCopy.getLocation().add(-thing, 2, -1), 2, 0, 0, 0, 0.001);
+                                    playerCopy.spawnParticle(Particle.VILLAGER_HAPPY, playerCopy.getLocation().add(thing, 0, -1), 2, 0, 0, 0, 0.001);
+                                    playerCopy.spawnParticle(Particle.VILLAGER_HAPPY, playerCopy.getLocation().add(-thing, 2, 1), 2, 0, 0, 0, 0.001);
 
-                                    playerCopy.spawnParticle(Particle.VILLAGER_HAPPY, playerCopy.getLocation().add(1, 0, thing), 1, 0, 0, 0, 0.001);
-                                    playerCopy.spawnParticle(Particle.VILLAGER_HAPPY, playerCopy.getLocation().add(-1, 2, -thing), 1, 0, 0, 0, 0.001);
-                                    playerCopy.spawnParticle(Particle.VILLAGER_HAPPY, playerCopy.getLocation().add(1, 2, -thing), 1, 0, 0, 0, 0.001);
-                                    playerCopy.spawnParticle(Particle.VILLAGER_HAPPY, playerCopy.getLocation().add(-1, 0, thing), 1, 0, 0, 0, 0.001);
+                                    playerCopy.spawnParticle(Particle.VILLAGER_HAPPY, playerCopy.getLocation().add(1, 0, thing), 2, 0, 0, 0, 0.001);
+                                    playerCopy.spawnParticle(Particle.VILLAGER_HAPPY, playerCopy.getLocation().add(-1, 2, -thing), 2, 0, 0, 0, 0.001);
+                                    playerCopy.spawnParticle(Particle.VILLAGER_HAPPY, playerCopy.getLocation().add(1, 2, -thing), 2, 0, 0, 0, 0.001);
+                                    playerCopy.spawnParticle(Particle.VILLAGER_HAPPY, playerCopy.getLocation().add(-1, 0, thing), 2, 0, 0, 0, 0.001);
 
-                                    playerCopy.spawnParticle(Particle.VILLAGER_HAPPY, playerCopy.getLocation().add(1, -thing+1, 1), 1, 0, 0, 0, 0.001);
-                                    playerCopy.spawnParticle(Particle.VILLAGER_HAPPY, playerCopy.getLocation().add(-1, thing+1, -1), 1, 0, 0, 0, 0.001);
-                                    playerCopy.spawnParticle(Particle.VILLAGER_HAPPY, playerCopy.getLocation().add(1, -thing+1, -1), 1, 0, 0, 0, 0.001);
-                                    playerCopy.spawnParticle(Particle.VILLAGER_HAPPY, playerCopy.getLocation().add(-1, thing+1, 1), 1, 0, 0, 0, 0.001);
+                                    playerCopy.spawnParticle(Particle.VILLAGER_HAPPY, playerCopy.getLocation().add(1, -thing+1, 1), 2, 0, 0, 0, 0.001);
+                                    playerCopy.spawnParticle(Particle.VILLAGER_HAPPY, playerCopy.getLocation().add(-1, thing+1, -1), 2, 0, 0, 0, 0.001);
+                                    playerCopy.spawnParticle(Particle.VILLAGER_HAPPY, playerCopy.getLocation().add(1, -thing+1, -1), 2, 0, 0, 0, 0.001);
+                                    playerCopy.spawnParticle(Particle.VILLAGER_HAPPY, playerCopy.getLocation().add(-1, thing+1, 1), 2, 0, 0, 0, 0.001);
 
                                 }
-                            }.runTaskTimerAsynchronously(plugin, 0, 6);
+                            }.runTaskTimerAsynchronously(plugin, 0, 2);
                         }
                         if(args[0].equals("getskullid")) {
                             ItemStack item = player.getItemInHand();
