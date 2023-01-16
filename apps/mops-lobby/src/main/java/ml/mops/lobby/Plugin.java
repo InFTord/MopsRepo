@@ -299,6 +299,8 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         }
     }
 
+    //j
+
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
         Player player = event.getPlayer();
