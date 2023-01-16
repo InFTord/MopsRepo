@@ -2370,7 +2370,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		gameStartingTitle(player);
 
 		double s = Bukkit.getOnlinePlayers().size();
-		double equation = (s * 3 + (s*s)/10) / 15;
+		double equation = s * 3 + (s*s)/150;
 		requiredKills = (int) (Math.round(equation));
 
 		Bukkit.getScheduler().runTaskLater(this, () -> {
