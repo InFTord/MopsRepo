@@ -158,6 +158,7 @@ public class AdminUtils {
 
                             Cuboid cuboid = new Cuboid(loc1, loc2);
 
+                            boolean centerOut = Boolean.parseBoolean(args[8]);
 
                             Path path = Paths.get(FileSystemView.getFileSystemView().getHomeDirectory().getAbsolutePath() + "\\" + args[7] + ".txt"); //creates Path instance
                             try {
@@ -176,19 +177,22 @@ public class AdminUtils {
                                         addition += block.getType() + "] ";
 
                                         Location location = block.getLocation();
-                                        Location center = cuboid.getCenter();
 
                                         double x = location.getX();
                                         double y = location.getY();
                                         double z = location.getZ();
 
-//                                        double centerX = center.getX();
-//                                        double centerY = center.getY();
-//                                        double centerZ = center.getZ();
-//
-//                                        x = x - centerX;
-//                                        y = y - centerY + 16;
-//                                        z = z - centerZ;
+                                        if(centerOut) {
+                                            Location center = cuboid.getCenter();
+
+                                            double centerX = center.getX();
+                                            double centerY = center.getY();
+                                            double centerZ = center.getZ();
+
+                                            x = x - centerX;
+                                            y = y - centerY + 16;
+                                            z = z - centerZ;
+                                        }
 
                                         addition += "{" + x;
                                         addition += " " + y;
