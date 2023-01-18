@@ -663,22 +663,10 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 	@EventHandler
 	public void onFoodLevelChange(FoodLevelChangeEvent event) {
-		if(gameactive) {
-			if (!hardmode) {
-				event.setCancelled(true);
-				if (event.getFoodLevel() < 20) {
-					event.setFoodLevel(20);
-				}
-			} else {
-				if (event.getFoodLevel() < 14) {
-					event.setFoodLevel(14);
-				}
-			}
+		if (!hardmode) {
+			event.setFoodLevel(20);
 		} else {
-			event.setCancelled(true);
-			if (event.getFoodLevel() < 20) {
-				event.setFoodLevel(20);
-			}
+			event.setFoodLevel(14);
 		}
 	}
 
@@ -1537,6 +1525,8 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 			allPlayers.sendMessage(getByLang(lang, "woolbattle.hardmodeMessage"));
 
+			allPlayers.setFoodLevel(14);
+
 			generatorBlockTask = Bukkit.getScheduler().runTaskLater(this, () -> {
 				allPlayers.sendTitle(getStringByLang(lang, "generator.blocked.1"), getStringByLang(lang, "generator.blocked.2"), 5, 30, 15);
 				allPlayers.playSound(allPlayers.getLocation(), Sound.ENTITY_ZOMBIE_ATTACK_IRON_DOOR, 0.8F, 0);
@@ -2116,6 +2106,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 				onlinePlayer.removePotionEffect(PotionEffectType.JUMP);
 				onlinePlayer.setGameMode(GameMode.SURVIVAL);
 				onlinePlayer.setHealth(onlinePlayer.getMaxHealth());
+				onlinePlayer.setFoodLevel(20);
 
 				updateLevels(onlinePlayer);
 			}
@@ -2592,6 +2583,8 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 				Team team = mainboard.getPlayerTeam(player);
 				assert team != null;
 				String teamname = team.getName();
+
+				player.setFoodLevel(20);
 
 				try {
 					if (args[0].equals("instant")) {
