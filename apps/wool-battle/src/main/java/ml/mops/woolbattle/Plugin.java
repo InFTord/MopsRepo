@@ -663,14 +663,21 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 	@EventHandler
 	public void onFoodLevelChange(FoodLevelChangeEvent event) {
-		if(!hardmode) {
-			event.setCancelled(true);
-			if(event.getFoodLevel() < 20) {
-				event.setFoodLevel(20);
+		if(gameactive) {
+			if (!hardmode) {
+				event.setCancelled(true);
+				if (event.getFoodLevel() < 20) {
+					event.setFoodLevel(20);
+				}
+			} else {
+				if (event.getFoodLevel() < 14) {
+					event.setFoodLevel(14);
+				}
 			}
 		} else {
-			if(event.getFoodLevel() < 14) {
-				event.setFoodLevel(14);
+			event.setCancelled(true);
+			if (event.getFoodLevel() < 20) {
+				event.setFoodLevel(20);
 			}
 		}
 	}
