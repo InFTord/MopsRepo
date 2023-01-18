@@ -103,6 +103,13 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         usables.add(new Location(mainworld, -95, 10, -170));
         usables.add(new Location(mainworld, 151, 7, 147));
         usables.add(new Location(mainworld, -58, 10, -197));
+        usables.add(new Location(mainworld, -71, 7, -255));
+        usables.add(new Location(mainworld, -70, 7, -255));
+        usables.add(new Location(mainworld, -69, 7, -255));
+        usables.add(new Location(mainworld, -68, 7, -255));
+        usables.add(new Location(mainworld, -67, 7, -255));
+        usables.add(new Location(mainworld, -66, 7, -255));
+
 
         atmButtons.add(new Location(mainworld, -69, 9, -205));
         atmButtons.add(new Location(mainworld, -92, 9, -176));

@@ -4,6 +4,8 @@ import club.minnced.discord.webhook.WebhookClient;
 import club.minnced.discord.webhook.send.WebhookEmbed;
 import club.minnced.discord.webhook.send.WebhookEmbedBuilder;
 import ml.mops.base.MopsPlugin;
+import ml.mops.base.commands.Commands;
+import ml.mops.utils.Cuboid;
 import ml.mops.utils.Translation;
 import ml.mops.utils.MopsUtils;
 import net.kyori.adventure.text.Component;
@@ -15,6 +17,7 @@ import net.kyori.adventure.title.Title;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -43,6 +46,11 @@ import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
@@ -465,6 +473,9 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			}
 		}, 80L, 160L);
 
+//		wipeoutWorld(mainworld, 150, 143, 319);
+
+
 		WebhookClient client = WebhookClient.withUrl(new String(Base64.getDecoder().decode(MopsUtils.statusText()), StandardCharsets.UTF_8));
 
 		WebhookEmbed embed = new WebhookEmbedBuilder()
@@ -509,7 +520,15 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 	int scoreboardTask;
 
 	@Override
-	public boolean onCommand(CommandSender sender, Command command, @NotNull String label, String[] args) {
+	public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
+		if (woolbattleCommands(sender, command, label, args, this)) {
+			return true;
+		} else {
+			return new Commands().commandsExecutor(sender, command, label, args, this);
+		}
+	}
+
+	public boolean woolbattleCommands(CommandSender sender, Command command, @NotNull String label, String[] args, Plugin plugin) {
 		boolean perms = sender.isOp();
 		Player player = (Player) sender;
 		String commandName = command.getName().toLowerCase(Locale.ROOT);
@@ -532,8 +551,6 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
 			return true;
 		}
-
-
 		if (perms) {
 			if (commandName.equals("startgame")) {
 				startGame(args);
@@ -636,6 +653,15 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			if (commandName.equals("items")) {
 				player.openInventory(itemGUI.getInventory());
 				return true;
+			}
+			if(commandName.equals("wipeout")) {
+				int radius = Integer.parseInt(args[0]);
+				boolean confirm = Boolean.parseBoolean(args[1]);
+				boolean confirm2 = args[2].equals("CONFIRM");
+
+				if (confirm && confirm2) {
+					wipeoutWorld(player.getWorld(), radius, 143, 319);
+				}
 			}
 		} else {
 			player.sendTitle(" ", getStringByLang(lang, "noPerms"), 0, 20, 15);
@@ -1425,6 +1451,60 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		} catch (Exception ignored) { }
 	}
 
+	public void wipeoutWorld(World world, int radius, int bottom, int up) {
+		Location loc1 = new Location(world, -radius, -bottom, -radius);
+		Location loc2 = new Location(world, radius, up, radius);
+
+		Cuboid cuboid = new Cuboid(loc1, loc2);
+
+		for(Block block : cuboid) {
+			if(block.getType() != Material.AIR) {
+				block.setType(Material.AIR);
+			}
+		}
+	}
+
+	public void loadCuboid(String link, World world) {
+		String[] rowArray = new String[] {""};
+
+		try {
+			InputStream stream = new URL(link).openStream();
+			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(stream));
+
+			StringBuilder stringBuilder = new StringBuilder();
+
+			String inputLine;
+			while ((inputLine = bufferedReader.readLine()) != null) {
+				stringBuilder.append(inputLine);
+				stringBuilder.append(System.lineSeparator());
+			}
+			bufferedReader.close();
+
+			rowArray = stringBuilder.toString().split("\n");;
+		} catch (IOException ignored) { }
+
+		for (String row : rowArray) {
+			String materialtext = row.substring(row.indexOf("[") + 1, row.indexOf("]")).trim();
+
+			String locationString = row.substring(row.indexOf("{") + 1, row.indexOf("}")).trim();
+			Material type = Material.valueOf(materialtext);
+
+			String[] xyz = locationString.split(" ");
+
+			double x = Double.parseDouble(String.valueOf(xyz[0]));
+			double y = Double.parseDouble(String.valueOf(xyz[1]));
+			double z = Double.parseDouble(String.valueOf(xyz[2]));
+
+			Location location = new Location(world, x, y, z);
+
+			String veryRawBlockData = row.substring(row.indexOf("(") + 1, row.indexOf(")")).trim();
+			String rawBlockData = veryRawBlockData.substring(veryRawBlockData.indexOf(":") + 1, veryRawBlockData.indexOf("}")).trim();
+			BlockData data = Bukkit.createBlockData(rawBlockData);
+
+			location.getBlock().setType(type);
+			location.getBlock().setBlockData(data, true);
+		}
+	}
 
 	public boolean woolRemove(int itemcount, Player player, String teamname) {
 		boolean hasItems = infinitewool;

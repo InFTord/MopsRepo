@@ -182,15 +182,14 @@ public class AdminUtils {
                                         double y = location.getY();
                                         double z = location.getZ();
 
-                                        double centerX = center.getX();
-                                        double centerY = center.getY();
-                                        double centerZ = center.getZ();
+//                                        double centerX = center.getX();
+//                                        double centerY = center.getY();
+//                                        double centerZ = center.getZ();
+//
+//                                        x = x - centerX;
+//                                        y = y - centerY + 16;
+//                                        z = z - centerZ;
 
-                                        x = x - centerX;
-                                        y = y - centerY + 16;
-                                        z = z - centerZ;
-
-                                        // добавить нереальную математику которая будет ставить всю постройку на локацию 0 0 0 вместо локации центра
                                         addition += "{" + x;
                                         addition += " " + y;
                                         addition += " " + z + "} ";

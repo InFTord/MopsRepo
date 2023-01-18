@@ -124,16 +124,17 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 			}
 
 			if(args[0].equals("wipeout")) {
-				boolean confirm = Boolean.parseBoolean(args[1]);
-				boolean confirm2 = args[2].equals("CONFIRM");
+				int radius = Integer.parseInt(args[1]);
+				boolean confirm = Boolean.parseBoolean(args[2]);
+				boolean confirm2 = args[3].equals("CONFIRM");
 
 				if (perms && confirm && confirm2) {
-					wipeout(player.getWorld());
+					wipeout(player.getWorld(), radius, -30, 180);
 				}
 			}
 
 			if(args[0].equals("loadmap")) {
-				wipeout(mainworld);
+				wipeout(mainworld, 100, -30, 180);
 				loadCuboid(map, mainworld);
 			}
 
@@ -236,9 +237,9 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 	}
 
 
-	public void wipeout(World world) {
-		Location loc1 = new Location(world, -100, -30, -100);
-		Location loc2 = new Location(world, 100, 180, 100);
+	public void wipeout(World world, int radius, int bottom, int up) {
+		Location loc1 = new Location(world, -radius, bottom, -radius);
+		Location loc2 = new Location(world, radius, up, radius);
 
 		Cuboid cuboid = new Cuboid(loc1, loc2);
 
