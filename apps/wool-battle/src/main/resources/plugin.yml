@@ -48,6 +48,9 @@ commands:
   items:
     description: ""
     usage: /items
+  playsong:
+    description: ""
+    usage: /playsong
   slimetest:
     description: ""
     usage: /slimetest
