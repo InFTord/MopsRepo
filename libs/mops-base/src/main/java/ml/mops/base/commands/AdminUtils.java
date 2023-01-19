@@ -152,6 +152,9 @@ public class AdminUtils {
                         if(args[0].equals("playsound")) {
                             player.playSound(player.getLocation(), Sound.valueOf(args[1]), Float.parseFloat(args[2]), Float.parseFloat(args[3]));
                         }
+                        if(args[0].equals("path")) {
+                            player.sendMessage(plugin.getServer().getPluginsFolder().getAbsolutePath());
+                        }
                         if(args[0].equals("saveCuboid")) {
                             Location loc1 = new Location(player.getWorld(), Integer.parseInt(args[1]), Integer.parseInt(args[2]), Integer.parseInt(args[3]));
                             Location loc2 = new Location(player.getWorld(), Integer.parseInt(args[4]), Integer.parseInt(args[5]), Integer.parseInt(args[6]));
