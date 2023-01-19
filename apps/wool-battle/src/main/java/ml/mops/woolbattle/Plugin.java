@@ -990,8 +990,8 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 				updateLevels(player);
 
 				player.getScoreboardTags().remove("ingame");
-				player.getScoreboardTags().add("spawn");
 			}
+			player.getScoreboardTags().add("spawn");
 
 			clearScoreboard(player);
 
