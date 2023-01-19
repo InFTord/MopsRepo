@@ -438,7 +438,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 						player.setAllowFlight(true);
 					}
 
-					if (player.isFlying() && player.getGameMode().equals(GameMode.SURVIVAL)) {
+					if (player.isFlying() && player.getGameMode().equals(GameMode.SURVIVAL) && player.getScoreboardTags().contains("spectator")) {
 						player.setFlying(false);
 
 						boolean hasItems = woolRemove(16, player, teamname);
@@ -451,7 +451,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 							player.sendActionBar(getByLang(lang, "woolbattle.notEnoughWool"));
 						}
 					}
-				} else if(player.getGameMode() == GameMode.SURVIVAL) {
+				} else if(player.getGameMode() == GameMode.SURVIVAL && player.getScoreboardTags().contains("spectator")) {
 					player.setAllowFlight(false);
 				}
 			}
@@ -488,7 +488,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			}
 		}, 80L, 160L);
 
-		wipeoutWorld(mainworld, 150, 143, 319);
+		wipeoutWorld(mainworld, 150, 144, 319);
 		loadCuboid("https://cdn.discordapp.com/attachments/897853554340020254/1065378410572021843/cubes.txt", mainworld);
 
 		for (Entity entity : mainworld.getEntities()) {
@@ -708,7 +708,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 				boolean confirm2 = args[2].equals("CONFIRM");
 
 				if (confirm && confirm2) {
-					wipeoutWorld(player.getWorld(), radius, 143, 319);
+					wipeoutWorld(player.getWorld(), radius, 144, 319);
 				}
 			}
 		} else {
@@ -981,7 +981,6 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 			clearScoreboard(player);
 			if (player.getScoreboardTags().contains("ingame")) {
-				player.teleport(new Location(player.getWorld(), 9, -34, 9));
 				player.getInventory().clear();
 				player.removePotionEffect(PotionEffectType.JUMP);
 				player.setGameMode(GameMode.SURVIVAL);
@@ -2254,12 +2253,6 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 	}
 
 	public void stopGame() {
-		for (Block block : ppbs) {
-			block.setType(Material.AIR);
-		}
-
-		ppbs.clear();
-
 		for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 			clearScoreboard(onlinePlayer);
 			if(onlinePlayer.getScoreboardTags().contains("ingame")) {
@@ -2762,6 +2755,12 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 				}
 			}
 		}
+
+		for (Block block : ppbs) {
+			block.setType(Material.AIR);
+		}
+
+		ppbs.clear();
 
 		recoloringGenerators(genA.getBlocks(), genA.getLongBlocks());
 		recoloringGenerators(genB.getBlocks(), genB.getLongBlocks());
