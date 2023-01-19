@@ -157,7 +157,14 @@ public class AdminUtils {
                         }
                         if(args[0].equals("restart")) {
                             String path = plugin.getServer().getPluginsFolder().getAbsolutePath();
-                            path = path.replace("\\plugin", "\\start.bat");
+                            path = path.replace("\\plugins", "\\start.bat");
+
+                            for(World world : plugin.getServer().getWorlds()) {
+                                world.save();
+                            }
+                            plugin.getServer().savePlayers();
+
+                            plugin.getServer().shutdown();
 
                             try {
                                 Runtime.getRuntime().exec("cmd /c start " + path);
