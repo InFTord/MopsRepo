@@ -170,13 +170,6 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		mainboard = manager.getMainScoreboard();
 		newboard = manager.getNewScoreboard();
 
-		for(Entity entity : mainworld.getEntities()) {
-			if(entity.getScoreboardTags().contains("generatorTitle")) {
-				ArmorStand stand = (ArmorStand) entity;
-				stand.setHelmet(new ItemStack(Material.AIR));
-			}
-		}
-
 		genA.setBlocks(getBlockCube(new Location(mainworld, 46, 254, -28).getBlock(), 2));
 		genB.setBlocks(getBlockCube(new Location(mainworld, -28, 254, -28).getBlock(), 2));
 		genC.setBlocks(getBlockCube(new Location(mainworld, -28, 254, 46).getBlock(), 2));
@@ -191,6 +184,13 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		Bukkit.removeRecipe(NamespacedKey.minecraft("yellow_carpet"));
 		Bukkit.removeRecipe(NamespacedKey.minecraft("lime_carpet"));
 		Bukkit.removeRecipe(NamespacedKey.minecraft("light_blue_carpet"));
+
+		for(Entity entity : mainworld.getEntities()) {
+			if(entity.getScoreboardTags().contains("generatorTitle")) {
+				ArmorStand stand = (ArmorStand) entity;
+				stand.setHelmet(new ItemStack(Material.AIR));
+			}
+		}
 
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
 			for (Player player : Bukkit.getOnlinePlayers()) {
@@ -367,6 +367,8 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 						simulateHardmodeDeath(player);
 						player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_DEATH, 0.8F, 1);
 					}
+				} else if (!gameactive) {
+					player.teleport(new Location(mainworld, 9, 257, 9));
 				}
 
 				recountTeamMembers();
@@ -438,7 +440,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 						player.setAllowFlight(true);
 					}
 
-					if (player.isFlying() && player.getGameMode().equals(GameMode.SURVIVAL) && player.getScoreboardTags().contains("spectator")) {
+					if (player.isFlying() && player.getGameMode().equals(GameMode.SURVIVAL) && !player.getScoreboardTags().contains("spectator")) {
 						player.setFlying(false);
 
 						boolean hasItems = woolRemove(16, player, teamname);
