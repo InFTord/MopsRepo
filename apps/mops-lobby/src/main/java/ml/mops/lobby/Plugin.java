@@ -98,7 +98,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         flippable.add(new Location(mainworld, -81, 8, -202));
         flippable.add(new Location(mainworld, -84, 9, -205));
         flippable.add(new Location(mainworld, -84, 10, -205));
-
+        
         usables.add(new Location(mainworld, -77, 9, -157));
         usables.add(new Location(mainworld, -95, 10, -170));
         usables.add(new Location(mainworld, 151, 7, 147));

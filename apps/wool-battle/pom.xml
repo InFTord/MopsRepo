@@ -54,6 +54,12 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>com.github.koca2000</groupId>
+            <artifactId>NoteBlockAPI</artifactId>
+            <version>1.6.1</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>v1_19_R1</artifactId>
             <version>b3513</version>
@@ -100,6 +106,9 @@
                         </goals>
                         <configuration>
                             <artifactSet>
+                                <includes>
+                                    <include>*:NoteBlockAPI</include>
+                                </includes>
                                 <excludes>
                                     <exclude>com.google.code:*</exclude>
                                     <exclude>com.google.guava:*</exclude>

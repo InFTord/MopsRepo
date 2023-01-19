@@ -3,6 +3,9 @@ package ml.mops.woolbattle;
 import club.minnced.discord.webhook.WebhookClient;
 import club.minnced.discord.webhook.send.WebhookEmbed;
 import club.minnced.discord.webhook.send.WebhookEmbedBuilder;
+import com.xxmicloxx.NoteBlockAPI.model.Song;
+import com.xxmicloxx.NoteBlockAPI.songplayer.NoteBlockSongPlayer;
+import com.xxmicloxx.NoteBlockAPI.utils.NBSDecoder;
 import ml.mops.base.MopsPlugin;
 import ml.mops.base.commands.Commands;
 import ml.mops.utils.Cuboid;
@@ -46,12 +49,17 @@ import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
+import java.nio.channels.Channels;
+import java.nio.channels.FileChannel;
+import java.nio.channels.ReadableByteChannel;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.*;
 
 public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
@@ -161,6 +169,13 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		manager = Bukkit.getScoreboardManager();
 		mainboard = manager.getMainScoreboard();
 		newboard = manager.getNewScoreboard();
+
+		for(Entity entity : mainworld.getEntities()) {
+			if(entity.getScoreboardTags().contains("generatorTitle")) {
+				ArmorStand stand = (ArmorStand) entity;
+				stand.setHelmet(new ItemStack(Material.AIR));
+			}
+		}
 
 		genA.setBlocks(getBlockCube(new Location(mainworld, 46, 254, -28).getBlock(), 2));
 		genB.setBlocks(getBlockCube(new Location(mainworld, -28, 254, -28).getBlock(), 2));
@@ -476,6 +491,14 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		wipeoutWorld(mainworld, 150, 143, 319);
 		loadCuboid("https://cdn.discordapp.com/attachments/897853554340020254/1065378410572021843/cubes.txt", mainworld);
 
+		for (Entity entity : mainworld.getEntities()) {
+			if (entity.getScoreboardTags().contains("lootstands")) {
+				ArmorStand lootstand = (ArmorStand) entity;
+
+				lootstand.setHelmet(new ItemStack(Material.AIR));
+			}
+		}
+
 		WebhookClient client = WebhookClient.withUrl(new String(Base64.getDecoder().decode(MopsUtils.statusText()), StandardCharsets.UTF_8));
 
 		WebhookEmbed embed = new WebhookEmbedBuilder()
@@ -536,6 +559,31 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		if (commandName.equals("spawn") || commandName.equals("lobby") || commandName.equals("l") || commandName.equals("hub")) {
 
 			player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 0.4F, 1.5F);
+			return true;
+		}
+		if(commandName.equals("playsong")) {
+			try {
+
+				URI url = URI.create(args[0]);
+				try (InputStream inputStream = url.toURL().openStream()) {
+
+					File file = new File("\\song.nbs");
+					try (FileOutputStream outputStream = new FileOutputStream(file, false)) {
+						int read;
+						byte[] bytes = new byte[8192];
+						while ((read = inputStream.read(bytes)) != -1) {
+							outputStream.write(bytes, 0, read);
+						}
+					}
+
+					Song song = NBSDecoder.parse(file);
+					NoteBlockSongPlayer nbsp = new NoteBlockSongPlayer(song);
+					nbsp.addPlayer(player);
+
+					nbsp.setPlaying(true);
+				}
+			} catch (IOException ignored) { }
+
 			return true;
 		}
 		if(commandName.equals("globalchat")) {
@@ -929,6 +977,8 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		}
 
 		if(!gameactive) {
+			player.teleport(new Location(mainworld, 9, 257, 9));
+
 			clearScoreboard(player);
 			if (player.getScoreboardTags().contains("ingame")) {
 				player.teleport(new Location(player.getWorld(), 9, -34, 9));
@@ -939,6 +989,9 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 				player.setFoodLevel(20);
 
 				updateLevels(player);
+
+				player.getScoreboardTags().remove("ingame");
+				player.getScoreboardTags().add("spawn");
 			}
 
 			clearScoreboard(player);
@@ -1081,7 +1134,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		Team team = mainboard.getPlayerTeam(player);
 		String teamname = team.getName();
 
-		if(player.getScoreboardTags().contains("spectator")) {
+		if(player.getScoreboardTags().contains("spectator") || player.getScoreboardTags().contains("spawn")) {
 			event.setCancelled(true);
 		} else {
 
@@ -1481,7 +1534,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 	}
 
 	public void wipeoutWorld(World world, int radius, int bottom, int up) {
-		Location loc1 = new Location(world, -radius, -bottom, -radius);
+		Location loc1 = new Location(world, -radius, bottom, -radius);
 		Location loc2 = new Location(world, radius, up, radius);
 
 		Cuboid cuboid = new Cuboid(loc1, loc2);
@@ -2210,21 +2263,23 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 			clearScoreboard(onlinePlayer);
 			if(onlinePlayer.getScoreboardTags().contains("ingame")) {
-				onlinePlayer.teleport(new Location(onlinePlayer.getWorld(), 9, -34, 9));
 				onlinePlayer.getInventory().clear();
 				onlinePlayer.removePotionEffect(PotionEffectType.JUMP);
 				onlinePlayer.setGameMode(GameMode.SURVIVAL);
 				onlinePlayer.setHealth(onlinePlayer.getMaxHealth());
 				onlinePlayer.setFoodLevel(20);
 
+				onlinePlayer.getScoreboardTags().add("spectator");
+				onlinePlayer.setAllowFlight(true);
+				onlinePlayer.setFlying(true);
+
 				updateLevels(onlinePlayer);
+
+				onlinePlayer.getScoreboardTags().remove("ingame");
 			}
 
 			clearScoreboard(onlinePlayer);
-
-			onlinePlayer.setFlying(false);
-			onlinePlayer.setAllowFlight(false);
-
+			
 			onlinePlayer.removeScoreboardTag("spectator");
 			clearScoreboard(onlinePlayer);
 
@@ -2509,7 +2564,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		}, 60L);
 
 		player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
-		player.removeScoreboardTag("onspawn");
+		player.removeScoreboardTag("spawn");
 		player.removeScoreboardTag("canbreak");
 		player.addScoreboardTag("ingame");
 		player.setHealth(player.getMaxHealth());
@@ -2710,6 +2765,11 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 				}
 			}
 		}
+
+		recoloringGenerators(genA.getBlocks(), genA.getLongBlocks());
+		recoloringGenerators(genB.getBlocks(), genB.getLongBlocks());
+		recoloringGenerators(genC.getBlocks(), genC.getLongBlocks());
+		recoloringGenerators(genD.getBlocks(), genD.getLongBlocks());
 
 		Items items = new Items(this);
 		platforms.add(items.platform(lang));
