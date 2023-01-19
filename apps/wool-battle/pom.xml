@@ -106,9 +106,6 @@
                         </goals>
                         <configuration>
                             <artifactSet>
-                                <includes>
-                                    <include>*:NoteBlockAPI</include>
-                                </includes>
                                 <excludes>
                                     <exclude>com.google.code:*</exclude>
                                     <exclude>com.google.guava:*</exclude>
@@ -139,7 +136,6 @@
                                     <exclude>jline:*</exclude>
                                     <exclude>junit:*</exclude>
                                     <exclude>net.java.dev.jna:*</exclude>
-
 
                                     <exclude>org.purpurmc.purpur:*</exclude>
                                     <exclude>org.spigotmc:*</exclude>
