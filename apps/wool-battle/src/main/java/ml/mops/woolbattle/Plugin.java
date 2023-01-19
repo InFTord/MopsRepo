@@ -2279,9 +2279,6 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			}
 
 			clearScoreboard(onlinePlayer);
-			
-			onlinePlayer.removeScoreboardTag("spectator");
-			clearScoreboard(onlinePlayer);
 
 			onlinePlayer.setPlayerListName(ChatColor.WHITE + onlinePlayer.getName());
 
