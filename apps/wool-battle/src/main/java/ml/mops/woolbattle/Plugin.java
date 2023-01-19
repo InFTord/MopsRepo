@@ -977,22 +977,22 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		}
 
 		if(!gameactive) {
+			mainboard.getTeam("nothing").addPlayer(player);
+
 			player.teleport(new Location(mainworld, 9, 257, 9));
-
 			clearScoreboard(player);
-			if (player.getScoreboardTags().contains("ingame")) {
-				player.getInventory().clear();
-				player.removePotionEffect(PotionEffectType.JUMP);
-				player.setGameMode(GameMode.SURVIVAL);
-				player.setHealth(player.getMaxHealth());
-				player.setFoodLevel(20);
 
+			if (player.getScoreboardTags().contains("ingame")) {
 				updateLevels(player);
 
 				player.getScoreboardTags().remove("ingame");
 			}
+			player.getInventory().clear();
+			player.setHealth(20);
+			player.removePotionEffect(PotionEffectType.JUMP);
+			player.setFoodLevel(20);
+			player.setGameMode(GameMode.SURVIVAL);
 			player.getScoreboardTags().add("spawn");
-
 			clearScoreboard(player);
 
 			player.setFlying(false);
@@ -1002,7 +1002,6 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			clearScoreboard(player);
 
 			player.setPlayerListName(ChatColor.WHITE + player.getName());
-
 			resetEveryFuckingKillScoreboard(player);
 			try {
 				deathmsg.get(player).cancel();
@@ -2259,7 +2258,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 				onlinePlayer.getInventory().clear();
 				onlinePlayer.removePotionEffect(PotionEffectType.JUMP);
 				onlinePlayer.setGameMode(GameMode.SURVIVAL);
-				onlinePlayer.setHealth(onlinePlayer.getMaxHealth());
+				onlinePlayer.setHealth(20);
 				onlinePlayer.setFoodLevel(20);
 
 				onlinePlayer.getScoreboardTags().add("spectator");
