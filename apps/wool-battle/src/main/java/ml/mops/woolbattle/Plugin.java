@@ -199,10 +199,14 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 				String teamname = team.getName();
 
 				mainworld = player.getWorld();
+
+				if (player.getLocation().getY() > 142 && player.getLocation().getY() < 150 && !gameactive) {
+					player.teleport(new Location(mainworld, 9, 257, 9));
+				}
+
 				if (player.getScoreboardTags().contains("ingame")) {
 
 					combo.putIfAbsent(player, 0);
-
 					Location loc0 = player.getLocation();
 
 					if (loc0.clone().add(0, -1, 0).getBlock().getType() == Material.SLIME_BLOCK) {
@@ -216,16 +220,13 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 						if (teamname.contains("red")) {
 							woolItem = new ItemStack(Material.RED_WOOL, 1296);
 							woolName = getByLang(lang, "woolbattle.redWool");
-						}
-						else if (teamname.contains("yellow")) {
+						} else if (teamname.contains("yellow")) {
 							woolItem = new ItemStack(Material.YELLOW_WOOL, 1296);
 							woolName = getByLang(lang, "yellowWool");
-						}
-						else if (teamname.contains("green")) {
+						} else if (teamname.contains("green")) {
 							woolItem = new ItemStack(Material.LIME_WOOL, 1296);
 							woolName = getByLang(lang, "greenWool");
-						}
-						else if (teamname.contains("blue")) {
+						} else if (teamname.contains("blue")) {
 							woolItem = new ItemStack(Material.LIGHT_BLUE_WOOL, 1296);
 							woolName = getByLang(lang, "blueWool");
 						} else {
@@ -244,14 +245,14 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 						switch (Objects.requireNonNull(lastdamage).getScore(player.getName()).getScore()) {
 							case 1 -> {
-								redkills ++;
-								if(!hardmode) {
+								redkills++;
+								if (!hardmode) {
 									broadcastDeath(player, getStringByLang(lang, "woolbattle.gotKilledBy") + " " + ChatColor.RED + lastDamager.get(player).getName() + ChatColor.GRAY + ".");
 								}
 							}
 							case 2 -> {
 								yellowkills++;
-								if(!hardmode) {
+								if (!hardmode) {
 									broadcastDeath(player, getStringByLang(lang, "woolbattle.gotKilledBy") + " " + ChatColor.YELLOW + "" + lastDamager.get(player).getName() + ChatColor.GRAY + ".");
 								}
 							}
@@ -263,22 +264,22 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 							}
 							case 4 -> {
 								bluekills++;
-								if(!hardmode) {
+								if (!hardmode) {
 									broadcastDeath(player, getStringByLang(lang, "woolbattle.gotKilledBy") + " " + ChatColor.AQUA + "" + lastDamager.get(player).getName() + ChatColor.GRAY + ".");
 								}
 							}
 
 							default -> {
-								if(!hardmode) {
+								if (!hardmode) {
 									broadcastDeath(player, getStringByLang(lang, "woolbattle.fellInVoid") + "");
 								}
 							}
 						}
 
-						if(!hardmode) {
+						if (!hardmode) {
 							ItemStack[] savedInventory = new ItemStack[0];
 
-							if(!player.getScoreboardTags().contains("spectator")) {
+							if (!player.getScoreboardTags().contains("spectator")) {
 								savedInventory = player.getInventory().getContents();
 								player.getInventory().clear();
 								player.getInventory().remove(woolItem);
@@ -359,16 +360,14 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 									}, 20L));
 								}, 20L));
 							}, 20L));
-						} else if(!player.getScoreboardTags().contains("spectator")) {
+						} else if (!player.getScoreboardTags().contains("spectator")) {
 							simulateHardmodeDeath(player);
 						}
 					}
-					if(hardmode && !player.getWorld().getWorldBorder().isInside(player.getLocation()) && !player.getScoreboardTags().contains("spectator")) {
+					if (hardmode && !player.getWorld().getWorldBorder().isInside(player.getLocation()) && !player.getScoreboardTags().contains("spectator")) {
 						simulateHardmodeDeath(player);
 						player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_DEATH, 0.8F, 1);
 					}
-				} else if (!gameactive) {
-					player.teleport(new Location(mainworld, 9, 257, 9));
 				}
 
 				recountTeamMembers();
@@ -458,8 +457,6 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 				}
 			}
 		}, 80L, 1L);
-
-		//f
 
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
 			String oldGenA = genA.getStatus();
