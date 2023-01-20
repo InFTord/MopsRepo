@@ -8,6 +8,8 @@ import club.minnced.discord.webhook.WebhookClient;
 import club.minnced.discord.webhook.WebhookClientBuilder;
 import club.minnced.discord.webhook.send.WebhookEmbed;
 import club.minnced.discord.webhook.send.WebhookEmbedBuilder;
+import com.google.common.io.ByteArrayDataOutput;
+import com.google.common.io.ByteStreams;
 import ml.mops.base.commands.Commands;
 import ml.mops.utils.MopsUtils;
 import org.bukkit.block.Block;
@@ -246,9 +248,11 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
         WebhookEmbed embed = new WebhookEmbedBuilder()
                 .setColor(Color.GREEN.asRGB())
-                .setDescription("\uD83D\uDFE2 `mops-lobby` is turned on.")
+                .setDescription("\uD83D\uDFE2 `mops-lobby` is enabled.")
                 .build();
         client.send(embed);
+
+        getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
     }
 
 
@@ -268,7 +272,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
         WebhookEmbed embed = new WebhookEmbedBuilder()
                 .setColor(Color.RED.asRGB())
-                .setDescription("\uD83D\uDD34 `mops-lobby` is turned off.")
+                .setDescription("\uD83D\uDD34 `mops-lobby` is disabled.")
                 .build();
         client.send(embed);
     }
@@ -563,20 +567,18 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 if (entity.getScoreboardTags().contains("woolbattleDogeNPC")) {
                     switch (woolbattleDogeDialogue.get(player)) {
                         case 0 -> {
-                            dialogue = "Hi, woolbattle isn't done yet.";
+                            dialogue = "Hello, woolbattle is open for testing! Click again to join.";
                             player.playSound(player.getLocation(), Sound.ENTITY_WOLF_AMBIENT, 10, 2);
 
                             woolbattleDogeDialogue.put(player, woolbattleDogeDialogue.get(player) + 1);
                         }
                         case 1 -> {
-                            dialogue = "It will be out soon, though!";
-                            player.playSound(player.getLocation(), Sound.ENTITY_WOLF_AMBIENT, 10, 2);
+                            player.sendMessage(ChatColor.GRAY + "Sending you to woolbattle...");
 
-                            woolbattleDogeDialogue.put(player, woolbattleDogeDialogue.get(player) + 1);
-                        }
-                        case 2 -> {
-                            dialogue = "Have a great day!";
-                            player.playSound(player.getLocation(), Sound.ENTITY_WOLF_AMBIENT, 10, 2);
+                            ByteArrayDataOutput out = ByteStreams.newDataOutput();
+                            out.writeUTF("Connect");
+                            out.writeUTF("woolbattle");
+                            player.sendPluginMessage(this, "BungeeCord", out.toByteArray());
                         }
                     }
                 }

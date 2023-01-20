@@ -201,7 +201,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 				mainworld = player.getWorld();
 
 				if (player.getLocation().getY() > 142 && player.getLocation().getY() < 150 && !gameactive) {
-					player.teleport(new Location(mainworld, 9, 257, 9));
+					player.teleport(new Location(mainworld, 9.5, 257, 9.5));
 				}
 
 				if (player.getScoreboardTags().contains("ingame")) {
@@ -504,7 +504,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 		WebhookEmbed embed = new WebhookEmbedBuilder()
 				.setColor(java.awt.Color.GREEN.getRGB())
-				.setDescription("\uD83D\uDFE2 `wool-battle` is turned on")
+				.setDescription("\uD83D\uDFE2 `wool-battle` is enabled")
 				.build();
 		client.send(embed);
 	}
@@ -517,7 +517,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 		WebhookEmbed embed = new WebhookEmbedBuilder()
 				.setColor(java.awt.Color.RED.getRGB())
-				.setDescription("\uD83D\uDD34 `wool-battle` is turned off.")
+				.setDescription("\uD83D\uDD34 `wool-battle` is disabled.")
 				.build();
 		client.send(embed);
 
@@ -980,7 +980,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		if(!gameactive) {
 			mainboard.getTeam("nothing").addPlayer(player);
 
-			player.teleport(new Location(mainworld, 9, 257, 9));
+			player.teleport(new Location(mainworld, 9.5, 257, 9.5));
 			clearScoreboard(player);
 
 			if (player.getScoreboardTags().contains("ingame")) {

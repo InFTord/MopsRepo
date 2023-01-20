@@ -46,7 +46,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
 		WebhookEmbed embed = new WebhookEmbedBuilder()
 				.setColor(Color.GREEN.getRGB())
-				.setDescription("\uD83D\uDFE2 `mops-pvps` is turned on.")
+				.setDescription("\uD83D\uDFE2 `mops-pvps` is enabled.")
 				.build();
 		client.send(embed);
 
@@ -73,7 +73,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
 		WebhookEmbed embed = new WebhookEmbedBuilder()
 				.setColor(Color.RED.getRGB())
-				.setDescription("\uD83D\uDD34 `mops-pvps` is turned off.")
+				.setDescription("\uD83D\uDD34 `mops-pvps` is disabled.")
 				.build();
 		client.send(embed);
 	}
