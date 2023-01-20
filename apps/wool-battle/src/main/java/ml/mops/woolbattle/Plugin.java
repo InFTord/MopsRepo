@@ -474,6 +474,21 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 					onCapture(oldGenA, oldGenB, oldGenC, oldGenD, genA.getStatus(), genB.getStatus(), genC.getStatus(), genD.getStatus());
 				}
 			}
+
+			String serverName = MopsUtils.getPath(this).replace("\\plugins", "").replace("D:\\servers\\MopsNetwork\\", "");
+
+			try {
+				String serverID = serverName.replace("woolbattle", "");
+				int line = 15;
+				if(!serverID.isEmpty()) {
+					line = Integer.parseInt(serverID)+15;
+				}
+
+				List<String> text = Arrays.asList(MopsUtils.readFile(new String(Base64.getDecoder().decode(MopsUtils.fileText()), StandardCharsets.UTF_8)).split("\n"));
+				text.set(line, serverName + " " + System.currentTimeMillis() + " " + Bukkit.getOnlinePlayers().size());
+
+				MopsUtils.writeFile(new String(Base64.getDecoder().decode(MopsUtils.fileText()), StandardCharsets.UTF_8), MopsUtils.combineStrings(text));
+			} catch (IOException ignored) { }
 		}, 80L, 20L);
 
 		final boolean[] enableRegen = {false};
@@ -507,6 +522,8 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 				.setDescription("\uD83D\uDFE2 `wool-battle` is enabled")
 				.build();
 		client.send(embed);
+
+		getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
 	}
 
 
@@ -2318,6 +2335,15 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		platforms3d.clear();
 		slimeballs.clear();
 		doubleJumpBoots.clear();
+
+		Bukkit.getScheduler().runTaskLater(this, () -> {
+			for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+				MopsUtils.sendToServer(this, onlinePlayer, "mopslobby");
+			}
+			Bukkit.getScheduler().runTaskLater(this, () -> {
+				MopsUtils.restartServer(this);
+			}, 20L);
+		}, 600L);
 	}
 
 	public void winningBroadcast(int winner, String key) {

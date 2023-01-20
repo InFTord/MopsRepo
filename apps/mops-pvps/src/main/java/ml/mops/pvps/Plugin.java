@@ -22,9 +22,11 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scoreboard.Scoreboard;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.Color;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 
@@ -54,7 +56,24 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 			if(ready.get(player1) && ready.get(player2)) {
 				gameSession = true;
 			}
+
+			String serverName = MopsUtils.getPath(this).replace("\\plugins", "").replace("D:\\servers\\MopsNetwork\\", "");
+
+			try {
+				String serverID = serverName.replace("mopspvps", "");
+				int line = 10;
+				if(!serverID.isEmpty()) {
+					line = Integer.parseInt(serverID)+10;
+				}
+
+				List<String> text = Arrays.asList(MopsUtils.readFile(new String(Base64.getDecoder().decode(MopsUtils.fileText()), StandardCharsets.UTF_8)).split("\n"));
+				text.set(line, serverName + " " + System.currentTimeMillis() + " " + Bukkit.getOnlinePlayers().size());
+
+				MopsUtils.writeFile(new String(Base64.getDecoder().decode(MopsUtils.fileText()), StandardCharsets.UTF_8), MopsUtils.combineStrings(text));
+			} catch (IOException ignored) { }
 		}, 0, 10L);
+
+		getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
 	}
 
 	@Override

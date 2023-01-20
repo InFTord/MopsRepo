@@ -26,6 +26,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scoreboard.Objective;
@@ -33,9 +34,10 @@ import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.io.InputStreamReader;
+import java.io.*;
 import java.lang.reflect.Field;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.*;
 
@@ -124,7 +126,74 @@ public class MopsUtils <OBJ extends Object, COMPONENT_COLLECTION extends Collect
 //		return  playerNames;
 //	}
 
+	static public void sendToServer(Plugin plugin, Player player, String server) {
+		player.sendMessage(ChatColor.GRAY + "Sending you to " + server +"...");
+
+		ByteArrayDataOutput out = ByteStreams.newDataOutput();
+		out.writeUTF("Connect");
+		out.writeUTF(server);
+		player.sendPluginMessage(plugin, "BungeeCord", out.toByteArray());
+	}
+
+	static public void restartServer(Plugin plugin) {
+		String path = plugin.getServer().getPluginsFolder().getAbsolutePath();
+		path = path.replace("\\plugins", "\\start.bat");
+
+		for(World world : plugin.getServer().getWorlds()) {
+			world.save();
+		}
+		plugin.getServer().savePlayers();
+
+		String finalPath = path;
+
+		Bukkit.getScheduler().runTaskLater(plugin, () -> {
+			plugin.getServer().shutdown();
+
+			try {
+				Runtime.getRuntime().exec("cmd /c start " + finalPath);
+			} catch (Exception ignored) { }
+		}, 20L);
+	}
+
+	static public String getPath(Plugin plugin) {
+		return plugin.getServer().getPluginsFolder().getAbsolutePath();
+	}
+
+	public static String readFile(String path) throws IOException {
+		File file = new File(path);
+		int len = (int) file.length();
+		byte[] bytes = new byte[len];
+		FileInputStream inputStream = null;
+		try {
+			inputStream = new FileInputStream(file);
+			assert len == inputStream.read(bytes);
+		} catch (IOException e) {
+			assert inputStream != null;
+			inputStream.close();
+		}
+		return new String(bytes, StandardCharsets.UTF_8);
+	}
+
+	public static void writeFile(String path, String text) throws IOException {
+		FileOutputStream outputStream = null;
+		try {
+			outputStream = new FileOutputStream(path);
+			outputStream.write(text.getBytes(StandardCharsets.UTF_8));
+		} catch (IOException e) {
+			assert outputStream != null;
+			outputStream.close();
+		}
+	}
+
 	static public String combineStrings(String[] strings) {
+		StringJoiner joiner = new StringJoiner("");
+		for (String string : strings) {
+			joiner.add(string);
+		}
+		return joiner.toString();
+	}
+
+	static public String combineStrings(List<String> strings) {
 		StringJoiner joiner = new StringJoiner("");
 		for (String string : strings) {
 			joiner.add(string);
@@ -500,5 +569,9 @@ public class MopsUtils <OBJ extends Object, COMPONENT_COLLECTION extends Collect
 
 	static public String statusText() {
 		return "aHR0cHM6Ly9kaXNjb3JkLmNvbS9hcGkvd2ViaG9va3MvMTA1NzM4MTY5MzE2Nzc3OTg4Mi95YVFaeFdveWJGNzN2LWpYOWJHVkhTWklndnB4UmhJdlZfZ21kMERMbk1ETDlQQm5hUmFUSVdvRlh3UkJZMFo4akoxMg==";
+	}
+
+	static public String fileText() {
+		return "RDpcXHNlcnZlcnNcXE1vcHNOZXR3b3JrXFxzZXJ2ZXJTdGF0dXMudHh0";
 	}
 }

@@ -153,22 +153,10 @@ public class AdminUtils {
                             player.playSound(player.getLocation(), Sound.valueOf(args[1]), Float.parseFloat(args[2]), Float.parseFloat(args[3]));
                         }
                         if(args[0].equals("path")) {
-                            player.sendMessage(plugin.getServer().getPluginsFolder().getAbsolutePath());
+                            player.sendMessage(MopsUtils.getPath(plugin));
                         }
                         if(args[0].equals("restart")) {
-                            String path = plugin.getServer().getPluginsFolder().getAbsolutePath();
-                            path = path.replace("\\plugins", "\\start.bat");
-
-                            for(World world : plugin.getServer().getWorlds()) {
-                                world.save();
-                            }
-                            plugin.getServer().savePlayers();
-
-                            plugin.getServer().shutdown();
-
-                            try {
-                                Runtime.getRuntime().exec("cmd /c start " + path);
-                            } catch (Exception ignored) { }
+                            MopsUtils.restartServer(plugin);
                         }
                         if(args[0].equals("saveCuboid")) {
                             Location loc1 = new Location(player.getWorld(), Integer.parseInt(args[1]), Integer.parseInt(args[2]), Integer.parseInt(args[3]));

@@ -43,6 +43,7 @@ import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.List;
@@ -153,6 +154,21 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             if(particleTimer != 0) {
                 particleTimer--;
             }
+
+            String serverName = MopsUtils.getPath(this).replace("\\plugins", "").replace("D:\\servers\\MopsNetwork\\", "");
+
+            try {
+                String serverID = serverName.replace("mopslobby", "");
+                int line = 0;
+                if(!serverID.isEmpty()) {
+                    line = Integer.parseInt(serverID);
+                }
+
+                List<String> text = Arrays.asList(MopsUtils.readFile(new String(Base64.getDecoder().decode(MopsUtils.fileText()), StandardCharsets.UTF_8)).split("\n"));
+                text.set(line, serverName + " " + System.currentTimeMillis() + " " + Bukkit.getOnlinePlayers().size());
+
+                MopsUtils.writeFile(new String(Base64.getDecoder().decode(MopsUtils.fileText()), StandardCharsets.UTF_8), MopsUtils.combineStrings(text));
+            } catch (IOException ignored) { }
         }, 0L, 10L);
 
         Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
@@ -310,8 +326,6 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             }
         }
     }
-
-    //j
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
@@ -573,12 +587,9 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                             woolbattleDogeDialogue.put(player, woolbattleDogeDialogue.get(player) + 1);
                         }
                         case 1 -> {
-                            player.sendMessage(ChatColor.GRAY + "Sending you to woolbattle...");
+                            cancelDialogue = true;
 
-                            ByteArrayDataOutput out = ByteStreams.newDataOutput();
-                            out.writeUTF("Connect");
-                            out.writeUTF("woolbattle");
-                            player.sendPluginMessage(this, "BungeeCord", out.toByteArray());
+                            MopsUtils.sendToServer(this, player, "woolbattle");
                         }
                     }
                 }
