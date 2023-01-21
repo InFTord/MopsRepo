@@ -56,6 +56,8 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     HashMap<Player, Integer> woolbattleDogeDialogue = new HashMap<>();
     HashMap<Player, Integer> pigeonDialogue = new HashMap<>();
 
+    HashMap<Player, Integer> coins = new HashMap<>();
+
     //doors n trapdoors n shit
     List<Location> flippable = new ArrayList<>();
     // atm or bank
@@ -144,7 +146,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
         Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
             for(Player player : Bukkit.getServer().getOnlinePlayers()) {
-                Scoreboard lobbyscoreboard = new LobbyScoreboard().generateLobbyScoreboard(player, mainworld.getTime());
+                Scoreboard lobbyscoreboard = new LobbyScoreboard().generateLobbyScoreboard(player, mainworld.getTime(), coins);
                 player.setScoreboard(lobbyscoreboard);
                 
                 Calendar calendar = Calendar.getInstance();
@@ -216,8 +218,6 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             }
         }, 0L, 1L);
 
-        // как тебя скачать
-
         Location block1 = new Location(mainworld, -77.5, 11, -207.5);
         Location block2 = new Location(mainworld, -77.5, 10, -207.5);
 
@@ -242,34 +242,22 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             block2smooth.getBlock().setType(Material.BLUE_CONCRETE);
         }
 
-//        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
-//            for(Entity entity : Bukkit.getServer().getWorlds().get(0).getEntities()) {
-//                if(entity.getScoreboardTags().contains("afireparticle")) {
-//                    entity.getWorld().spawnParticle(Particle.FLAME, entity.getLocation(), 2, 0.01, 0.01, 0.01, 0.01);
-//
-//                    for(Entity nearEntities : entity.getNearbyEntities(2, 2, 2)) {
-//                        if(!nearEntities.getScoreboardTags().contains("afireparticle")) {
-//                            nearEntities.setFireTicks(nearEntities.getFireTicks() + 10);
-//                        }
-//                    }
-//                }
-//            }
-//        }, 0L, 2L);
-
 
         ArmorStand stand = (ArmorStand) mainworld.spawnEntity(new Location(mainworld, -95, 10, -186), EntityType.ARMOR_STAND);
         stand.setInvisible(true);
         stand.setHelmet(MopsUtils.createCustomHead("5a5ab05ea254c32e3c48f3fdcf9fd9d77d3cba04e6b5ec2e68b3cbdcfac3fd"));
-
         stand.addScoreboardTag("killOnDisable");
         stand.addScoreboardTag("balls");
-
         stand.setSmall(true);
-
         stand.setHeadPose(new EulerAngle(Math.toRadians(180), 0, 0));
 
         ball = stand;
 
+        String[] coinList = MopsUtils.readFile(new String(Base64.getDecoder().decode(MopsUtils.fileText()), StandardCharsets.UTF_8).replace("serverStatus", "coins")).split("\n");
+        for(String coinRow : coinList) {
+            String[] string = coinRow.split(":");
+            coins.put(Bukkit.getPlayer(string[0]), Integer.parseInt(string[1]));
+        }
 
         WebhookClient client = WebhookClient.withUrl(new String(Base64.getDecoder().decode(MopsUtils.statusText()), StandardCharsets.UTF_8));
 
@@ -707,13 +695,6 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         for(Player allPlayers : Bukkit.getOnlinePlayers()) {
             allPlayers.sendMessage( ChatColor.GOLD + "[MopsPVPs] " + ChatColor.YELLOW + player.getName() + " joined the game.");
         }
-
-//        for(EntityPlayer NPC : hubNPCs) {
-//            PlayerConnection connection = ((CraftPlayer) player).getHandle().b;
-//            connection.a(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.a, NPC));
-//            connection.a(new PacketPlayOutNamedEntitySpawn(NPC));
-//            connection.a(new PacketPlayOutEntityHeadRotation(NPC, (byte) (NPC.getBukkitEntity().getLocation().getYaw() * 256 / 360)));
-//        }
     }
 
     @EventHandler
@@ -822,30 +803,6 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     public void blockFadeEvent(BlockFadeEvent event) {
         event.setCancelled(true);
     }
-
-//    public void temporarySummonFire(Player player) {
-//        ArmorStand fireparticle = (ArmorStand) player.getWorld().spawnEntity(player.getEyeLocation(), EntityType.ARMOR_STAND);
-//        fireparticle.setSmall(true);
-//        fireparticle.setInvisible(true);
-//        fireparticle.setInvulnerable(true);
-//        fireparticle.addScoreboardTag("afireparticle");
-//
-//        Random random = new Random();
-//        double randomX = -0.005 + (0.01 - -0.005) * random.nextDouble();
-//        Random random2 = new Random();
-//        double randomZ = -0.005 + (0.01 - -0.005) * random2.nextDouble();
-//
-//        fireparticle.setVelocity(player.getEyeLocation().getDirection().multiply(0.4).add(new Vector(0, 0.4, 0)).add(new Vector(randomX, 0, randomZ)));
-//
-//        Bukkit.getScheduler().runTaskLater(this, () -> {
-//            fireparticle.setGravity(false);
-//            fireparticle.setMarker(true);
-//        }, 20L);
-//
-//        Bukkit.getScheduler().runTaskLater(this, () -> {
-//            fireparticle.teleport(new Location(fireparticle.getWorld(), 0, 1000, 0));
-//        }, 40L);
-//    }
 
     public void announceRareDrop(String string, Player player) {
         for(Player allPlayers : Bukkit.getOnlinePlayers()) {
