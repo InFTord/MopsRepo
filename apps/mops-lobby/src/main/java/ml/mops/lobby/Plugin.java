@@ -759,8 +759,11 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                     newDestination = new Location(world, -106.0, 9, -186.0);
                     newDestination.setYaw(-90);
                 }
-                case 1 -> newDestination = new Location(world, -101.0, 9, -177.0);
-                case 2 -> newDestination = new Location(world, -71.0, 7, -186.0);
+                case 1 -> {
+                    newDestination = new Location(world, -101.0, 9, -177.0);
+                    newDestination.setYaw(45);
+                }
+                case 2 -> newDestination = new Location(world, -70.5, 7, -185.5);
                 case 3 -> {
                     newDestination = new Location(world, -87.0, 9, -204.0);
                     newDestination.setYaw(180);
@@ -770,11 +773,11 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                     newDestination.setYaw(-45);
                 }
                 case 5 -> {
-                    newDestination = new Location(world, -60.0, 9, -201.0);
+                    newDestination = new Location(world, -60.5, 9, -200.5);
                     newDestination.setYaw(-90);
                 }
                 case 6 -> {
-                    newDestination = new Location(world, -75.0, 9, -209.0);
+                    newDestination = new Location(world, -74.5, 9, -208.5);
                     newDestination.setYaw(180);
                 }
             }

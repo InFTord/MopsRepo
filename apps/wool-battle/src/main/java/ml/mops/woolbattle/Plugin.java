@@ -453,7 +453,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 							player.sendActionBar(getByLang(lang, "woolbattle.notEnoughWool"));
 						}
 					}
-				} else if(player.getGameMode() == GameMode.SURVIVAL && player.getScoreboardTags().contains("spectator")) {
+				} else if(!player.getScoreboardTags().contains("spectator")) {
 					player.setAllowFlight(false);
 				}
 			}
@@ -2292,7 +2292,6 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 				onlinePlayer.setFoodLevel(20);
 
 				onlinePlayer.getScoreboardTags().add("spectator");
-				onlinePlayer.setGameMode(GameMode.SPECTATOR);
 				onlinePlayer.setAllowFlight(true);
 				onlinePlayer.setFlying(true);
 
