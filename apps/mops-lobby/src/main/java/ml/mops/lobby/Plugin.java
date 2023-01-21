@@ -385,7 +385,6 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             }
 
             if(action == Action.RIGHT_CLICK_BLOCK) {
-
                 // банкомат
                 if(atmButtons.contains(event.getClickedBlock().getLocation())) {
                     if(coins.get(player) != 0) {
@@ -406,8 +405,6 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
                 // печка
                 if(event.getClickedBlock().getLocation().equals(new Location(player.getWorld(), -82, 10, -216))) {
-                    event.setCancelled(true);
-
                     player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
                     player.playSound(player.getLocation(), Sound.BLOCK_FIRE_EXTINGUISH, 0.3F, 1);
                     player.playSound(player.getLocation(), Sound.ITEM_FIRECHARGE_USE, 0.3F, 1);
@@ -537,15 +534,13 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                     player.openInventory(gamesGUI);
                     event.setCancelled(true);
                 }
-            }
+                if(action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK) {
+                    if (itemInHand.getItemMeta().getDisplayName().equals(ChatColor.GOLD + "MopsCoin")) {
+                        itemInHand.setAmount(itemInHand.getAmount() - 1);
+                        coins.put(player, coins.get(player) + 1);
 
-            if(action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK) {
-                ItemStack itemInHand = player.getItemInHand();
-                if (itemInHand.getItemMeta().getDisplayName().equals(ChatColor.GOLD + "MopsCoin")) {
-                    itemInHand.setAmount(itemInHand.getAmount()-1);
-                    coins.put(player, coins.get(player)+1);
-
-                    event.setCancelled(true);
+                        event.setCancelled(true);
+                    }
                 }
             }
 
