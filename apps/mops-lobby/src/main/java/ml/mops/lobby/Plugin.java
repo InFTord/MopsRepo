@@ -161,7 +161,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             try {
                 String serverID = serverName.replace("mopslobby", "");
                 int line = 0;
-                if(!serverID.isEmpty()) {
+                if(serverID.equals("")) {
                     line = Integer.parseInt(serverID);
                 }
 
