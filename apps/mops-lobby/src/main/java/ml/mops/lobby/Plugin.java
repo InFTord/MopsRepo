@@ -15,6 +15,7 @@ import ml.mops.network.MopsBadge;
 import ml.mops.network.MopsRank;
 import ml.mops.utils.MopsUtils;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.ComponentBuilder;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
@@ -50,6 +51,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
@@ -782,7 +784,8 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
         String chatRank = "";
         String name = player.getName();
-        String chatBadge = "";
+        String badgeSymbol = "";
+        String badgeDescription = "";
 
         if(rank.get(player.getName()) == MopsRank.NONE) {
             name = ChatColor.GRAY + player.getName();
@@ -790,15 +793,21 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             chatRank = rank.get(player.getName()).getPrefix() + " ";
         }
         if(badge.get(player.getName()) != MopsBadge.NONE) {
-            chatBadge = badge.get(player.getName()).getSymbol();
+            badgeSymbol = badge.get(player.getName()).getSymbol();
+            badgeDescription = badge.get(player.getName()).getDescription();
         }
 
         String message = event.getMessage().replaceAll(":skull:", ChatColor.GRAY + "☠" + ChatColor.RESET);
-
         event.setCancelled(true);
 
+        TextComponent preMessage = Component.text(chatRank + name);
+        TextComponent messageBadge = Component.text(badgeSymbol).hoverEvent(Component.text(badgeDescription));
+        TextComponent afterMessage = Component.text(ChatColor.RESET + ": " + message.trim());
+
+        TextComponent fullMessage = preMessage.append(messageBadge).append(afterMessage);
+
         for(Player allPlayers : Bukkit.getOnlinePlayers()) {
-            allPlayers.sendMessage(chatRank + name + chatBadge + ChatColor.RESET + ": " + MopsUtils.convertColorCodes(message).trim());
+            MopsUtils.sendTextComponentMessage(allPlayers, fullMessage);
         }
     }
 

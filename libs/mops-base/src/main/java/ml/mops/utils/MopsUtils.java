@@ -126,6 +126,10 @@ public class MopsUtils <OBJ extends Object, COMPONENT_COLLECTION extends Collect
 //		return  playerNames;
 //	}
 
+	static public void sendTextComponentMessage(Player player, TextComponent component) {
+		player.sendMessage(component);
+	}
+
 	static public void sendToServer(Plugin plugin, Player player, String server) {
 		player.sendMessage(ChatColor.GRAY + "Sending you to " + server +"...");
 
