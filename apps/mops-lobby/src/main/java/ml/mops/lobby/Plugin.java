@@ -254,9 +254,6 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         String[] coinList = MopsUtils.readFile("D:\\servers\\MopsNetwork\\coins.txt").split("\n");
         for(String coinRow : coinList) {
             String[] string = coinRow.split(":");
-            System.out.println(string[0]);
-            System.out.println(string[1]);
-            System.out.println(Integer.parseInt(string[1]));
             coins.put(Bukkit.getPlayer(string[0]), Integer.parseInt(string[1]));
         }
 
@@ -684,10 +681,16 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                     player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
                     player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_CHIME, 1, 2);
 
-                    if(rawCoins.get(player.getName()) == null) {
+                    String playerName = String.valueOf(player.getName());
+                    System.out.println(playerName);
+                    System.out.println(rawCoins.get("SirCat07"));
+                    System.out.println(rawCoins.get(playerName));
+
+                    if(rawCoins.get(playerName) == null) {
                         coins.putIfAbsent(player, 0);
                     } else {
-                        coins.putIfAbsent(player, rawCoins.get(player.getName()));
+                        coins.putIfAbsent(player, rawCoins.get(playerName));
+                        System.out.println(rawCoins.get("SirCat07"));
                     }
 
                 }, 4L);
