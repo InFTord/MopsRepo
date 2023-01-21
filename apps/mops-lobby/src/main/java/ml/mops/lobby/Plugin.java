@@ -253,9 +253,12 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
         ball = stand;
 
-        String[] coinList = MopsUtils.readFile(new String(Base64.getDecoder().decode(MopsUtils.fileText()), StandardCharsets.UTF_8).replace("serverStatus", "coins")).split("\n");
+        String[] coinList = MopsUtils.readFile("D:\\servers\\MopsNetwork\\coins.txt").split("\n");
+        System.out.println(Collections.singleton(coinList));
         for(String coinRow : coinList) {
+            System.out.println(coinRow);
             String[] string = coinRow.split(":");
+            System.out.println(Collections.singleton(string));
             coins.put(Bukkit.getPlayer(string[0]), Integer.parseInt(string[1]));
         }
 
