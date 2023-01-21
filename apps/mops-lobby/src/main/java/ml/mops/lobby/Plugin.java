@@ -167,9 +167,6 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 if(calendar.get(Calendar.MONTH) == Calendar.DECEMBER || calendar.get(Calendar.MONTH) == Calendar.JANUARY) {
                     player.getWorld().spawnParticle(Particle.SNOWFLAKE, player.getLocation().add(0, 7, 0), 450, 15, 6, 15, 0);
                 }
-
-                int amount = getAmount(player.getInventory(), new Items().compass());
-                player.getInventory().remove(MopsUtils.amount(new Items().compass(), amount-1));
             }
 
             if(particleTimer != 0) {
@@ -736,7 +733,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             badge.putIfAbsent(playerName, MopsBadge.NONE);
         }
 
-        player.setPlayerListName(rank.get(playerName).getPrefix() + " " + player.getName() + " " + badge.get(playerName).getSymbol().trim());
+        player.setPlayerListName((rank.get(playerName).getPrefix() + " " + player.getName() + badge.get(playerName).getSymbol()).trim());
 
         manipulateEnderChest(player);
 
@@ -926,9 +923,6 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
     public void manipulateEnderChest(Player player) {
         try {
-            player.getEnderChest().remove(new Items().compass());
-            player.getInventory().setItem(0, new Items().compass());
-
             Bukkit.getScheduler().runTaskLater(this, () -> {
                 int value = getAmount(player.getEnderChest(), new Items().mopsCoin());
 
