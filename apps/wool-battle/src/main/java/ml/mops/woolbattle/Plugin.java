@@ -930,15 +930,21 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			if (teamname.contains("blue")) {
 				materialstuff = (type == Material.WHITE_WOOL || type == Material.LIGHT_BLUE_WOOL);
 			}
+			if (teamname.contains("orange")) {
+				materialstuff = (type == Material.WHITE_WOOL || type == Material.ORANGE_WOOL);
+			}
+			if (teamname.contains("pink")) {
+				materialstuff = (type == Material.WHITE_WOOL || type == Material.MAGENTA_WOOL);
+			}
 
 			if (!hardmode) {
 				if (genBlockList.contains(block)) {
-					if (block.getType() != Material.WHITE_CONCRETE && block.getType() != Material.RED_CONCRETE && block.getType() != Material.YELLOW_CONCRETE && block.getType() != Material.LIME_CONCRETE && block.getType() != Material.LIGHT_BLUE_CONCRETE) {
-						if (!((teamname.contains("red") && block.getType() == Material.RED_WOOL) || (teamname.contains("yellow") && block.getType() == Material.YELLOW_WOOL) || (teamname.contains("green") && block.getType() == Material.LIME_WOOL) || (teamname.contains("blue") && block.getType() == Material.LIGHT_BLUE_WOOL))) {
+					if (block.getType() != Material.WHITE_CONCRETE && block.getType() != Material.RED_CONCRETE && block.getType() != Material.YELLOW_CONCRETE && block.getType() != Material.LIME_CONCRETE && block.getType() != Material.LIGHT_BLUE_CONCRETE && block.getType() != Material.ORANGE_WOOL && block.getType() != Material.MAGENTA_WOOL) {
+						if (!((teamname.contains("red") && block.getType() == Material.RED_WOOL) || (teamname.contains("yellow") && block.getType() == Material.YELLOW_WOOL) || (teamname.contains("green") && block.getType() == Material.LIME_WOOL) || (teamname.contains("blue") && block.getType() == Material.LIGHT_BLUE_WOOL)) || (teamname.contains("orange") && block.getType() == Material.ORANGE_WOOL) || (teamname.contains("pink") && block.getType() == Material.MAGENTA_WOOL)) {
 							event.setCancelled(true);
 							block.setType(Material.AIR);
 
-							materialstuff = (type == Material.WHITE_WOOL || type == Material.RED_WOOL || type == Material.YELLOW_WOOL || type == Material.LIME_WOOL || type == Material.LIGHT_BLUE_WOOL);
+							materialstuff = (type == Material.WHITE_WOOL || type == Material.RED_WOOL || type == Material.YELLOW_WOOL || type == Material.LIME_WOOL || type == Material.LIGHT_BLUE_WOOL || type == Material.ORANGE_WOOL || type == Material.MAGENTA_WOOL);
 
 						} else {
 							event.setCancelled(true);
@@ -1002,6 +1008,36 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 						ItemStack woolitem = new ItemStack(Material.LIGHT_BLUE_WOOL, 1);
 						ItemMeta woolmeta = woolitem.getItemMeta();
 						woolmeta.displayName(getByLang(lang, "woolbattle.blueWool"));
+						woolitem.setItemMeta(woolmeta);
+						player.getInventory().addItem(woolitem);
+					} else {
+						player.showTitle(genTitle(lang, null, "woolLimit", 0, 15, 10));
+					}
+				} else {
+					player.showTitle(genTitle(lang, null, "cantBreak", 0, 15, 10));
+				}
+			}
+			if (teamname.contains("orange")) {
+				if (materialstuff || ppbs.contains(block)) {
+					if (!player.getInventory().contains(Material.ORANGE_WOOL, 512)) {
+						ItemStack woolitem = new ItemStack(Material.ORANGE_WOOL, 1);
+						ItemMeta woolmeta = woolitem.getItemMeta();
+						woolmeta.displayName(getByLang(lang, "woolbattle.orangeWool"));
+						woolitem.setItemMeta(woolmeta);
+						player.getInventory().addItem(woolitem);
+					} else {
+						player.showTitle(genTitle(lang, null, "woolLimit", 0, 15, 10));
+					}
+				} else {
+					player.showTitle(genTitle(lang, null, "cantBreak", 0, 15, 10));
+				}
+			}
+			if (teamname.contains("pink")) {
+				if (materialstuff || ppbs.contains(block)) {
+					if (!player.getInventory().contains(Material.MAGENTA_WOOL, 512)) {
+						ItemStack woolitem = new ItemStack(Material.MAGENTA_WOOL, 1);
+						ItemMeta woolmeta = woolitem.getItemMeta();
+						woolmeta.displayName(getByLang(lang, "woolbattle.pinkWool"));
 						woolitem.setItemMeta(woolmeta);
 						player.getInventory().addItem(woolitem);
 					} else {
@@ -1083,6 +1119,12 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 						if (teamname.contains("blue")) {
 							mat = Material.LIGHT_BLUE_WOOL;
 						}
+						if (teamname.contains("orange")) {
+							mat = Material.ORANGE_WOOL;
+						}
+						if (teamname.contains("pink")) {
+							mat = Material.MAGENTA_WOOL;
+						}
 
 						List<Block> blocklist = new ArrayList<>();
 						Arrays.stream(HorizontalFaces).map(loc.getBlock()::getRelative).forEach(blocklist::add);
@@ -1123,6 +1165,12 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 						}
 						if (teamname.contains("blue")) {
 							mat = Material.LIGHT_BLUE_WOOL;
+						}
+						if (teamname.contains("orange")) {
+							mat = Material.ORANGE_WOOL;
+						}
+						if (teamname.contains("pink")) {
+							mat = Material.MAGENTA_WOOL;
 						}
 
 						List<Block> blocklist = new ArrayList<>(getBlockCube(loc.getBlock(), 1));
@@ -1277,6 +1325,12 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 						if(teamname.contains("blue")) {
 							mat = Material.LIGHT_BLUE_WOOL;
 						}
+						if (teamname.contains("orange")) {
+							mat = Material.ORANGE_WOOL;
+						}
+						if (teamname.contains("pink")) {
+							mat = Material.MAGENTA_WOOL;
+						}
 
 						if(block.getType() == mat) {
 							boolean hasItems = woolRemove(6, player, teamname);
@@ -1396,6 +1450,26 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 					ItemStack woolitem = new ItemStack(Material.LIGHT_BLUE_WOOL, itemcount);
 					ItemMeta woolmeta = woolitem.getItemMeta();
 					woolmeta.displayName(getByLang(lang, "woolbattle.blueWool"));
+					woolitem.setItemMeta(woolmeta);
+					player.getInventory().removeItem(woolitem);
+					hasItems = true;
+				}
+			}
+			if (teamname.contains("orange")) {
+				if (player.getInventory().contains(Material.ORANGE_WOOL, itemcount)) {
+					ItemStack woolitem = new ItemStack(Material.ORANGE_WOOL, itemcount);
+					ItemMeta woolmeta = woolitem.getItemMeta();
+					woolmeta.displayName(getByLang(lang, "woolbattle.orangeWool"));
+					woolitem.setItemMeta(woolmeta);
+					player.getInventory().removeItem(woolitem);
+					hasItems = true;
+				}
+			}
+			if (teamname.contains("pink")) {
+				if (player.getInventory().contains(Material.MAGENTA_WOOL, itemcount)) {
+					ItemStack woolitem = new ItemStack(Material.MAGENTA_WOOL, itemcount);
+					ItemMeta woolmeta = woolitem.getItemMeta();
+					woolmeta.displayName(getByLang(lang, "woolbattle.pinkWool"));
 					woolitem.setItemMeta(woolmeta);
 					player.getInventory().removeItem(woolitem);
 					hasItems = true;
@@ -1624,6 +1698,20 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 				}
 			}
 		}
+		if (teamname.contains("orange")) {
+			for (ItemStack contents : player.getInventory().getContents()) {
+				if (contents != null && contents.getType().equals(Material.ORANGE_WOOL)) {
+					woolcount += contents.getAmount();
+				}
+			}
+		}
+		if (teamname.contains("pink")) {
+			for (ItemStack contents : player.getInventory().getContents()) {
+				if (contents != null && contents.getType().equals(Material.PINK_WOOL)) {
+					woolcount += contents.getAmount();
+				}
+			}
+		}
 		player.setExp(0);
 		player.setLevel(Math.min(woolcount, 512));
 	}
@@ -1641,7 +1729,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		return blocks;
 	}
 
-	public int countGenWool(int redcount, int yellowcount, int greencount, int bluecount, List<Block> blocklist) {
+	public int countGenWool(int redcount, int yellowcount, int greencount, int bluecount, int orangecount, int pinkcount, List<Block> blocklist) {
 		int integer = 0;
 
 		for (Block block : blocklist) {
@@ -1657,6 +1745,12 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			if (block.getType().equals(Material.LIGHT_BLUE_WOOL)) {
 				bluecount++;
 			}
+			if (block.getType().equals(Material.ORANGE_WOOL)) {
+				orangecount++;
+			}
+			if (block.getType().equals(Material.MAGENTA_WOOL)) {
+				pinkcount++;
+			}
 
 			if (redcount >= 80) {
 				integer = 1;
@@ -1670,7 +1764,12 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			if (bluecount >= 80) {
 				integer = 4;
 			}
-
+			if (orangecount >= 80) {
+				integer = 5;
+			}
+			if (pinkcount >= 80) {
+				integer = 6;
+			}
 		}
 		return integer;
 	}
@@ -1680,6 +1779,9 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		int yellowcount = 0;
 		int greencount = 0;
 		int bluecount = 0;
+		int orangecount = 0;
+		int pinkcount = 0;
+
 
 		for (Block block : blocklist) {
 			if (block.getType().equals(Material.RED_WOOL)) {
@@ -1694,14 +1796,22 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			if (block.getType().equals(Material.LIGHT_BLUE_WOOL)) {
 				bluecount++;
 			}
+			if (block.getType().equals(Material.ORANGE_WOOL)) {
+				bluecount++;
+			}
+			if (block.getType().equals(Material.MAGENTA_WOOL)) {
+				bluecount++;
+			}
 		}
 
 		double redpercent = redcount/98.0*100;
 		double yellowpercent = yellowcount/98.0*100;
 		double greenpercent = greencount/98.0*100;
 		double bluepercent = bluecount/98.0*100;
+		double orangepercent = bluecount/98.0*100;
+		double pinkpercent = bluecount/98.0*100;
 
-		double biggestpercentage = Math.max(Math.max(redpercent, yellowpercent), Math.max(greenpercent, bluepercent));
+		double biggestpercentage = Math.max(Math.max(redpercent, Math.max(yellowpercent, orangepercent)), Math.max(greenpercent, Math.max(bluepercent, pinkpercent)));
 
 		String truepercentage = ChatColor.GRAY + " (0%)";
 
@@ -1717,6 +1827,12 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			}
 			if(biggestpercentage == bluepercent) {
 				truepercentage = ChatColor.AQUA + " (" + (int) Math.round(biggestpercentage) + "%)";
+			}
+			if(biggestpercentage == orangepercent) {
+				truepercentage = ChatColor.GOLD + " (" + (int) Math.round(biggestpercentage) + "%)";
+			}
+			if(biggestpercentage == pinkpercent) {
+				truepercentage = ChatColor.LIGHT_PURPLE + " (" + (int) Math.round(biggestpercentage) + "%)";
 			}
 		}
 
@@ -1745,8 +1861,10 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			int yellowcount = 0;
 			int greencount = 0;
 			int bluecount = 0;
+			int orangecount = 0;
+			int pinkcount = 0;
 
-			int genowner = countGenWool(redcount, yellowcount, greencount, bluecount, genBlocks);
+			int genowner = countGenWool(redcount, yellowcount, greencount, bluecount, orangecount, pinkcount, genBlocks);
 
 			switch (genowner) {
 				case 1 -> {
@@ -1791,6 +1909,28 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 					if (!genStatus.equals("woolbattle.generator.blue")) {
 						genBroadcast(genLetter, 4);
 						genStatus = "woolbattle.generator.blue";
+					}
+				}
+				case 5 -> {
+					for (Block block : genLongBlocks) {
+						if (String.valueOf(block.getType()).contains("CONCRETE") && block.getType() != Material.AIR) {
+							block.setType(Material.ORANGE_WOOL);
+						}
+					}
+					if (!genStatus.equals("woolbattle.generator.orange")) {
+						genBroadcast(genLetter, 5);
+						genStatus = "woolbattle.generator.orange";
+					}
+				}
+				case 6 -> {
+					for (Block block : genLongBlocks) {
+						if (String.valueOf(block.getType()).contains("CONCRETE") && block.getType() != Material.AIR) {
+							block.setType(Material.MAGENTA_WOOL);
+						}
+					}
+					if (!genStatus.equals("woolbattle.generator.pink")) {
+						genBroadcast(genLetter, 6);
+						genStatus = "woolbattle.generator.pink";
 					}
 				}
 			}
@@ -1928,6 +2068,8 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 				case 2 -> player.sendTitle(getStringByLang(lang, "generator.capture", Map.of("letter", genLetter)), getStringByLang(lang, "team.YELLOW.2"), 0, 60, 20);
 				case 3 -> player.sendTitle(getStringByLang(lang, "generator.capture", Map.of("letter", genLetter)), getStringByLang(lang, "team.GREEN.2"), 0, 60, 20);
 				case 4 -> player.sendTitle(getStringByLang(lang, "generator.capture", Map.of("letter", genLetter)), getStringByLang(lang, "team.BLUE.2"), 0, 60, 20);
+				case 5 -> player.sendTitle(getStringByLang(lang, "generator.capture", Map.of("letter", genLetter)), getStringByLang(lang, "team.ORANGE.2"), 0, 60, 20);
+				case 6 -> player.sendTitle(getStringByLang(lang, "generator.capture", Map.of("letter", genLetter)), getStringByLang(lang, "team.PINK.2"), 0, 60, 20);
 			}
 			player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_LAND, 0.7F, 2);
 		}
@@ -1990,6 +2132,8 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		genStatuses.add("woolbattle.generator.yellow");
 		genStatuses.add("woolbattle.generator.green");
 		genStatuses.add("woolbattle.generator.blue");
+		genStatuses.add("woolbattle.generator.orange");
+		genStatuses.add("woolbattle.generator.pink");
 
 		for(String genStatus : genStatuses) {
 			String genStatus0 = getStringByLang(lang, genStatus);
@@ -2216,6 +2360,12 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 				if(teamname.contains("blue")) {
 					color = ChatColor.AQUA;
 				}
+				if(teamname.contains("orange")) {
+					color = ChatColor.GOLD;
+				}
+				if(teamname.contains("pink")) {
+					color = ChatColor.LIGHT_PURPLE;
+				}
 
 				players.sendMessage(ChatColor.RED + "[☠] " + color + dead.getName() + ChatColor.GRAY + " " + deathcause);
 			}
@@ -2240,6 +2390,12 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 				}
 				if(teamname.contains("blue")) {
 					color = ChatColor.AQUA;
+				}
+				if(teamname.contains("orange")) {
+					color = ChatColor.GOLD;
+				}
+				if(teamname.contains("pink")) {
+					color = ChatColor.LIGHT_PURPLE;
 				}
 
 				players.sendMessage(ChatColor.RED + "[☠] " + color + dead.getName() + getStringByLang(lang, "woolbattle.death.final"));

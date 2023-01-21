@@ -80,6 +80,12 @@ woolbattle:
   - blueWool:
       rus: "&bСиняя Шерсть"
       eng: "&bBlue Wool"
+  - orangeWool:
+      rus: "&4Оранжевая Шерсть"
+      eng: "&4Orange Wool"
+  - magentaWool:
+      rus: "&dРозовая Шерсть"
+      eng: "&dPink Wool"
   - doubleJumpBoots.name:
       rus: "§TCC§Дабл-Джамп Ботинки"
       eng: "§TCC§Double-Jump Boots"
