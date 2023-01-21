@@ -179,7 +179,7 @@ public class MopsUtils <OBJ extends Object, COMPONENT_COLLECTION extends Collect
 	}
 
 	public static void writeFile(String path, String text) throws IOException {
-		FileWriter writer = new FileWriter(path, true);
+		FileWriter writer = new FileWriter(path, false);
 		BufferedWriter bufferedWriter = new BufferedWriter(writer);
 
 		bufferedWriter.write(text);
