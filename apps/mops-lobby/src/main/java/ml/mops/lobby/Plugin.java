@@ -284,11 +284,13 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         }
 
         try {
+            for(Player player : coins.keySet()) {
+                rawCoins.put(player.getName(), coins.get(player));
+            }
             StringBuilder largeText = new StringBuilder();
             for(String name : rawCoins.keySet()) {
                 largeText.append(name).append(":").append(rawCoins.get(name)).append("\n");
             }
-
             MopsUtils.writeFile("D:\\servers\\MopsNetwork\\coins.txt", largeText.toString());
         } catch (Exception ignored) { }
 
