@@ -1012,11 +1012,14 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			}
 			player.getInventory().clear();
 			player.setHealth(20);
-			player.removePotionEffect(PotionEffectType.JUMP);
 			player.setFoodLevel(20);
+			player.removePotionEffect(PotionEffectType.JUMP);
+			player.removePotionEffect(PotionEffectType.INVISIBILITY);
 			player.setGameMode(GameMode.SURVIVAL);
 			player.getScoreboardTags().add("spawn");
 			clearScoreboard(player);
+
+			player.setCollidable(true);
 
 			player.setFlying(false);
 			player.setAllowFlight(false);
@@ -2279,7 +2282,6 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			clearScoreboard(onlinePlayer);
 			if(onlinePlayer.getScoreboardTags().contains("ingame")) {
 				onlinePlayer.getInventory().clear();
-				onlinePlayer.removePotionEffect(PotionEffectType.JUMP);
 				onlinePlayer.setHealth(20);
 				onlinePlayer.setFoodLevel(20);
 
@@ -2291,6 +2293,10 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 				onlinePlayer.getScoreboardTags().remove("ingame");
 			}
+
+			onlinePlayer.setCollidable(true);
+			onlinePlayer.removePotionEffect(PotionEffectType.JUMP);
+			onlinePlayer.removePotionEffect(PotionEffectType.INVISIBILITY);
 
 			clearScoreboard(onlinePlayer);
 
@@ -2419,6 +2425,10 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		player.hidePlayer(this, player);
 		player.setAllowFlight(true);
 		player.setFlying(true);
+
+		player.setCollidable(false);
+
+		player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 1600, 0, true, false));
 
 		Location mid = new Location(player.getWorld(), 9, 270, 9);
 		player.teleport(mid);
