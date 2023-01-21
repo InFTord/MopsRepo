@@ -550,7 +550,9 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 if (!flippable.contains(event.getClickedBlock().getLocation())) {
                     if (!usables.contains(event.getClickedBlock().getLocation())) {
                         if (!openables.contains(event.getClickedBlock().getLocation())) {
-                            event.setCancelled(true);
+                            if (!atmButtons.contains(event.getClickedBlock().getLocation())) {
+                                event.setCancelled(true);
+                            }
                         }
                     }
                 }
