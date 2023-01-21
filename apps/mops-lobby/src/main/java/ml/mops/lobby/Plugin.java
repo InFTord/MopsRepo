@@ -361,6 +361,24 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         Action action = event.getAction();
 
         try {
+            if (action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK || action == Action.LEFT_CLICK_BLOCK || action == Action.LEFT_CLICK_AIR) {
+                ItemStack itemInHand = player.getItemInHand();
+                if (itemInHand.getItemMeta().getDisplayName().equals(ChatColor.GRAY + "Compass")) {
+                    player.openInventory(gamesGUI);
+                    event.setCancelled(true);
+                }
+                if (action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK) {
+                    if (itemInHand.getItemMeta().getDisplayName().equals(ChatColor.GOLD + "MopsCoin")) {
+                        itemInHand.setAmount(itemInHand.getAmount() - 1);
+                        coins.put(player, coins.get(player) + 1);
+
+                        event.setCancelled(true);
+                    }
+                }
+            }
+        } catch (NullPointerException ignored) { }
+
+        try {
             if(action.equals(Action.LEFT_CLICK_AIR) || action.equals(Action.LEFT_CLICK_BLOCK)) {
                 ItemStack itemInHand = player.getItemInHand();
 
@@ -528,27 +546,11 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 }
             }
 
-            if(action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK || action == Action.LEFT_CLICK_BLOCK || action == Action.LEFT_CLICK_AIR) {
-                ItemStack itemInHand = player.getItemInHand();
-                if (itemInHand.getItemMeta().getDisplayName().equals(ChatColor.GRAY + "Compass")) {
-                    player.openInventory(gamesGUI);
-                    event.setCancelled(true);
-                }
-                if(action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK) {
-                    if (itemInHand.getItemMeta().getDisplayName().equals(ChatColor.GOLD + "MopsCoin")) {
-                        itemInHand.setAmount(itemInHand.getAmount() - 1);
-                        coins.put(player, coins.get(player) + 1);
-
-                        event.setCancelled(true);
-                    }
-                }
-            }
-
             if(!player.getScoreboardTags().contains("admin")) {
                 if (!flippable.contains(event.getClickedBlock().getLocation())) {
-                    if (!usables.contains(event.getClickedBlock().getLocation())) {
-                        if (!openables.contains(event.getClickedBlock().getLocation())) {
-                            if (!atmButtons.contains(event.getClickedBlock().getLocation())) {
+                    if(!usables.contains(event.getClickedBlock().getLocation())) {
+                        if(!openables.contains(event.getClickedBlock().getLocation())) {
+                            if(!atmButtons.contains(event.getClickedBlock().getLocation())) {
                                 event.setCancelled(true);
                             }
                         }

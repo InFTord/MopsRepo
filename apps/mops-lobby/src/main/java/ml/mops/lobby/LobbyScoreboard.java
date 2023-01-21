@@ -30,7 +30,7 @@ public class LobbyScoreboard {
         String score5 = ChatColor.GOLD + " ";
         String score6 = ChatColor.WHITE + "You are in: " + ChatColor.YELLOW + "Lobby";
 
-        Objective obj = board.registerNewObjective("MopsNet", "dummy", ChatColor.YELLOW + "" + ChatColor.BOLD + "MopsPVPs");
+        Objective obj = board.registerNewObjective("MopsNet", "dummy", ChatColor.YELLOW + "" + ChatColor.BOLD + "MopsNet");
         obj.setDisplaySlot(DisplaySlot.SIDEBAR);
 
         obj.getScore(score1).setScore(10);
