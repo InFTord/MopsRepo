@@ -681,13 +681,16 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                     player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
                     player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_CHIME, 1, 2);
 
+                    try {
+                        System.out.println(rawCoins.get(player.getName()));
+                        System.out.println(player.getName());
+
+                        coins.putIfAbsent(player, rawCoins.get(player.getName()));
+                    } catch (Exception ignored) {
+                        coins.putIfAbsent(player, 0);
+                    }
                 }, 4L);
             }, 4L);
-
-            coins.putIfAbsent(player, 0);
-            try {
-                coins.put(player, rawCoins.get(player.getName()));
-            } catch (Exception ignored) { }
         }, 50L);
 
         player.getInventory().clear();
