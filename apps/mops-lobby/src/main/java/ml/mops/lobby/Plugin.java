@@ -535,6 +535,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 ItemStack itemInHand = player.getItemInHand();
                 if (itemInHand.getItemMeta().getDisplayName().equals(ChatColor.GRAY + "Compass")) {
                     player.openInventory(gamesGUI);
+                    event.setCancelled(true);
                 }
             }
 
@@ -543,6 +544,8 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 if (itemInHand.getItemMeta().getDisplayName().equals(ChatColor.GOLD + "MopsCoin")) {
                     itemInHand.setAmount(itemInHand.getAmount()-1);
                     coins.put(player, coins.get(player)+1);
+
+                    event.setCancelled(true);
                 }
             }
 
@@ -678,7 +681,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 MopsUtils.sendRandomDialogueMessage(dialogueList, player, entity);
             }
 
-            if(entity == ball) {
+            if(entity == ball || entity.getType() == EntityType.MINECART_CHEST) {
                 event.setCancelled(true);
             }
         }
@@ -768,8 +771,6 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             allPlayers.sendMessage(chatRank + name + ChatColor.RESET + ": " + MopsUtils.convertColorCodes(message).trim());
         }
     }
-
-    //e
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
