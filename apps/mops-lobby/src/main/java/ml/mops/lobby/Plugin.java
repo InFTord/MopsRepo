@@ -358,18 +358,10 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         Player player = event.getPlayer();
         Action action = event.getAction();
 
-        Items items = new Items();
-
         try {
-            ItemStack itemInHand = player.getItemInHand();
-
-            if(action.equals(Action.LEFT_CLICK_AIR) || action.equals(Action.LEFT_CLICK_BLOCK) || action.equals(Action.RIGHT_CLICK_AIR) || action.equals(Action.RIGHT_CLICK_BLOCK)) {
-                if (itemInHand.getItemMeta().getDisplayName().equals(ChatColor.GRAY + "Compass")) {
-                    player.openInventory(gamesGUI);
-                }
-            }
-
             if(action.equals(Action.LEFT_CLICK_AIR) || action.equals(Action.LEFT_CLICK_BLOCK)) {
+                ItemStack itemInHand = player.getItemInHand();
+
                 if (Objects.requireNonNull(itemInHand.getItemMeta()).getDisplayName().contains("katana")) {
 
                     List<Block> blocks = player.getLineOfSight(null, 7);
@@ -391,16 +383,22 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             }
 
             if(action == Action.RIGHT_CLICK_BLOCK) {
-                if(event.getClickedBlock().getLocation().equals(new Location(player.getWorld(), -111, 9, -210))) {
-                    player.sendMessage("вы отправляетесь в бразилию (мопс пвп)");
-                }
 
                 // банкомат
                 if(atmButtons.contains(event.getClickedBlock().getLocation())) {
-                    player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
-                    player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_BREAK, 1, 2);
+                    if(coins.get(player) != 0) {
+                        player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
+                        player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_BREAK, 1, 2);
 
-                    player.getInventory().addItem(MopsUtils.addLore(MopsUtils.createItem(Material.GOLD_INGOT, ChatColor.GOLD + "MopsCoin", 1), new String[] {ChatColor.GRAY + "The main currency of MopsNetwork."}));
+                        coins.put(player, coins.get(player) - 1);
+                        player.getInventory().addItem(MopsUtils.addLore(MopsUtils.createItem(Material.GOLD_INGOT, ChatColor.GOLD + "MopsCoin", 1), new String[]{ChatColor.GRAY + "The main currency of MopsNetwork."}));
+                    } else {
+                        player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 1, 0);
+                        player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 1, 1);
+                        player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 1, 2);
+
+                        player.sendMessage(ChatColor.RED + "No coins left!");
+                    }
                 }
 
                 // печка
@@ -527,6 +525,20 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                         loc.setYaw(-90);
                         player.teleport(loc);
                     }, 5L);
+                }
+            }
+
+            if(action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK || action == Action.LEFT_CLICK_BLOCK || action == Action.LEFT_CLICK_AIR) {
+                ItemStack itemInHand = player.getItemInHand();
+                if (itemInHand.getItemMeta().getDisplayName().equals(ChatColor.GRAY + "Compass")) {
+                    player.openInventory(gamesGUI);
+                }
+
+                if(action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK) {
+                    if (itemInHand.getItemMeta().getDisplayName().equals(ChatColor.GOLD + "MopsCoins")) {
+                        itemInHand.setAmount(itemInHand.getAmount()-1);
+                        coins.put(player, coins.get(player)+1);
+                    }
                 }
             }
 
@@ -690,7 +702,6 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             coins.putIfAbsent(player, 0);
         } else {
             coins.putIfAbsent(player, rawCoins.get(playerName));
-            System.out.println(rawCoins.get("SirCat07"));
         }
 
         player.getInventory().clear();
@@ -749,7 +760,8 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         }
         if (event.getClickedInventory() == gamesGUI) {
             event.setCancelled(true);
-            if(event.getClickedInventory().getItem(event.getSlot()).getType() != Material.AIR) {
+            try {
+                event.getClickedInventory().getItem(event.getSlot()).getType();
 
                 Player player = (Player) event.getWhoClicked();
 
@@ -786,7 +798,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
                 player.teleport(newDestination);
                 player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1, 2);
-            }
+            } catch (Exception ignored) { }
         }
     }
 
