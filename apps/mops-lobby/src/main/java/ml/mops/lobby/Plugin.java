@@ -56,6 +56,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     HashMap<Player, Integer> woolbattleDogeDialogue = new HashMap<>();
     HashMap<Player, Integer> pigeonDialogue = new HashMap<>();
 
+    HashMap<String, Integer> rawCoins = new HashMap<>();
     HashMap<Player, Integer> coins = new HashMap<>();
 
     //doors n trapdoors n shit
@@ -283,6 +284,14 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         for(Player player : Bukkit.getOnlinePlayers()) {
             player.kickPlayer(ChatColor.YELLOW + "Server closed.\nShortly will be back on, maybe.");
         }
+
+        try {
+            StringBuilder largeText = new StringBuilder();
+            for(String name : rawCoins.keySet()) {
+                largeText.append(name).append(":").append(rawCoins.get(name));
+            }
+            MopsUtils.writeFile("D:\\servers\\MopsNetwork\\coins.txt", largeText.toString());
+        } catch (Exception ignored) { }
 
         WebhookClient client = WebhookClient.withUrl(new String(Base64.getDecoder().decode(MopsUtils.statusText()), StandardCharsets.UTF_8));
 
@@ -673,19 +682,15 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 Bukkit.getScheduler().runTaskLater(this, () -> {
                     player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
                     player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_CHIME, 1, 2);
-
-                    player.sendMessage(String.valueOf(coins.get(player)));
-                    String[] coinList = MopsUtils.readFile("D:\\servers\\MopsNetwork\\coins.txt").split("\n");
-                    for(String coinRow : coinList) {
-                        String[] string = coinRow.split(":");
-                        coins.put(Bukkit.getPlayer(string[0]), Integer.parseInt(string[1]));
-                    }
-                    player.sendMessage(String.valueOf(coins.get(player)));
                 }, 4L);
             }, 4L);
         }, 50L);
 
-
+        try {
+            coins.put(player, rawCoins.get(player.getName()));
+        } catch (Exception e) {
+            coins.putIfAbsent(player, 0);
+        }
 
         player.getInventory().clear();
         Items items = new Items();
@@ -715,6 +720,8 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         for(Player allPlayers : Bukkit.getOnlinePlayers()) {
             allPlayers.sendMessage( ChatColor.GOLD + "[MopsPVPs] " + ChatColor.YELLOW + player.getName() + " left the game. " + ChatColor.AQUA + ":(");
         }
+
+        rawCoins.put(player.getName(), coins.get(player));
     }
 
     @EventHandler
