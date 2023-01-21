@@ -252,9 +252,10 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         ball = stand;
 
         String[] coinList = MopsUtils.readFile("D:\\servers\\MopsNetwork\\coins.txt").split("\n");
-        for(String coinRow : coinList) {
+
+        for (String coinRow : coinList) {
             String[] string = coinRow.split(":");
-            coins.put(Bukkit.getPlayer(string[0]), Integer.parseInt(string[1]));
+            rawCoins.put(string[0], Integer.parseInt(string[1]));
         }
 
         WebhookClient client = WebhookClient.withUrl(new String(Base64.getDecoder().decode(MopsUtils.statusText()), StandardCharsets.UTF_8));
@@ -680,22 +681,17 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 Bukkit.getScheduler().runTaskLater(this, () -> {
                     player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
                     player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_CHIME, 1, 2);
-
-                    String playerName = String.valueOf(player.getName());
-                    System.out.println(playerName);
-                    System.out.println(rawCoins.get("SirCat07"));
-                    System.out.println(rawCoins.get(playerName));
-
-                    if(rawCoins.get(playerName) == null) {
-                        coins.putIfAbsent(player, 0);
-                    } else {
-                        coins.putIfAbsent(player, rawCoins.get(playerName));
-                        System.out.println(rawCoins.get("SirCat07"));
-                    }
-
                 }, 4L);
             }, 4L);
         }, 50L);
+
+        String playerName = player.getName();
+        if(rawCoins.get(playerName) == null) {
+            coins.putIfAbsent(player, 0);
+        } else {
+            coins.putIfAbsent(player, rawCoins.get(playerName));
+            System.out.println(rawCoins.get("SirCat07"));
+        }
 
         player.getInventory().clear();
         Items items = new Items();
