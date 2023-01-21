@@ -549,11 +549,9 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 		stopGame();
 
-		Bukkit.getScheduler().runTaskLater(this, () -> {
-			for (Player player : Bukkit.getOnlinePlayers()) {
-				player.kickPlayer(ChatColor.YELLOW + "Server closed.\nShortly will be back on, maybe.");
-			}
-		}, 20L);
+		for (Player player : Bukkit.getOnlinePlayers()) {
+			player.kickPlayer(ChatColor.YELLOW + "Server closed.\nShortly will be back on, maybe.");
+		}
 	}
 
 	final int[] minutes = {0};
@@ -2290,11 +2288,11 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			if(onlinePlayer.getScoreboardTags().contains("ingame")) {
 				onlinePlayer.getInventory().clear();
 				onlinePlayer.removePotionEffect(PotionEffectType.JUMP);
-				onlinePlayer.setGameMode(GameMode.SURVIVAL);
 				onlinePlayer.setHealth(20);
 				onlinePlayer.setFoodLevel(20);
 
 				onlinePlayer.getScoreboardTags().add("spectator");
+				onlinePlayer.setGameMode(GameMode.SPECTATOR);
 				onlinePlayer.setAllowFlight(true);
 				onlinePlayer.setFlying(true);
 
@@ -2305,6 +2303,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 			clearScoreboard(onlinePlayer);
 
+			mainboard.getTeam("nothing").addPlayer(onlinePlayer);
 			onlinePlayer.setPlayerListName(ChatColor.WHITE + onlinePlayer.getName());
 
 			resetEveryFuckingKillScoreboard(onlinePlayer);
@@ -2357,7 +2356,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			}
 			Bukkit.getScheduler().runTaskLater(this, () -> {
 				MopsUtils.restartServer(this);
-			}, 20L);
+			}, 40L);
 		}, 600L);
 	}
 
