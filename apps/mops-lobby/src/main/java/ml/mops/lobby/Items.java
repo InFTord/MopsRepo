@@ -1,5 +1,6 @@
 package ml.mops.lobby;
 
+import ml.mops.utils.MopsUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -8,6 +9,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 public class Items {
     public ItemStack compass() {
@@ -28,5 +30,19 @@ public class Items {
 
         return item;
     }
+//    public ItemStack kuudraWashingMachine() {
+//        ItemStack item = new ItemStack(Material.GOLD_INGOT);
+//        ItemMeta meta = item.getItemMeta();
+//        meta.setDisplayName(ChatColor.GOLD + "MopsCoin");
+//        List<String> lore = new ArrayList<>();
+//        lore.add(ChatColor.GRAY + "the um balls i guess");
+//        lore.add(" ");
+//        lore.add()
+//
+//
+//        item.setItemMeta(meta);
+//
+//        return item;
+//    }
 
 }

@@ -741,7 +741,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
         player.getInventory().clear();
         Items items = new Items();
-        player.getInventory().addItem(items.compass());
+        player.getInventory().setItem(0, items.compass());
 
         Location spawn = new Location(player.getWorld(), -106.0, 9, -186.0);
         spawn.setYaw(-90);
@@ -855,12 +855,13 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         }
 
         if(event.getInventory().getType() == InventoryType.ENDER_CHEST) {
-            if((event.getSlot() >= 5 && event.getSlot() <= 9) || (event.getSlot() >= 14 && event.getSlot() <= 17) || (event.getSlot() >= 23 && event.getSlot() <= 26)) {
+            if((event.getSlot() >= 5 && event.getSlot() <= 8) || (event.getSlot() >= 14 && event.getSlot() <= 17) || (event.getSlot() >= 23 && event.getSlot() <= 26)) {
                 event.setCancelled(true);
             }
             if(event.getCurrentItem().getType() == Material.COMPASS) {
                 event.setCancelled(true);
             }
+            manipulateEnderChest(player);
         }
     }
 
@@ -916,17 +917,48 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     }
 
     public void manipulateEnderChest(Player player) {
+        player.getEnderChest().remove(new Items().compass());
+        player.getInventory().setItem(0, new Items().compass());
+
+        int value = getAmount(player.getEnderChest(), new Items().mopsCoin());
+
+        for(ItemStack item : player.getEnderChest().getContents()) {
+            if(item.getItemMeta().getDisplayName().equals(ChatColor.RED + "kuudra washing machine")) {
+                value += 1000;
+            }
+        }
+
+        String totalValue = String.valueOf(value);
+        if(value == 0) {
+            totalValue = "???";
+        }
+
+
+
         player.getEnderChest().setItem(5, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
         player.getEnderChest().setItem(6, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
         player.getEnderChest().setItem(7, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
         player.getEnderChest().setItem(8, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
         player.getEnderChest().setItem(14, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
-        player.getEnderChest().setItem(15, MopsUtils.createItem(Material.GOLD_INGOT, ChatColor.GOLD + "Value: ???"));
+        player.getEnderChest().setItem(15, MopsUtils.createItem(Material.GOLD_INGOT, ChatColor.GOLD + "Value: " + totalValue));
         player.getEnderChest().setItem(16, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
         player.getEnderChest().setItem(17, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
         player.getEnderChest().setItem(23, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
         player.getEnderChest().setItem(24, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
         player.getEnderChest().setItem(25, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
         player.getEnderChest().setItem(26, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
+    }
+
+    public static int getAmount(Inventory inventory, ItemStack item) {
+        if (item == null)
+            return 0;
+        int itemCount = 0;
+        for (int i = 0; i < inventory.getSize(); i++) {
+            ItemStack slot = inventory.getItem(i);
+            if (slot == null || !slot.isSimilar(item))
+                continue;
+            itemCount += slot.getAmount();
+        }
+        return itemCount;
     }
 }
