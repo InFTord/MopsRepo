@@ -752,6 +752,15 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     }
 
     @EventHandler
+    public void onDropItem(PlayerDropItemEvent event) {
+        Player player = event.getPlayer();
+
+        if(!player.getScoreboardTags().contains("admin")) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
     public void onPlayerChat(PlayerChatEvent event) {
         Player player = event.getPlayer();
 
