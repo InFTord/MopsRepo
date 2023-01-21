@@ -256,8 +256,6 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         String[] coinList = MopsUtils.readFile("D:\\servers\\MopsNetwork\\coins.txt").split("\n");
         for(String coinRow : coinList) {
             String[] string = coinRow.split(":");
-            System.out.println(string[0]);
-            System.out.println(string[1]);
             coins.put(Bukkit.getPlayer(string[0]), Integer.parseInt(string[1]));
         }
 
@@ -675,9 +673,19 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 Bukkit.getScheduler().runTaskLater(this, () -> {
                     player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
                     player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_CHIME, 1, 2);
+
+                    player.sendMessage(String.valueOf(coins.get(player)));
+                    String[] coinList = MopsUtils.readFile("D:\\servers\\MopsNetwork\\coins.txt").split("\n");
+                    for(String coinRow : coinList) {
+                        String[] string = coinRow.split(":");
+                        coins.put(Bukkit.getPlayer(string[0]), Integer.parseInt(string[1]));
+                    }
+                    player.sendMessage(String.valueOf(coins.get(player)));
                 }, 4L);
             }, 4L);
         }, 50L);
+
+
 
         player.getInventory().clear();
         Items items = new Items();
@@ -731,42 +739,44 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         }
         if (event.getClickedInventory() == gamesGUI) {
             event.setCancelled(true);
+            if(event.getClickedInventory().getItem(event.getSlot()).getType() != Material.AIR) {
 
-            Player player = (Player) event.getWhoClicked();
+                Player player = (Player) event.getWhoClicked();
 
-            World world = event.getWhoClicked().getWorld();
-            Location newDestination = new Location(world, 0, 0, 0);
+                World world = event.getWhoClicked().getWorld();
+                Location newDestination = new Location(world, 0, 0, 0);
 
-            switch (event.getSlot()) {
-                case 0 -> {
-                    newDestination = new Location(world, -106.0, 9, -186.0);
-                    newDestination.setYaw(-90);
+                switch (event.getSlot()) {
+                    case 0 -> {
+                        newDestination = new Location(world, -106.0, 9, -186.0);
+                        newDestination.setYaw(-90);
+                    }
+                    case 1 -> {
+                        newDestination = new Location(world, -101.0, 9, -177.0);
+                        newDestination.setYaw(45);
+                    }
+                    case 2 -> newDestination = new Location(world, -70.5, 7, -185.5);
+                    case 3 -> {
+                        newDestination = new Location(world, -87.0, 9, -204.0);
+                        newDestination.setYaw(180);
+                    }
+                    case 4 -> {
+                        newDestination = new Location(world, -82.0, 9, -167.0);
+                        newDestination.setYaw(-45);
+                    }
+                    case 5 -> {
+                        newDestination = new Location(world, -60.5, 9, -200.5);
+                        newDestination.setYaw(-90);
+                    }
+                    case 6 -> {
+                        newDestination = new Location(world, -74.5, 9, -208.5);
+                        newDestination.setYaw(180);
+                    }
                 }
-                case 1 -> {
-                    newDestination = new Location(world, -101.0, 9, -177.0);
-                    newDestination.setYaw(45);
-                }
-                case 2 -> newDestination = new Location(world, -70.5, 7, -185.5);
-                case 3 -> {
-                    newDestination = new Location(world, -87.0, 9, -204.0);
-                    newDestination.setYaw(180);
-                }
-                case 4 -> {
-                    newDestination = new Location(world, -82.0, 9, -167.0);
-                    newDestination.setYaw(-45);
-                }
-                case 5 -> {
-                    newDestination = new Location(world, -60.5, 9, -200.5);
-                    newDestination.setYaw(-90);
-                }
-                case 6 -> {
-                    newDestination = new Location(world, -74.5, 9, -208.5);
-                    newDestination.setYaw(180);
-                }
+
+                player.teleport(newDestination);
+                player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1, 2);
             }
-
-            player.teleport(newDestination);
-            player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1, 2);
         }
     }
 
