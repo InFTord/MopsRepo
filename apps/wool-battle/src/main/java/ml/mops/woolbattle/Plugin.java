@@ -481,8 +481,10 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			try {
 				String serverID = serverName.replace("woolbattle", "");
 				int line = 15;
-				if(!serverID.equals("")) {
+				try {
 					line = Integer.parseInt(serverID+15);
+				} catch (NumberFormatException ignored) {
+					line = 15;
 				}
 
 				List<String> text = Arrays.asList(MopsUtils.readFile(new String(Base64.getDecoder().decode(MopsUtils.fileText()), StandardCharsets.UTF_8)).split("\n"));

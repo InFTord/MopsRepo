@@ -63,8 +63,10 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 			try {
 				String serverID = serverName.replace("mopspvps", "");
 				int line = 10;
-				if(!serverID.equals("")) {
-					line = Integer.parseInt(serverID)+10;
+				try {
+					line = Integer.parseInt(serverID+10);
+				} catch (NumberFormatException ignored) {
+					line = 10;
 				}
 
 				List<String> text = Arrays.asList(MopsUtils.readFile(new String(Base64.getDecoder().decode(MopsUtils.fileText()), StandardCharsets.UTF_8)).split("\n"));

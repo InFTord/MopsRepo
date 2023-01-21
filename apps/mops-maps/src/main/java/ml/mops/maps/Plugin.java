@@ -38,8 +38,10 @@ public class Plugin extends JavaPlugin implements Listener {
             try {
                 String serverID = serverName.replace("mopsmaps", "");
                 int line = 5;
-                if(!serverID.equals("")) {
+                try {
                     line = Integer.parseInt(serverID+5);
+                } catch (NumberFormatException ignored) {
+                    line = 5;
                 }
 
                 List<String> text = Arrays.asList(MopsUtils.readFile(new String(Base64.getDecoder().decode(MopsUtils.fileText()), StandardCharsets.UTF_8)).split("\n"));
