@@ -156,29 +156,29 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 particleTimer--;
             }
 
-            String serverName = MopsUtils.getPath(this).replace("\\plugins", "").replace("D:\\servers\\MopsNetwork\\", "");
-
-            try {
-                String serverID = serverName.replace("mopslobby", "");
-                int line = 0;
+//            String serverName = MopsUtils.getPath(this).replace("\\plugins", "").replace("D:\\servers\\MopsNetwork\\", "");
+//
+//            try {
+//                String serverID = serverName.replace("mopslobby", "");
+//                int line = 0;
 //                try {
 //                    line = Integer.parseInt(serverID);
 //                } catch (NumberFormatException e) {
 //                    line = 0;
 //                }
-
-                List<String> text = Arrays.asList(MopsUtils.readFile(new String(Base64.getDecoder().decode(MopsUtils.fileText()), StandardCharsets.UTF_8)).split("\n"));
-                text.remove(line);
-                text.set(line, serverName + " " + System.currentTimeMillis() + " " + Bukkit.getOnlinePlayers().size());
-
+//
+//                List<String> text = Arrays.asList(MopsUtils.readFile(new String(Base64.getDecoder().decode(MopsUtils.fileText()), StandardCharsets.UTF_8)).split("\n"));
+//                text.remove(line);
+//                text.set(line, serverName + " " + System.currentTimeMillis() + " " + Bukkit.getOnlinePlayers().size());
+//
 //                for(String textLine : text) {
 //                    if(textLine.isEmpty()) {
 //                        text.remove(textLine);
 //                        text = text.stream().sorted().collect(Collectors.toList());
 //                    }
 //                }
-                MopsUtils.writeFile(new String(Base64.getDecoder().decode(MopsUtils.fileText()), StandardCharsets.UTF_8), MopsUtils.combineStrings(text, "\n"));
-            } catch (IOException ignored) { }
+//                MopsUtils.writeFile(new String(Base64.getDecoder().decode(MopsUtils.fileText()), StandardCharsets.UTF_8), MopsUtils.combineStrings(text, "\n"));
+//            } catch (IOException ignored) { }
         }, 0L, 10L);
 
         Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {

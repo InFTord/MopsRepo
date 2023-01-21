@@ -58,28 +58,28 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 				gameSession = true;
 			}
 
-			String serverName = MopsUtils.getPath(this).replace("\\plugins", "").replace("D:\\servers\\MopsNetwork\\", "");
-
-			try {
-				String serverID = serverName.replace("mopspvps", "");
-				int line = 10;
-				try {
-					line = Integer.parseInt(serverID+10);
-				} catch (NumberFormatException ignored) {
-					line = 10;
-				}
-
-				List<String> text = Arrays.asList(MopsUtils.readFile(new String(Base64.getDecoder().decode(MopsUtils.fileText()), StandardCharsets.UTF_8)).split("\n"));
-				text.set(line, serverName + " " + System.currentTimeMillis() + " " + Bukkit.getOnlinePlayers().size());
-
-				for(String textLine : text) {
-					if(textLine.isEmpty() || textLine.equals("\n")) {
-						text.remove(textLine);
-						text = text.stream().sorted().collect(Collectors.toList());
-					}
-				}
-				MopsUtils.writeFile(new String(Base64.getDecoder().decode(MopsUtils.fileText()), StandardCharsets.UTF_8), MopsUtils.combineStrings(text));
-			} catch (IOException ignored) { }
+//			String serverName = MopsUtils.getPath(this).replace("\\plugins", "").replace("D:\\servers\\MopsNetwork\\", "");
+//
+//			try {
+//				String serverID = serverName.replace("mopspvps", "");
+//				int line = 10;
+//				try {
+//					line = Integer.parseInt(serverID+10);
+//				} catch (NumberFormatException ignored) {
+//					line = 10;
+//				}
+//
+//				List<String> text = Arrays.asList(MopsUtils.readFile(new String(Base64.getDecoder().decode(MopsUtils.fileText()), StandardCharsets.UTF_8)).split("\n"));
+//				text.set(line, serverName + " " + System.currentTimeMillis() + " " + Bukkit.getOnlinePlayers().size());
+//
+//				for(String textLine : text) {
+//					if(textLine.isEmpty() || textLine.equals("\n")) {
+//						text.remove(textLine);
+//						text = text.stream().sorted().collect(Collectors.toList());
+//					}
+//				}
+//				MopsUtils.writeFile(new String(Base64.getDecoder().decode(MopsUtils.fileText()), StandardCharsets.UTF_8), MopsUtils.combineStrings(text));
+//			} catch (IOException ignored) { }
 		}, 0, 10L);
 
 		getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
