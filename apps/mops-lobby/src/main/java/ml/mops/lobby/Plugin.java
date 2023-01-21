@@ -865,11 +865,6 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             }
             manipulateEnderChest(player);
         }
-        try {
-            if (event.getCurrentItem().getType() == Material.COMPASS) {
-                event.setCancelled(true);
-            }
-        } catch (Exception ignored) { }
     }
 
     @EventHandler

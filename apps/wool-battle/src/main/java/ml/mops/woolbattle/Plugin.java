@@ -172,8 +172,9 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		boomsticksMK3.add(items.boomstickMK3(lang));
 
 		mainworld = Bukkit.getServer().getWorlds().get(0);
-		mainboard = Bukkit.getScoreboardManager().getMainScoreboard();
-		newboard = Bukkit.getScoreboardManager().getNewScoreboard();
+		manager = Bukkit.getScoreboardManager();
+		mainboard = manager.getMainScoreboard();
+		newboard = manager.getNewScoreboard();
 
 		genA.setBlocks(getBlockCube(new Location(mainworld, 46, 254, -28).getBlock(), 2));
 		genB.setBlocks(getBlockCube(new Location(mainworld, -28, 254, -28).getBlock(), 2));
@@ -724,8 +725,6 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			badge.putIfAbsent(playerName, MopsBadge.NONE);
 		}
 
-		player.setPlayerListName((rank.get(playerName).getPrefix() + " " + player.getName() + badge.get(playerName).getSymbol()).trim());
-
 		event.setJoinMessage("");
 		for(Player players : Bukkit.getOnlinePlayers()) {
 			players.sendMessage(player.getName() + " joined the game.");
@@ -764,6 +763,8 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			try {
 				deathmsg.get(player).cancel();
 			} catch (Throwable ignored) { }
+
+			player.setPlayerListName((rank.get(playerName).getPrefix() + player.getName() + badge.get(playerName).getSymbol()).trim());
 		}
 	}
 
@@ -851,7 +852,8 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		} else {
 			String chatRank = "";
 			String name = player.getName();
-			String chatBadge = "";
+			String badgeSymbol = "";
+			String badgeDescription = "";
 
 			if(rank.get(player.getName()) == MopsRank.NONE) {
 				name = ChatColor.GRAY + player.getName();
@@ -859,11 +861,18 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 				chatRank = rank.get(player.getName()).getPrefix() + " ";
 			}
 			if(badge.get(player.getName()) != MopsBadge.NONE) {
-				chatBadge = badge.get(player.getName()).getSymbol();
+				badgeSymbol = badge.get(player.getName()).getSymbol();
+				badgeDescription = badge.get(player.getName()).getDescription();
 			}
 
-			for (Player players : Bukkit.getOnlinePlayers()) {
-				players.sendMessage(chatRank + name + chatBadge + ChatColor.RESET + ": " + msg);
+			TextComponent preMessage = Component.text(chatRank + name);
+			TextComponent messageBadge = Component.text(badgeSymbol).hoverEvent(Component.text(badgeDescription));
+			TextComponent afterMessage = Component.text(ChatColor.RESET + ": " + msg.trim());
+
+			TextComponent fullMessage = preMessage.append(messageBadge).append(afterMessage);
+
+			for(Player players : Bukkit.getOnlinePlayers()) {
+				MopsUtils.sendTextComponentMessage(players, fullMessage);
 			}
 		}
 	}
