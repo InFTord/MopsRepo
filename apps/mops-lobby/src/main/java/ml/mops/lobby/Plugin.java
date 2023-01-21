@@ -726,16 +726,12 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         }
         if(rank.get(playerName) == null) {
             rank.putIfAbsent(playerName, MopsRank.NONE);
-        } else {
-            rank.putIfAbsent(playerName, rank.get(playerName));
         }
         if(badge.get(playerName) == null) {
             badge.putIfAbsent(playerName, MopsBadge.NONE);
-        } else {
-            badge.putIfAbsent(playerName, badge.get(playerName));
         }
 
-        player.setPlayerListName(rank.get(playerName).getPrefix() + " " + player.getName() + badge.get(playerName));
+        player.setPlayerListName(rank.get(playerName).getPrefix() + " " + player.getName() + badge.get(playerName).getSymbol());
 
         manipulateEnderChest(player);
 
@@ -917,36 +913,36 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     }
 
     public void manipulateEnderChest(Player player) {
-        player.getEnderChest().remove(new Items().compass());
-        player.getInventory().setItem(0, new Items().compass());
+        try {
+            player.getEnderChest().remove(new Items().compass());
+            player.getInventory().setItem(0, new Items().compass());
 
-        int value = getAmount(player.getEnderChest(), new Items().mopsCoin());
+            int value = getAmount(player.getEnderChest(), new Items().mopsCoin());
 
-        for(ItemStack item : player.getEnderChest().getContents()) {
-            if(item.getItemMeta().getDisplayName().equals(ChatColor.RED + "kuudra washing machine")) {
-                value += 1000;
+            for (ItemStack item : player.getEnderChest().getContents()) {
+                if (item.getItemMeta().getDisplayName().equals(ChatColor.RED + "kuudra washing machine")) {
+                    value += 1000;
+                }
             }
-        }
 
-        String totalValue = String.valueOf(value);
-        if(value == 0) {
-            totalValue = "???";
-        }
+            String totalValue = String.valueOf(value);
+            if (value == 0) {
+                totalValue = "???";
+            }
 
-
-
-        player.getEnderChest().setItem(5, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
-        player.getEnderChest().setItem(6, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
-        player.getEnderChest().setItem(7, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
-        player.getEnderChest().setItem(8, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
-        player.getEnderChest().setItem(14, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
-        player.getEnderChest().setItem(15, MopsUtils.createItem(Material.GOLD_INGOT, ChatColor.GOLD + "Value: " + totalValue));
-        player.getEnderChest().setItem(16, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
-        player.getEnderChest().setItem(17, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
-        player.getEnderChest().setItem(23, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
-        player.getEnderChest().setItem(24, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
-        player.getEnderChest().setItem(25, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
-        player.getEnderChest().setItem(26, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
+            player.getEnderChest().setItem(5, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
+            player.getEnderChest().setItem(6, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
+            player.getEnderChest().setItem(7, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
+            player.getEnderChest().setItem(8, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
+            player.getEnderChest().setItem(14, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
+            player.getEnderChest().setItem(15, MopsUtils.createItem(Material.GOLD_INGOT, ChatColor.GOLD + "Value: " + totalValue));
+            player.getEnderChest().setItem(16, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
+            player.getEnderChest().setItem(17, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
+            player.getEnderChest().setItem(23, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
+            player.getEnderChest().setItem(24, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
+            player.getEnderChest().setItem(25, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
+            player.getEnderChest().setItem(26, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
+        } catch (Exception ignored) { }
     }
 
     public static int getAmount(Inventory inventory, ItemStack item) {

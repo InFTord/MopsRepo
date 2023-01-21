@@ -719,16 +719,12 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 		if(rank.get(playerName) == null) {
 			rank.putIfAbsent(playerName, MopsRank.NONE);
-		} else {
-			rank.putIfAbsent(playerName, rank.get(playerName));
 		}
 		if(badge.get(playerName) == null) {
 			badge.putIfAbsent(playerName, MopsBadge.NONE);
-		} else {
-			badge.putIfAbsent(playerName, badge.get(playerName));
 		}
 
-		player.setPlayerListName(rank.get(playerName).getPrefix() + " " + player.getName() + badge.get(playerName));
+		player.setPlayerListName(rank.get(playerName).getPrefix() + " " + player.getName() + badge.get(playerName).getSymbol());
 
 		event.setJoinMessage("");
 		for(Player players : Bukkit.getOnlinePlayers()) {
