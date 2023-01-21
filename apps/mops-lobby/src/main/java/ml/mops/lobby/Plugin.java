@@ -168,6 +168,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 //                }
 
                 List<String> text = Arrays.asList(MopsUtils.readFile(new String(Base64.getDecoder().decode(MopsUtils.fileText()), StandardCharsets.UTF_8)).split("\n"));
+                text.remove(line);
                 text.set(line, serverName + " " + System.currentTimeMillis() + " " + Bukkit.getOnlinePlayers().size());
 
 //                for(String textLine : text) {
