@@ -367,6 +367,10 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         try {
             ItemStack itemInHand = player.getItemInHand();
 
+            if(itemInHand.getItemMeta().getDisplayName().equals(ChatColor.GRAY + "Compass")) {
+                player.openInventory(gamesGUI);
+            }
+
             if(action.equals(Action.LEFT_CLICK_AIR) || action.equals(Action.LEFT_CLICK_BLOCK)) {
                 if (Objects.requireNonNull(itemInHand.getItemMeta()).getDisplayName().contains("katana")) {
 
@@ -399,10 +403,6 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                     player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_BREAK, 1, 2);
 
                     player.getInventory().addItem(MopsUtils.addLore(MopsUtils.createItem(Material.GOLD_INGOT, ChatColor.GOLD + "MopsCoin", 1), new String[] {ChatColor.GRAY + "The main currency of MopsNetwork."}));
-                }
-
-                if(player.getItemInHand() == items.compass()) {
-                    player.openInventory(gamesGUI);
                 }
 
                 // печка
