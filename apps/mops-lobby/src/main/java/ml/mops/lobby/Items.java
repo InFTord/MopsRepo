@@ -1,0 +1,23 @@
+package ml.mops.lobby;
+
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+
+public class Items {
+    public ItemStack compass() {
+        ItemStack item = new ItemStack(Material.COMPASS);
+        ItemMeta meta = item.getItemMeta();
+        meta.setDisplayName(ChatColor.GRAY + "Compass");
+        meta.setLore(new ArrayList<String>(Collections.singletonList(ChatColor.GRAY + "Easy teleport to games.")));
+        item.setItemMeta(meta);
+
+        return item;
+    }
+
+}

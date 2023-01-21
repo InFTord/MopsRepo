@@ -2350,14 +2350,16 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		slimeballs.clear();
 		doubleJumpBoots.clear();
 
-		Bukkit.getScheduler().runTaskLater(this, () -> {
-			for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-				MopsUtils.sendToServer(this, onlinePlayer, "mopslobby");
-			}
+		try {
 			Bukkit.getScheduler().runTaskLater(this, () -> {
-				MopsUtils.restartServer(this);
-			}, 40L);
-		}, 600L);
+				for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+					MopsUtils.sendToServer(this, onlinePlayer, "mopslobby");
+				}
+				Bukkit.getScheduler().runTaskLater(this, () -> {
+					MopsUtils.restartServer(this);
+				}, 40L);
+			}, 600L);
+		} catch (Exception ignored) { }
 	}
 
 	public void winningBroadcast(int winner, String key) {

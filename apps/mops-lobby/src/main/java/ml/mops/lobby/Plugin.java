@@ -68,6 +68,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     List<Location> usables = new ArrayList<>();
 
     Inventory mapGUI = new MapGUI().getInventory();
+    Inventory gamesGUI = new GamesGUI().getInventory();
 
     ArmorStand ball;
 
@@ -359,22 +360,9 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     @EventHandler
     public void onInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
-
         Action action = event.getAction();
 
-
-        if(action.equals(Action.RIGHT_CLICK_AIR) || action.equals(Action.RIGHT_CLICK_BLOCK)) {
-
-//            if(player.getItemInHand().getItemMeta().getDisplayName().contains("flamethrower")) {
-//                temporarySummonFire(player);
-//                Bukkit.getScheduler().runTaskLater(this, () -> {
-//                    temporarySummonFire(player);
-//                    Bukkit.getScheduler().runTaskLater(this, () -> {
-//                        temporarySummonFire(player);
-//                    }, 2L);
-//                }, 2L);
-//            }
-        }
+        Items items = new Items();
 
         try {
             ItemStack itemInHand = player.getItemInHand();
@@ -400,157 +388,160 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 }
             }
 
-        } catch (NullPointerException ignored) {}
+            if(action == Action.RIGHT_CLICK_BLOCK) {
+                if(event.getClickedBlock().getLocation().equals(new Location(player.getWorld(), -111, 9, -210))) {
+                    player.sendMessage("вы отправляетесь в бразилию (мопс пвп)");
+                }
 
-        if(action == Action.RIGHT_CLICK_BLOCK) {
-            if(event.getClickedBlock().getLocation().equals(new Location(player.getWorld(), -111, 9, -210))) {
-                player.sendMessage("вы отправляетесь в бразилию (мопс пвп)");
-            }
+                // банкомат
+                if(atmButtons.contains(event.getClickedBlock().getLocation())) {
+                    player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
+                    player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_BREAK, 1, 2);
 
-            // банкомат
-            if(atmButtons.contains(event.getClickedBlock().getLocation())) {
-                player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
-                player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_BREAK, 1, 2);
+                    player.getInventory().addItem(MopsUtils.addLore(MopsUtils.createItem(Material.GOLD_INGOT, ChatColor.GOLD + "MopsCoin", 1), new String[] {ChatColor.GRAY + "The main currency of MopsNetwork."}));
+                }
 
-                player.getInventory().addItem(MopsUtils.addLore(MopsUtils.createItem(Material.GOLD_INGOT, ChatColor.GOLD + "MopsCoin", 1), new String[] {ChatColor.GRAY + "The main currency of MopsNetwork."}));
-            }
+                if(player.getItemInHand() == items.compass()) {
+                    player.openInventory(gamesGUI);
+                }
 
-            // печка
-            if(event.getClickedBlock().getLocation().equals(new Location(player.getWorld(), -82, 10, -216))) {
-                event.setCancelled(true);
+                // печка
+                if(event.getClickedBlock().getLocation().equals(new Location(player.getWorld(), -82, 10, -216))) {
+                    event.setCancelled(true);
 
-                player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
-                player.playSound(player.getLocation(), Sound.BLOCK_FIRE_EXTINGUISH, 0.3F, 1);
-                player.playSound(player.getLocation(), Sound.ITEM_FIRECHARGE_USE, 0.3F, 1);
+                    player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
+                    player.playSound(player.getLocation(), Sound.BLOCK_FIRE_EXTINGUISH, 0.3F, 1);
+                    player.playSound(player.getLocation(), Sound.ITEM_FIRECHARGE_USE, 0.3F, 1);
 
-                player.sendMessage(ChatColor.GRAY + "add furnace later plslssl");
-            }
+                    player.sendMessage(ChatColor.GRAY + "add furnace later plslssl");
+                }
 
-            // дискорд
-            if(event.getClickedBlock().getLocation().equals(new Location(player.getWorld(), -84, 9, -184))) {
-                player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
-                player.sendMessage(ChatColor.AQUA + "Our Discord: https://discord.gg/pGscG66pze");
-            }
-            // ютуб
-            if(event.getClickedBlock().getLocation().equals(new Location(player.getWorld(), -84, 9, -185))) {
-                player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
-                player.sendMessage(ChatColor.RED + "Our Youtube Channel: https://www.youtube.com/channel/UCmIrl7QQzVoVX-jeFNMkykg");
-            }
+                // дискорд
+                if(event.getClickedBlock().getLocation().equals(new Location(player.getWorld(), -84, 9, -184))) {
+                    player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
+                    player.sendMessage(ChatColor.AQUA + "Our Discord: https://discord.gg/pGscG66pze");
+                }
+                // ютуб
+                if(event.getClickedBlock().getLocation().equals(new Location(player.getWorld(), -84, 9, -185))) {
+                    player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
+                    player.sendMessage(ChatColor.RED + "Our Youtube Channel: https://www.youtube.com/channel/UCmIrl7QQzVoVX-jeFNMkykg");
+                }
 
-            // голубь выход
-            if(event.getClickedBlock().getLocation().equals(new Location(player.getWorld(), 151, 7, 147))) {
-                player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
+                // голубь выход
+                if(event.getClickedBlock().getLocation().equals(new Location(player.getWorld(), 151, 7, 147))) {
+                    player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
 
-                player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 60, 1, true, false));
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 60, 1, true, false));
 
-                Bukkit.getScheduler().runTaskLater(this, () -> {
-                    player.setVelocity(new Vector(0, 1, 0));
                     Bukkit.getScheduler().runTaskLater(this, () -> {
-                        Location loc = new Location(player.getWorld(), -76, 9, -157);
-                        loc.setYaw(90);
+                        player.setVelocity(new Vector(0, 1, 0));
+                        Bukkit.getScheduler().runTaskLater(this, () -> {
+                            Location loc = new Location(player.getWorld(), -76, 9, -157);
+                            loc.setYaw(90);
+                            player.teleport(loc);
+                        }, 5L);
+                    }, 10L);
+                }
+
+                // библиотека
+                if(event.getClickedBlock().getLocation().equals(new Location(player.getWorld(), -104, 12, -181))) {
+                    ItemStack book = new ItemStack(Material.WRITTEN_BOOK);
+                    BookMeta bookMeta = (BookMeta) book.getItemMeta();
+                    bookMeta.setAuthor(ChatColor.DARK_AQUA + "SirCat07");
+                    bookMeta.setTitle("1000 и 1 факт про Астарту");
+
+                    ArrayList<String> pages = new ArrayList<>();
+
+                    pages.add(0, "1000 и 1 факт про Астарту.");
+                    pages.add(1, "1 факт: порода Астарты - корниш-рекс.");
+                    pages.add(2, "2 факт: раскраска у Астарты как у сиамской кошки.");
+                    pages.add(3, "3 факт: Астарте надо долго привыкать к новому корму. Когда Астарте надо привыкать к новому корму, то она чешет своё ухо и иногда у неё появляются покраснения");
+                    pages.add(4, "4 факт: Астарта любит спать с Расокет.");
+                    pages.add(5, "5 факт: иногда Астарта зовёт сестру Расокет, чтобы она отправлялась спать. Когда сестра идёт с ней в кровать, Астарта сразу же уходит.");
+                    pages.add(6, "6 факт: Астарта по какой-то причине закапывает свою мочу.");
+                    pages.add(7, "7 факт: Астарта - не единственное имя Астарты. Все её имена: Астарта, Астарточка, Асстарта, Манюня, Манюша, Миланья, Милания.");
+                    pages.add(8, "8 факт: Астарта третья кошка Расокет.");
+                    pages.add(9, "9 факт: у Астарты было двое хозяинов: первая семья и семья Расокет.");
+                    pages.add(10, "10 факт: прошлым хозяинам Астарты пришлось сделать объявления о том, что они отдают свою кошку из-за того, что у прошлых хозяинов родился ребёнок с аллергией на шерсть.");
+                    pages.add(11, "11 факт: у прошлых хозяинов Астарта много рожала.");
+                    pages.add(12, "12 факт: к сожалению, прошлые хозяины продавали котят Астарты.");
+                    pages.add(13, "13 факт: Астарта любит сидеть на работающей стиральной машине.");
+                    pages.add(14, "14 факт: Астарта прикольно зевает.");
+                    pages.add(15, "15 факт: Астарта прикольно шипит.");
+                    pages.add(16, "16 факт: когда Астарта только появилась у Расокет дома, Астарта на всё шипела и била.");
+                    pages.add(17, "17 факт: когда Астарта только появилась у Расокет дома, она постоянно залезала на шкаф в кухне.");
+                    pages.add(18, "18 факт: семья Расокет стерилизовала Астарту.");
+                    pages.add(19, "19 факт: после операции, Астарта опять стала на всех шипеть и бить");
+                    pages.add(20, "20 факт: после операции семья Расокет решили закрыть Астарту в переноске.");
+                    pages.add(21, "21 факт: когда Астарта спит, она нагревается.");
+                    pages.add(22, "22 факт: у Астарты хриплый голос.");
+                    pages.add(23, "23 факт: Астарта мило мяукает и мурчит.");
+                    pages.add(24, "24 факт: Астарта любит биться с первой кошкой Расокет, Джиной (играются).");
+                    pages.add(25, "25 факт: мама Расокет захотела забрать Астарту.");
+                    pages.add(26, "26 факт: у Астарты острые когти.");
+                    pages.add(27, "27 факт: после того, как Астарте подстригают когти, она их быстро наращивает.");
+                    pages.add(28, "28 факт: если засвет попадает на глаза Астарты, то её зрачки становятся красными.");
+                    pages.add(29, "29 факт: у Астарты острые клыки.");
+                    pages.add(30, "30 факт: когда Астарта ходит по кому-либо, то это действие с какой-то стороны можно считать за массаж.");
+                    pages.add(31, "31 факт: если злобную Астарту почесать, то у неё будет прикольная улыбка");
+                    pages.add(32, "32 факт: Астарта любит греться у ноутбука Расокет, когда она играет.");
+                    pages.add(33, "33 факт: Расокет делала Астарту в Споре.");
+                    pages.add(34, "34 факт: иногда, Астарта приходит к Расокет, когда она во что-либо играет. Она часто следит за чем-либо двигающимся.");
+                    pages.add(35, "35 факт: Астарта любит наблюдать за существами Расокет в Споре.");
+                    pages.add(36, "36 факт: до 03.05.2022, Астарту рисовала только Расокет");
+                    pages.add(37, "37 факт: айсчатовцы любят Астарту.");
+                    pages.add(38, "38 факт: подруга Расокет почему-то любит больше Джину, чем Астарту.");
+                    pages.add(39, "39 факт: когда Расокет научилась рисовать корниш-рексов, то корниш-рексы, которых она рисовала в 99% случаях превращались в Астарту.");
+                    pages.add(40, "40 факт: Астарта любит греться на солнышке.");
+                    pages.add(41, "41 факт: Астарта любит спать клубочком.");
+                    pages.add(42, "42 факт: когда Астарта спит, она СИЛЬНО нагревается.");
+                    pages.add(43, "43 факт: спящая Астарта - хорошее снотворное!");
+                    pages.add(44, "44 факт: когда Расокет смотрит в окно, то Астарта сразу же откуда-то появляется, запрыгивает на стол, залезает на подоконник и тоже начинает смотреть в окно.");
+                    pages.add(45, "45 факт: одной ночью, Расокет решила посмотреть в окно. Астарта тоже решила посмотреть в окно. В небе была луна. Астарта увидела её. Она на неё удивлённо смотрела. Скорее всего, для неё полная луна в небе - очень удивительное событие.");
+                    pages.add(46, "46 факт: иногда, когда Джина начинает мыться, Астарта тоже начинает мыться и наоборот.");
+                    pages.add(47, "47 факт: иногда, когда Расокет начинает есть на кухне, Астарта тоже начинает есть.");
+                    pages.add(48, "48 факт: Астарта громко пьёт и ест.");
+                    pages.add(49, "49 факт: Астарта любит точить когти.");
+                    pages.add(50, "50 факт: Астарта любит садится на мамин журнал с японскими сканвордами, на учебники и на тетради Расокет.");
+                    pages.add(51, "Продолжите читать \"1000 и 1 факт про Астарту\" за $1999.99!");
+                    pages.add(52, " ");
+                    pages.add(53, "*страница поцарапана мопсом*");
+                    pages.add(54, "1000 факт: Астарта.");
+
+                    bookMeta.setPages(pages);
+
+                    book.setItemMeta(bookMeta);
+
+                    player.openBook(book);
+                    player.playSound(player.getLocation(), Sound.ITEM_BOOK_PAGE_TURN, 1, 0);
+                }
+            }
+
+            if(action == Action.RIGHT_CLICK_BLOCK || action == Action.LEFT_CLICK_BLOCK) {
+                // голубь вход
+                if (event.getClickedBlock().getLocation().equals(new Location(player.getWorld(), -77, 9, -157))) {
+                    player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
+
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 100, 1, true, false));
+
+                    Bukkit.getScheduler().runTaskLater(this, () -> {
+                        Location loc = new Location(player.getWorld(), 151.5, 11.0, 147.5);
+                        loc.setYaw(-90);
                         player.teleport(loc);
                     }, 5L);
-                }, 10L);
+                }
             }
 
-            // библиотека
-            if(event.getClickedBlock().getLocation().equals(new Location(player.getWorld(), -104, 12, -181))) {
-                ItemStack book = new ItemStack(Material.WRITTEN_BOOK);
-                BookMeta bookMeta = (BookMeta) book.getItemMeta();
-                bookMeta.setAuthor(ChatColor.DARK_AQUA + "SirCat07");
-                bookMeta.setTitle("1000 и 1 факт про Астарту");
-
-                ArrayList<String> pages = new ArrayList<>();
-
-                pages.add(0, "1000 и 1 факт про Астарту.");
-                pages.add(1, "1 факт: порода Астарты - корниш-рекс.");
-                pages.add(2, "2 факт: раскраска у Астарты как у сиамской кошки.");
-                pages.add(3, "3 факт: Астарте надо долго привыкать к новому корму. Когда Астарте надо привыкать к новому корму, то она чешет своё ухо и иногда у неё появляются покраснения");
-                pages.add(4, "4 факт: Астарта любит спать с Расокет.");
-                pages.add(5, "5 факт: иногда Астарта зовёт сестру Расокет, чтобы она отправлялась спать. Когда сестра идёт с ней в кровать, Астарта сразу же уходит.");
-                pages.add(6, "6 факт: Астарта по какой-то причине закапывает свою мочу.");
-                pages.add(7, "7 факт: Астарта - не единственное имя Астарты. Все её имена: Астарта, Астарточка, Асстарта, Манюня, Манюша, Миланья, Милания.");
-                pages.add(8, "8 факт: Астарта третья кошка Расокет.");
-                pages.add(9, "9 факт: у Астарты было двое хозяинов: первая семья и семья Расокет.");
-                pages.add(10, "10 факт: прошлым хозяинам Астарты пришлось сделать объявления о том, что они отдают свою кошку из-за того, что у прошлых хозяинов родился ребёнок с аллергией на шерсть.");
-                pages.add(11, "11 факт: у прошлых хозяинов Астарта много рожала.");
-                pages.add(12, "12 факт: к сожалению, прошлые хозяины продавали котят Астарты.");
-                pages.add(13, "13 факт: Астарта любит сидеть на работающей стиральной машине.");
-                pages.add(14, "14 факт: Астарта прикольно зевает.");
-                pages.add(15, "15 факт: Астарта прикольно шипит.");
-                pages.add(16, "16 факт: когда Астарта только появилась у Расокет дома, Астарта на всё шипела и била.");
-                pages.add(17, "17 факт: когда Астарта только появилась у Расокет дома, она постоянно залезала на шкаф в кухне.");
-                pages.add(18, "18 факт: семья Расокет стерилизовала Астарту.");
-                pages.add(19, "19 факт: после операции, Астарта опять стала на всех шипеть и бить");
-                pages.add(20, "20 факт: после операции семья Расокет решили закрыть Астарту в переноске.");
-                pages.add(21, "21 факт: когда Астарта спит, она нагревается.");
-                pages.add(22, "22 факт: у Астарты хриплый голос.");
-                pages.add(23, "23 факт: Астарта мило мяукает и мурчит.");
-                pages.add(24, "24 факт: Астарта любит биться с первой кошкой Расокет, Джиной (играются).");
-                pages.add(25, "25 факт: мама Расокет захотела забрать Астарту.");
-                pages.add(26, "26 факт: у Астарты острые когти.");
-                pages.add(27, "27 факт: после того, как Астарте подстригают когти, она их быстро наращивает.");
-                pages.add(28, "28 факт: если засвет попадает на глаза Астарты, то её зрачки становятся красными.");
-                pages.add(29, "29 факт: у Астарты острые клыки.");
-                pages.add(30, "30 факт: когда Астарта ходит по кому-либо, то это действие с какой-то стороны можно считать за массаж.");
-                pages.add(31, "31 факт: если злобную Астарту почесать, то у неё будет прикольная улыбка");
-                pages.add(32, "32 факт: Астарта любит греться у ноутбука Расокет, когда она играет.");
-                pages.add(33, "33 факт: Расокет делала Астарту в Споре.");
-                pages.add(34, "34 факт: иногда, Астарта приходит к Расокет, когда она во что-либо играет. Она часто следит за чем-либо двигающимся.");
-                pages.add(35, "35 факт: Астарта любит наблюдать за существами Расокет в Споре.");
-                pages.add(36, "36 факт: до 03.05.2022, Астарту рисовала только Расокет");
-                pages.add(37, "37 факт: айсчатовцы любят Астарту.");
-                pages.add(38, "38 факт: подруга Расокет почему-то любит больше Джину, чем Астарту.");
-                pages.add(39, "39 факт: когда Расокет научилась рисовать корниш-рексов, то корниш-рексы, которых она рисовала в 99% случаях превращались в Астарту.");
-                pages.add(40, "40 факт: Астарта любит греться на солнышке.");
-                pages.add(41, "41 факт: Астарта любит спать клубочком.");
-                pages.add(42, "42 факт: когда Астарта спит, она СИЛЬНО нагревается.");
-                pages.add(43, "43 факт: спящая Астарта - хорошее снотворное!");
-                pages.add(44, "44 факт: когда Расокет смотрит в окно, то Астарта сразу же откуда-то появляется, запрыгивает на стол, залезает на подоконник и тоже начинает смотреть в окно.");
-                pages.add(45, "45 факт: одной ночью, Расокет решила посмотреть в окно. Астарта тоже решила посмотреть в окно. В небе была луна. Астарта увидела её. Она на неё удивлённо смотрела. Скорее всего, для неё полная луна в небе - очень удивительное событие.");
-                pages.add(46, "46 факт: иногда, когда Джина начинает мыться, Астарта тоже начинает мыться и наоборот.");
-                pages.add(47, "47 факт: иногда, когда Расокет начинает есть на кухне, Астарта тоже начинает есть.");
-                pages.add(48, "48 факт: Астарта громко пьёт и ест.");
-                pages.add(49, "49 факт: Астарта любит точить когти.");
-                pages.add(50, "50 факт: Астарта любит садится на мамин журнал с японскими сканвордами, на учебники и на тетради Расокет.");
-                pages.add(51, "Продолжите читать \"1000 и 1 факт про Астарту\" за $1999.99!");
-                pages.add(52, " ");
-                pages.add(53, "*страница поцарапана мопсом*");
-                pages.add(54, "1000 факт: Астарта один из главных персонажей МопсПВП.");
-
-                bookMeta.setPages(pages);
-
-                book.setItemMeta(bookMeta);
-
-                player.openBook(book);
-                player.playSound(player.getLocation(), Sound.ITEM_BOOK_PAGE_TURN, 1, 0);
-            }
-        }
-
-        if(action == Action.RIGHT_CLICK_BLOCK || action == Action.LEFT_CLICK_BLOCK) {
-            // голубь вход
-            if (event.getClickedBlock().getLocation().equals(new Location(player.getWorld(), -77, 9, -157))) {
-                player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
-
-                player.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, 100, 1, true, false));
-
-                Bukkit.getScheduler().runTaskLater(this, () -> {
-                    Location loc = new Location(player.getWorld(), 151.5, 11.0, 147.5);
-                    loc.setYaw(-90);
-                    player.teleport(loc);
-                }, 5L);
-            }
-        }
-
-        if(!player.getScoreboardTags().contains("admin")) {
-            if (!flippable.contains(event.getClickedBlock().getLocation())) {
-                if (!usables.contains(event.getClickedBlock().getLocation())) {
-                    if (!openables.contains(event.getClickedBlock().getLocation())) {
-                        event.setCancelled(true);
+            if(!player.getScoreboardTags().contains("admin")) {
+                if (!flippable.contains(event.getClickedBlock().getLocation())) {
+                    if (!usables.contains(event.getClickedBlock().getLocation())) {
+                        if (!openables.contains(event.getClickedBlock().getLocation())) {
+                            event.setCancelled(true);
+                        }
                     }
                 }
             }
-        }
+        } catch (NullPointerException ignored) {}
     }
 
     @EventHandler
@@ -696,6 +687,10 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             }, 4L);
         }, 50L);
 
+        player.getInventory().clear();
+        Items items = new Items();
+        player.getInventory().addItem(items.compass());
+
         Location spawn = new Location(player.getWorld(), -106.0, 9, -186.0);
         spawn.setYaw(-90);
 
@@ -748,7 +743,27 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     public void onInventoryClick(InventoryClickEvent event) {
         if (event.getClickedInventory() == mapGUI) {
             event.setCancelled(true);
+        }
+        if (event.getClickedInventory() == gamesGUI) {
+            event.setCancelled(true);
 
+            Player player = (Player) event.getWhoClicked();
+
+            World world = event.getWhoClicked().getWorld();
+            Location newDestination = new Location(world, 0, 0, 0);
+
+            switch (event.getSlot()) {
+                case 0 -> newDestination = new Location(world, -106.0, 9, -186.0);
+                case 1 -> newDestination = new Location(world, -101.0, 9, -177.0);
+                case 2 -> newDestination = new Location(world, -71.0, 7, -186.0);
+                case 3 -> newDestination = new Location(world, -87.0, 9, -204.0);
+                case 4 -> newDestination = new Location(world, -82.0, 9, -167.0);
+                case 5 -> newDestination = new Location(world, -60.0, 9, -201.0);
+                case 6 -> newDestination = new Location(world, -75.0, 9, -210.0);
+            }
+
+            player.teleport(newDestination);
+            player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1, 2);
         }
     }
 
