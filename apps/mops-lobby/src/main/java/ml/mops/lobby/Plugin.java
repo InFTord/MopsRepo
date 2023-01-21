@@ -11,8 +11,13 @@ import club.minnced.discord.webhook.send.WebhookEmbedBuilder;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import ml.mops.base.commands.Commands;
+import ml.mops.network.MopsBadge;
 import ml.mops.network.MopsRank;
 import ml.mops.utils.MopsUtils;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.event.HoverEvent;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.*;
@@ -29,7 +34,10 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryMoveItemEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.*;
+import org.bukkit.event.vehicle.VehicleDamageEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -60,6 +68,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     HashMap<String, Integer> rawCoins = new HashMap<>();
     HashMap<Player, Integer> coins = new HashMap<>();
     HashMap<String, MopsRank> rank = new HashMap<>();
+    HashMap<String, MopsBadge> badge = new HashMap<>();
 
     //doors n trapdoors n shit
     List<Location> flippable = new ArrayList<>();
@@ -256,6 +265,11 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         for (String rankRow : rankList) {
             String[] string = rankRow.split(":");
             rank.put(string[0], MopsRank.valueOf(string[1]));
+        }
+        String[] badgeList = MopsUtils.readFile("D:\\servers\\MopsNetwork\\badges.txt").split("\n");
+        for (String badgeRow : badgeList) {
+            String[] string = badgeRow.split(":");
+            badge.put(string[0], MopsBadge.valueOf(string[1]));
         }
 
         WebhookClient client = WebhookClient.withUrl(new String(Base64.getDecoder().decode(MopsUtils.statusText()), StandardCharsets.UTF_8));
@@ -710,14 +724,20 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         } else {
             coins.putIfAbsent(player, rawCoins.get(playerName));
         }
-
         if(rank.get(playerName) == null) {
             rank.putIfAbsent(playerName, MopsRank.NONE);
         } else {
             rank.putIfAbsent(playerName, rank.get(playerName));
         }
+        if(badge.get(playerName) == null) {
+            badge.putIfAbsent(playerName, MopsBadge.NONE);
+        } else {
+            badge.putIfAbsent(playerName, badge.get(playerName));
+        }
 
-        player.setPlayerListName(rank.get(playerName).getPrefix() + " " + player.getName());
+        player.setPlayerListName(rank.get(playerName).getPrefix() + " " + player.getName() + badge);
+
+        manipulateEnderChest(player);
 
         player.getInventory().clear();
         Items items = new Items();
@@ -766,23 +786,31 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
         String chatRank = "";
         String name = player.getName();
+        String chatBadge = "";
 
-        if(rank.get(player.getName()) != MopsRank.NONE) {
-            chatRank = rank.get(player.getName()).getPrefix() + " ";
-        } else {
+        if(rank.get(player.getName()) == MopsRank.NONE) {
             name = ChatColor.GRAY + player.getName();
+        } else {
+            chatRank = rank.get(player.getName()).getPrefix() + " ";
         }
-        String message = event.getMessage();
+
+        if(badge.get(player.getName()) != MopsBadge.NONE) {
+            chatBadge = badge.get(player.getName()).getSymbol();
+        }
+
+        String message = event.getMessage().replaceAll(":skull:", ChatColor.GRAY + "☠" + ChatColor.RESET);
 
         event.setCancelled(true);
 
         for(Player allPlayers : Bukkit.getOnlinePlayers()) {
-            allPlayers.sendMessage(chatRank + name + ChatColor.RESET + ": " + MopsUtils.convertColorCodes(message).trim());
+            allPlayers.sendMessage(chatRank + name + chatBadge + ChatColor.RESET + ": " + MopsUtils.convertColorCodes(message).trim());
         }
     }
 
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
+        Player player = (Player) event.getWhoClicked();
+
         if (event.getClickedInventory() == mapGUI) {
             event.setCancelled(true);
         }
@@ -790,8 +818,6 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             event.setCancelled(true);
             try {
                 event.getClickedInventory().getItem(event.getSlot()).getType();
-
-                Player player = (Player) event.getWhoClicked();
 
                 World world = event.getWhoClicked().getWorld();
                 Location newDestination = new Location(world, 0, 0, 0);
@@ -828,6 +854,20 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1, 2);
             } catch (Exception ignored) { }
         }
+        if(event.getClickedInventory() == player.getEnderChest()) {
+            if((event.getSlot() >= 5 && event.getSlot() <= 9) || (event.getSlot() >= 14 && event.getSlot() <= 17) || (event.getSlot() >= 23 && event.getSlot() <= 26)) {
+                event.setCancelled(true);
+            }
+        }
+    }
+
+    @EventHandler
+    public void onMoveItem(InventoryMoveItemEvent event) {
+        if (event.getDestination().getType().equals(InventoryType.ENDER_CHEST)) {
+            if(event.getItem().getItemMeta().getDisplayName().equals(ChatColor.GRAY + "Compass") && event.getItem().getType() == Material.COMPASS) {
+                event.setCancelled(true);
+            }
+        }
     }
 
     @EventHandler
@@ -859,8 +899,11 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 player.playSound(player.getLocation(), Sound.BLOCK_BAMBOO_HIT, 1, 1);
             }
         }
+    }
 
-        if(victim.getType() == EntityType.MINECART_CHEST) {
+    @EventHandler
+    public void onVehicleDamage(VehicleDamageEvent event) {
+        if(event.getVehicle().getType() == EntityType.MINECART_CHEST) {
             event.setCancelled(true);
         }
     }
@@ -876,5 +919,20 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             String message = player.getName() + " got the " + string;
             MopsUtils.actionBarGenerator(player, message);
         }
+    }
+
+    public void manipulateEnderChest(Player player) {
+        player.getEnderChest().setItem(5, MopsUtils.createItem(Material.GRAY_STAINED_GLASS_PANE, ""));
+        player.getEnderChest().setItem(6, MopsUtils.createItem(Material.GRAY_STAINED_GLASS_PANE, ""));
+        player.getEnderChest().setItem(7, MopsUtils.createItem(Material.GRAY_STAINED_GLASS_PANE, ""));
+        player.getEnderChest().setItem(8, MopsUtils.createItem(Material.GRAY_STAINED_GLASS_PANE, ""));
+        player.getEnderChest().setItem(14, MopsUtils.createItem(Material.GRAY_STAINED_GLASS_PANE, ""));
+        player.getEnderChest().setItem(15, MopsUtils.createItem(Material.GOLD_INGOT, ChatColor.GOLD + "Value: ???"));
+        player.getEnderChest().setItem(16, MopsUtils.createItem(Material.GRAY_STAINED_GLASS_PANE, ""));
+        player.getEnderChest().setItem(17, MopsUtils.createItem(Material.GRAY_STAINED_GLASS_PANE, ""));
+        player.getEnderChest().setItem(23, MopsUtils.createItem(Material.GRAY_STAINED_GLASS_PANE, ""));
+        player.getEnderChest().setItem(24, MopsUtils.createItem(Material.GRAY_STAINED_GLASS_PANE, ""));
+        player.getEnderChest().setItem(25, MopsUtils.createItem(Material.GRAY_STAINED_GLASS_PANE, ""));
+        player.getEnderChest().setItem(26, MopsUtils.createItem(Material.GRAY_STAINED_GLASS_PANE, ""));
     }
 }

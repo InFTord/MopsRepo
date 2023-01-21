@@ -30,7 +30,5 @@ public enum MopsRank {
 		return prefix;
 	}
 
-	public int getPermLevel() {
-		return permLevel;
-	}
+	public int getPermLevel() { return permLevel; }
 }
