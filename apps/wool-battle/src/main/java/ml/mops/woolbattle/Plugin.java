@@ -724,7 +724,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			badge.putIfAbsent(playerName, MopsBadge.NONE);
 		}
 
-		player.setPlayerListName(rank.get(playerName).getPrefix() + " " + player.getName() + " " + badge.get(playerName).getSymbol().trim());
+		player.setPlayerListName((rank.get(playerName).getPrefix() + " " + player.getName() + badge.get(playerName).getSymbol()).trim());
 
 		event.setJoinMessage("");
 		for(Player players : Bukkit.getOnlinePlayers()) {
@@ -2204,7 +2204,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 				chatBadge = badge.get(onlinePlayer.getName()).getSymbol();
 			}
 
-			onlinePlayer.setPlayerListName(chatRank + " " + name + chatBadge);
+			onlinePlayer.setPlayerListName((chatRank + " " + name + chatBadge).trim());
 
 			resetEveryFuckingKillScoreboard(onlinePlayer);
 			try {

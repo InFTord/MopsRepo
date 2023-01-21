@@ -865,9 +865,11 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             }
             manipulateEnderChest(player);
         }
-        if(event.getCurrentItem().getType() == Material.COMPASS) {
-            event.setCancelled(true);
-        }
+        try {
+            if (event.getCurrentItem().getType() == Material.COMPASS) {
+                event.setCancelled(true);
+            }
+        } catch (Exception ignored) { }
     }
 
     @EventHandler
@@ -922,30 +924,30 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     }
 
     public void manipulateEnderChest(Player player) {
-        try {
-            Bukkit.getScheduler().runTaskLater(this, () -> {
-                int value = getAmount(player.getEnderChest(), new Items().mopsCoin());
+        Bukkit.getScheduler().runTaskLater(this, () -> {
+            int value = getAmount(player.getEnderChest(), new Items().mopsCoin());
 
+            try {
                 for (ItemStack item : player.getEnderChest().getContents()) {
                     if (item.getItemMeta().getDisplayName().equals(ChatColor.RED + "kuudra washing machine")) {
                         value += 1000;
                     }
                 }
+            } catch (Exception ignored) { }
 
-                player.getEnderChest().setItem(5, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
-                player.getEnderChest().setItem(6, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
-                player.getEnderChest().setItem(7, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
-                player.getEnderChest().setItem(8, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
-                player.getEnderChest().setItem(14, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
-                player.getEnderChest().setItem(15, MopsUtils.createItem(Material.GOLD_INGOT, ChatColor.GOLD + "Value: " + value));
-                player.getEnderChest().setItem(16, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
-                player.getEnderChest().setItem(17, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
-                player.getEnderChest().setItem(23, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
-                player.getEnderChest().setItem(24, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
-                player.getEnderChest().setItem(25, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
-                player.getEnderChest().setItem(26, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
-            }, 10L);
-        } catch (Exception ignored) { }
+            player.getEnderChest().setItem(5, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
+            player.getEnderChest().setItem(6, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
+            player.getEnderChest().setItem(7, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
+            player.getEnderChest().setItem(8, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
+            player.getEnderChest().setItem(14, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
+            player.getEnderChest().setItem(15, MopsUtils.createItem(Material.GOLD_INGOT, ChatColor.GOLD + "Value: " + value));
+            player.getEnderChest().setItem(16, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
+            player.getEnderChest().setItem(17, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
+            player.getEnderChest().setItem(23, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
+            player.getEnderChest().setItem(24, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
+            player.getEnderChest().setItem(25, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
+            player.getEnderChest().setItem(26, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
+        }, 10L);
     }
 
     public static int getAmount(Inventory inventory, ItemStack item) {
