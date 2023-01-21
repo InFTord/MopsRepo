@@ -536,12 +536,13 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 if (itemInHand.getItemMeta().getDisplayName().equals(ChatColor.GRAY + "Compass")) {
                     player.openInventory(gamesGUI);
                 }
+            }
 
-                if(action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK) {
-                    if (itemInHand.getItemMeta().getDisplayName().equals(ChatColor.GOLD + "MopsCoins")) {
-                        itemInHand.setAmount(itemInHand.getAmount()-1);
-                        coins.put(player, coins.get(player)+1);
-                    }
+            if(action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK) {
+                ItemStack itemInHand = player.getItemInHand();
+                if (itemInHand.getItemMeta().getDisplayName().equals(ChatColor.GOLD + "MopsCoin")) {
+                    itemInHand.setAmount(itemInHand.getAmount()-1);
+                    coins.put(player, coins.get(player)+1);
                 }
             }
 

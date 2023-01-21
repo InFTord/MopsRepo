@@ -171,9 +171,8 @@ public class AdminUtils {
                                 Path p = Files.createFile(path);
                                 System.out.println("File Created at Path: " + p);
 
-                                Writer output = null;
                                 File file = new File(path.toString());
-                                output = new BufferedWriter(new FileWriter(file));
+                                Writer output = new BufferedWriter(new FileWriter(file));
 
                                 StringBuilder theWholeList = new StringBuilder();
 
