@@ -11,6 +11,7 @@ import club.minnced.discord.webhook.send.WebhookEmbedBuilder;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import ml.mops.base.commands.Commands;
+import ml.mops.network.MopsRank;
 import ml.mops.utils.MopsUtils;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -58,6 +59,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
     HashMap<String, Integer> rawCoins = new HashMap<>();
     HashMap<Player, Integer> coins = new HashMap<>();
+    HashMap<String, MopsRank> rank = new HashMap<>();
 
     //doors n trapdoors n shit
     List<Location> flippable = new ArrayList<>();
@@ -147,7 +149,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
         Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
             for(Player player : Bukkit.getServer().getOnlinePlayers()) {
-                Scoreboard lobbyscoreboard = new LobbyScoreboard().generateLobbyScoreboard(player, mainworld.getTime(), coins);
+                Scoreboard lobbyscoreboard = new LobbyScoreboard().generateLobbyScoreboard(player, mainworld.getTime(), coins, rank);
                 player.setScoreboard(lobbyscoreboard);
                 
                 Calendar calendar = Calendar.getInstance();
@@ -252,10 +254,14 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         ball = stand;
 
         String[] coinList = MopsUtils.readFile("D:\\servers\\MopsNetwork\\coins.txt").split("\n");
-
         for (String coinRow : coinList) {
             String[] string = coinRow.split(":");
             rawCoins.put(string[0], Integer.parseInt(string[1]));
+        }
+        String[] rankList = MopsUtils.readFile("D:\\servers\\MopsNetwork\\ranks.txt").split("\n");
+        for (String rankRow : rankList) {
+            String[] string = rankRow.split(":");
+            rank.put(string[0], MopsRank.valueOf(string[1]));
         }
 
         WebhookClient client = WebhookClient.withUrl(new String(Base64.getDecoder().decode(MopsUtils.statusText()), StandardCharsets.UTF_8));
@@ -401,6 +407,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
                         player.sendMessage(ChatColor.RED + "No coins left!");
                     }
+                    rawCoins.put(player.getName(), coins.get(player));
                 }
 
                 // печка
@@ -704,6 +711,12 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             coins.putIfAbsent(player, 0);
         } else {
             coins.putIfAbsent(player, rawCoins.get(playerName));
+        }
+
+        if(rank.get(playerName) == null) {
+            rank.putIfAbsent(playerName, MopsRank.NONE);
+        } else {
+            rank.putIfAbsent(playerName, rank.get(playerName));
         }
 
         player.getInventory().clear();

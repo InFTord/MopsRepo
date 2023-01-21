@@ -1,5 +1,6 @@
 package ml.mops.lobby;
 
+import ml.mops.network.MopsRank;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -8,12 +9,14 @@ import org.bukkit.scoreboard.*;
 import java.util.HashMap;
 
 public class LobbyScoreboard {
-    public Scoreboard generateLobbyScoreboard(Player player, Long time, HashMap<Player, Integer> coins) {
+    public Scoreboard generateLobbyScoreboard(Player player, Long time, HashMap<Player, Integer> coins, HashMap<String, MopsRank> rank) {
         ScoreboardManager manager = Bukkit.getScoreboardManager();
         assert manager != null;
         Scoreboard board = manager.getNewScoreboard();
 
         String timeChar = ChatColor.GOLD + "☀";
+        int coin = coins.get(player);
+        MopsRank playerRank = rank.get(player.getName());
 
         boolean dayCondition = (time >= 0 && time <= 13500) || (time >= 23500 && time <= 24000);
         if(!dayCondition) {
@@ -22,8 +25,8 @@ public class LobbyScoreboard {
 
         String score1 = ChatColor.GRAY + "Welcome! " + timeChar;
         String score2 = ChatColor.RED + " ";
-        String score3 = ChatColor.WHITE + "Your coins: " + ChatColor.GOLD + "" + ChatColor.BOLD + coins.get(player);
-        String score4 = ChatColor.WHITE + "Your rank: " + ChatColor.GREEN + "[DEV]";
+        String score3 = ChatColor.WHITE + "Your coins: " + ChatColor.GOLD + "" + ChatColor.BOLD + coin;
+        String score4 = ChatColor.WHITE + "Your rank: " + playerRank.getPrefix();
         String score5 = ChatColor.GOLD + " ";
         String score6 = ChatColor.WHITE + "You are in: " + ChatColor.YELLOW + "Lobby";
 
