@@ -159,8 +159,8 @@ public class AdminUtils {
                             MopsUtils.restartServer(plugin);
                         }
                         if(args[0].equals("endersee")) {
-                            Player seeing = (Player) Bukkit.getOfflinePlayer(args[1]);
-                            player.openInventory(seeing.getEnderChest());
+                            OfflinePlayer seeing = Bukkit.getOfflinePlayer(args[1]);
+                            player.openInventory(seeing.getPlayer().getEnderChest());
                         }
                         if(args[0].equals("saveCuboid")) {
                             Location loc1 = new Location(player.getWorld(), Integer.parseInt(args[1]), Integer.parseInt(args[2]), Integer.parseInt(args[3]));

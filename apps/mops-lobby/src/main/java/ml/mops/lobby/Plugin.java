@@ -854,10 +854,10 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             if((event.getSlot() >= 5 && event.getSlot() <= 8) || (event.getSlot() >= 14 && event.getSlot() <= 17) || (event.getSlot() >= 23 && event.getSlot() <= 26)) {
                 event.setCancelled(true);
             }
-            if(event.getCurrentItem().getType() == Material.COMPASS) {
-                event.setCancelled(true);
-            }
             manipulateEnderChest(player);
+        }
+        if(event.getCurrentItem().getType() == Material.COMPASS) {
+            event.setCancelled(true);
         }
     }
 
@@ -918,6 +918,8 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             player.getInventory().setItem(0, new Items().compass());
 
             int value = getAmount(player.getEnderChest(), new Items().mopsCoin());
+
+            System.out.println(value);
 
             for (ItemStack item : player.getEnderChest().getContents()) {
                 if (item.getItemMeta().getDisplayName().equals(ChatColor.RED + "kuudra washing machine")) {
