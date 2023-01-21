@@ -740,6 +740,8 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         }
     }
 
+    //e
+
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
         if (event.getClickedInventory() == mapGUI) {
