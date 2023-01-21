@@ -38,7 +38,7 @@ public class Plugin extends JavaPlugin implements Listener {
             try {
                 String serverID = serverName.replace("mopsmaps", "");
                 int line = 5;
-                if(serverID.equals("")) {
+                if(!serverID.equals("")) {
                     line = Integer.parseInt(serverID+5);
                 }
 

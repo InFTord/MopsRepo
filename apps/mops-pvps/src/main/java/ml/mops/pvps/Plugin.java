@@ -63,7 +63,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 			try {
 				String serverID = serverName.replace("mopspvps", "");
 				int line = 10;
-				if(serverID.equals("")) {
+				if(!serverID.equals("")) {
 					line = Integer.parseInt(serverID)+10;
 				}
 

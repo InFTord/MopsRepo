@@ -481,7 +481,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			try {
 				String serverID = serverName.replace("woolbattle", "");
 				int line = 15;
-				if(serverID.equals("")) {
+				if(!serverID.equals("")) {
 					line = Integer.parseInt(serverID+15);
 				}
 
