@@ -476,28 +476,20 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 				}
 			}
 
-//			String serverName = MopsUtils.getPath(this).replace("\\plugins", "").replace("D:\\servers\\MopsNetwork\\", "");
-//
-//			try {
-//				String serverID = serverName.replace("woolbattle", "");
-//				int line = 15;
-//				try {
-//					line = Integer.parseInt(serverID+15);
-//				} catch (NumberFormatException ignored) {
-//					line = 15;
-//				}
-//
-//				List<String> text = Arrays.asList(MopsUtils.readFile(new String(Base64.getDecoder().decode(MopsUtils.fileText()), StandardCharsets.UTF_8)).split("\n"));
-//				text.set(line, serverName + " " + System.currentTimeMillis() + " " + Bukkit.getOnlinePlayers().size());
-//
-//				for(String textLine : text) {
-//					if(textLine.isEmpty()) {
-//						text.remove(textLine);
-//						text = text.stream().sorted().collect(Collectors.toList());
-//					}
-//				}
-//				MopsUtils.writeFile(new String(Base64.getDecoder().decode(MopsUtils.fileText()), StandardCharsets.UTF_8), MopsUtils.combineStrings(text, "\n"));
-//			} catch (IOException ignored) { }
+			String serverName = MopsUtils.getPath(this).replace("\\plugins", "").replace("D:\\servers\\MopsNetwork\\", "");
+
+			try {
+				String serverID = serverName.replace("woolbattle", "");
+				int line = 1;
+				try {
+					line = Integer.parseInt(serverID+1);
+				} catch (NumberFormatException ignored) { }
+
+				List<String> text = Arrays.asList(MopsUtils.readFile(new String(Base64.getDecoder().decode(MopsUtils.fileText()), StandardCharsets.UTF_8)).split("\n"));
+				text.set(line, serverName + " " + System.currentTimeMillis() + " " + Bukkit.getOnlinePlayers().size());
+
+				MopsUtils.writeFile(new String(Base64.getDecoder().decode(MopsUtils.fileText()), StandardCharsets.UTF_8), MopsUtils.combineStrings(text, "\n"));
+			} catch (IOException ignored) { }
 		}, 80L, 20L);
 
 		final boolean[] enableRegen = {false};
