@@ -752,14 +752,20 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     public void onPlayerChat(PlayerChatEvent event) {
         Player player = event.getPlayer();
 
-        String rank = "";
+        String chatRank = "";
         String name = player.getName();
+
+        if(rank.get(player.getName()) != MopsRank.NONE) {
+            chatRank = rank.get(player.getName()).getPrefix() + " ";
+        } else {
+            name = ChatColor.GRAY + player.getName();
+        }
         String message = event.getMessage();
 
         event.setCancelled(true);
 
         for(Player allPlayers : Bukkit.getOnlinePlayers()) {
-            allPlayers.sendMessage(rank + name + ChatColor.WHITE + ": " + MopsUtils.convertColorCodes(message).trim());
+            allPlayers.sendMessage(chatRank + name + ChatColor.RESET + ": " + MopsUtils.convertColorCodes(message).trim());
         }
     }
 
