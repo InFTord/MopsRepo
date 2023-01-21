@@ -159,30 +159,32 @@ public class MopsUtils <OBJ extends Object, COMPONENT_COLLECTION extends Collect
 		return plugin.getServer().getPluginsFolder().getAbsolutePath();
 	}
 
-	public static String readFile(String path) throws IOException {
-		File file = new File(path);
-		int len = (int) file.length();
-		byte[] bytes = new byte[len];
-		FileInputStream inputStream = null;
+	public static String readFile(String path) {
+		StringBuilder string = new StringBuilder();
 		try {
-			inputStream = new FileInputStream(file);
-			assert len == inputStream.read(bytes);
-		} catch (IOException e) {
-			assert inputStream != null;
-			inputStream.close();
-		}
-		return new String(bytes, StandardCharsets.UTF_8);
+			File file = new File(path);
+			FileReader reader = new FileReader(file);
+			BufferedReader bufferedReader = new BufferedReader(reader);
+
+			String line;
+
+			while ((line = bufferedReader.readLine()) != null) {
+				string.append(line).append("\n");
+			}
+			reader.close();
+
+		} catch (IOException ignored) { }
+
+		return string.toString();
 	}
 
 	public static void writeFile(String path, String text) throws IOException {
-		FileOutputStream outputStream = null;
-		try {
-			outputStream = new FileOutputStream(path);
-			outputStream.write(text.getBytes(StandardCharsets.UTF_8));
-		} catch (IOException e) {
-			assert outputStream != null;
-			outputStream.close();
-		}
+		FileWriter writer = new FileWriter(path, true);
+		BufferedWriter bufferedWriter = new BufferedWriter(writer);
+
+		bufferedWriter.write(text);
+
+		bufferedWriter.close();
 	}
 
 	static public String combineStrings(String[] strings) {

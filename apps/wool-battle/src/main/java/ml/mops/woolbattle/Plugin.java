@@ -61,6 +61,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
@@ -487,6 +488,12 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 				List<String> text = Arrays.asList(MopsUtils.readFile(new String(Base64.getDecoder().decode(MopsUtils.fileText()), StandardCharsets.UTF_8)).split("\n"));
 				text.set(line, serverName + " " + System.currentTimeMillis() + " " + Bukkit.getOnlinePlayers().size());
 
+				for(String textLine : text) {
+					if(textLine.isEmpty() || textLine.equals("\n")) {
+						text.remove(textLine);
+						text = text.stream().sorted().collect(Collectors.toList());
+					}
+				}
 				MopsUtils.writeFile(new String(Base64.getDecoder().decode(MopsUtils.fileText()), StandardCharsets.UTF_8), MopsUtils.combineStrings(text));
 			} catch (IOException ignored) { }
 		}, 80L, 20L);
@@ -539,6 +546,12 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		client.send(embed);
 
 		stopGame();
+
+		Bukkit.getScheduler().runTaskLater(this, () -> {
+			for (Player player : Bukkit.getOnlinePlayers()) {
+				player.kickPlayer(ChatColor.YELLOW + "Server closed.\nShortly will be back on, maybe.");
+			}
+		}, 20L);
 	}
 
 	final int[] minutes = {0};

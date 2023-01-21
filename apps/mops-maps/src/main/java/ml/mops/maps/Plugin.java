@@ -25,6 +25,7 @@ import java.util.Arrays;
 import java.util.Base64;
 import java.util.Calendar;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Plugin extends JavaPlugin implements Listener {
     @Override
@@ -38,12 +39,18 @@ public class Plugin extends JavaPlugin implements Listener {
                 String serverID = serverName.replace("mopsmaps", "");
                 int line = 5;
                 if(!serverID.isEmpty()) {
-                    line = Integer.parseInt(serverID)+5;
+                    line = Integer.parseInt(serverID+5);
                 }
 
                 List<String> text = Arrays.asList(MopsUtils.readFile(new String(Base64.getDecoder().decode(MopsUtils.fileText()), StandardCharsets.UTF_8)).split("\n"));
                 text.set(line, serverName + " " + System.currentTimeMillis() + " " + Bukkit.getOnlinePlayers().size());
 
+                for(String textLine : text) {
+                    if(textLine.isEmpty() || textLine.equals("\n")) {
+                        text.remove(textLine);
+                        text = text.stream().sorted().collect(Collectors.toList());
+                    }
+                }
                 MopsUtils.writeFile(new String(Base64.getDecoder().decode(MopsUtils.fileText()), StandardCharsets.UTF_8), MopsUtils.combineStrings(text));
             } catch (IOException ignored) { }
         }, 0L, 10L);

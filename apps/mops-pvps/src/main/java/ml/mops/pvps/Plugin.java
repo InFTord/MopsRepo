@@ -29,6 +29,7 @@ import java.awt.Color;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
@@ -69,6 +70,12 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 				List<String> text = Arrays.asList(MopsUtils.readFile(new String(Base64.getDecoder().decode(MopsUtils.fileText()), StandardCharsets.UTF_8)).split("\n"));
 				text.set(line, serverName + " " + System.currentTimeMillis() + " " + Bukkit.getOnlinePlayers().size());
 
+				for(String textLine : text) {
+					if(textLine.isEmpty() || textLine.equals("\n")) {
+						text.remove(textLine);
+						text = text.stream().sorted().collect(Collectors.toList());
+					}
+				}
 				MopsUtils.writeFile(new String(Base64.getDecoder().decode(MopsUtils.fileText()), StandardCharsets.UTF_8), MopsUtils.combineStrings(text));
 			} catch (IOException ignored) { }
 		}, 0, 10L);
