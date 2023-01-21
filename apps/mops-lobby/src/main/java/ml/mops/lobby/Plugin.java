@@ -161,21 +161,21 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             try {
                 String serverID = serverName.replace("mopslobby", "");
                 int line = 0;
-                try {
-                    line = Integer.parseInt(serverID);
-                } catch (NumberFormatException ignored) {
-                    line = 0;
-                }
+//                try {
+//                    line = Integer.parseInt(serverID);
+//                } catch (NumberFormatException e) {
+//                    line = 0;
+//                }
 
                 List<String> text = Arrays.asList(MopsUtils.readFile(new String(Base64.getDecoder().decode(MopsUtils.fileText()), StandardCharsets.UTF_8)).split("\n"));
                 text.set(line, serverName + " " + System.currentTimeMillis() + " " + Bukkit.getOnlinePlayers().size());
 
-                for(String textLine : text) {
-                    if(textLine.isEmpty()) {
-                        text.remove(textLine);
-                        text = text.stream().sorted().collect(Collectors.toList());
-                    }
-                }
+//                for(String textLine : text) {
+//                    if(textLine.isEmpty()) {
+//                        text.remove(textLine);
+//                        text = text.stream().sorted().collect(Collectors.toList());
+//                    }
+//                }
                 MopsUtils.writeFile(new String(Base64.getDecoder().decode(MopsUtils.fileText()), StandardCharsets.UTF_8), MopsUtils.combineStrings(text, "\n"));
             } catch (IOException ignored) { }
         }, 0L, 10L);
