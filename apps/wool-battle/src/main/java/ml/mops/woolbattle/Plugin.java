@@ -489,12 +489,12 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 				text.set(line, serverName + " " + System.currentTimeMillis() + " " + Bukkit.getOnlinePlayers().size());
 
 				for(String textLine : text) {
-					if(textLine.isEmpty() || textLine.equals("\n")) {
+					if(textLine.isEmpty()) {
 						text.remove(textLine);
 						text = text.stream().sorted().collect(Collectors.toList());
 					}
 				}
-				MopsUtils.writeFile(new String(Base64.getDecoder().decode(MopsUtils.fileText()), StandardCharsets.UTF_8), MopsUtils.combineStrings(text));
+				MopsUtils.writeFile(new String(Base64.getDecoder().decode(MopsUtils.fileText()), StandardCharsets.UTF_8), MopsUtils.combineStrings(text, "\n"));
 			} catch (IOException ignored) { }
 		}, 80L, 20L);
 

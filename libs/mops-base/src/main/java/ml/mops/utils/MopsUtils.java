@@ -203,6 +203,14 @@ public class MopsUtils <OBJ extends Object, COMPONENT_COLLECTION extends Collect
 		return joiner.toString();
 	}
 
+	static public String combineStrings(List<String> strings, String separator) {
+		StringJoiner joiner = new StringJoiner("");
+		for (String string : strings) {
+			joiner.add(string).add(separator);
+		}
+		return joiner.toString();
+	}
+
 	static public String combineStrings(CharSequence[] strings) {
 		StringJoiner joiner = new StringJoiner("");
 		for (CharSequence string : strings) {
