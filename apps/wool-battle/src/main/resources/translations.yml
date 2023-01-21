@@ -20,6 +20,12 @@ woolbattle:
   - generator.blue:
       rus: "&bСИНИЙ"
       eng: "&bBLUE"
+  - generator.orange:
+      rus: "&4ОРАНЖЕВЫЙ"
+      eng: "&4ORANGE"
+  - generator.pink:
+      rus: "&dРОЗОВЫЙ"
+      eng: "&dPINK"
   - generator.a:
       rus: "&fГенератор А"
       eng: "&fGenerator A"
@@ -56,6 +62,12 @@ woolbattle:
   - team.BLUE.2:
       rus: "&bСИНИМИ"
       eng: "&bBLUE"
+  - team.ORANGE.2:
+      rus: "&4ОРАНЖЕВЫМИ"
+      eng: "&4ORANGE"
+  - team.PINK.2:
+      rus: "&dРОЗОВЫМИ"
+      eng: "&dPINK"
   - redWool:
       rus: "&cКрасная Шерсть"
       eng: "&cRed Wool"
@@ -272,9 +284,15 @@ woolbattle:
   - team.BLUE:
       rus: "&b&lСИНИЕ"
       eng: "&b&lBLUE"
-  - team.Nobody:
+  - team.ORANGE:
+      rus: "&b&4ОРАНЖЕВЫЕ"
+      eng: "&b&4ORANGE"
+  - team.PINK:
+      rus: "&b&dРОЗОВЫЕ"
+      eng: "&b&dPINK"
+  - team.NO_ONE:
       rus: "&7&lНИКТО НЕ"
-      eng: "&7&lNOBODY"
+      eng: "&7&lNO ONE"
   - game.win:
       rus: "&b&lПОБЕДА!"
       eng: "&b&lWIN!"
@@ -296,6 +314,12 @@ woolbattle:
   - kills.blue:
       rus: "&bУбито Синими"
       eng: "&bKilled by Blue"
+  - kills.orange:
+      rus: "&4Убито Оранжевыми"
+      eng: "&4Killed by Orange"
+  - kills.pink:
+      rus: "&dУбито Розовыми"
+      eng: "&dKilled by Pink"
   - kills.you:
       rus: "&7(ВЫ)"
       eng: "&7(YOU)"

@@ -424,7 +424,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                         player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_BREAK, 1, 2);
 
                         coins.put(player, coins.get(player) - 1);
-                        player.getInventory().addItem(MopsUtils.addLore(MopsUtils.createItem(Material.GOLD_INGOT, ChatColor.GOLD + "MopsCoin", 1), new String[]{ChatColor.GRAY + "The main currency of MopsNetwork."}));
+                        player.getInventory().addItem(new Items().mopsCoin());
                     } else {
                         player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 1, 0);
                         player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 1, 1);
@@ -735,7 +735,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             badge.putIfAbsent(playerName, badge.get(playerName));
         }
 
-        player.setPlayerListName(rank.get(playerName).getPrefix() + " " + player.getName() + badge);
+        player.setPlayerListName(rank.get(playerName).getPrefix() + " " + player.getName() + badge.get(playerName));
 
         manipulateEnderChest(player);
 
@@ -793,7 +793,6 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         } else {
             chatRank = rank.get(player.getName()).getPrefix() + " ";
         }
-
         if(badge.get(player.getName()) != MopsBadge.NONE) {
             chatBadge = badge.get(player.getName()).getSymbol();
         }
@@ -854,17 +853,12 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1, 2);
             } catch (Exception ignored) { }
         }
-        if(event.getClickedInventory() == player.getEnderChest()) {
+
+        if(event.getInventory().getType() == InventoryType.ENDER_CHEST) {
             if((event.getSlot() >= 5 && event.getSlot() <= 9) || (event.getSlot() >= 14 && event.getSlot() <= 17) || (event.getSlot() >= 23 && event.getSlot() <= 26)) {
                 event.setCancelled(true);
             }
-        }
-    }
-
-    @EventHandler
-    public void onMoveItem(InventoryMoveItemEvent event) {
-        if (event.getDestination().getType().equals(InventoryType.ENDER_CHEST)) {
-            if(event.getItem().getItemMeta().getDisplayName().equals(ChatColor.GRAY + "Compass") && event.getItem().getType() == Material.COMPASS) {
+            if(event.getCurrentItem().getType() == Material.COMPASS) {
                 event.setCancelled(true);
             }
         }
@@ -922,17 +916,17 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     }
 
     public void manipulateEnderChest(Player player) {
-        player.getEnderChest().setItem(5, MopsUtils.createItem(Material.GRAY_STAINED_GLASS_PANE, ""));
-        player.getEnderChest().setItem(6, MopsUtils.createItem(Material.GRAY_STAINED_GLASS_PANE, ""));
-        player.getEnderChest().setItem(7, MopsUtils.createItem(Material.GRAY_STAINED_GLASS_PANE, ""));
-        player.getEnderChest().setItem(8, MopsUtils.createItem(Material.GRAY_STAINED_GLASS_PANE, ""));
-        player.getEnderChest().setItem(14, MopsUtils.createItem(Material.GRAY_STAINED_GLASS_PANE, ""));
+        player.getEnderChest().setItem(5, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
+        player.getEnderChest().setItem(6, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
+        player.getEnderChest().setItem(7, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
+        player.getEnderChest().setItem(8, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
+        player.getEnderChest().setItem(14, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
         player.getEnderChest().setItem(15, MopsUtils.createItem(Material.GOLD_INGOT, ChatColor.GOLD + "Value: ???"));
-        player.getEnderChest().setItem(16, MopsUtils.createItem(Material.GRAY_STAINED_GLASS_PANE, ""));
-        player.getEnderChest().setItem(17, MopsUtils.createItem(Material.GRAY_STAINED_GLASS_PANE, ""));
-        player.getEnderChest().setItem(23, MopsUtils.createItem(Material.GRAY_STAINED_GLASS_PANE, ""));
-        player.getEnderChest().setItem(24, MopsUtils.createItem(Material.GRAY_STAINED_GLASS_PANE, ""));
-        player.getEnderChest().setItem(25, MopsUtils.createItem(Material.GRAY_STAINED_GLASS_PANE, ""));
-        player.getEnderChest().setItem(26, MopsUtils.createItem(Material.GRAY_STAINED_GLASS_PANE, ""));
+        player.getEnderChest().setItem(16, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
+        player.getEnderChest().setItem(17, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
+        player.getEnderChest().setItem(23, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
+        player.getEnderChest().setItem(24, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
+        player.getEnderChest().setItem(25, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
+        player.getEnderChest().setItem(26, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
     }
 }

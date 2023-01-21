@@ -19,5 +19,14 @@ public class Items {
 
         return item;
     }
+    public ItemStack mopsCoin() {
+        ItemStack item = new ItemStack(Material.GOLD_INGOT);
+        ItemMeta meta = item.getItemMeta();
+        meta.setDisplayName(ChatColor.GOLD + "MopsCoin");
+        meta.setLore(new ArrayList<String>(Collections.singletonList(ChatColor.GRAY + "The main currency of MopsNetwork.")));
+        item.setItemMeta(meta);
+
+        return item;
+    }
 
 }
