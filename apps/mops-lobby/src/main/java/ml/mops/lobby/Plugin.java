@@ -367,8 +367,10 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         try {
             ItemStack itemInHand = player.getItemInHand();
 
-            if(itemInHand.getItemMeta().getDisplayName().equals(ChatColor.GRAY + "Compass")) {
-                player.openInventory(gamesGUI);
+            if(action.equals(Action.LEFT_CLICK_AIR) || action.equals(Action.LEFT_CLICK_BLOCK) || action.equals(Action.RIGHT_CLICK_AIR) || action.equals(Action.RIGHT_CLICK_BLOCK)) {
+                if (itemInHand.getItemMeta().getDisplayName().equals(ChatColor.GRAY + "Compass")) {
+                    player.openInventory(gamesGUI);
+                }
             }
 
             if(action.equals(Action.LEFT_CLICK_AIR) || action.equals(Action.LEFT_CLICK_BLOCK)) {
@@ -753,13 +755,28 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             Location newDestination = new Location(world, 0, 0, 0);
 
             switch (event.getSlot()) {
-                case 0 -> newDestination = new Location(world, -106.0, 9, -186.0);
+                case 0 -> {
+                    newDestination = new Location(world, -106.0, 9, -186.0);
+                    newDestination.setYaw(-90);
+                }
                 case 1 -> newDestination = new Location(world, -101.0, 9, -177.0);
                 case 2 -> newDestination = new Location(world, -71.0, 7, -186.0);
-                case 3 -> newDestination = new Location(world, -87.0, 9, -204.0);
-                case 4 -> newDestination = new Location(world, -82.0, 9, -167.0);
-                case 5 -> newDestination = new Location(world, -60.0, 9, -201.0);
-                case 6 -> newDestination = new Location(world, -75.0, 9, -210.0);
+                case 3 -> {
+                    newDestination = new Location(world, -87.0, 9, -204.0);
+                    newDestination.setYaw(180);
+                }
+                case 4 -> {
+                    newDestination = new Location(world, -82.0, 9, -167.0);
+                    newDestination.setYaw(-45);
+                }
+                case 5 -> {
+                    newDestination = new Location(world, -60.0, 9, -201.0);
+                    newDestination.setYaw(-90);
+                }
+                case 6 -> {
+                    newDestination = new Location(world, -75.0, 9, -209.0);
+                    newDestination.setYaw(180);
+                }
             }
 
             player.teleport(newDestination);
