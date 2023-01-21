@@ -678,11 +678,12 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 MopsUtils.sendRandomDialogueMessage(dialogueList, player, entity);
             }
 
-            if(entity == ball || entity.getType() == EntityType.MINECART_CHEST) {
+            if(entity == ball) {
                 event.setCancelled(true);
             }
         }
     }
+
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
@@ -715,6 +716,8 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         } else {
             rank.putIfAbsent(playerName, rank.get(playerName));
         }
+
+        player.setPlayerListName(rank.get(playerName).getPrefix() + " " + player.getName());
 
         player.getInventory().clear();
         Items items = new Items();
@@ -846,6 +849,10 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 }
                 player.playSound(player.getLocation(), Sound.BLOCK_BAMBOO_HIT, 1, 1);
             }
+        }
+
+        if(victim.getType() == EntityType.MINECART_CHEST) {
+            event.setCancelled(true);
         }
     }
 
