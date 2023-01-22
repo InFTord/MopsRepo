@@ -211,7 +211,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                         double r = particleRadius.get(player);
                         double thing = (Math.cos(r-0.7)+Math.sin(r-0.87))*0.78;
 
-                        particleRadius.put(player, particleRadius.get(player) + 0.05);
+                        particleRadius.put(player, particleRadius.get(player) + 0.1);
 
                         player.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, player.getLocation().add(thing, 0, 1), 1, 0, 0, 0, 0.001);
                         player.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, player.getLocation().add(-thing, 2, -1), 1, 0, 0, 0, 0.001);
@@ -237,7 +237,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                         double circleY = - Math.sin(r) * (a) + Math.cos(r) * (b);
                         double sausageY = x - Math.sin(r) * (a) + Math.cos(r) * (b);
 
-                        particleRadius.put(player, particleRadius.get(player) + 0.2 );
+                        particleRadius.put(player, particleRadius.get(player) + 0.2);
 
                         player.getWorld().spawnParticle(Particle.FLAME, player.getLocation().add(x, 0.1, sausageY), 1, 0, 0, 0, 0.001);
                         player.getWorld().spawnParticle(Particle.FLAME, player.getLocation().add(x, 0.1, circleY), 1, 0, 0, 0, 0.001);
@@ -250,10 +250,10 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                         }
                         float colorMath = (float) (Math.round(r)/6.3);
 
-                        double x = 4 * Math.cos(r);
-                        double y = Math.sin(r * 2) * 2;
+                        double x = 1.5 * Math.cos(r);
+                        double y = Math.sin(r * 2) / 1.5;
 
-                        particleRadius.put(player, particleRadius.get(player) + 0.2);
+                        particleRadius.put(player, particleRadius.get(player) + 0.05);
 
                         java.awt.Color color = java.awt.Color.getHSBColor(colorMath, 0.7F, 0.7F);
 
