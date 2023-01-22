@@ -730,6 +730,8 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         event.setJoinMessage("");
 
         particleTimer.put(player, 4);
+        particleRadius.put(player, 0.0);
+        particles.put(player, "none");
 
         Bukkit.getScheduler().runTaskLater(this, () -> {
             player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 0);
@@ -742,8 +744,6 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 }, 4L);
             }, 4L);
         }, 50L);
-
-        particles.put(player, "none");
 
         String playerName = player.getName();
         if(rawCoins.get(playerName) == null) {
@@ -919,6 +919,12 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                             player.sendMessage(ChatColor.RED + "You can't use this effect.");
                             player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 1, 0);
                         }
+                    }
+                    case 26 -> {
+                        particles.put(player, "none");
+                        particleRadius.put(player, 0.0);
+                        player.playSound(player.getLocation(), Sound.BLOCK_FIRE_EXTINGUISH, 1, 2);
+                        player.sendMessage(ChatColor.GREEN + "You reset your effects.");
                     }
                 }
             } catch (Exception ignored) { }

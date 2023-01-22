@@ -9,6 +9,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -47,16 +48,24 @@ public class ParticleGUI implements Listener {
         ItemStack infinityItem = new ItemStack(Material.MUSIC_DISC_5);
         ItemMeta infinityMeta = infinityItem.getItemMeta();
         infinityMeta.setDisplayName(ChatColor.DARK_AQUA + "Infinity");
+        infinityMeta.addItemFlags(ItemFlag.HIDE_POTION_EFFECTS);
         List<String> infinityLore = new ArrayList<>();
         infinityLore.add(ChatColor.BLUE + "Truly Infinite.");
         infinityLore.add(" ");
-        infinityLore.add(ChatColor.BLUE + "⭐ Staff " + ChatColor.GRAY + " members only effect.");
+        infinityLore.add(ChatColor.BLUE + "⭐ Staff " + ChatColor.GRAY + "members only effect.");
         infinityMeta.setLore(infinityLore);
         infinityItem.setItemMeta(infinityMeta);
+
+        ItemStack resetItem = new ItemStack(Material.BARRIER);
+        ItemMeta resetMeta = infinityItem.getItemMeta();
+        resetMeta.setDisplayName(ChatColor.RED + "Reset");
+        resetMeta.setLore(new ArrayList<String>(Collections.singletonList(ChatColor.GRAY + "Resets your effects.")));
+        resetItem.setItemMeta(resetMeta);
 
         inv.setItem(0, emeraldItem);
         inv.setItem(1, andromedaItem);
         inv.setItem(2, infinityItem);
+        inv.setItem(26, resetItem);
     }
 
     public void openInventory(Player player) {
