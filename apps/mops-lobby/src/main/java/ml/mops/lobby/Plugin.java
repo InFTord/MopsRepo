@@ -77,6 +77,8 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     HashMap<Player, Integer> particleTimer = new HashMap<>();
     HashMap<Player, Double> particleRadius = new HashMap<>();
 
+    float rgb = 0;
+
     //doors n trapdoors n shit
     List<Location> flippable = new ArrayList<>();
     // atm or bank
@@ -211,7 +213,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                         double r = particleRadius.get(player);
                         double thing = (Math.cos(r-0.7)+Math.sin(r-0.87))*0.78;
 
-                        particleRadius.put(player, particleRadius.get(player) + 0.1);
+                        particleRadius.put(player, particleRadius.get(player) + 0.075);
 
                         player.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, player.getLocation().add(thing, 0, 1), 1, 0, 0, 0, 0.001);
                         player.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, player.getLocation().add(-thing, 2, -1), 1, 0, 0, 0, 0.001);
@@ -244,24 +246,28 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                     }
                     if(particles.get(player).equals("infinity")) {
                         double r = particleRadius.get(player);
-                        if(r == 6.3) {
+                        if(r >= 6.3) {
                             r = 0;
                             particleRadius.put(player, 0.0);
                         }
-                        float colorMath = (float) (Math.round(r)/6.3);
+                        if(rgb >= 1) {
+                            rgb = 0;
+                        }
 
-                        double x = 1.5 * Math.cos(r);
-                        double y = Math.sin(r * 2) / 1.5;
+                        double x = 2 * Math.cos(r);
+                        double y = Math.sin(r * 2);
 
-                        particleRadius.put(player, particleRadius.get(player) + 0.05);
+                        particleRadius.put(player, particleRadius.get(player) + 0.075);
 
-                        java.awt.Color color = java.awt.Color.getHSBColor(colorMath, 0.7F, 0.7F);
+                        java.awt.Color color = java.awt.Color.getHSBColor(rgb, 1, 1);
 
                         Particle.DustOptions dustOptions = new Particle.DustOptions(Color.fromRGB(color.getRed(), color.getGreen(), color.getBlue()), 1F);
                         player.getWorld().spawnParticle(Particle.REDSTONE, player.getLocation().add(x, 0.1, y), 2, 0, 0, 0, dustOptions);
                     }
                 }
             }
+
+            rgb = rgb+0.01F;
         }, 0L, 1L);
 
         Location block1 = new Location(mainworld, -77.5, 11, -207.5);
@@ -859,11 +865,10 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 event.getClickedInventory().getItem(event.getSlot()).getType();
 
                 World world = event.getWhoClicked().getWorld();
-                Location newDestination = new Location(world, 0, 0, 0);
+                Location newDestination = new Location(world, -106.0, 9, -186.0);
 
                 switch (event.getSlot()) {
                     case 0 -> {
-                        newDestination = new Location(world, -106.0, 9, -186.0);
                         newDestination.setYaw(-90);
                     }
                     case 1 -> {
@@ -937,6 +942,23 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 event.setCancelled(true);
             }
             manipulateEnderChest(player);
+        }
+    }
+
+    @EventHandler
+    public void onMoveItemEvent(InventoryMoveItemEvent event) {
+        if(event.getItem().getType() == Material.COMPASS) {
+            event.setCancelled(true);
+        }
+        if(event.getItem().getType() == Material.GLISTERING_MELON_SLICE) {
+            event.setCancelled(true);
+        }
+
+        if(event.getDestination() == effectsGUI) {
+            event.setCancelled(true);
+        }
+        if(event.getDestination() == gamesGUI) {
+            event.setCancelled(true);
         }
     }
 
@@ -1015,6 +1037,13 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             player.getEnderChest().setItem(24, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
             player.getEnderChest().setItem(25, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
             player.getEnderChest().setItem(26, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
+
+            if(player.getEnderChest().contains(Material.COMPASS)) {
+                player.getEnderChest().remove(Material.COMPASS);
+            }
+            if(player.getEnderChest().contains(Material.GLISTERING_MELON_SLICE)) {
+                player.getEnderChest().remove(Material.GLISTERING_MELON_SLICE);
+            }
         }, 10L);
     }
 
