@@ -72,6 +72,10 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     HashMap<String, MopsRank> rank = new HashMap<>();
     HashMap<String, MopsBadge> badge = new HashMap<>();
 
+    HashMap<Player, String> particles = new HashMap<>();
+    HashMap<Player, Integer> particleTimer = new HashMap<>();
+    HashMap<Player, Double> particleRadius = new HashMap<>();
+
     //doors n trapdoors n shit
     List<Location> flippable = new ArrayList<>();
     // atm or bank
@@ -85,12 +89,9 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
     Inventory mapGUI = new MapGUI().getInventory();
     Inventory gamesGUI = new GamesGUI().getInventory();
+    Inventory effectsGUI = new ParticleGUI().getInventory();
 
     ArmorStand ball;
-
-    int particleTimer = 4;
-    final double[] r = {0};
-
 
 
     @Override
@@ -162,17 +163,16 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             for(Player player : Bukkit.getServer().getOnlinePlayers()) {
                 Scoreboard lobbyscoreboard = new LobbyScoreboard().generateLobbyScoreboard(player, mainworld.getTime(), coins, rank);
                 player.setScoreboard(lobbyscoreboard);
-                
+
+                if(particleTimer.get(player) != 0) {
+                    particleTimer.put(player, particleTimer.get(player)-1);
+                }
+
                 Calendar calendar = Calendar.getInstance();
                 if(calendar.get(Calendar.MONTH) == Calendar.DECEMBER || calendar.get(Calendar.MONTH) == Calendar.JANUARY) {
                     player.getWorld().spawnParticle(Particle.SNOWFLAKE, player.getLocation().add(0, 7, 0), 450, 15, 6, 15, 0);
                 }
             }
-
-            if(particleTimer != 0) {
-                particleTimer--;
-            }
-
             String serverName = MopsUtils.getPath(this).replace("\\plugins", "").replace("D:\\servers\\MopsNetwork\\", "");
 
             try {
@@ -204,20 +204,58 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         }, 0L, 1200L);
 
         Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
-            if(particleTimer == 0) {
-                int a = 0;
-                double b = 1.5;
+            for(Player player : Bukkit.getOnlinePlayers()) {
+                if(particleTimer.get(player) == 0) {
+                    if(particles.get(player).equals("cube")) {
+                        double r = particleRadius.get(player);
+                        double thing = (Math.cos(r-0.7)+Math.sin(r-0.87))*0.78;
 
-                double x = Math.cos(r[0]) * (a) + b * Math.sin(r[0]);
-                double sausageY = x - Math.sin(r[0]) * (a) + Math.cos(r[0]) * (b);
-                double circleY = -Math.sin(r[0]) * (a) + Math.cos(r[0]) * (b);
+                        particleRadius.put(player, particleRadius.get(player) + 0.05);
 
-                r[0] += 0.2;
+                        player.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, player.getLocation().add(thing, 0, 1), 1, 0, 0, 0, 0.001);
+                        player.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, player.getLocation().add(-thing, 2, -1), 1, 0, 0, 0, 0.001);
+                        player.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, player.getLocation().add(thing, 0, -1), 1, 0, 0, 0, 0.001);
+                        player.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, player.getLocation().add(-thing, 2, 1), 1, 0, 0, 0, 0.001);
 
-                for (Player player : Bukkit.getOnlinePlayers()) {
-                    if (player.getName().equals("SirCat07")) {
+                        player.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, player.getLocation().add(1, 0, thing), 1, 0, 0, 0, 0.001);
+                        player.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, player.getLocation().add(-1, 2, -thing), 1, 0, 0, 0, 0.001);
+                        player.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, player.getLocation().add(1, 2, -thing), 1, 0, 0, 0, 0.001);
+                        player.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, player.getLocation().add(-1, 0, thing), 1, 0, 0, 0, 0.001);
+
+                        player.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, player.getLocation().add(1, -thing+1, 1), 1, 0, 0, 0, 0.001);
+                        player.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, player.getLocation().add(-1, thing+1, -1), 1, 0, 0, 0, 0.001);
+                        player.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, player.getLocation().add(1, -thing+1, -1), 1, 0, 0, 0, 0.001);
+                        player.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, player.getLocation().add(-1, thing+1, 1), 1, 0, 0, 0, 0.001);
+                    }
+                    if(particles.get(player).equals("andromeda")) {
+                        int a = 0;
+                        double b = 1.5;
+                        double r = particleRadius.get(player);
+
+                        double x = Math.cos(r) * (a) + b * Math.sin(r);
+                        double circleY = -Math.sin(r * (a) + Math.cos(r) * (b));
+                        double sausageY = x + circleY;
+
+                        particleRadius.put(player, particleRadius.get(player) + 0.2 );
+
                         player.getWorld().spawnParticle(Particle.FLAME, player.getLocation().add(x, 0.1, sausageY), 1, 0, 0, 0, 0.001);
                         player.getWorld().spawnParticle(Particle.FLAME, player.getLocation().add(x, 0.1, circleY), 1, 0, 0, 0, 0.001);
+                    }
+                    if(particles.get(player).equals("infinity")) {
+                        double r = particleRadius.get(player);
+                        if(r == 6.3) {
+                            r = 0;
+                            particleRadius.put(player, 0.0);
+                        }
+                        float color = (float) (Math.round(r)/6.3);
+
+                        double x = 4 * Math.cos(r);
+                        double y = Math.sin(r * 2) * 2;
+
+                        particleRadius.put(player, particleRadius.get(player) + 0.2);
+
+                        Particle.DustOptions dustOptions = new Particle.DustOptions(Color.fromRGB(java.awt.Color.getHSBColor(color, 0.7F, 0.7F).getRGB()), 1F);
+                        player.getWorld().spawnParticle(Particle.REDSTONE, player.getLocation().add(x, 0.1, y), 2, 0, 0, 0, dustOptions);
                     }
                 }
             }
@@ -285,8 +323,6 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
     }
 
-    //пж
-
     @Override
     public void onDisable() {
         World mainworld = Bukkit.getServer().getWorlds().get(0);
@@ -343,12 +379,9 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             player.playSound(player.getLocation(), Sound.BLOCK_BAMBOO_HIT, 1, 1);
         }
 
-        if (player.getName().equals("SirCat07")) {
-            if(particleTimer != 2) {
-                if(event.getTo().getX() != event.getFrom().getX() || event.getTo().getY() != event.getFrom().getY() || event.getTo().getZ() != event.getFrom().getZ()) {
-                    particleTimer = 2;
-                    r[0] = 0;
-                }
+        if(particleTimer.get(player) != 2) {
+            if(event.getTo().getX() != event.getFrom().getX() || event.getTo().getY() != event.getFrom().getY() || event.getTo().getZ() != event.getFrom().getZ()) {
+                particleTimer.put(player, 2);
             }
         }
     }
@@ -381,6 +414,10 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 ItemStack itemInHand = player.getItemInHand();
                 if (itemInHand.getItemMeta().getDisplayName().equals(ChatColor.GRAY + "Compass")) {
                     player.openInventory(gamesGUI);
+                    event.setCancelled(true);
+                }
+                if (itemInHand.getItemMeta().getDisplayName().equals(ChatColor.GOLD + "Effects")) {
+                    player.openInventory(effectsGUI);
                     event.setCancelled(true);
                 }
                 if (action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK) {
@@ -631,30 +668,16 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 if (entity.getScoreboardTags().contains("pvpDogeNPC")) {
                     switch (pvpDogeDialogue.get(player)) {
                         case 0 -> {
-                            dialogue = "There are no upgrades yet.";
+                            dialogue = "placeholder text.";
                             player.playSound(player.getLocation(), Sound.ENTITY_WOLF_AMBIENT, 10, 2);
 
                             pvpDogeDialogue.put(player, pvpDogeDialogue.get(player) + 1);
                         }
                         case 1 -> {
-                            dialogue = "I can give you a sword though, it looks cool.";
-                            player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_DESTROY, 10, 0);
-                            player.playSound(player.getLocation(), Sound.ENTITY_WOLF_AMBIENT, 10, 2);
-                            player.getInventory().addItem(MopsUtils.createItem(Material.IRON_SWORD, ChatColor.GRAY + "Iron Sword"));
-
-                            pvpDogeDialogue.put(player, pvpDogeDialogue.get(player) + 1);
-                        }
-                        case 2 -> {
-                            dialogue = "I don't have any more swords.";
+                            dialogue = "IM SILLY IM SILLY IM SILLY IM SILLY";
                             player.playSound(player.getLocation(), Sound.ENTITY_WOLF_AMBIENT, 10, 2);
 
-                            pvpDogeDialogue.put(player, pvpDogeDialogue.get(player) + 1);
-                        }
-                        case 3 -> {
-                            dialogue = "You can visit PVP now. Select the map.";
-                            player.playSound(player.getLocation(), Sound.ENTITY_WOLF_AMBIENT, 10, 2);
-
-                            player.openInventory(mapGUI);
+                            pvpDogeDialogue.put(player, pvpDogeDialogue.get(player) - 1);
                         }
                     }
                 }
@@ -671,7 +694,6 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                     player.sendMessage(ChatColor.GRAY + "This furnace is the only one in the hub. It smelts corn for the Theatre, or fish for the Fisherman. It also needs to be fueled, however, not by coal. It uses MopsCoins. But the Doge are not always smart. They tried to put all sorts of items in there to fuel the Smelter. And sometimes when you put in MopsCoins, it gives you some cool items. It may still give you something!");
                 }
             }
-
 
 
             if (entity.getScoreboardTags().contains("adminfrog")) {
@@ -720,6 +742,8 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             }, 4L);
         }, 50L);
 
+        particles.put(player, "none");
+
         String playerName = player.getName();
         if(rawCoins.get(playerName) == null) {
             coins.putIfAbsent(player, 0);
@@ -740,6 +764,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         player.getInventory().clear();
         Items items = new Items();
         player.getInventory().setItem(0, items.compass());
+        player.getInventory().setItem(8, items.effects());
 
         Location spawn = new Location(player.getWorld(), -106.0, 9, -186.0);
         spawn.setYaw(-90);
@@ -856,6 +881,38 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
                 player.teleport(newDestination);
                 player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1, 2);
+            } catch (Exception ignored) { }
+        }
+        if (event.getClickedInventory() == effectsGUI) {
+            event.setCancelled(true);
+            try {
+                event.getClickedInventory().getItem(event.getSlot()).getType();
+
+                switch (event.getSlot()) {
+                    case 0 -> {
+                        particles.put(player, "cube");
+                        player.playSound(player.getLocation(), Sound.ENTITY_ALLAY_ITEM_GIVEN, 1, 1);
+                    }
+                    case 1 -> {
+                        if(badge.get(player.getName()) == MopsBadge.SILLY) {
+                            particles.put(player, "andromeda");
+                            player.playSound(player.getLocation(), Sound.BLOCK_FIRE_AMBIENT, 2, 2);
+                            player.playSound(player.getLocation(), Sound.ENTITY_ALLAY_ITEM_GIVEN, 1, 1);
+                        } else {
+                            player.sendMessage(ChatColor.RED + "You can't use this effect.");
+                            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 1, 0);
+                        }
+                    }
+                    case 2 -> {
+                        if(badge.get(player.getName()) == MopsBadge.STAFF || player.getName().equals("SirCat07")) {
+                            particles.put(player, "infinity");
+                            player.playSound(player.getLocation(), Sound.ENTITY_ALLAY_ITEM_GIVEN, 1, 1);
+                        } else {
+                            player.sendMessage(ChatColor.RED + "You can't use this effect.");
+                            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 1, 0);
+                        }
+                    }
+                }
             } catch (Exception ignored) { }
         }
 

@@ -21,6 +21,15 @@ public class Items {
 
         return item;
     }
+    public ItemStack effects() {
+        ItemStack item = new ItemStack(Material.GLISTERING_MELON_SLICE);
+        ItemMeta meta = item.getItemMeta();
+        meta.setDisplayName(ChatColor.GOLD + "Effects");
+        meta.setLore(new ArrayList<String>(Collections.singletonList(ChatColor.GRAY + "Change your appearance.")));
+        item.setItemMeta(meta);
+
+        return item;
+    }
     public ItemStack mopsCoin() {
         ItemStack item = new ItemStack(Material.GOLD_INGOT);
         ItemMeta meta = item.getItemMeta();
