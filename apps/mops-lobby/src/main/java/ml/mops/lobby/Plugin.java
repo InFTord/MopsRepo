@@ -398,7 +398,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
         Player player = event.getPlayer();
-        if(!player.getScoreboardTags().contains("admin")) {
+        if(rank.get(player.getName()).getPermLevel() > 10) {
             event.setCancelled(true);
         }
     }
@@ -407,7 +407,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
         Player player = event.getPlayer();
-        if(!player.getScoreboardTags().contains("admin")) {
+        if(rank.get(player.getName()).getPermLevel() > 10) {
             event.setCancelled(true);
         }
     }
@@ -608,7 +608,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 }
             }
 
-            if(!player.getScoreboardTags().contains("admin")) {
+            if(rank.get(player.getName()).getPermLevel() > 10) {
                 if (!flippable.contains(event.getClickedBlock().getLocation())) {
                     if(!usables.contains(event.getClickedBlock().getLocation())) {
                         if(!openables.contains(event.getClickedBlock().getLocation())) {
@@ -807,7 +807,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     public void onDropItem(PlayerDropItemEvent event) {
         Player player = event.getPlayer();
 
-        if(!player.getScoreboardTags().contains("admin")) {
+        if(rank.get(player.getName()).getPermLevel() > 10) {
             event.setCancelled(true);
         }
     }
@@ -1015,15 +1015,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
     public void manipulateEnderChest(Player player) {
         Bukkit.getScheduler().runTaskLater(this, () -> {
-            int value = getAmount(player.getEnderChest(), new Items().mopsCoin());
-
-            try {
-                for (ItemStack item : player.getEnderChest().getContents()) {
-                    if (item.getItemMeta().getDisplayName().equals(ChatColor.RED + "kuudra washing machine")) {
-                        value += 1000;
-                    }
-                }
-            } catch (Exception ignored) { }
+            int value = getEnderchestValue(player);
 
             player.getEnderChest().setItem(5, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
             player.getEnderChest().setItem(6, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
@@ -1044,7 +1036,21 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             if(player.getEnderChest().contains(Material.GLISTERING_MELON_SLICE)) {
                 player.getEnderChest().remove(Material.GLISTERING_MELON_SLICE);
             }
-        }, 10L);
+        }, 5L);
+    }
+
+    public int getEnderchestValue(Player player) {
+        int value = getAmount(player.getEnderChest(), new Items().mopsCoin());
+
+        try {
+            for (ItemStack item : player.getEnderChest().getContents()) {
+                if (item.getItemMeta().getDisplayName().equals(ChatColor.RED + "kuudra washing machine")) {
+                    value += 1000;
+                }
+            }
+        } catch (Exception ignored) { }
+
+        return value;
     }
 
     public static int getAmount(Inventory inventory, ItemStack item) {

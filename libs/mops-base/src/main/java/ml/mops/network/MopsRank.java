@@ -13,10 +13,9 @@ public enum MopsRank {
 
 	VIP(1, ChatColor.GOLD + "[VIP]"),
 
-	HELPER(3, ChatColor.BLUE + "[HELPER]"),
-	ADMIN(4, ChatColor.RED + "[ADMIN]"),
-	DEV(5, ChatColor.GREEN + "[DEV]");
-
+	HELPER(13, ChatColor.BLUE + "[HELPER]"),
+	ADMIN(14, ChatColor.RED + "[ADMIN]"),
+	DEV(15, ChatColor.GREEN + "[DEV]");
 
 	final int permLevel;
 	final String prefix;
