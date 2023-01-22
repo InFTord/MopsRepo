@@ -1818,10 +1818,10 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 				bluecount++;
 			}
 			if (block.getType().equals(Material.ORANGE_WOOL)) {
-				bluecount++;
+				orangecount++;
 			}
 			if (block.getType().equals(Material.MAGENTA_WOOL)) {
-				bluecount++;
+				pinkcount++;
 			}
 		}
 
@@ -2153,8 +2153,8 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		genStatuses.add("woolbattle.generator.yellow");
 		genStatuses.add("woolbattle.generator.green");
 		genStatuses.add("woolbattle.generator.blue");
-		genStatuses.add("woolbattle.generator.orange");
-		genStatuses.add("woolbattle.generator.pink");
+//		genStatuses.add("woolbattle.generator.orange");
+//		genStatuses.add("woolbattle.generator.pink");
 
 		for(String genStatus : genStatuses) {
 			String genStatus0 = getStringByLang(lang, genStatus);
@@ -2461,8 +2461,8 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 			redTeamPlayers = redTeamPlayersLeft;
 			yellowTeamPlayers = yellowTeamPlayersLeft;
-			greenTeamPlayers = blueTeamPlayersLeft;
-			blueTeamPlayers = pinkTeamPlayersLeft;
+			greenTeamPlayers = greenTeamPlayersLeft;
+			blueTeamPlayers = blueTeamPlayersLeft;
 			orangeTeamPlayers = orangeTeamPlayersLeft;
 			pinkTeamPlayers = pinkTeamPlayersLeft;
 		}
