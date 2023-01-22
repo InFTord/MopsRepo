@@ -234,8 +234,8 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                         double r = particleRadius.get(player);
 
                         double x = Math.cos(r) * (a) + b * Math.sin(r);
-                        double circleY = -Math.sin(r * (a) + Math.cos(r) * (b));
-                        double sausageY = x + circleY;
+                        double circleY = - Math.sin(r) * (a) + Math.cos(r) * (b);
+                        double sausageY = x - Math.sin(r) * (a) + Math.cos(r) * (b);
 
                         particleRadius.put(player, particleRadius.get(player) + 0.2 );
 
@@ -248,14 +248,16 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                             r = 0;
                             particleRadius.put(player, 0.0);
                         }
-                        float color = (float) (Math.round(r)/6.3);
+                        float colorMath = (float) (Math.round(r)/6.3);
 
                         double x = 4 * Math.cos(r);
                         double y = Math.sin(r * 2) * 2;
 
                         particleRadius.put(player, particleRadius.get(player) + 0.2);
 
-                        Particle.DustOptions dustOptions = new Particle.DustOptions(Color.fromRGB(java.awt.Color.getHSBColor(color, 0.7F, 0.7F).getRGB()), 1F);
+                        java.awt.Color color = java.awt.Color.getHSBColor(colorMath, 0.7F, 0.7F);
+
+                        Particle.DustOptions dustOptions = new Particle.DustOptions(Color.fromRGB(color.getRed(), color.getGreen(), color.getBlue()), 1F);
                         player.getWorld().spawnParticle(Particle.REDSTONE, player.getLocation().add(x, 0.1, y), 2, 0, 0, 0, dustOptions);
                     }
                 }
