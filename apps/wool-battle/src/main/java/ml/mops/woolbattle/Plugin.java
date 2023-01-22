@@ -758,13 +758,25 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			player.removeScoreboardTag("spectator");
 			clearScoreboard(player);
 
-			player.setPlayerListName(ChatColor.WHITE + player.getName());
+			String chatRank = "";
+			String name = player.getName();
+			String chatBadge = "";
+
+			if(rank.get(name) == MopsRank.NONE) {
+				name = ChatColor.GRAY + name;
+			} else {
+				chatRank = rank.get(player.getName()).getPrefix() + " ";
+			}
+			if(badge.get(player.getName()) != MopsBadge.NONE) {
+				chatBadge = badge.get(player.getName()).getSymbol();
+			}
+
+			player.setPlayerListName((chatRank + name + chatBadge).trim());
+
 			resetEveryFuckingKillScoreboard(player);
 			try {
 				deathmsg.get(player).cancel();
 			} catch (Throwable ignored) { }
-
-			player.setPlayerListName((rank.get(playerName).getPrefix() + player.getName() + badge.get(playerName).getSymbol()).trim());
 		}
 	}
 
@@ -872,7 +884,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			TextComponent fullMessage = preMessage.append(messageBadge).append(afterMessage);
 
 			for(Player players : Bukkit.getOnlinePlayers()) {
-				MopsUtils.sendTextComponentMessage(players, fullMessage);
+				players.sendMessage(fullMessage);
 			}
 		}
 	}
@@ -2213,7 +2225,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 				chatBadge = badge.get(onlinePlayer.getName()).getSymbol();
 			}
 
-			onlinePlayer.setPlayerListName((chatRank + " " + name + chatBadge).trim());
+			onlinePlayer.setPlayerListName((chatRank + name + chatBadge).trim());
 
 			resetEveryFuckingKillScoreboard(onlinePlayer);
 			try {
