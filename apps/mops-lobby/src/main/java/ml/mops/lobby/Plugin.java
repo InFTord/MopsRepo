@@ -34,6 +34,7 @@ import org.bukkit.event.block.BlockFadeEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.inventory.InventoryType;
@@ -728,7 +729,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         Player player = event.getPlayer();
         event.setJoinMessage("");
 
-        player.addPotionEffect(new PotionEffect(PotionEffectType.SATURATION, 2000000, 100, true, false));
+        particleTimer.put(player, 4);
 
         Bukkit.getScheduler().runTaskLater(this, () -> {
             player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 0);
@@ -833,6 +834,13 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
         for(Player allPlayers : Bukkit.getOnlinePlayers()) {
             MopsUtils.sendTextComponentMessage(allPlayers, fullMessage);
+        }
+    }
+
+    @EventHandler
+    public void onFoodLevelChange(FoodLevelChangeEvent event) {
+        if(!event.getEntity().getScoreboardTags().contains("nohunger")) {
+            event.setFoodLevel(20);
         }
     }
 
