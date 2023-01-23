@@ -810,6 +810,13 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			msg = MopsUtils.convertColorCodes(msg);
 		}
 
+		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+			if(msg.contains(onlinePlayer.getName())) {
+				msg = msg.replaceAll(onlinePlayer.getName(), rank.get(onlinePlayer.getName()).getPrefix() + " " + onlinePlayer.getName() + ChatColor.RESET);
+				onlinePlayer.playSound(onlinePlayer.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
+			}
+		}
+
 		event.setCancelled(true);
 
 		ChatColor color = ChatColor.WHITE;

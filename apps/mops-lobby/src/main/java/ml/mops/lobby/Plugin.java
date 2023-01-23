@@ -930,6 +930,13 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         }
         event.setCancelled(true);
 
+        for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+            if(message.contains(onlinePlayer.getName())) {
+                message = message.replaceAll(onlinePlayer.getName(), rank.get(onlinePlayer.getName()).getPrefix() + " " + onlinePlayer.getName() + ChatColor.RESET);
+                onlinePlayer.playSound(onlinePlayer.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
+            }
+        }
+
         TextComponent preMessage = Component.text(chatRank + name);
         TextComponent messageBadge = Component.text(badgeSymbol).hoverEvent(Component.text(badgeDescription));
         TextComponent afterMessage = Component.text(ChatColor.RESET + ": " + message.trim());
