@@ -86,4 +86,6 @@ commands:
   addflags:
     description: ""
     usage: /addflags
-
+  e:
+    description: ""
+    usage: /e

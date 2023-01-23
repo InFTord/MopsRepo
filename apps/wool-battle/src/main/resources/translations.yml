@@ -224,6 +224,9 @@ woolbattle:
   - noPerms:
       rus: "&cУ вас нет прав!"
       eng: "&cNot enough permissions!"
+  - onCooldown:
+      rus: "&cКулдаун!"
+      eng: "&cCooldown!"
   - event.refill.1:
       rus: " &8(Рефилл | 4:00)"
       eng: " &8(Refill | 4:00)"

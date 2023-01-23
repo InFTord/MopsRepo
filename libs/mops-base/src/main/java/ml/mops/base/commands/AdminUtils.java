@@ -87,6 +87,9 @@ public class AdminUtils {
                         if(args[0].equals("path")) {
                             player.sendMessage(MopsUtils.getPath(plugin));
                         }
+                        if(args[0].equals("server")) {
+                            MopsUtils.sendToServer(plugin, player, args[2]);
+                        }
                         if(args[0].equals("restart")) {
                             MopsUtils.restartServer(plugin);
                         }

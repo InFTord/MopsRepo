@@ -1,24 +1,14 @@
 package ml.mops.lobby;
 
-//import club.minnced.discord.webhook.WebhookClient;
-//import club.minnced.discord.webhook.send.WebhookEmbed;
-//import club.minnced.discord.webhook.send.WebhookEmbedBuilder;
-//import club.minnced.discord.webhook.send.WebhookMessageBuilder;
 import club.minnced.discord.webhook.WebhookClient;
-import club.minnced.discord.webhook.WebhookClientBuilder;
 import club.minnced.discord.webhook.send.WebhookEmbed;
 import club.minnced.discord.webhook.send.WebhookEmbedBuilder;
-import com.google.common.io.ByteArrayDataOutput;
-import com.google.common.io.ByteStreams;
 import ml.mops.base.commands.Commands;
 import ml.mops.network.MopsBadge;
 import ml.mops.network.MopsRank;
 import ml.mops.utils.MopsUtils;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.ComponentBuilder;
 import net.kyori.adventure.text.TextComponent;
-import net.kyori.adventure.text.event.ClickEvent;
-import net.kyori.adventure.text.event.HoverEvent;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.*;
@@ -48,11 +38,9 @@ import org.bukkit.material.MaterialData;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
-import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
@@ -60,13 +48,14 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
-import java.util.stream.Collectors;
 
 public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
-    HashMap<Player, Integer> pvpDogeDialogue = new HashMap<>();
+    HashMap<Player, Integer> deliveryDogeDialogue = new HashMap<>();
+    HashMap<Player, Integer> missionDogeDialogue = new HashMap<>();
     HashMap<Player, Integer> woolbattleDogeDialogue = new HashMap<>();
     HashMap<Player, Integer> pigeonDialogue = new HashMap<>();
+    HashMap<Player, Integer> realPlantDialogue = new HashMap<>();
 
     HashMap<String, Integer> rawCoins = new HashMap<>();
     HashMap<Player, Integer> coins = new HashMap<>();
@@ -370,7 +359,28 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
-        return new Commands().commandsExecutor(sender, command, label, args, this);
+        if (lobbyCommands(sender, command, label, args)) {
+            return true;
+        } else {
+            return new Commands().commandsExecutor(sender, command, label, args, this);
+        }
+    }
+
+    public boolean lobbyCommands(CommandSender sender, Command command, @NotNull String label, String[] args) {
+        Player player = (Player) sender;
+
+        if(command.getName().equals("e")) {
+            switch (args[0]) {
+                case "compass" -> player.getInventory().addItem(new Items().compass());
+                case "effects" -> player.getInventory().addItem(new Items().effects());
+                case "mopscoin" -> player.getInventory().addItem(new Items().mopsCoin());
+                case "washingmachine" -> player.getInventory().addItem(new Items().kuudraWashingMachine());
+                case "chemistryset" -> player.getInventory().addItem(new Items().mopsChemistrySet());
+                case "rulebreaker" -> player.getInventory().addItem(new Items().ruleBreaker());
+            }
+        }
+
+        return false;
     }
 
     @EventHandler
@@ -638,11 +648,6 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
             if (entity.getScoreboardTags().contains("armorStandHubNPC")) {
                 event.setCancelled(true);
-                if (entity.getScoreboardTags().contains("missionDogeNPC")) {
-                    dialogue = "Hi, i can't currently give you missions.";
-                    player.playSound(player.getLocation(), Sound.ENTITY_WOLF_GROWL, 10, 0);
-                    player.playSound(player.getLocation(), Sound.ENTITY_WOLF_AMBIENT, 10, 0);
-                }
                 if (entity.getScoreboardTags().contains("fishermanDogeNPC")) {
                     dialogue = "Giv me gfish please i want fis!!!1!!";
                     player.playSound(player.getLocation(), Sound.ENTITY_FISH_SWIM, 10, 2);
@@ -653,13 +658,45 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 }
                 if (entity.getScoreboardTags().contains("tord")) {
                     List<String> dialogueList = new ArrayList<>();
-                    dialogueList.add("привет я клоун");
-                    dialogueList.add("прив");
+                    dialogueList.add("hi im clown");
+                    dialogueList.add("hi");
 
                     player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BANJO, 2, 0);
 
                     MopsUtils.sendRandomDialogueMessage(dialogueList, player, entity);
                     cancelDialogue = true;
+                }
+                if (entity.getScoreboardTags().contains("missionDogeNPC")) {
+                    switch (missionDogeDialogue.get(player)) {
+                        case 0 -> {
+                            dialogue = "Wow.";
+                            player.playSound(player.getLocation(), Sound.ENTITY_WOLF_GROWL, 10, 0);
+                            player.playSound(player.getLocation(), Sound.ENTITY_WOLF_AMBIENT, 10, 0);
+
+                            missionDogeDialogue.put(player, missionDogeDialogue.get(player) + 1);
+                        }
+                        case 1 -> {
+                            dialogue = "The snow got so bad, we needed to clear it with a machine.";
+                            player.playSound(player.getLocation(), Sound.ENTITY_WOLF_GROWL, 10, 0);
+                            player.playSound(player.getLocation(), Sound.ENTITY_WOLF_AMBIENT, 10, 0);
+
+                            missionDogeDialogue.put(player, missionDogeDialogue.get(player) + 1);
+                        }
+                        case 2 -> {
+                            dialogue = "And it got stuck down here.";
+                            player.playSound(player.getLocation(), Sound.ENTITY_WOLF_GROWL, 10, 0);
+                            player.playSound(player.getLocation(), Sound.ENTITY_WOLF_AMBIENT, 10, 0);
+
+                            missionDogeDialogue.put(player, missionDogeDialogue.get(player) + 1);
+                        }
+                        case 3 -> {
+                            dialogue = "I still can't give you missions though.";
+                            player.playSound(player.getLocation(), Sound.ENTITY_WOLF_GROWL, 10, 0);
+                            player.playSound(player.getLocation(), Sound.ENTITY_WOLF_AMBIENT, 10, 0);
+
+                            missionDogeDialogue.put(player, missionDogeDialogue.get(player) + 1);
+                        }
+                    }
                 }
                 if (entity.getScoreboardTags().contains("woolbattleDogeNPC")) {
                     switch (woolbattleDogeDialogue.get(player)) {
@@ -676,20 +713,53 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                         }
                     }
                 }
+                if (entity.getScoreboardTags().contains("realPlantNPC")) {
+                    switch (realPlantDialogue.get(player)) {
+                        case 0 -> {
+                            dialogue = "shhh, im a plant.";
+                            player.playSound(player.getLocation(), Sound.BLOCK_GRASS_BREAK, 0.5F, 1.5F);
 
+                            realPlantDialogue.put(player, realPlantDialogue.get(player) + 1);
+                        }
+                        case 1 -> {
+                            dialogue = "a real real plant! can you believe it?";
+                            player.playSound(player.getLocation(), Sound.BLOCK_GRASS_BREAK, 0.5F, 1.5F);
+
+                            realPlantDialogue.put(player, realPlantDialogue.get(player) + 1);
+                        }
+                        case 2 -> {
+                            dialogue = "you could join private games if you donate";
+                            player.playSound(player.getLocation(), Sound.BLOCK_GRASS_BREAK, 0.5F, 1.5F);
+
+                            realPlantDialogue.put(player, realPlantDialogue.get(player) + 1);
+                        }
+                        case 3 -> {
+                            dialogue = "right here, at the plant!";
+                            player.playSound(player.getLocation(), Sound.BLOCK_GRASS_BREAK, 0.5F, 1.5F);
+
+                            realPlantDialogue.put(player, realPlantDialogue.get(player) + 1);
+                        }
+                        case 4 -> {
+                            dialogue = "crazy world we live in....";
+                            player.playSound(player.getLocation(), Sound.BLOCK_GRASS_BREAK, 0.5F, 1.5F);
+
+                            realPlantDialogue.put(player, 0);
+                        }
+                    }
+                }
                 if (entity.getScoreboardTags().contains("pvpDogeNPC")) {
-                    switch (pvpDogeDialogue.get(player)) {
+                    switch (deliveryDogeDialogue.get(player)) {
                         case 0 -> {
                             dialogue = "placeholder text.";
                             player.playSound(player.getLocation(), Sound.ENTITY_WOLF_AMBIENT, 10, 2);
 
-                            pvpDogeDialogue.put(player, pvpDogeDialogue.get(player) + 1);
+                            deliveryDogeDialogue.put(player, deliveryDogeDialogue.get(player) + 1);
                         }
                         case 1 -> {
                             dialogue = "IM SILLY IM SILLY IM SILLY IM SILLY";
                             player.playSound(player.getLocation(), Sound.ENTITY_WOLF_AMBIENT, 10, 2);
 
-                            pvpDogeDialogue.put(player, pvpDogeDialogue.get(player) - 1);
+                            deliveryDogeDialogue.put(player, deliveryDogeDialogue.get(player) - 1);
                         }
                     }
                 }
@@ -769,7 +839,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             badge.putIfAbsent(playerName, MopsBadge.NONE);
         }
 
-        player.setPlayerListName((rank.get(playerName).getPrefix() + " " + player.getName() + badge.get(playerName).getSymbol()).trim());
+        player.setPlayerListName((rank.get(playerName).getPrefix() + " " + player.getName() + " " + badge.get(playerName).getSymbol()).trim());
 
         manipulateEnderChest(player);
 
@@ -783,8 +853,9 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
         player.teleport(spawn);
 
-        pvpDogeDialogue.putIfAbsent(player, 0);
+        deliveryDogeDialogue.putIfAbsent(player, 0);
         woolbattleDogeDialogue.putIfAbsent(player, 0);
+        missionDogeDialogue.putIfAbsent(player, 0);
         pigeonDialogue.putIfAbsent(player, 0);
 
         player.setGameMode(GameMode.ADVENTURE);
@@ -830,11 +901,14 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             chatRank = rank.get(player.getName()).getPrefix() + " ";
         }
         if(badge.get(player.getName()) != MopsBadge.NONE) {
-            badgeSymbol = badge.get(player.getName()).getSymbol();
+            badgeSymbol = badge.get(player.getName()).getSymbol() + " ";
             badgeDescription = badge.get(player.getName()).getDescription();
         }
 
         String message = event.getMessage().replaceAll(":skull:", ChatColor.GRAY + "☠" + ChatColor.RESET);
+        if(rank.get(player.getName()).getPermLevel() > 10) {
+            message = MopsUtils.convertColorCodes(message);
+        }
         event.setCancelled(true);
 
         TextComponent preMessage = Component.text(chatRank + name);
@@ -864,6 +938,10 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         }
         if (event.getClickedInventory() == gamesGUI) {
             event.setCancelled(true);
+            if(event.getClick().isShiftClick()) {
+                gamesGUI.remove(Material.COMPASS);
+                gamesGUI.remove(Material.GLISTERING_MELON_SLICE);
+            }
             try {
                 event.getClickedInventory().getItem(event.getSlot()).getType();
 
@@ -903,6 +981,10 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         }
         if (event.getClickedInventory() == effectsGUI) {
             event.setCancelled(true);
+            if(event.getClick().isShiftClick()) {
+                effectsGUI.remove(Material.COMPASS);
+                effectsGUI.remove(Material.GLISTERING_MELON_SLICE);
+            }
             try {
                 event.getClickedInventory().getItem(event.getSlot()).getType();
 
