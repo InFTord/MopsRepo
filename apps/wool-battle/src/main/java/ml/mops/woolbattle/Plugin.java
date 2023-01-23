@@ -2475,7 +2475,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 		int fadeIn = 5;
 		int hold = 40;
-		int fadeOut = 25;
+		int fadeOut = 35;
 
 		switch (randomtitle) {
 			case 1 -> player1.sendTitle(ChatColor.WHITE + "frog", ChatColor.WHITE + "bottom text", fadeIn, hold, fadeOut);
@@ -2527,7 +2527,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		requiredKills = (int) (Math.round(equation));
 
 		Bukkit.getScheduler().runTaskLater(this, () -> {
-			player.sendTitle(getStringByLang(lang, "killRequirement.1"), getStringByLang(lang, "killRequirement.2", Map.of("kills", String.valueOf(requiredKills))), 5, 40, 30);
+			player.sendTitle(getStringByLang(lang, "killRequirement.1"), getStringByLang(lang, "killRequirement.2", Map.of("kills", String.valueOf(requiredKills))), 5, 40, 40);
 
 			player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 0);
 			player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 0.2F);

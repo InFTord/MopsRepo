@@ -73,11 +73,12 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     HashMap<String, MopsRank> rank = new HashMap<>();
     HashMap<String, MopsBadge> badge = new HashMap<>();
 
-    HashMap<Player, String> particles = new HashMap<>();
-    HashMap<Player, Integer> particleTimer = new HashMap<>();
-    HashMap<Player, Double> particleRadius = new HashMap<>();
+    HashMap<Player, String> aura = new HashMap<>();
+    HashMap<Player, Integer> auraTimer = new HashMap<>();
+    HashMap<Player, Double> auraRadius = new HashMap<>();
 
     float rgb = 0;
+    boolean doVillagerParticle = true;
 
     //doors n trapdoors n shit
     List<Location> flippable = new ArrayList<>();
@@ -167,8 +168,8 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 Scoreboard lobbyscoreboard = new LobbyScoreboard().generateLobbyScoreboard(player, mainworld.getTime(), coins, rank);
                 player.setScoreboard(lobbyscoreboard);
 
-                if(particleTimer.get(player) != 0) {
-                    particleTimer.put(player, particleTimer.get(player)-1);
+                if(auraTimer.get(player) != 0) {
+                    auraTimer.put(player, auraTimer.get(player)-1);
                 }
 
                 Calendar calendar = Calendar.getInstance();
@@ -208,47 +209,50 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
         Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
             for(Player player : Bukkit.getOnlinePlayers()) {
-                if(particleTimer.get(player) == 0) {
-                    if(particles.get(player).equals("cube")) {
-                        double r = particleRadius.get(player);
+                if(auraTimer.get(player) == 0) {
+                    if(aura.get(player).equals("cube")) {
+                        double r = auraRadius.get(player);
                         double thing = (Math.cos(r-0.7)+Math.sin(r-0.87))*0.78;
 
-                        particleRadius.put(player, particleRadius.get(player) + 0.075);
+                        auraRadius.put(player, auraRadius.get(player) + 0.1);
 
-                        player.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, player.getLocation().add(thing, 0, 1), 1, 0, 0, 0, 0.001);
-                        player.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, player.getLocation().add(-thing, 2, -1), 1, 0, 0, 0, 0.001);
-                        player.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, player.getLocation().add(thing, 0, -1), 1, 0, 0, 0, 0.001);
-                        player.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, player.getLocation().add(-thing, 2, 1), 1, 0, 0, 0, 0.001);
+                        if(doVillagerParticle) {
+                            player.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, player.getLocation().add(thing, 0, 1), 1, 0, 0, 0, 0.001);
+                            player.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, player.getLocation().add(-thing, 2, -1), 1, 0, 0, 0, 0.001);
+                            player.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, player.getLocation().add(thing, 0, -1), 1, 0, 0, 0, 0.001);
+                            player.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, player.getLocation().add(-thing, 2, 1), 1, 0, 0, 0, 0.001);
 
-                        player.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, player.getLocation().add(1, 0, thing), 1, 0, 0, 0, 0.001);
-                        player.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, player.getLocation().add(-1, 2, -thing), 1, 0, 0, 0, 0.001);
-                        player.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, player.getLocation().add(1, 2, -thing), 1, 0, 0, 0, 0.001);
-                        player.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, player.getLocation().add(-1, 0, thing), 1, 0, 0, 0, 0.001);
+                            player.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, player.getLocation().add(1, 0, thing), 1, 0, 0, 0, 0.001);
+                            player.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, player.getLocation().add(-1, 2, -thing), 1, 0, 0, 0, 0.001);
+                            player.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, player.getLocation().add(1, 2, -thing), 1, 0, 0, 0, 0.001);
+                            player.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, player.getLocation().add(-1, 0, thing), 1, 0, 0, 0, 0.001);
 
-                        player.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, player.getLocation().add(1, -thing+1, 1), 1, 0, 0, 0, 0.001);
-                        player.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, player.getLocation().add(-1, thing+1, -1), 1, 0, 0, 0, 0.001);
-                        player.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, player.getLocation().add(1, -thing+1, -1), 1, 0, 0, 0, 0.001);
-                        player.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, player.getLocation().add(-1, thing+1, 1), 1, 0, 0, 0, 0.001);
+                            player.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, player.getLocation().add(1, -thing + 1, 1), 1, 0, 0, 0, 0.001);
+                            player.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, player.getLocation().add(-1, thing + 1, -1), 1, 0, 0, 0, 0.001);
+                            player.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, player.getLocation().add(1, -thing + 1, -1), 1, 0, 0, 0, 0.001);
+                            player.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, player.getLocation().add(-1, thing + 1, 1), 1, 0, 0, 0, 0.001);
+                        }
+                        doVillagerParticle = !doVillagerParticle;
                     }
-                    if(particles.get(player).equals("andromeda")) {
+                    if(aura.get(player).equals("andromeda")) {
                         int a = 0;
                         double b = 1.5;
-                        double r = particleRadius.get(player);
+                        double r = auraRadius.get(player);
 
                         double x = Math.cos(r) * (a) + b * Math.sin(r);
                         double circleY = - Math.sin(r) * (a) + Math.cos(r) * (b);
                         double sausageY = x - Math.sin(r) * (a) + Math.cos(r) * (b);
 
-                        particleRadius.put(player, particleRadius.get(player) + 0.2);
+                        auraRadius.put(player, auraRadius.get(player) + 0.2);
 
                         player.getWorld().spawnParticle(Particle.FLAME, player.getLocation().add(x, 0.1, sausageY), 1, 0, 0, 0, 0.001);
                         player.getWorld().spawnParticle(Particle.FLAME, player.getLocation().add(x, 0.1, circleY), 1, 0, 0, 0, 0.001);
                     }
-                    if(particles.get(player).equals("infinity")) {
-                        double r = particleRadius.get(player);
+                    if(aura.get(player).equals("infinity")) {
+                        double r = auraRadius.get(player);
                         if(r >= 6.3) {
                             r = 0;
-                            particleRadius.put(player, 0.0);
+                            auraRadius.put(player, 0.0);
                         }
                         if(rgb >= 1) {
                             rgb = 0;
@@ -257,7 +261,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                         double x = 2 * Math.cos(r);
                         double y = Math.sin(r * 2);
 
-                        particleRadius.put(player, particleRadius.get(player) + 0.075);
+                        auraRadius.put(player, auraRadius.get(player) + 0.075);
 
                         java.awt.Color color = java.awt.Color.getHSBColor(rgb, 1, 1);
 
@@ -388,9 +392,9 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             player.playSound(player.getLocation(), Sound.BLOCK_BAMBOO_HIT, 1, 1);
         }
 
-        if(particleTimer.get(player) != 2) {
+        if(auraTimer.get(player) != 2) {
             if(event.getTo().getX() != event.getFrom().getX() || event.getTo().getY() != event.getFrom().getY() || event.getTo().getZ() != event.getFrom().getZ()) {
-                particleTimer.put(player, 2);
+                auraTimer.put(player, 2);
             }
         }
     }
@@ -737,9 +741,9 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         Player player = event.getPlayer();
         event.setJoinMessage("");
 
-        particleTimer.put(player, 4);
-        particleRadius.put(player, 0.0);
-        particles.put(player, "none");
+        auraTimer.put(player, 4);
+        auraRadius.put(player, 0.0);
+        aura.put(player, "none");
 
         Bukkit.getScheduler().runTaskLater(this, () -> {
             player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 0);
@@ -905,12 +909,12 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
                 switch (event.getSlot()) {
                     case 0 -> {
-                        particles.put(player, "cube");
+                        aura.put(player, "cube");
                         player.playSound(player.getLocation(), Sound.ENTITY_ALLAY_ITEM_GIVEN, 1, 1);
                     }
                     case 1 -> {
                         if(badge.get(player.getName()) == MopsBadge.SILLY) {
-                            particles.put(player, "andromeda");
+                            aura.put(player, "andromeda");
                             player.playSound(player.getLocation(), Sound.BLOCK_FIRE_AMBIENT, 2, 2);
                             player.playSound(player.getLocation(), Sound.ENTITY_ALLAY_ITEM_GIVEN, 1, 1);
                         } else {
@@ -920,7 +924,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                     }
                     case 2 -> {
                         if(badge.get(player.getName()) == MopsBadge.STAFF || player.getName().equals("SirCat07")) {
-                            particles.put(player, "infinity");
+                            aura.put(player, "infinity");
                             player.playSound(player.getLocation(), Sound.ENTITY_ALLAY_ITEM_GIVEN, 1, 1);
                         } else {
                             player.sendMessage(ChatColor.RED + "You can't use this effect.");
@@ -928,8 +932,8 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                         }
                     }
                     case 26 -> {
-                        particles.put(player, "none");
-                        particleRadius.put(player, 0.0);
+                        aura.put(player, "none");
+                        auraRadius.put(player, 0.0);
                         player.playSound(player.getLocation(), Sound.BLOCK_FIRE_EXTINGUISH, 1, 2);
                         player.sendMessage(ChatColor.GREEN + "You reset your effects.");
                     }
