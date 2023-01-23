@@ -738,7 +738,6 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 		if(!gameactive) {
 			mainboard.getTeam("nothing").addPlayer(player);
-			player.getInventory().setItem(8, new Items(this).leaveButton(lang));
 
 			player.teleport(new Location(mainworld, 9.5, 257, 9.5));
 			clearScoreboard(player);
@@ -756,6 +755,9 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			player.setGameMode(GameMode.SURVIVAL);
 			player.getScoreboardTags().add("spawn");
 			clearScoreboard(player);
+
+			ItemStack leaveButton = new Items(this).leaveButton(lang);
+			player.getInventory().setItem(8, leaveButton);
 
 			player.setCollidable(true);
 
@@ -811,7 +813,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		}
 
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-			if(msg.contains(onlinePlayer.getName())) {
+			if(msg.contains(onlinePlayer.getName().toLowerCase(Locale.ROOT))) {
 				msg = msg.replaceAll(onlinePlayer.getName(), rank.get(onlinePlayer.getName()).getPrefix() + " " + onlinePlayer.getName() + ChatColor.RESET);
 				onlinePlayer.playSound(onlinePlayer.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
 			}
@@ -2318,6 +2320,9 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 				onlinePlayer.getScoreboardTags().remove("ingame");
 			}
 
+			ItemStack leaveButton = new Items(this).leaveButton(lang);
+			onlinePlayer.getInventory().setItem(8, leaveButton);
+
 			onlinePlayer.setCollidable(true);
 			onlinePlayer.removePotionEffect(PotionEffectType.JUMP);
 			onlinePlayer.removePotionEffect(PotionEffectType.INVISIBILITY);
@@ -2461,8 +2466,6 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 	public void simulateHardmodeDeath(Player player) {
 		broadcastFinalDeath(player);
 
-		player.getInventory().setItem(8, new Items(this).leaveButton(lang));
-
 		player.addScoreboardTag("spectator");
 		player.hidePlayer(this, player);
 		player.setAllowFlight(true);
@@ -2476,6 +2479,9 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		player.teleport(mid);
 
 		player.getInventory().clear();
+
+		ItemStack leaveButton = new Items(this).leaveButton(lang);
+		player.getInventory().setItem(8, leaveButton);
 	}
 
 	public void broadcastDeath(Player dead, String deathcause) {

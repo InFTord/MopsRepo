@@ -7,6 +7,7 @@ import ml.mops.base.commands.Commands;
 import ml.mops.base.maps.Map;
 import ml.mops.network.MopsBadge;
 import ml.mops.network.MopsRank;
+import ml.mops.utils.MopsColor;
 import ml.mops.utils.MopsUtils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
@@ -34,9 +35,11 @@ import org.bukkit.event.player.*;
 import org.bukkit.event.vehicle.VehicleDamageEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BlockStateMeta;
 import org.bukkit.inventory.meta.BookMeta;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.material.MaterialData;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -70,6 +73,9 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     HashMap<Player, Integer> auraTimer = new HashMap<>();
     HashMap<Player, Double> auraRadius = new HashMap<>();
 
+    HashMap<Player, Inventory> gamesGUI = new HashMap<>();
+    HashMap<Player, Inventory> effectsGUI = new HashMap<>();
+
     float rgb = 0;
     boolean doVillagerParticle = true;
 
@@ -85,8 +91,6 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     List<Location> usables = new ArrayList<>();
 
     Inventory mapGUI = new MapGUI().getInventory();
-    Inventory gamesGUI = new GamesGUI().getInventory();
-    Inventory effectsGUI = new ParticleGUI().getInventory();
 
     ArmorStand ball;
 
@@ -439,11 +443,19 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             if (action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK || action == Action.LEFT_CLICK_BLOCK || action == Action.LEFT_CLICK_AIR) {
                 ItemStack itemInHand = player.getItemInHand();
                 if (itemInHand.getItemMeta().getDisplayName().equals(ChatColor.GRAY + "Compass")) {
-                    player.openInventory(gamesGUI);
+                    Inventory inv = Bukkit.createInventory(null, 18, "Select Your Destination");
+                    fillGamesGUI(inv);
+
+                    gamesGUI.put(player, inv);
+                    player.openInventory(gamesGUI.get(player));
                     event.setCancelled(true);
                 }
                 if (itemInHand.getItemMeta().getDisplayName().equals(ChatColor.GOLD + "Effects")) {
-                    player.openInventory(effectsGUI);
+                    Inventory inv = Bukkit.createInventory(null, 27, "Select a Particle");
+                    fillEffectsGUI(inv, player);
+
+                    effectsGUI.put(player, inv);
+                    player.openInventory(effectsGUI.get(player));
                     event.setCancelled(true);
                 }
                 if (action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK) {
@@ -640,13 +652,10 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     }
 
     @EventHandler
-    public void onEntityInteract(PlayerInteractAtEntityEvent event) {
-        Player player = event.getPlayer();
-        Entity entity = event.getRightClicked();
-
+    public void onEntityInteract(PlayerInteractEntityEvent event) {
         if(event.getHand().equals(EquipmentSlot.HAND)) {
-            if(entity instanceof Player clickedAt) {
-                Inventory inv = Bukkit.createInventory(null, 36, entity.getCustomName() + "'s Overview");
+            if(event.getRightClicked() instanceof Player clickedAt) {
+                Inventory inv = Bukkit.createInventory(null, 36, clickedAt.getCustomName() + "'s Overview");
                 int i = 0;
                 while(i < 36) {
                     inv.setItem(i, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
@@ -662,6 +671,15 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 inv.setItem(13, head);
                 inv.setItem(22, MopsUtils.createItem(Material.GOLD_INGOT, ChatColor.GOLD + "EnderChest Value: " + getEnderchestValue(clickedAt)));
             }
+        }
+    }
+
+    @EventHandler
+    public void onAtEntityInteract(PlayerInteractAtEntityEvent event) {
+        Player player = event.getPlayer();
+        Entity entity = event.getRightClicked();
+
+        if(event.getHand().equals(EquipmentSlot.HAND)) {
 
             String dialogue = ChatColor.RED + "no dialogue found :p blehh (report to sircat)";
             boolean cancelDialogue = false;
@@ -931,7 +949,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         event.setCancelled(true);
 
         for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-            if(message.contains(onlinePlayer.getName())) {
+            if(message.contains(onlinePlayer.getName().toLowerCase(Locale.ROOT))) {
                 message = message.replaceAll(onlinePlayer.getName(), rank.get(onlinePlayer.getName()).getPrefix() + " " + onlinePlayer.getName() + ChatColor.RESET);
                 onlinePlayer.playSound(onlinePlayer.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
             }
@@ -962,11 +980,11 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         if (event.getClickedInventory() == mapGUI) {
             event.setCancelled(true);
         }
-        if (event.getClickedInventory() == gamesGUI) {
+        if (event.getClickedInventory() == gamesGUI.get(player)) {
             event.setCancelled(true);
             if(event.getClick().isShiftClick()) {
-                gamesGUI.remove(Material.COMPASS);
-                gamesGUI.remove(Material.GLISTERING_MELON_SLICE);
+                gamesGUI.get(player).remove(Material.COMPASS);
+                gamesGUI.get(player).remove(Material.GLISTERING_MELON_SLICE);
             }
             try {
                 event.getClickedInventory().getItem(event.getSlot()).getType();
@@ -1005,11 +1023,11 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1, 2);
             } catch (Exception ignored) { }
         }
-        if (event.getClickedInventory() == effectsGUI) {
+        if (event.getClickedInventory() == effectsGUI.get(player)) {
             event.setCancelled(true);
             if(event.getClick().isShiftClick()) {
-                effectsGUI.remove(Material.COMPASS);
-                effectsGUI.remove(Material.GLISTERING_MELON_SLICE);
+                effectsGUI.get(player).remove(Material.COMPASS);
+                effectsGUI.get(player).remove(Material.GLISTERING_MELON_SLICE);
             }
             try {
                 event.getClickedInventory().getItem(event.getSlot()).getType();
@@ -1151,9 +1169,6 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             player.getEnderChest().setItem(8, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
             player.getEnderChest().setItem(14, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
             player.getEnderChest().setItem(15, MopsUtils.createItem(Material.GOLD_INGOT, ChatColor.GOLD + "Value: " + value));
-//            if(!player.getEnderChest().getItem(16).getType().toString().contains("SHULKER_BOX")) {
-                player.getEnderChest().setItem(16, MopsUtils.createItem(Material.BROWN_STAINED_GLASS_PANE, "Backpack Slot"));
-//            }
             player.getEnderChest().setItem(17, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
             player.getEnderChest().setItem(23, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
             player.getEnderChest().setItem(24, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
@@ -1165,6 +1180,12 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             }
             if(player.getEnderChest().contains(Material.GLISTERING_MELON_SLICE)) {
                 player.getEnderChest().remove(Material.GLISTERING_MELON_SLICE);
+            }
+            if(player.getEnderChest().contains(Material.BROWN_STAINED_GLASS_PANE)) {
+                player.getEnderChest().remove(Material.BROWN_STAINED_GLASS_PANE);
+            }
+            if(!player.getEnderChest().getItem(16).getType().toString().contains("SHULKER_BOX")) {
+                player.getEnderChest().setItem(16, MopsUtils.createItem(Material.BROWN_STAINED_GLASS_PANE, MopsColor.BROWN.getColor() + "Backpack Slot"));
             }
         }, 5L);
     }
@@ -1181,6 +1202,75 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         } catch (Exception ignored) { }
 
         return value;
+    }
+
+    public void fillGamesGUI(Inventory inv) {
+        inv.setItem(0, MopsUtils.createItem(Material.GOLD_BLOCK, ChatColor.GOLD + "Spawn"));
+        inv.setItem(1, MopsUtils.createItem(Material.CALCITE, ChatColor.WHITE + "MopsPVP"));
+        inv.setItem(2, MopsUtils.createItem(Material.RED_WOOL, ChatColor.RED + "WoolBattle"));
+        inv.setItem(3, MopsUtils.createItem(Material.LIGHT_BLUE_SHULKER_BOX, ChatColor.AQUA + "Kits"));
+        inv.setItem(4, MopsUtils.createItem(Material.MELON, ChatColor.GREEN + "Market"));
+        inv.setItem(5, MopsUtils.createItem(Material.GREEN_TERRACOTTA, ChatColor.DARK_GREEN + "Missions"));
+        inv.setItem(6, MopsUtils.createItem(Material.LAPIS_BLOCK, ChatColor.BLUE + "MopsLobby Section 2"));
+    }
+
+    public void fillEffectsGUI(Inventory inv, Player player) {
+        ItemStack emeraldItem = new ItemStack(Material.EMERALD_BLOCK);
+        ItemMeta emeraldMeta = emeraldItem.getItemMeta();
+        emeraldMeta.setDisplayName(ChatColor.GREEN + "Emerald Cube");
+        List<String> emeraldLore = new ArrayList<>();
+        emeraldLore.add(ChatColor.GREEN + "Spawns a large emerald cube around you.");
+        emeraldMeta.setLore(emeraldLore);
+        emeraldItem.setItemMeta(emeraldMeta);
+
+        boolean andromedaBool = badge.get(player.getName()) == MopsBadge.SILLY;
+        ChatColor andromedaColor = ChatColor.RED;
+        if(andromedaBool) {
+            andromedaColor = ChatColor.GREEN;
+        }
+        ItemStack andromedaItem = new ItemStack(Material.FIRE_CHARGE);
+        ItemMeta andromedaMeta = andromedaItem.getItemMeta();
+        andromedaMeta.setDisplayName(andromedaColor + "Andromeda");
+        List<String> andromedaLore = new ArrayList<>();
+        andromedaLore.add(ChatColor.GOLD + "Spawns a large planet around you.");
+        andromedaLore.add(" ");
+        andromedaLore.add(ChatColor.GOLD + "⚡ Silly " + ChatColor.GRAY + "club members only effect.");
+        if(!andromedaBool) {
+            andromedaLore.add(ChatColor.RED + "You can't use this!");
+        }
+        andromedaMeta.setLore(andromedaLore);
+        andromedaItem.setItemMeta(andromedaMeta);
+
+
+        boolean infinityBool = badge.get(player.getName()) == MopsBadge.STAFF || player.getName().equals("SirCat07");
+        ChatColor infinityColor = ChatColor.RED;
+        if(infinityBool) {
+            infinityColor = ChatColor.GREEN;
+        }
+        ItemStack infinityItem = new ItemStack(Material.MUSIC_DISC_5);
+        ItemMeta infinityMeta = infinityItem.getItemMeta();
+        infinityMeta.setDisplayName(infinityColor + "Infinity");
+        infinityMeta.addItemFlags(ItemFlag.HIDE_POTION_EFFECTS);
+        List<String> infinityLore = new ArrayList<>();
+        infinityLore.add(ChatColor.DARK_AQUA + "Truly Infinite.");
+        infinityLore.add(" ");
+        infinityLore.add(ChatColor.BLUE + "⭐ Staff " + ChatColor.GRAY + "members only effect.");
+        if(!infinityBool) {
+            infinityLore.add(ChatColor.RED + "You can't use this!");
+        }
+        infinityMeta.setLore(infinityLore);
+        infinityItem.setItemMeta(infinityMeta);
+
+        ItemStack resetItem = new ItemStack(Material.BARRIER);
+        ItemMeta resetMeta = infinityItem.getItemMeta();
+        resetMeta.setDisplayName(ChatColor.RED + "Reset");
+        resetMeta.setLore(new ArrayList<String>(Collections.singletonList(ChatColor.GRAY + "Resets your effects.")));
+        resetItem.setItemMeta(resetMeta);
+
+        inv.setItem(0, emeraldItem);
+        inv.setItem(1, andromedaItem);
+        inv.setItem(2, infinityItem);
+        inv.setItem(26, resetItem);
     }
 
 
