@@ -214,9 +214,8 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                         double r = auraRadius.get(player);
                         double thing = (Math.cos(r-0.7)+Math.sin(r-0.87))*0.78;
 
-                        auraRadius.put(player, auraRadius.get(player) + 0.1);
-
                         if(doVillagerParticle) {
+                            auraRadius.put(player, auraRadius.get(player) + 0.1);
                             player.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, player.getLocation().add(thing, 0, 1), 1, 0, 0, 0, 0.001);
                             player.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, player.getLocation().add(-thing, 2, -1), 1, 0, 0, 0, 0.001);
                             player.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, player.getLocation().add(thing, 0, -1), 1, 0, 0, 0, 0.001);
@@ -402,7 +401,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
         Player player = event.getPlayer();
-        if(rank.get(player.getName()).getPermLevel() > 10) {
+        if(rank.get(player.getName()).getPermLevel() < 10) {
             event.setCancelled(true);
         }
     }
@@ -411,7 +410,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
         Player player = event.getPlayer();
-        if(rank.get(player.getName()).getPermLevel() > 10) {
+        if(rank.get(player.getName()).getPermLevel() < 10) {
             event.setCancelled(true);
         }
     }
@@ -612,7 +611,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 }
             }
 
-            if(rank.get(player.getName()).getPermLevel() > 10) {
+            if(rank.get(player.getName()).getPermLevel() < 10) {
                 if (!flippable.contains(event.getClickedBlock().getLocation())) {
                     if(!usables.contains(event.getClickedBlock().getLocation())) {
                         if(!openables.contains(event.getClickedBlock().getLocation())) {
@@ -811,7 +810,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     public void onDropItem(PlayerDropItemEvent event) {
         Player player = event.getPlayer();
 
-        if(rank.get(player.getName()).getPermLevel() > 10) {
+        if(rank.get(player.getName()).getPermLevel() < 10) {
             event.setCancelled(true);
         }
     }

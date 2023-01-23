@@ -4,8 +4,8 @@ import org.bukkit.ChatColor;
 
 public enum MopsBadge {
     NONE("", ""),
-    SILLY(ChatColor.GOLD + " ⚡ " + ChatColor.RESET, ChatColor.GOLD + "⚡ Silly" + ChatColor.GRAY + " - Badge\n \nIt means that this member is very silly."),
-    STAFF(ChatColor.BLUE + " ⭐ " + ChatColor.RESET, ChatColor.BLUE + "⭐ Staff" + ChatColor.GRAY + " - Badge\n \nIt means that this is a MopsNet staff member.");
+    SILLY(ChatColor.GOLD + "⚡" + ChatColor.RESET, ChatColor.GOLD + "⚡ Silly" + ChatColor.GRAY + " - Badge\n \nIt means that this member is very silly."),
+    STAFF(ChatColor.BLUE + "⭐" + ChatColor.RESET, ChatColor.BLUE + "⭐ Staff" + ChatColor.GRAY + " - Badge\n \nIt means that this is a MopsNet staff member.");
 
     final String symbol;
     final String description;
