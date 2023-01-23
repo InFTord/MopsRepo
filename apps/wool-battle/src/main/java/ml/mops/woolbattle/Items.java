@@ -110,6 +110,15 @@ public class Items {
         return item;
     }
 
+    public ItemStack leaveButton(String lang) {
+        ItemStack item = new ItemStack(Material.MANGROVE_DOOR);
+        ItemMeta meta = item.getItemMeta();
+        meta.displayName(plugin.getByLang(lang, "leaveButton.name"));
+        item.setItemMeta(meta);
+
+        return item;
+    }
+
     public ItemStack doubleJumpBoots(String lang, Teams team) {
         String colorString = team.getColorString;
         Color color = team.getLeatherColor;

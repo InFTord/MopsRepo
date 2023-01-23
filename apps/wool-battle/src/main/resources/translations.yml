@@ -91,40 +91,48 @@ woolbattle:
       eng: "§TCC§Double-Jump Boots"
   - doubleJumpBoots.lore:
       rus: |
-        &7Позволяют прыгать в воздухе. &8(Нужно нажать пробел в падении дважды)
+        &7Позволяет прыгать в воздухе,
+        &7при нажатии пробела дважды.
         &bСтоимость: 16 шерсти
       eng: |
-        &7Lets you jump in the air. &8(Requires double tapping space)
+        &7Lets you jump in the air,
+        &7when you double-tap space.
         &bCost: 16 wool
   - boomstick.name:
       rus: "&eВзрывная Палка"
       eng: "&eBoomstick"
   - boomstick.lore:
       rus: |
-        &7Палка откидывающая тебя назад. &e&lПКМ &r&8(Нужно наводится на блок)
+        &7Палка откидывающая тебя назад. &e&lПКМ
+        &c&lНУЖНО &r&7навестись на блок. &8(Можно спамить)
         &bСтоимость: 28 шерсти
       eng: |
-        &7Stick that throws you backwards. &e&lRIGHT CLICK &r&8(Aim on a block)
+        &7Stick that throws you backwards. &e&lRIGHT CLICK
+        &c&lREQUIRES &r&7aiming at a block. &8(Spammable)
         &bCost: 28 wool
   - boomstickMK2.name:
       rus: "&eВзрывная Палка (T2)"
       eng: "&eBoomstick (Mk II)"
   - boomstickMK2.lore:
       rus: |
-        &7Палка откидывающая тебя назад сильнее. &e&lПКМ &r&8(Нужно наводится на блок)
+        &7Палка откидывающая тебя назад сильнее. &e&lПКМ
+        &c&lНУЖНО &r&7навестись на блок. &8(Можно спамить)
         &bСтоимость: 40 шерсти
       eng: |
-        &7Stick that throws you backwards more. &e&lRIGHT CLICK &r&8(Aim on a block)
+        &7Stick that throws you backwards harder. &e&lRIGHT CLICK
+        &c&lREQUIRES &r&7aiming at a block. &8(Spammable)
         &bCost: 40 wool
   - boomstickMK3.name:
       rus: "&3Взрывная Палка (T3)"
       eng: "&3Boomstick (Mk III)"
   - boomstickMK3.lore:
       rus: |
-        &7Палка откидывающая тебя назад очень сильно. &e&lПКМ &r&8(Нужно наводится на блок)
+        &7Палка откидывающая тебя назад очень сильно. &e&lПКМ
+        &c&lНУЖНО &r&7навестись на блок. &8(Можно спамить)
         &bСтоимость: 120 шерсти
       eng: |
-        &7Stick that throws you with extreme force. &e&lRIGHT CLICK &r&8(Aim on a block)
+        &7Stick that throws you with extreme force. &e&lRIGHT CLICK
+        &c&lREQUIRES &r&7aiming at a block. &8(Spammable)
         &bCost: 120 wool
   - shears.name:
       rus: "&bНожницы"
@@ -153,15 +161,20 @@ woolbattle:
   - arrow.name:
       rus: "&7Стрела"
       eng: "&7Arrow"
+  - leaveButton.name:
+      rus: "&cВыйти"
+      eng: "&cLeave"
   - slimeball.name:
       rus: "&aНадувной Батут"
       eng: "&aInflatable Trampoline"
   - slimeball.lore:
       rus: |
-        &7Спасает тебя при падении. &e&lПКМ &8(Шифт чтобы прыгнуть выше)
+        &7Спасает тебя при падении. &e&lПКМ
+        &e&lШИФТ &7чтобы прыгнуть выше. Кулдаун: &b5с
         &bСтоимость: 160 шерсти
       eng: |
-        &7Saves you from falling. &e&lRIGHT CLICK &8(Shift to jump higher)
+        &7Saves you from falling. &e&lRIGHT CLICK
+        &e&lSHIFT &7to jump higher. Cooldown: &b5s
         &bCost: 160 wool
   - platform.name:
       rus: "&cПлатформа!"
@@ -198,7 +211,7 @@ woolbattle:
       eng: "&bAxe"
   - axe.lore:
       rus: |
-        &7Топор с большим кнокбеком.
+        &7Топор с большим откидыванием.
         &cНачальная прочность - 16
       eng: |
         &7Axe with a bigger knockback.

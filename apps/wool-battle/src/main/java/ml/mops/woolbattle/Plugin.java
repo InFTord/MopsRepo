@@ -738,6 +738,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 		if(!gameactive) {
 			mainboard.getTeam("nothing").addPlayer(player);
+			player.getInventory().setItem(8, new Items(this).leaveButton(lang));
 
 			player.teleport(new Location(mainworld, 9.5, 257, 9.5));
 			clearScoreboard(player);
@@ -883,7 +884,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 				chatRank = rank.get(player.getName()).getPrefix() + " ";
 			}
 			if(badge.get(player.getName()) != MopsBadge.NONE) {
-				badgeSymbol = badge.get(player.getName()).getSymbol() + " ";
+				badgeSymbol = " " + badge.get(player.getName()).getSymbol();
 				badgeDescription = badge.get(player.getName()).getDescription();
 			}
 
@@ -905,6 +906,10 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		Block block = event.getBlock();
 
 		if(block.getType() == Material.BRICKS) {
+			event.setCancelled(true);
+		}
+		if(block.getType() == Material.MANGROVE_DOOR) {
+			MopsUtils.sendToServer(this, player, "mopslobby");
 			event.setCancelled(true);
 		}
 
@@ -1094,7 +1099,9 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			ItemStack item = Objects.requireNonNull(event.getItem());
 
 			if (event.getAction().isRightClick()) {
-
+				if(item.getType() == Material.MANGROVE_DOOR) {
+					MopsUtils.sendToServer(this, player, "mopslobby");
+				}
 				if (slimeballs.contains(item)) {
 					Team team = mainboard.getPlayerTeam(player);
 					String teamname = team.getName();
@@ -1294,65 +1301,71 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 					Team team = mainboard.getPlayerTeam(player);
 					String teamname = team.getName();
 
-					boolean hasItems = woolRemove(120, player, teamname);
+					boolean hasItems = hasWool(120, player, teamname);
 
 					if (hasItems) {
+						if (stickCooldownTicks.get(player) == 0) {
+							woolRemove(120, player, teamname);
+							stickCooldownTicks.put(player, 1);
 
-						double x = player.getEyeLocation().getDirection().getX();
-						double z = player.getEyeLocation().getDirection().getZ();
-						double y = 0.8;
+							double x = player.getEyeLocation().getDirection().getX();
+							double z = player.getEyeLocation().getDirection().getZ();
+							double y = 0.8;
 
-						x = x * -4.6;
-						z = z * -4.6;
+							x = x * -4.6;
+							z = z * -4.6;
 
-						Location loc = event.getClickedBlock().getLocation();
-						loc.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, loc, 1);
-
-						player.playSound(player.getLocation(), Sound.BLOCK_PISTON_EXTEND, 1, 0);
-						player.playSound(player.getLocation(), Sound.WEATHER_RAIN, 0.5F, 0);
-						double finalZ = z;
-						double finalX = x;
-
-						Bukkit.getScheduler().runTaskLater(this, () -> {
+							Location loc = event.getClickedBlock().getLocation();
 							loc.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, loc, 1);
+
 							player.playSound(player.getLocation(), Sound.BLOCK_PISTON_EXTEND, 1, 0);
+							player.playSound(player.getLocation(), Sound.WEATHER_RAIN, 0.5F, 0);
+							double finalZ = z;
+							double finalX = x;
+
 							Bukkit.getScheduler().runTaskLater(this, () -> {
 								loc.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, loc, 1);
 								player.playSound(player.getLocation(), Sound.BLOCK_PISTON_EXTEND, 1, 0);
-								player.playSound(player.getLocation(), Sound.ENTITY_WARDEN_AGITATED, 1, 2);
 								Bukkit.getScheduler().runTaskLater(this, () -> {
 									loc.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, loc, 1);
-									player.playSound(player.getLocation(), Sound.ENTITY_WARDEN_SONIC_CHARGE, 1, 0);
-									player.playSound(player.getLocation(), Sound.ENTITY_WARDEN_SONIC_CHARGE, 1, 1);
+									player.playSound(player.getLocation(), Sound.BLOCK_PISTON_EXTEND, 1, 0);
+									player.playSound(player.getLocation(), Sound.ENTITY_WARDEN_AGITATED, 1, 2);
 									Bukkit.getScheduler().runTaskLater(this, () -> {
 										loc.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, loc, 1);
+										player.playSound(player.getLocation(), Sound.ENTITY_WARDEN_SONIC_CHARGE, 1, 0);
 										player.playSound(player.getLocation(), Sound.ENTITY_WARDEN_SONIC_CHARGE, 1, 1);
 										Bukkit.getScheduler().runTaskLater(this, () -> {
 											loc.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, loc, 1);
-											player.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_ROCKET_SHOOT, 1, 1);
-											player.playSound(player.getLocation(), Sound.ENTITY_WARDEN_SONIC_BOOM, 1, 0);
-											player.playSound(player.getLocation(), Sound.ENTITY_WARDEN_SONIC_BOOM, 1, 1);
-											player.playSound(player.getLocation(), Sound.ENTITY_WARDEN_SONIC_BOOM, 1, 2);
+											player.playSound(player.getLocation(), Sound.ENTITY_WARDEN_SONIC_CHARGE, 1, 1);
 											Bukkit.getScheduler().runTaskLater(this, () -> {
-												player.playSound(player.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, 1, 2);
-												for (Player players : Bukkit.getOnlinePlayers()) {
-													players.playSound(player.getLocation(), Sound.ITEM_TRIDENT_THUNDER, 1, 2);
-												}
-												player.playSound(player.getLocation(), Sound.ITEM_TRIDENT_THUNDER, 1, 2);
-												player.playSound(player.getLocation(), Sound.ITEM_TRIDENT_THUNDER, 1, 2);
-												player.playSound(player.getLocation(), Sound.ITEM_TOTEM_USE, 1, 1);
-												player.playSound(player.getLocation(), Sound.ENTITY_WARDEN_SONIC_BOOM, 1, 1);
-												player.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_ROCKET_LAUNCH, 1, 1);
-												player.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_ROCKET_LAUNCH, 1, 0);
-
 												loc.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, loc, 1);
-												player.setVelocity(player.getVelocity().add((new Vector(finalX, y, finalZ))));
-											}, 16L);
-										}, 8L);
-									}, 2L);
+												player.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_ROCKET_SHOOT, 1, 1);
+												player.playSound(player.getLocation(), Sound.ENTITY_WARDEN_SONIC_BOOM, 1, 0);
+												player.playSound(player.getLocation(), Sound.ENTITY_WARDEN_SONIC_BOOM, 1, 1);
+												player.playSound(player.getLocation(), Sound.ENTITY_WARDEN_SONIC_BOOM, 1, 2);
+												Bukkit.getScheduler().runTaskLater(this, () -> {
+													player.playSound(player.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, 1, 2);
+													for (Player players : Bukkit.getOnlinePlayers()) {
+														players.playSound(player.getLocation(), Sound.ITEM_TRIDENT_THUNDER, 1, 2);
+													}
+													player.playSound(player.getLocation(), Sound.ITEM_TRIDENT_THUNDER, 1, 2);
+													player.playSound(player.getLocation(), Sound.ITEM_TRIDENT_THUNDER, 1, 2);
+													player.playSound(player.getLocation(), Sound.ITEM_TOTEM_USE, 1, 1);
+													player.playSound(player.getLocation(), Sound.ENTITY_WARDEN_SONIC_BOOM, 1, 1);
+													player.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_ROCKET_LAUNCH, 1, 1);
+													player.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_ROCKET_LAUNCH, 1, 0);
+
+													loc.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, loc, 1);
+													player.setVelocity(player.getVelocity().add((new Vector(finalX, y, finalZ))));
+												}, 16L);
+											}, 8L);
+										}, 2L);
+									}, 4L);
 								}, 4L);
 							}, 4L);
-						}, 4L);
+						} else {
+							player.sendActionBar(getByLang(lang, "woolbattle.onCooldown"));
+						}
 					} else {
 						player.sendActionBar(getByLang(lang, "woolbattle.notEnoughWool"));
 					}
@@ -2441,6 +2454,8 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 	public void simulateHardmodeDeath(Player player) {
 		broadcastFinalDeath(player);
 
+		player.getInventory().setItem(8, new Items(this).leaveButton(lang));
+
 		player.addScoreboardTag("spectator");
 		player.hidePlayer(this, player);
 		player.setAllowFlight(true);
@@ -3336,6 +3351,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 										player.setFlying(false);
 										player.removeScoreboardTag("spectator");
 
+										player.getInventory().clear();
 										player.getInventory().setContents(finalSavedInventory);
 										player.updateInventory();
 

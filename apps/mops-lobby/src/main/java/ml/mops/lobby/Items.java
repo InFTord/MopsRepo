@@ -4,6 +4,7 @@ import ml.mops.utils.MopsUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Material;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
@@ -62,11 +63,12 @@ public class Items {
     public ItemStack mopsChemistrySet() {
         ItemStack item = new ItemStack(Material.POTION);
         PotionMeta meta = ((PotionMeta) item.getItemMeta());
+        meta.addItemFlags(ItemFlag.HIDE_POTION_EFFECTS);
         meta.setColor(Color.fromRGB(55, 207, 50));
         meta.setDisplayName(ChatColor.GREEN + "Mops Chemistry Set!");
         List<String> lore = new ArrayList<>();
         lore.add(ChatColor.GRAY + "Brand new Chemistry Set from Mops!");
-        lore.add(ChatColor.RED + "<" + ChatColor.GRAY + "<" + ChatColor.YELLOW + "<" + ChatColor.GRAY + " Now contains: " + ChatColor.GREEN + "" + ChatColor.BOLD + "URANIUM-238! " + ChatColor.YELLOW + ">" + ChatColor.GOLD + ">" + ChatColor.YELLOW + ">");
+        lore.add(ChatColor.RED + "<" + ChatColor.GOLD + "<" + ChatColor.YELLOW + "<" + ChatColor.GRAY + " Now contains: " + ChatColor.GREEN + "" + ChatColor.BOLD + "URANIUM-238! " + ChatColor.YELLOW + ">" + ChatColor.GOLD + ">" + ChatColor.RED + ">");
         lore.add(" ");
         lore.add(ChatColor.DARK_GREEN + "Ever wanted to " + ChatColor.GREEN + "shine" + ChatColor.DARK_GREEN + "? Well, now you can!");
         lore.add(ChatColor.RED + "Right-Click" + ChatColor.GRAY + " to activate!");

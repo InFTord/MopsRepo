@@ -4,12 +4,14 @@ import club.minnced.discord.webhook.WebhookClient;
 import club.minnced.discord.webhook.send.WebhookEmbed;
 import club.minnced.discord.webhook.send.WebhookEmbedBuilder;
 import ml.mops.base.commands.Commands;
+import ml.mops.base.maps.Map;
 import ml.mops.network.MopsBadge;
 import ml.mops.network.MopsRank;
 import ml.mops.utils.MopsUtils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import org.bukkit.block.Block;
+import org.bukkit.block.ShulkerBox;
 import org.bukkit.entity.Player;
 import org.bukkit.*;
 import org.bukkit.command.Command;
@@ -33,7 +35,9 @@ import org.bukkit.event.vehicle.VehicleDamageEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.BlockStateMeta;
 import org.bukkit.inventory.meta.BookMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.material.MaterialData;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
@@ -113,7 +117,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         flippable.add(new Location(mainworld, -81, 8, -202));
         flippable.add(new Location(mainworld, -84, 9, -205));
         flippable.add(new Location(mainworld, -84, 10, -205));
-        
+
         usables.add(new Location(mainworld, -77, 9, -157));
         usables.add(new Location(mainworld, -95, 10, -170));
         usables.add(new Location(mainworld, 151, 7, 147));
@@ -638,10 +642,26 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     @EventHandler
     public void onEntityInteract(PlayerInteractAtEntityEvent event) {
         Player player = event.getPlayer();
-
         Entity entity = event.getRightClicked();
 
         if(event.getHand().equals(EquipmentSlot.HAND)) {
+            if(entity instanceof Player clickedAt) {
+                Inventory inv = Bukkit.createInventory(null, 36, entity.getCustomName() + "'s Overview");
+                int i = 0;
+                while(i < 36) {
+                    inv.setItem(i, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
+                    i++;
+                }
+
+                ItemStack head = new ItemStack(Material.PLAYER_HEAD);
+                SkullMeta meta = (SkullMeta) head.getItemMeta();
+                meta.setOwner(clickedAt.getName());
+                meta.setDisplayName(ChatColor.YELLOW + clickedAt.getName() + "'s Profile");
+                head.setItemMeta(meta);
+
+                inv.setItem(13, head);
+                inv.setItem(22, MopsUtils.createItem(Material.GOLD_INGOT, ChatColor.GOLD + "EnderChest Value: " + getEnderchestValue(clickedAt)));
+            }
 
             String dialogue = ChatColor.RED + "no dialogue found :p blehh (report to sircat)";
             boolean cancelDialogue = false;
@@ -694,7 +714,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                             player.playSound(player.getLocation(), Sound.ENTITY_WOLF_GROWL, 10, 0);
                             player.playSound(player.getLocation(), Sound.ENTITY_WOLF_AMBIENT, 10, 0);
 
-                            missionDogeDialogue.put(player, missionDogeDialogue.get(player) + 1);
+                            missionDogeDialogue.put(player, 0);
                         }
                     }
                 }
@@ -776,8 +796,6 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                     player.sendMessage(ChatColor.GRAY + "This furnace is the only one in the hub. It smelts corn for the Theatre, or fish for the Fisherman. It also needs to be fueled, however, not by coal. It uses MopsCoins. But the Doge are not always smart. They tried to put all sorts of items in there to fuel the Smelter. And sometimes when you put in MopsCoins, it gives you some cool items. It may still give you something!");
                 }
             }
-
-
             if (entity.getScoreboardTags().contains("adminfrog")) {
                 dialogue = "It is Friday, my dudes.";
                 player.playSound(player.getLocation(), Sound.ENTITY_FROG_AMBIENT, 10, 1);
@@ -856,6 +874,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         deliveryDogeDialogue.putIfAbsent(player, 0);
         woolbattleDogeDialogue.putIfAbsent(player, 0);
         missionDogeDialogue.putIfAbsent(player, 0);
+        realPlantDialogue.putIfAbsent(player, 0);
         pigeonDialogue.putIfAbsent(player, 0);
 
         player.setGameMode(GameMode.ADVENTURE);
@@ -901,7 +920,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             chatRank = rank.get(player.getName()).getPrefix() + " ";
         }
         if(badge.get(player.getName()) != MopsBadge.NONE) {
-            badgeSymbol = badge.get(player.getName()).getSymbol() + " ";
+            badgeSymbol = " " + badge.get(player.getName()).getSymbol();
             badgeDescription = badge.get(player.getName()).getDescription();
         }
 
@@ -1023,11 +1042,28 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         }
 
         if(event.getInventory().getType() == InventoryType.ENDER_CHEST) {
-            if((event.getSlot() >= 5 && event.getSlot() <= 8) || (event.getSlot() >= 14 && event.getSlot() <= 17) || (event.getSlot() >= 23 && event.getSlot() <= 26)) {
+            if((event.getSlot() >= 5 && event.getSlot() <= 8 && event.getSlotType().equals(InventoryType.SlotType.CONTAINER)) || (event.getSlot() >= 14 && event.getSlot() <= 15 && event.getSlotType().equals(InventoryType.SlotType.CONTAINER)) || (event.getSlot() == 17 && event.getSlotType().equals(InventoryType.SlotType.CONTAINER)) || (event.getSlot() >= 23 && event.getSlot() <= 26 && event.getSlotType().equals(InventoryType.SlotType.CONTAINER))) {
                 event.setCancelled(true);
             }
             manipulateEnderChest(player);
         }
+
+//        if(event.getCursor().getType() != Material.SHULKER_BOX) {
+//            try {
+//                if(event.getCursor().getItemMeta().getLore().contains(ChatColor.DARK_GRAY + "(Backpack)")) {
+//                    event.setCancelled(true);
+//                    event.setCurrentItem(event.getCursor());
+//                } else {
+//                    event.setCancelled(true);
+//                }
+//            } catch (Exception ignored) { }
+//        }
+
+//        if(event.getCurrentItem().getType() != Material.SHULKER_BOX) {
+//            try {
+//
+//            } catch (Exception ignored) { }
+//        }
     }
 
     @EventHandler
@@ -1108,7 +1144,9 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             player.getEnderChest().setItem(8, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
             player.getEnderChest().setItem(14, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
             player.getEnderChest().setItem(15, MopsUtils.createItem(Material.GOLD_INGOT, ChatColor.GOLD + "Value: " + value));
-            player.getEnderChest().setItem(16, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
+//            if(!player.getEnderChest().getItem(16).getType().toString().contains("SHULKER_BOX")) {
+                player.getEnderChest().setItem(16, MopsUtils.createItem(Material.BROWN_STAINED_GLASS_PANE, "Backpack Slot"));
+//            }
             player.getEnderChest().setItem(17, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
             player.getEnderChest().setItem(23, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
             player.getEnderChest().setItem(24, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
@@ -1129,7 +1167,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
         try {
             for (ItemStack item : player.getEnderChest().getContents()) {
-                if (item.getItemMeta().getDisplayName().equals(ChatColor.RED + "kuudra washing machine")) {
+                if (item.getItemMeta().getDisplayName().equals(ChatColor.RED + "Kuudra Washing Machine 2.0")) {
                     value += 1000;
                 }
             }
@@ -1137,6 +1175,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
         return value;
     }
+
 
     public static int getAmount(Inventory inventory, ItemStack item) {
         if (item == null)
