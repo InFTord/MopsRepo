@@ -4,15 +4,14 @@ import club.minnced.discord.webhook.WebhookClient;
 import club.minnced.discord.webhook.send.WebhookEmbed;
 import club.minnced.discord.webhook.send.WebhookEmbedBuilder;
 import ml.mops.base.commands.Commands;
-import ml.mops.base.maps.Map;
 import ml.mops.network.MopsBadge;
 import ml.mops.network.MopsRank;
 import ml.mops.utils.MopsColor;
+import ml.mops.utils.MopsFiles;
 import ml.mops.utils.MopsUtils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import org.bukkit.block.Block;
-import org.bukkit.block.ShulkerBox;
 import org.bukkit.entity.Player;
 import org.bukkit.*;
 import org.bukkit.command.Command;
@@ -37,7 +36,6 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.BlockStateMeta;
 import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
@@ -64,18 +62,13 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     HashMap<Player, Integer> pigeonDialogue = new HashMap<>();
     HashMap<Player, Integer> realPlantDialogue = new HashMap<>();
 
-    HashMap<String, Integer> rawCoins = new HashMap<>();
-    HashMap<Player, Integer> coins = new HashMap<>();
-    HashMap<String, MopsRank> rank = new HashMap<>();
-    HashMap<String, MopsBadge> badge = new HashMap<>();
-
     HashMap<Player, String> aura = new HashMap<>();
     HashMap<Player, Integer> auraTimer = new HashMap<>();
     HashMap<Player, Double> auraRadius = new HashMap<>();
 
     HashMap<Player, Inventory> gamesGUI = new HashMap<>();
     HashMap<Player, Inventory> effectsSelector = new HashMap<>();
-    HashMap<Player, Inventory> particlesGUI = new HashMap<>();
+    HashMap<Player, Inventory> effectsGUI = new HashMap<>();
     HashMap<Player, Inventory> auraGUI = new HashMap<>();
     List<Inventory> overviewInventories = new ArrayList<>();
 
@@ -167,7 +160,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
         Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
             for(Player player : Bukkit.getServer().getOnlinePlayers()) {
-                Scoreboard lobbyscoreboard = new LobbyScoreboard().generateLobbyScoreboard(player, mainworld.getTime(), coins, rank);
+                Scoreboard lobbyscoreboard = new LobbyScoreboard().generateLobbyScoreboard(player, mainworld.getTime());
                 player.setScoreboard(lobbyscoreboard);
 
                 if(auraTimer.get(player) != 0) {
@@ -310,21 +303,6 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
         ball = stand;
 
-        String[] coinList = MopsUtils.readFile("D:\\servers\\MopsNetwork\\coins.txt").split("\n");
-        for (String coinRow : coinList) {
-            String[] string = coinRow.split(":");
-            rawCoins.put(string[0], Integer.parseInt(string[1]));
-        }
-        String[] rankList = MopsUtils.readFile("D:\\servers\\MopsNetwork\\ranks.txt").split("\n");
-        for (String rankRow : rankList) {
-            String[] string = rankRow.split(":");
-            rank.put(string[0], MopsRank.valueOf(string[1]));
-        }
-        String[] badgeList = MopsUtils.readFile("D:\\servers\\MopsNetwork\\badges.txt").split("\n");
-        for (String badgeRow : badgeList) {
-            String[] string = badgeRow.split(":");
-            badge.put(string[0], MopsBadge.valueOf(string[1]));
-        }
 
         WebhookClient client = WebhookClient.withUrl(new String(Base64.getDecoder().decode(MopsUtils.statusText()), StandardCharsets.UTF_8));
 
@@ -349,17 +327,6 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             player.kickPlayer(ChatColor.YELLOW + "Server closed.\nShortly will be back on, maybe.");
         }
 
-        try {
-            for(Player player : coins.keySet()) {
-                rawCoins.put(player.getName(), coins.get(player));
-            }
-            StringBuilder largeText = new StringBuilder();
-            for(String name : rawCoins.keySet()) {
-                largeText.append(name).append(":").append(rawCoins.get(name)).append("\n");
-            }
-            MopsUtils.writeFile("D:\\servers\\MopsNetwork\\coins.txt", largeText.toString());
-        } catch (Exception ignored) { }
-
         WebhookClient client = WebhookClient.withUrl(new String(Base64.getDecoder().decode(MopsUtils.statusText()), StandardCharsets.UTF_8));
 
         WebhookEmbed embed = new WebhookEmbedBuilder()
@@ -382,7 +349,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     public boolean lobbyCommands(CommandSender sender, Command command, @NotNull String label, String[] args) {
         Player player = (Player) sender;
 
-        if(rank.get(player.getName()).getPermLevel() > 10) {
+        if(MopsFiles.getRank(player).getPermLevel() > 10) {
             if (command.getName().equals("e")) {
                 switch (args[0]) {
                     case "compass" -> player.getInventory().addItem(new Items().compass());
@@ -426,7 +393,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
         Player player = event.getPlayer();
-        if(rank.get(player.getName()).getPermLevel() < 10) {
+        if(MopsFiles.getRank(player).getPermLevel() < 10) {
             event.setCancelled(true);
         }
     }
@@ -435,7 +402,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
         Player player = event.getPlayer();
-        if(rank.get(player.getName()).getPermLevel() < 10) {
+        if(MopsFiles.getRank(player).getPermLevel() < 10) {
             event.setCancelled(true);
         }
     }
@@ -468,7 +435,9 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 if (action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK) {
                     if (itemInHand.getItemMeta().getDisplayName().equals(ChatColor.GOLD + "MopsCoin")) {
                         itemInHand.setAmount(itemInHand.getAmount() - 1);
-                        coins.put(player, coins.get(player) + 1);
+                        MopsFiles.setCoins(player, MopsFiles.getCoins(player)+1);
+                        player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
+                        player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_BREAK, 1, 2);
 
                         event.setCancelled(true);
                     }
@@ -503,11 +472,11 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             if(action == Action.RIGHT_CLICK_BLOCK) {
                 // банкомат
                 if(atmButtons.contains(event.getClickedBlock().getLocation())) {
-                    if(coins.get(player) != 0) {
+                    if(MopsFiles.getCoins(player) != 0) {
                         player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
                         player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_BREAK, 1, 2);
 
-                        coins.put(player, coins.get(player) - 1);
+                        MopsFiles.setCoins(player, MopsFiles.getCoins(player)-1);
                         player.getInventory().addItem(new Items().mopsCoin());
                     } else {
                         player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 1, 0);
@@ -516,7 +485,6 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
                         player.sendMessage(ChatColor.RED + "No coins left!");
                     }
-                    rawCoins.put(player.getName(), coins.get(player));
                 }
 
                 // печка
@@ -646,7 +614,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 }
             }
 
-            if(rank.get(player.getName()).getPermLevel() < 10) {
+            if(MopsFiles.getRank(player).getPermLevel() < 10) {
                 if (!flippable.contains(event.getClickedBlock().getLocation())) {
                     if(!usables.contains(event.getClickedBlock().getLocation())) {
                         if(!openables.contains(event.getClickedBlock().getLocation())) {
@@ -876,20 +844,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             }, 4L);
         }, 50L);
 
-        String playerName = player.getName();
-        if(rawCoins.get(playerName) == null) {
-            coins.putIfAbsent(player, 0);
-        } else {
-            coins.putIfAbsent(player, rawCoins.get(playerName));
-        }
-        if(rank.get(playerName) == null) {
-            rank.putIfAbsent(playerName, MopsRank.NONE);
-        }
-        if(badge.get(playerName) == null) {
-            badge.putIfAbsent(playerName, MopsBadge.NONE);
-        }
-
-        player.setPlayerListName((rank.get(playerName).getPrefix() + " " + player.getName() + " " + badge.get(playerName).getSymbol()).trim());
+        player.setPlayerListName(MopsFiles.getRank(player).getPrefix() + " " + player.getName() + " " + MopsFiles.getBadge(player).getSymbol().trim());
 
         manipulateEnderChest(player);
 
@@ -924,15 +879,13 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         for(Player allPlayers : Bukkit.getOnlinePlayers()) {
             allPlayers.sendMessage( ChatColor.GOLD + "[MopsPVPs] " + ChatColor.YELLOW + player.getName() + " left the game. " + ChatColor.AQUA + ":(");
         }
-
-        rawCoins.put(player.getName(), coins.get(player));
     }
 
     @EventHandler
     public void onDropItem(PlayerDropItemEvent event) {
         Player player = event.getPlayer();
 
-        if(rank.get(player.getName()).getPermLevel() < 10) {
+        if(MopsFiles.getRank(player).getPermLevel() < 10) {
             event.setCancelled(true);
         }
     }
@@ -946,25 +899,25 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         String badgeSymbol = "";
         String badgeDescription = "";
 
-        if(rank.get(player.getName()) == MopsRank.NONE) {
+        if(MopsFiles.getRank(player) == MopsRank.NONE) {
             name = ChatColor.GRAY + player.getName();
         } else {
-            chatRank = rank.get(player.getName()).getPrefix() + " ";
+            chatRank = MopsFiles.getRank(player).getPrefix() + " ";
         }
-        if(badge.get(player.getName()) != MopsBadge.NONE) {
-            badgeSymbol = " " + badge.get(player.getName()).getSymbol();
-            badgeDescription = badge.get(player.getName()).getDescription();
+        if(MopsFiles.getBadge(player) != MopsBadge.NONE) {
+            badgeSymbol = " " + MopsFiles.getBadge(player).getSymbol();
+            badgeDescription = MopsFiles.getBadge(player).getDescription();
         }
 
         String message = event.getMessage().replaceAll(":skull:", ChatColor.GRAY + "☠" + ChatColor.RESET);
-        if(rank.get(player.getName()).getPermLevel() > 10) {
+        if(MopsFiles.getRank(player).getPermLevel() > 10) {
             message = MopsUtils.convertColorCodes(message);
         }
         event.setCancelled(true);
 
         for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
             if(message.toLowerCase(Locale.ROOT).contains(onlinePlayer.getName().toLowerCase(Locale.ROOT))) {
-                message = message.replaceAll(onlinePlayer.getName().toLowerCase(Locale.ROOT), rank.get(onlinePlayer.getName()).getPrefix() + " " + onlinePlayer.getName() + ChatColor.RESET);
+                message = message.replaceAll(onlinePlayer.getName().toLowerCase(Locale.ROOT), MopsFiles.getRank(onlinePlayer).getPrefix() + " " + onlinePlayer.getName() + ChatColor.RESET);
                 onlinePlayer.playSound(onlinePlayer.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
             }
         }
@@ -1061,7 +1014,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 }
             } catch (Exception ignored) { }
         }
-        if (event.getClickedInventory() == particlesGUI.get(player)) {
+        if (event.getClickedInventory() == effectsGUI.get(player)) {
             event.setCancelled(true);
         }
         if (event.getClickedInventory() == effectsSelector.get(player)) {
@@ -1070,8 +1023,8 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             if(event.getSlot() == 12) {
                 Inventory inv = Bukkit.createInventory(null, 27, ChatColor.WHITE + "work in progres :p blehhh");
 
-                particlesGUI.put(player, inv);
-                player.openInventory(particlesGUI.get(player));
+                effectsGUI.put(player, inv);
+                player.openInventory(effectsGUI.get(player));
             }
             if(event.getSlot() == 14) {
                 Inventory inv = Bukkit.createInventory(null, 36, "Select Your Aura");
@@ -1096,7 +1049,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                         player.playSound(player.getLocation(), Sound.ENTITY_ALLAY_ITEM_GIVEN, 1, 1);
                     }
                     case 11 -> {
-                        if(badge.get(player.getName()) == MopsBadge.SILLY) {
+                        if(MopsFiles.getBadge(player) == MopsBadge.SILLY) {
                             aura.put(player, "andromeda");
                             player.playSound(player.getLocation(), Sound.BLOCK_FIRE_AMBIENT, 2, 2);
                             player.playSound(player.getLocation(), Sound.ENTITY_ALLAY_ITEM_GIVEN, 1, 1);
@@ -1106,7 +1059,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                         }
                     }
                     case 12 -> {
-                        if(badge.get(player.getName()) == MopsBadge.STAFF || player.getName().equals("SirCat07")) {
+                        if(MopsFiles.getBadge(player) == MopsBadge.STAFF || player.getName().equals("SirCat07")) {
                             aura.put(player, "infinity");
                             player.playSound(player.getLocation(), Sound.ENTITY_ALLAY_ITEM_GIVEN, 1, 1);
                         } else {
@@ -1220,6 +1173,11 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         event.setCancelled(true);
     }
 
+    @EventHandler
+    public void onDrinkEvent(PlayerItemConsumeEvent event) {
+        event.setCancelled(true);
+    }
+
     public void announceRareDrop(String string, Player player) {
         for(Player allPlayers : Bukkit.getOnlinePlayers()) {
             allPlayers.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
@@ -1253,13 +1211,27 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             if(player.getEnderChest().contains(Material.BROWN_STAINED_GLASS_PANE)) {
                 player.getEnderChest().remove(Material.BROWN_STAINED_GLASS_PANE);
             }
-            player.getEnderChest().setItem(16, MopsUtils.createItem(Material.BROWN_STAINED_GLASS_PANE, MopsColor.BROWN.getColor() + "Backpack Slot"));
+
+            try {
+                if (!player.getEnderChest().getItem(16).getType().toString().contains("SHULKER_BOX") && !(player.getEnderChest().getItem(16).getType() == Material.BROWN_STAINED_GLASS_PANE)) {
+                    player.getEnderChest().setItem(16, MopsUtils.createItem(Material.BROWN_STAINED_GLASS_PANE, MopsColor.BROWN.getColor() + "Backpack Slot"));
+                }
+            } catch (Exception e) {
+                player.getEnderChest().setItem(16, MopsUtils.createItem(Material.BROWN_STAINED_GLASS_PANE, MopsColor.BROWN.getColor() + "Backpack Slot"));
+            }
         }, 5L);
     }
 
     public int getEnderchestValue(Player player) {
         int value = getAmount(player.getEnderChest(), new Items().mopsCoin());
-        value += getAmount(player.getEnderChest(), new Items().kuudraWashingMachine());
+
+        for(ItemStack item : player.getEnderChest().getContents()) {
+            try {
+                if(item.getItemMeta().getDisplayName().contains(ChatColor.RED + "Kuudra Washing Machine 2.0")) {
+                    value += item.getAmount()*1000;
+                }
+            } catch (Exception ignored) { }
+        }
 
         return value;
     }
@@ -1278,7 +1250,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         inv.setItem(9, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
         inv.setItem(17, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
         inv.setItem(18, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
-        inv.setItem(24, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
+        inv.setItem(26, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
 
         inv.setItem(10, MopsUtils.createItem(Material.GOLD_BLOCK, ChatColor.GOLD + "Spawn"));
         inv.setItem(11, MopsUtils.createItem(Material.CALCITE, ChatColor.WHITE + "MopsPVP"));
@@ -1321,7 +1293,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         emeraldMeta.setLore(emeraldLore);
         emeraldItem.setItemMeta(emeraldMeta);
 
-        boolean andromedaBool = badge.get(player.getName()) == MopsBadge.SILLY;
+        boolean andromedaBool = MopsFiles.getBadge(player) == MopsBadge.SILLY;
         ChatColor andromedaColor = ChatColor.RED;
         if(andromedaBool) {
             andromedaColor = ChatColor.GREEN;
@@ -1340,7 +1312,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         andromedaItem.setItemMeta(andromedaMeta);
 
 
-        boolean infinityBool = badge.get(player.getName()) == MopsBadge.STAFF || player.getName().equals("SirCat07");
+        boolean infinityBool = MopsFiles.getBadge(player) == MopsBadge.STAFF || player.getName().equals("SirCat07");
         ChatColor infinityColor = ChatColor.RED;
         if(infinityBool) {
             infinityColor = ChatColor.GREEN;
@@ -1371,6 +1343,80 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         inv.setItem(35, resetItem);
     }
 
+//    public void fillEffectsGUI(Inventory inv, Player player) {
+//        int i = 0;
+//        while(i < 9) {
+//            inv.setItem(i, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
+//            i++;
+//        }
+//        int i2 = 27;
+//        while(i2 < 36) {
+//            inv.setItem(i2, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
+//            i2++;
+//        }
+//        inv.setItem(9, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
+//        inv.setItem(17, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
+//        inv.setItem(18, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
+//        inv.setItem(26, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
+//
+//        ItemStack emeraldItem = new ItemStack(Material.EMERALD_BLOCK);
+//        ItemMeta emeraldMeta = emeraldItem.getItemMeta();
+//        emeraldMeta.setDisplayName(ChatColor.GREEN + "Emerald Cube");
+//        List<String> emeraldLore = new ArrayList<>();
+//        emeraldLore.add(ChatColor.GREEN + "Spawns a large emerald cube around you.");
+//        emeraldMeta.setLore(emeraldLore);
+//        emeraldItem.setItemMeta(emeraldMeta);
+//
+//        boolean andromedaBool = badge.get(player.getName()) == MopsBadge.SILLY;
+//        ChatColor andromedaColor = ChatColor.RED;
+//        if(andromedaBool) {
+//            andromedaColor = ChatColor.GREEN;
+//        }
+//        ItemStack andromedaItem = new ItemStack(Material.FIRE_CHARGE);
+//        ItemMeta andromedaMeta = andromedaItem.getItemMeta();
+//        andromedaMeta.setDisplayName(andromedaColor + "Andromeda");
+//        List<String> andromedaLore = new ArrayList<>();
+//        andromedaLore.add(ChatColor.GOLD + "Spawns a large planet around you.");
+//        andromedaLore.add(" ");
+//        andromedaLore.add(ChatColor.GOLD + "⚡ Silly " + ChatColor.GRAY + "club members only aura.");
+//        if(!andromedaBool) {
+//            andromedaLore.add(ChatColor.RED + "You can't use this!");
+//        }
+//        andromedaMeta.setLore(andromedaLore);
+//        andromedaItem.setItemMeta(andromedaMeta);
+//
+//
+//        boolean infinityBool = badge.get(player.getName()) == MopsBadge.STAFF || player.getName().equals("SirCat07");
+//        ChatColor infinityColor = ChatColor.RED;
+//        if(infinityBool) {
+//            infinityColor = ChatColor.GREEN;
+//        }
+//        ItemStack infinityItem = new ItemStack(Material.MUSIC_DISC_5);
+//        ItemMeta infinityMeta = infinityItem.getItemMeta();
+//        infinityMeta.setDisplayName(infinityColor + "Infinity");
+//        infinityMeta.addItemFlags(ItemFlag.HIDE_POTION_EFFECTS);
+//        List<String> infinityLore = new ArrayList<>();
+//        infinityLore.add(ChatColor.DARK_AQUA + "Truly Infinite.");
+//        infinityLore.add(" ");
+//        infinityLore.add(ChatColor.BLUE + "⭐ Staff " + ChatColor.GRAY + "members only aura.");
+//        if(!infinityBool) {
+//            infinityLore.add(ChatColor.RED + "You can't use this!");
+//        }
+//        infinityMeta.setLore(infinityLore);
+//        infinityItem.setItemMeta(infinityMeta);
+//
+//        ItemStack resetItem = new ItemStack(Material.BARRIER);
+//        ItemMeta resetMeta = infinityItem.getItemMeta();
+//        resetMeta.setDisplayName(ChatColor.RED + "Reset");
+//        resetMeta.setLore(new ArrayList<String>(Collections.singletonList(ChatColor.GRAY + "Resets your auras.")));
+//        resetItem.setItemMeta(resetMeta);
+//
+//        inv.setItem(10, emeraldItem);
+//        inv.setItem(11, andromedaItem);
+//        inv.setItem(12, infinityItem);
+//        inv.setItem(35, resetItem);
+//    }
+
     public void fillEffectSelector(Inventory inv) {
         int i = 0;
         while(i < 27) {
@@ -1378,17 +1424,17 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             i++;
         }
 
-        ItemStack particles = MopsUtils.createItem(Material.GOLDEN_CARROT, ChatColor.GOLD + "Effects");
-        ItemMeta particlesMeta = particles.getItemMeta();
-        particlesMeta.addItemFlags(ItemFlag.HIDE_POTION_EFFECTS);
-        particles.setItemMeta(particlesMeta);
+        ItemStack effects = MopsUtils.createItem(Material.GOLDEN_CARROT, ChatColor.GOLD + "Effects");
+        ItemMeta effectsMeta = effects.getItemMeta();
+        effectsMeta.addItemFlags(ItemFlag.HIDE_POTION_EFFECTS);
+        effects.setItemMeta(effectsMeta);
 
         ItemStack auras = MopsUtils.createItem(Material.MUSIC_DISC_5, ChatColor.DARK_AQUA + "Auras");
         ItemMeta auraMeta = auras.getItemMeta();
         auraMeta.addItemFlags(ItemFlag.HIDE_POTION_EFFECTS);
         auras.setItemMeta(auraMeta);
 
-        inv.setItem(12, particles);
+        inv.setItem(12, effects);
         inv.setItem(14, auras);
     }
 
