@@ -813,8 +813,8 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		}
 
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-			if(msg.contains(onlinePlayer.getName().toLowerCase(Locale.ROOT))) {
-				msg = msg.replaceAll(onlinePlayer.getName(), rank.get(onlinePlayer.getName()).getPrefix() + " " + onlinePlayer.getName() + ChatColor.RESET);
+			if(msg.toLowerCase(Locale.ROOT).contains(onlinePlayer.getName().toLowerCase(Locale.ROOT))) {
+				msg = msg.replaceAll(onlinePlayer.getName().toLowerCase(Locale.ROOT), rank.get(onlinePlayer.getName()).getPrefix() + " " + onlinePlayer.getName() + ChatColor.RESET);
 				onlinePlayer.playSound(onlinePlayer.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
 			}
 		}
@@ -918,6 +918,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			event.setCancelled(true);
 		}
 		if(block.getType() == Material.MANGROVE_DOOR) {
+			player.sendMessage(ChatColor.RED + "Leaving the server...");
 			MopsUtils.sendToServer(this, player, "mopslobby");
 			event.setCancelled(true);
 		}
@@ -1109,7 +1110,9 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 			if (event.getAction().isRightClick()) {
 				if(item.getType() == Material.MANGROVE_DOOR) {
+					player.sendMessage(ChatColor.RED + "Leaving the server...");
 					MopsUtils.sendToServer(this, player, "mopslobby");
+					event.setCancelled(true);
 				}
 				if (slimeballs.contains(item)) {
 					Team team = mainboard.getPlayerTeam(player);
