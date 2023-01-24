@@ -170,12 +170,12 @@ woolbattle:
   - slimeball.lore:
       rus: |
         &7Спасает тебя при падении. &e&lПКМ
-        &e&lШИФТ &7чтобы прыгнуть выше. Кулдаун: &b5с
-        &bСтоимость: 160 шерсти
+        &r&e&lШИФТ &7чтобы прыгнуть выше. Кулдаун: &b5с
+        &r&bСтоимость: 160 шерсти
       eng: |
         &7Saves you from falling. &e&lRIGHT CLICK
-        &e&lSHIFT &7to jump higher. Cooldown: &b5s
-        &bCost: 160 wool
+        &r&e&lSHIFT &7to jump higher. Cooldown: &b5s
+        &r&bCost: 160 wool
   - platform.name:
       rus: "&cПлатформа!"
       eng: "&cPlatform!"

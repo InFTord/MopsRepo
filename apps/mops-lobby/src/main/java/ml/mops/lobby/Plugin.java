@@ -450,7 +450,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             if (action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK || action == Action.LEFT_CLICK_BLOCK || action == Action.LEFT_CLICK_AIR) {
                 ItemStack itemInHand = player.getItemInHand();
                 if (itemInHand.getItemMeta().getDisplayName().equals(ChatColor.GRAY + "Compass")) {
-                    Inventory inv = Bukkit.createInventory(null, 18, "Select Your Destination");
+                    Inventory inv = Bukkit.createInventory(null, 36, "Select Your Destination");
                     fillGamesGUI(inv, player);
 
                     gamesGUI.put(player, inv);
@@ -1091,11 +1091,11 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 event.getClickedInventory().getItem(event.getSlot()).getType();
 
                 switch (event.getSlot()) {
-                    case 0 -> {
+                    case 10 -> {
                         aura.put(player, "cube");
                         player.playSound(player.getLocation(), Sound.ENTITY_ALLAY_ITEM_GIVEN, 1, 1);
                     }
-                    case 1 -> {
+                    case 11 -> {
                         if(badge.get(player.getName()) == MopsBadge.SILLY) {
                             aura.put(player, "andromeda");
                             player.playSound(player.getLocation(), Sound.BLOCK_FIRE_AMBIENT, 2, 2);
@@ -1105,7 +1105,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                             player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 1, 0);
                         }
                     }
-                    case 2 -> {
+                    case 12 -> {
                         if(badge.get(player.getName()) == MopsBadge.STAFF || player.getName().equals("SirCat07")) {
                             aura.put(player, "infinity");
                             player.playSound(player.getLocation(), Sound.ENTITY_ALLAY_ITEM_GIVEN, 1, 1);
@@ -1114,7 +1114,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                             player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 1, 0);
                         }
                     }
-                    case 26 -> {
+                    case 35 -> {
                         aura.put(player, "none");
                         auraRadius.put(player, 0.0);
                         player.playSound(player.getLocation(), Sound.BLOCK_FIRE_EXTINGUISH, 1, 2);
@@ -1253,15 +1253,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             if(player.getEnderChest().contains(Material.BROWN_STAINED_GLASS_PANE)) {
                 player.getEnderChest().remove(Material.BROWN_STAINED_GLASS_PANE);
             }
-
-
-            try {
-                if (!player.getEnderChest().getItem(16).getType().toString().contains("SHULKER_BOX") && !(player.getEnderChest().getItem(16).getType() == Material.BROWN_STAINED_GLASS_PANE)) {
-                    player.getEnderChest().setItem(16, MopsUtils.createItem(Material.BROWN_STAINED_GLASS_PANE, MopsColor.BROWN.getColor() + "Backpack Slot"));
-                }
-            } catch (Exception e) {
-                player.getEnderChest().setItem(16, MopsUtils.createItem(Material.BROWN_STAINED_GLASS_PANE, MopsColor.BROWN.getColor() + "Backpack Slot"));
-            }
+            player.getEnderChest().setItem(16, MopsUtils.createItem(Material.BROWN_STAINED_GLASS_PANE, MopsColor.BROWN.getColor() + "Backpack Slot"));
         }, 5L);
     }
 
@@ -1319,7 +1311,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         inv.setItem(9, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
         inv.setItem(17, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
         inv.setItem(18, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
-        inv.setItem(24, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
+        inv.setItem(26, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
 
         ItemStack emeraldItem = new ItemStack(Material.EMERALD_BLOCK);
         ItemMeta emeraldMeta = emeraldItem.getItemMeta();
@@ -1391,7 +1383,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         particlesMeta.addItemFlags(ItemFlag.HIDE_POTION_EFFECTS);
         particles.setItemMeta(particlesMeta);
 
-        ItemStack auras = MopsUtils.createItem(Material.POTION, ChatColor.DARK_AQUA + "Auras");
+        ItemStack auras = MopsUtils.createItem(Material.MUSIC_DISC_5, ChatColor.DARK_AQUA + "Auras");
         ItemMeta auraMeta = auras.getItemMeta();
         auraMeta.addItemFlags(ItemFlag.HIDE_POTION_EFFECTS);
         auras.setItemMeta(auraMeta);
