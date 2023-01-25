@@ -4,7 +4,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Color;
 
 public enum MopsRank {
-	NONE(0, ChatColor.GRAY + "NONE"),
+	NONE(0, ChatColor.GRAY + ""),
 
 	PIGEON(1, ChatColor.AQUA + "[PIGEON]"),
 	PUG(2, ChatColor.YELLOW + "[PUG]"),

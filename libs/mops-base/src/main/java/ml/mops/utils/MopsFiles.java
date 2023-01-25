@@ -18,11 +18,10 @@ public class MopsFiles {
             String[] array = row.split(":");
             if(UUID.fromString(array[0]) == uuid) {
                 coins = Integer.parseInt(array[1]);
-
-                System.out.println(uuid);
-                System.out.println(player.getUniqueId());
-                System.out.println(UUID.fromString(array[0]));
             }
+            System.out.println(uuid);
+            System.out.println(player.getUniqueId());
+            System.out.println(UUID.fromString(array[0]));
         }
         return coins;
     }

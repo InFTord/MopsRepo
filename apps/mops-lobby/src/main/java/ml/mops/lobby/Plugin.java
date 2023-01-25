@@ -632,7 +632,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     public void onEntityInteract(PlayerInteractEntityEvent event) {
         if(event.getHand().equals(EquipmentSlot.HAND)) {
             if(event.getRightClicked() instanceof Player clickedAt) {
-                Inventory inv = Bukkit.createInventory(null, 36, clickedAt.getCustomName() + "'s Overview");
+                Inventory inv = Bukkit.createInventory(null, 36, ChatColor.AQUA + clickedAt.getCustomName() + "'s Overview");
                 int i = 0;
                 while(i < 36) {
                     inv.setItem(i, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
