@@ -11,6 +11,7 @@ import ml.mops.base.commands.Commands;
 import ml.mops.network.MopsBadge;
 import ml.mops.network.MopsRank;
 import ml.mops.utils.Cuboid;
+import ml.mops.utils.MopsFiles;
 import ml.mops.utils.Translation;
 import ml.mops.utils.MopsUtils;
 import net.kyori.adventure.text.Component;
@@ -52,18 +53,10 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.*;
-import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
-import java.nio.channels.Channels;
-import java.nio.channels.FileChannel;
-import java.nio.channels.ReadableByteChannel;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
@@ -91,6 +84,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 	private final HashMap<Player, Integer> combo = new HashMap<>();
 	private final HashMap<Player, BukkitTask> deathmsg = new HashMap<>();
 	private final HashMap<Player, Player> lastDamager = new HashMap<>();
+	private final HashMap<Player, Integer> killCount = new HashMap<>();
 
 	private final HashMap<Player, Boolean> hasWrittenAnything = new HashMap<>();
 	private final HashMap<Player, Boolean> globalChat = new HashMap<>();
@@ -131,9 +125,6 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 	final double PI_TIMES_TWO = Math.PI * 2;
 
 	ItemGUI itemGUI = null;
-
-	HashMap<String, MopsRank> rank = new HashMap<>();
-	HashMap<String, MopsBadge> badge = new HashMap<>();
 
 	@Override
 	public void onEnable() {
@@ -193,21 +184,6 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		Bukkit.removeRecipe(NamespacedKey.minecraft("yellow_carpet"));
 		Bukkit.removeRecipe(NamespacedKey.minecraft("lime_carpet"));
 		Bukkit.removeRecipe(NamespacedKey.minecraft("light_blue_carpet"));
-
-
-
-		String[] rankList = MopsUtils.readFile("D:\\servers\\MopsNetwork\\ranks.txt").split("\n");
-		for (String rankRow : rankList) {
-			String[] string = rankRow.split(":");
-			rank.put(string[0], MopsRank.valueOf(string[1]));
-		}
-		String[] badgeList = MopsUtils.readFile("D:\\servers\\MopsNetwork\\badges.txt").split("\n");
-		for (String badgeRow : badgeList) {
-			String[] string = badgeRow.split(":");
-			badge.put(string[0], MopsBadge.valueOf(string[1]));
-		}
-
-
 
 		for(Entity entity : mainworld.getEntities()) {
 			if(entity.getScoreboardTags().contains("generatorTitle")) {
@@ -721,13 +697,6 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		Player player = event.getPlayer();
 		String playerName = player.getName();
 
-		if(rank.get(playerName) == null) {
-			rank.putIfAbsent(playerName, MopsRank.NONE);
-		}
-		if(badge.get(playerName) == null) {
-			badge.putIfAbsent(playerName, MopsBadge.NONE);
-		}
-
 		slimeCooldownSeconds.putIfAbsent(player, 0);
 		stickCooldownTicks.putIfAbsent(player, 0);
 
@@ -767,20 +736,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			player.removeScoreboardTag("spectator");
 			clearScoreboard(player);
 
-			String chatRank = "";
-			String name = player.getName();
-			String chatBadge = "";
-
-			if(rank.get(name) == MopsRank.NONE) {
-				name = ChatColor.GRAY + name;
-			} else {
-				chatRank = rank.get(player.getName()).getPrefix() + " ";
-			}
-			if(badge.get(player.getName()) != MopsBadge.NONE) {
-				chatBadge = badge.get(player.getName()).getSymbol();
-			}
-
-			player.setPlayerListName((chatRank + name + " " + chatBadge).trim());
+			player.setPlayerListName((MopsFiles.getRank(player) + player.getName() + " " + MopsFiles.getBadge(player)).trim());
 
 			resetEveryFuckingKillScoreboard(player);
 			try {
@@ -808,13 +764,13 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		hasWrittenAnything.putIfAbsent(player, false);
 		globalChat.putIfAbsent(player, false);
 
-		if(rank.get(player.getName()).getPermLevel() > 10) {
+		if(MopsFiles.getRank(player).getPermLevel() > 10) {
 			msg = MopsUtils.convertColorCodes(msg);
 		}
 
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 			if(msg.toLowerCase(Locale.ROOT).contains(onlinePlayer.getName().toLowerCase(Locale.ROOT))) {
-				msg = msg.replaceAll(onlinePlayer.getName().toLowerCase(Locale.ROOT), rank.get(onlinePlayer.getName()).getPrefix() + " " + onlinePlayer.getName() + ChatColor.RESET);
+				msg = msg.replaceAll(onlinePlayer.getName().toLowerCase(Locale.ROOT), MopsFiles.getRank(player).getPrefix() + " " + onlinePlayer.getName() + ChatColor.RESET);
 				onlinePlayer.playSound(onlinePlayer.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
 			}
 		}
@@ -884,17 +840,13 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		} else {
 			String chatRank = "";
 			String name = player.getName();
-			String badgeSymbol = "";
-			String badgeDescription = "";
+			String badgeSymbol = MopsFiles.getBadge(player).getSymbol();
+			String badgeDescription = MopsFiles.getBadge(player).getDescription();
 
-			if(rank.get(player.getName()) == MopsRank.NONE) {
+			if(MopsFiles.getRank(player) == MopsRank.NONE) {
 				name = ChatColor.GRAY + player.getName();
 			} else {
-				chatRank = rank.get(player.getName()).getPrefix() + " ";
-			}
-			if(badge.get(player.getName()) != MopsBadge.NONE) {
-				badgeSymbol = " " + badge.get(player.getName()).getSymbol();
-				badgeDescription = badge.get(player.getName()).getDescription();
+				chatRank =MopsFiles.getRank(player).getPrefix() + " ";
 			}
 
 			TextComponent preMessage = Component.text(chatRank + name);
@@ -2334,20 +2286,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 			mainboard.getTeam("nothing").addPlayer(onlinePlayer);
 
-			String chatRank = "";
-			String name = onlinePlayer.getName();
-			String chatBadge = "";
-
-			if(rank.get(onlinePlayer.getName()) == MopsRank.NONE) {
-				name = ChatColor.GRAY + onlinePlayer.getName();
-			} else {
-				chatRank = rank.get(onlinePlayer.getName()).getPrefix() + " ";
-			}
-			if(badge.get(onlinePlayer.getName()) != MopsBadge.NONE) {
-				chatBadge = badge.get(onlinePlayer.getName()).getSymbol();
-			}
-
-			onlinePlayer.setPlayerListName((chatRank + name + " " + chatBadge).trim());
+			onlinePlayer.setPlayerListName((MopsFiles.getRank(onlinePlayer) + onlinePlayer.getName() + " " + MopsFiles.getBadge(onlinePlayer).getSymbol()).trim());
 
 			resetEveryFuckingKillScoreboard(onlinePlayer);
 			try {
@@ -2421,9 +2360,54 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			}
 
 			switch (key) {
-				case "win" -> player.sendTitle(getStringByLang(lang, "game.win"), getStringByLang(lang, "team." + colorWon) + " " + getStringByLang(lang, "team.won"), 5, 50, 40);
-				case "wipeout" -> player.sendTitle(getStringByLang(lang, "game.wipeout"), getStringByLang(lang, "team." + colorWon) + " " + getStringByLang(lang, "team.won"), 5, 50, 40);
-				case "domination" -> player.sendTitle(getStringByLang(lang, "game.domination"), getStringByLang(lang, "team." + colorWon) + " " + getStringByLang(lang, "team.won"), 5, 50, 40);
+				case "win" -> {
+					player.sendMessage(ChatColor.YELLOW + "==============================");
+					player.sendMessage("        " + getStringByLang(lang, "game.win") + " " + ChatColor.RESET + getStringByLang(lang, "team." + colorWon) + " " + getStringByLang(lang, "team.won"));
+					player.sendMessage(" ");
+					for(Player maxKillsPlayer : killCount.keySet()) {
+						if(killCount.get(maxKillsPlayer).equals(Collections.max(killCount.values()))) {
+							player.sendMessage(MopsFiles.getRank(maxKillsPlayer) + maxKillsPlayer.getName() + ChatColor.RESET + ChatColor.GRAY + " - " + ChatColor.YELLOW + Collections.max(killCount.values()) + " kills");
+						}
+					}
+					player.sendMessage("You got awarded " + ChatColor.GOLD + "1 MopsCoin" + ChatColor.RESET + ".");
+					player.sendMessage(ChatColor.YELLOW + "==============================");
+
+					MopsFiles.setCoins(player, MopsFiles.getCoins(player) + 1);
+
+					player.sendTitle(getStringByLang(lang, "game.win"), getStringByLang(lang, "team." + colorWon) + " " + getStringByLang(lang, "team.won"), 5, 50, 40);
+				}
+				case "wipeout" -> {
+					player.sendMessage(ChatColor.YELLOW + "==============================");
+					player.sendMessage("        " + getStringByLang(lang, "game.wipeout") + " " + ChatColor.RESET + getStringByLang(lang, "team." + colorWon) + " " + getStringByLang(lang, "team.won"));
+					player.sendMessage(" ");
+					for(Player maxKillsPlayer : killCount.keySet()) {
+						if(killCount.get(maxKillsPlayer).equals(Collections.max(killCount.values()))) {
+							player.sendMessage(MopsFiles.getRank(maxKillsPlayer) + maxKillsPlayer.getName() + ChatColor.RESET + ChatColor.GRAY + " - " + ChatColor.YELLOW + Collections.max(killCount.values()) + " kills");
+						}
+					}
+					player.sendMessage("You got awarded " + ChatColor.GOLD + "1 MopsCoin" + ChatColor.RESET + ".");
+					player.sendMessage(ChatColor.YELLOW + "==============================");
+
+					MopsFiles.setCoins(player, MopsFiles.getCoins(player) + 1);
+
+					player.sendTitle(getStringByLang(lang, "game.wipeout"), getStringByLang(lang, "team." + colorWon) + " " + getStringByLang(lang, "team.won"), 5, 50, 40);
+				}
+				case "domination" -> {
+					player.sendMessage(ChatColor.YELLOW + "==============================");
+					player.sendMessage("        " + getStringByLang(lang, "game.domination") + " " + ChatColor.RESET + getStringByLang(lang, "team." + colorWon) + " " + getStringByLang(lang, "team.won"));
+					player.sendMessage(" ");
+					for(Player maxKillsPlayer : killCount.keySet()) {
+						if(killCount.get(maxKillsPlayer).equals(Collections.max(killCount.values()))) {
+							player.sendMessage(MopsFiles.getRank(maxKillsPlayer) + maxKillsPlayer.getName() + ChatColor.RESET + ChatColor.GRAY + " - " + ChatColor.YELLOW + Collections.max(killCount.values()) + " kills");
+						}
+					}
+					player.sendMessage("You got awarded " + ChatColor.GOLD + "1 MopsCoin" + ChatColor.RESET + ".");
+					player.sendMessage(ChatColor.YELLOW + "==============================");
+
+					MopsFiles.setCoins(player, MopsFiles.getCoins(player) + 1);
+
+					player.sendTitle(getStringByLang(lang, "game.domination"), getStringByLang(lang, "team." + colorWon) + " " + getStringByLang(lang, "team.won"), 5, 50, 40);
+				}
 			}
 
 			player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 0);
@@ -3253,36 +3237,42 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 					switch (Objects.requireNonNull(lastdamage).getScore(player.getName()).getScore()) {
 						case 1 -> {
 							redkills++;
+							killCount.put(lastDamager.get(player), killCount.get(lastDamager.get(player)) + 1);
 							if (!hardmode) {
 								broadcastDeath(player, getStringByLang(lang, "woolbattle.gotKilledBy") + " " + ChatColor.RED + lastDamager.get(player).getName() + ChatColor.GRAY + ".");
 							}
 						}
 						case 2 -> {
 							yellowkills++;
+							killCount.put(lastDamager.get(player), killCount.get(lastDamager.get(player)) + 1);
 							if (!hardmode) {
 								broadcastDeath(player, getStringByLang(lang, "woolbattle.gotKilledBy") + " " + ChatColor.YELLOW + "" + lastDamager.get(player).getName() + ChatColor.GRAY + ".");
 							}
 						}
 						case 3 -> {
 							greenkills++;
+							killCount.put(lastDamager.get(player), killCount.get(lastDamager.get(player)) + 1);
 							if (!hardmode) {
 								broadcastDeath(player, getStringByLang(lang, "woolbattle.gotKilledBy") + " " + ChatColor.GREEN + "" + lastDamager.get(player).getName() + ChatColor.GRAY + ".");
 							}
 						}
 						case 4 -> {
 							bluekills++;
+							killCount.put(lastDamager.get(player), killCount.get(lastDamager.get(player)) + 1);
 							if (!hardmode) {
 								broadcastDeath(player, getStringByLang(lang, "woolbattle.gotKilledBy") + " " + ChatColor.AQUA + "" + lastDamager.get(player).getName() + ChatColor.GRAY + ".");
 							}
 						}
 						case 5 -> {
 							orangekills++;
+							killCount.put(lastDamager.get(player), killCount.get(lastDamager.get(player)) + 1);
 							if (!hardmode) {
 								broadcastDeath(player, getStringByLang(lang, "woolbattle.gotKilledBy") + " " + ChatColor.GOLD + "" + lastDamager.get(player).getName() + ChatColor.GRAY + ".");
 							}
 						}
 						case 6 -> {
 							pinkkills++;
+							killCount.put(lastDamager.get(player), killCount.get(lastDamager.get(player)) + 1);
 							if (!hardmode) {
 								broadcastDeath(player, getStringByLang(lang, "woolbattle.gotKilledBy") + " " + ChatColor.LIGHT_PURPLE + "" + lastDamager.get(player).getName() + ChatColor.GRAY + ".");
 							}

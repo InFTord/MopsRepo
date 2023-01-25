@@ -51,7 +51,7 @@ public class Items {
         lore.add(ChatColor.DARK_GRAY + "Dimensions: 60.9cm x 85.1cm x 56,5cm");
         lore.add(" ");
         lore.add(ChatColor.GRAY + "Fuel Type: Electric");
-        lore.add(ChatColor.GRAY + "Energy Consumption: 120 kWh/Year");
+        lore.add(ChatColor.GRAY + "Energy Consumption: 120 kW/Hour");
         lore.add(ChatColor.GRAY + "Amperage: 13 A");
         lore.add(ChatColor.GRAY + "Voltage: 120 V");
         lore.add(ChatColor.RED + "" + ChatColor.BOLD + "Limited warranty: 4.5b years");

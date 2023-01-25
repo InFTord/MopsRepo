@@ -844,7 +844,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             }, 4L);
         }, 50L);
 
-        player.setPlayerListName((MopsFiles.getRank(player).getPrefix() + " " + player.getName() + " " + MopsFiles.getBadge(player).getSymbol()).trim());
+        player.setPlayerListName((MopsFiles.getRank(player).getPrefix() + player.getName() + " " + MopsFiles.getBadge(player).getSymbol()).trim());
 
         manipulateEnderChest(player);
 
