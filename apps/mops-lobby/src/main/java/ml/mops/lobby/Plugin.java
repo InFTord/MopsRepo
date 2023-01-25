@@ -64,6 +64,8 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     HashMap<Player, Integer> pigeonDialogue = new HashMap<>();
     HashMap<Player, Integer> realPlantDialogue = new HashMap<>();
 
+    HashMap<Player, ItemStack> enderChestBackpack = new HashMap<>();
+
     HashMap<Player, String> aura = new HashMap<>();
     HashMap<Player, Integer> auraTimer = new HashMap<>();
     HashMap<Player, Double> auraRadius = new HashMap<>();
@@ -611,9 +613,9 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                     ArrayList<String> pages = new ArrayList<>();
                     pages.add(0,
                             "     " + ChatColor.GREEN + "CHANGELOG" + "\n" +
-                            ChatColor.GRAY + " - " + ChatColor.BLACK + "Something New 1" + "\n" +
-                            ChatColor.GRAY + " - " + ChatColor.BLACK + "Something New 2" + "\n" +
-                            ChatColor.GRAY + " - " + ChatColor.BLACK + "Something New 3" + "\n"
+                            ChatColor.DARK_GREEN + " + " + ChatColor.GOLD + "EChest Backpacks" + "\n" +
+                            ChatColor.GRAY + " - " + ChatColor.GOLD + "Bug Fixes" + "\n" +
+                            ChatColor.GRAY + " - " + ChatColor.GOLD + "Something New 3" + "\n"
                     );
                     bookMeta.setPages(pages);
 
@@ -659,7 +661,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     public void onEntityInteract(PlayerInteractEntityEvent event) {
         if(event.getHand().equals(EquipmentSlot.HAND)) {
             if(event.getRightClicked() instanceof Player clickedAt) {
-                Inventory inv = Bukkit.createInventory(null, 36, ChatColor.AQUA + clickedAt.getCustomName() + "'s Overview");
+                Inventory inv = Bukkit.createInventory(null, 36, ChatColor.AQUA + clickedAt.getName() + "'s Overview");
                 int i = 0;
                 while(i < 36) {
                     inv.setItem(i, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
@@ -668,7 +670,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
                 ItemStack head = new ItemStack(Material.PLAYER_HEAD);
                 SkullMeta meta = (SkullMeta) head.getItemMeta();
-                meta.setOwner(clickedAt.getName());
+                meta.setOwner(ChatColor.AQUA + clickedAt.getName());
                 meta.setDisplayName(ChatColor.YELLOW + clickedAt.getName() + "'s Profile");
                 head.setItemMeta(meta);
 
@@ -927,7 +929,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
         for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
             if(message.toLowerCase(Locale.ROOT).contains(onlinePlayer.getName().toLowerCase(Locale.ROOT))) {
-                message = message.replaceAll(onlinePlayer.getName().toLowerCase(Locale.ROOT), MopsFiles.getRank(onlinePlayer).getPrefix() + " " + onlinePlayer.getName() + ChatColor.RESET);
+                message = message.replaceAll(onlinePlayer.getName().toLowerCase(Locale.ROOT), MopsFiles.getRank(onlinePlayer).getPrefix() + onlinePlayer.getName() + ChatColor.RESET);
                 onlinePlayer.playSound(onlinePlayer.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
             }
         }
@@ -1031,7 +1033,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             event.setCancelled(true);
 
             if(event.getSlot() == 12) {
-                Inventory inv = Bukkit.createInventory(null, 27, ChatColor.WHITE + "work in progres :p blehhh");
+                Inventory inv = Bukkit.createInventory(null, 36, "Select Your Effect");
 
                 effectsGUI.put(player, inv);
                 player.openInventory(effectsGUI.get(player));
@@ -1086,6 +1088,48 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 }
             } catch (Exception ignored) { }
         }
+        if (event.getClickedInventory() == effectsGUI.get(player)) {
+            event.setCancelled(true);
+            if(event.getClick().isShiftClick()) {
+                effectsGUI.get(player).remove(Material.COMPASS);
+                effectsGUI.get(player).remove(Material.GLISTERING_MELON_SLICE);
+            }
+            try {
+                event.getClickedInventory().getItem(event.getSlot()).getType();
+
+                switch (event.getSlot()) {
+                    case 10 -> {
+                        aura.put(player, "cube");
+                        player.playSound(player.getLocation(), Sound.ENTITY_ALLAY_ITEM_GIVEN, 1, 1);
+                    }
+                    case 11 -> {
+                        if(MopsFiles.getBadge(player) == MopsBadge.SILLY) {
+                            aura.put(player, "andromeda");
+                            player.playSound(player.getLocation(), Sound.BLOCK_FIRE_AMBIENT, 2, 2);
+                            player.playSound(player.getLocation(), Sound.ENTITY_ALLAY_ITEM_GIVEN, 1, 1);
+                        } else {
+                            player.sendMessage(ChatColor.RED + "You can't use this effect.");
+                            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 1, 0);
+                        }
+                    }
+                    case 12 -> {
+                        if(MopsFiles.getBadge(player) == MopsBadge.STAFF || player.getName().equals("SirCat07")) {
+                            aura.put(player, "infinity");
+                            player.playSound(player.getLocation(), Sound.ENTITY_ALLAY_ITEM_GIVEN, 1, 1);
+                        } else {
+                            player.sendMessage(ChatColor.RED + "You can't use this effect.");
+                            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 1, 0);
+                        }
+                    }
+                    case 35 -> {
+                        aura.put(player, "none");
+                        auraRadius.put(player, 0.0);
+                        player.playSound(player.getLocation(), Sound.BLOCK_FIRE_EXTINGUISH, 1, 2);
+                        player.sendMessage(ChatColor.GREEN + "You reset your effects.");
+                    }
+                }
+            } catch (Exception ignored) { }
+        }
         if(overviewInventories.contains(event.getClickedInventory())) {
             event.setCancelled(true);
         }
@@ -1096,19 +1140,31 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 }
             }
             if(event.getSlot() == 16) {
-                if(!event.getCursor().getType().toString().contains("SHULKER_BOX")) {
-                    event.setCancelled(true);
-                } else if(event.getCurrentItem().getType().toString().contains("SHULKER_BOX")) {
-                    if(event.isShiftClick()) {
+                try {
+                    if (!event.getCursor().getType().toString().contains("SHULKER_BOX")) {
                         event.setCancelled(true);
-                    } else if(event.isLeftClick()) {
+                    }
+                } catch (Exception ignored) { }
+
+                if(event.getCurrentItem().getType().toString().contains("SHULKER_BOX")) {
+                    if (event.isShiftClick()) {
+                        event.setCancelled(true);
+                    }
+                    if(event.isLeftClick()) {
                         BlockStateMeta bsm = (BlockStateMeta) event.getCurrentItem().getItemMeta();
                         ShulkerBox box = (ShulkerBox) bsm.getBlockState();
 
+                        enderChestBackpack.put(player, event.getCurrentItem());
+
                         player.openInventory(box.getInventory());
+                    }
+                    if(event.isRightClick()) {
+                        enderChestBackpack.put(player, null);
                     }
                 }
             }
+            player.getInventory().remove(Material.BROWN_STAINED_GLASS_PANE);
+
             manipulateEnderChest(player);
         }
 
@@ -1118,6 +1174,26 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             }
             if (event.getCurrentItem().getType() == Material.GLISTERING_MELON_SLICE) {
                 event.setCancelled(true);
+            }
+
+            if(event.getInventory().getType() == InventoryType.SHULKER_BOX) {
+                if (enderChestBackpack.get(player) != null) {
+                    if(event.getCurrentItem().getType() == Material.BLACK_STAINED_GLASS_PANE) {
+                        event.setCancelled(true);
+                    }
+
+                    ItemStack item = enderChestBackpack.get(player);
+
+                    BlockStateMeta shulkerBsm = (BlockStateMeta) enderChestBackpack.get(player);
+                    ShulkerBox shulkerBox = (ShulkerBox) shulkerBsm.getBlockState();
+
+                    BlockStateMeta bsm = (BlockStateMeta) item.getItemMeta();
+                    ShulkerBox box = (ShulkerBox) bsm.getBlockState();
+                    box.getInventory().setContents(shulkerBox.getInventory().getContents());
+                    bsm.setBlockState(box);
+                    box.update();
+                    item.setItemMeta(bsm);
+                }
             }
         } catch (Exception ignored) { }
     }

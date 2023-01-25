@@ -142,7 +142,7 @@ public class MopsFiles {
         for (String row : list) {
             String[] array = row.split(":");
             if(UUID.fromString(array[0]).equals(uuid)) {
-                array[3] = String.valueOf(bool);
+                array[4] = String.valueOf(bool);
                 playerExists = true;
             }
             line.append(MopsUtils.combineStrings(array, ":")).append("\n");

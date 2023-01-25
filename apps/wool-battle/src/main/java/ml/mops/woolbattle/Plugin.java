@@ -771,7 +771,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 			if(msg.toLowerCase(Locale.ROOT).contains(onlinePlayer.getName().toLowerCase(Locale.ROOT))) {
-				msg = msg.replaceAll(onlinePlayer.getName().toLowerCase(Locale.ROOT), MopsFiles.getRank(player).getPrefix() + " " + onlinePlayer.getName() + ChatColor.RESET);
+				msg = msg.replaceAll(onlinePlayer.getName().toLowerCase(Locale.ROOT), MopsFiles.getRank(player).getPrefix() + onlinePlayer.getName() + ChatColor.RESET);
 				onlinePlayer.playSound(onlinePlayer.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
 			}
 		}
@@ -2586,7 +2586,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			case 8 -> player1.sendTitle(ChatColor.WHITE + "Sponsored by", ChatColor.WHITE + "Astarta", fadeIn, hold, fadeOut);
 			case 9 -> player1.sendTitle(ChatColor.WHITE + "but here's", ChatColor.WHITE + "the woolbattler", fadeIn, hold, fadeOut);
 			case 10 -> player1.sendTitle(ChatColor.WHITE + "gl", ChatColor.WHITE + "hf", fadeIn, hold, fadeOut);
-			case 11 -> player1.sendTitle(ChatColor.WHITE + "мистер пакетик", ChatColor.WHITE + "иди нахуй", fadeIn, hold, fadeOut);
+			case 11 -> player1.sendTitle(ChatColor.WHITE + "im so silly", ChatColor.WHITE + "blehhh", fadeIn, hold, fadeOut);
 			case 12 -> player1.sendTitle(ChatColor.WHITE + "компот", ChatColor.WHITE + "компот", fadeIn, hold, fadeOut);
 		}
 	}
