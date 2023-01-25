@@ -37,7 +37,7 @@ public class MopsFiles {
             line.append(MopsUtils.combineStrings(array, ":")).append("\n");
         }
         if(!playerExists) {
-            line.append(uuid).append(":").append(coins).append(":NONE:NONE").append("\n");
+            line.append(uuid).append(":").append(coins).append(":NONE:NONE:FALSE").append("\n");
         }
         try {
             MopsUtils.writeFile("D:\\servers\\MopsNetwork\\data.txt", line.toString());
@@ -74,7 +74,7 @@ public class MopsFiles {
             line.append(MopsUtils.combineStrings(array, ":")).append("\n");
         }
         if(!playerExists) {
-            line.append(uuid).append(":0:").append(rank).append(":NONE").append("\n");
+            line.append(uuid).append(":0:").append(rank).append(":NONE:FALSE").append("\n");
         }
         try {
             MopsUtils.writeFile("D:\\servers\\MopsNetwork\\data.txt", line.toString());
@@ -111,7 +111,44 @@ public class MopsFiles {
             line.append(MopsUtils.combineStrings(array, ":")).append("\n");
         }
         if(!playerExists) {
-            line.append(uuid).append(":0:NONE:").append(badge).append("\n");
+            line.append(uuid).append(":0:NONE:").append(badge).append(":FALSE").append("\n");
+        }
+        try {
+            MopsUtils.writeFile("D:\\servers\\MopsNetwork\\data.txt", line.toString());
+        } catch (IOException ignored) { }
+    }
+
+
+
+    public static boolean getPigeon(Player player) {
+        UUID uuid = player.getUniqueId();
+        boolean bool = false;
+
+        String[] list = MopsUtils.readFile("D:\\servers\\MopsNetwork\\data.txt").split("\n");
+        for (String row : list) {
+            String[] array = row.split(":");
+            if(UUID.fromString(array[0]).equals(uuid)) {
+                bool = Boolean.parseBoolean(array[4]);
+            }
+        }
+        return bool;
+    }
+    public static void setPigeon(Player player, boolean bool) {
+        UUID uuid = player.getUniqueId();
+        StringBuilder line = new StringBuilder();
+        boolean playerExists = false;
+
+        String[] list = MopsUtils.readFile("D:\\servers\\MopsNetwork\\data.txt").split("\n");
+        for (String row : list) {
+            String[] array = row.split(":");
+            if(UUID.fromString(array[0]).equals(uuid)) {
+                array[3] = String.valueOf(bool);
+                playerExists = true;
+            }
+            line.append(MopsUtils.combineStrings(array, ":")).append("\n");
+        }
+        if(!playerExists) {
+            line.append(uuid).append(":0:NONE:NONE:").append(bool).append("\n");
         }
         try {
             MopsUtils.writeFile("D:\\servers\\MopsNetwork\\data.txt", line.toString());

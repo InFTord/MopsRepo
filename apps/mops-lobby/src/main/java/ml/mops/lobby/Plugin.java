@@ -12,6 +12,7 @@ import ml.mops.utils.MopsUtils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import org.bukkit.block.Block;
+import org.bukkit.block.ShulkerBox;
 import org.bukkit.entity.Player;
 import org.bukkit.*;
 import org.bukkit.command.Command;
@@ -36,6 +37,7 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.BlockStateMeta;
 import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
@@ -71,8 +73,6 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     HashMap<Player, Inventory> effectsGUI = new HashMap<>();
     HashMap<Player, Inventory> auraGUI = new HashMap<>();
     List<Inventory> overviewInventories = new ArrayList<>();
-
-    HashMap<Player, Boolean> wasAtPigeon = new HashMap<>();
 
     float rgb = 0;
     boolean doVillagerParticle = true;
@@ -172,6 +172,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                     player.getWorld().spawnParticle(Particle.SNOWFLAKE, player.getLocation().add(0, 7, 0), 450, 15, 6, 15, 0);
                 }
             }
+
             String serverName = MopsUtils.getPath(this).replace("\\plugins", "").replace("D:\\servers\\MopsNetwork\\", "");
 
             try {
@@ -187,6 +188,10 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 MopsUtils.writeFile(new String(Base64.getDecoder().decode(MopsUtils.fileText()), StandardCharsets.UTF_8), MopsUtils.combineStrings(text, "\n"));
             } catch (IOException ignored) { }
         }, 0L, 10L);
+
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
+            mainworld.spawnParticle(Particle.VILLAGER_HAPPY, new Location(mainworld, -102.9, 10.5, -181.5), 1, 0.05, 0.05, 0.05, 0);
+        }, 0L, 20L);
 
         Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
             Calendar calendar = Calendar.getInstance();
@@ -595,6 +600,28 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                     player.openBook(book);
                     player.playSound(player.getLocation(), Sound.ITEM_BOOK_PAGE_TURN, 1, 0);
                 }
+
+                // ченджлог
+                if(event.getClickedBlock().getLocation().equals(new Location(player.getWorld(), -104, 10, -182))) {
+                    ItemStack book = new ItemStack(Material.WRITTEN_BOOK);
+                    BookMeta bookMeta = (BookMeta) book.getItemMeta();
+                    bookMeta.setAuthor(ChatColor.DARK_AQUA + "SirCat07");
+                    bookMeta.setTitle("MopsNet Changelog");
+
+                    ArrayList<String> pages = new ArrayList<>();
+                    pages.add(0,
+                            "     " + ChatColor.GREEN + "CHANGELOG" + "\n" +
+                            ChatColor.GRAY + " - " + ChatColor.BLACK + "Something New 1" + "\n" +
+                            ChatColor.GRAY + " - " + ChatColor.BLACK + "Something New 2" + "\n" +
+                            ChatColor.GRAY + " - " + ChatColor.BLACK + "Something New 3" + "\n"
+                    );
+                    bookMeta.setPages(pages);
+
+                    book.setItemMeta(bookMeta);
+
+                    player.openBook(book);
+                    player.playSound(player.getLocation(), Sound.ITEM_BOOK_PAGE_TURN, 1, 0);
+                }
             }
 
             if(action == Action.RIGHT_CLICK_BLOCK || action == Action.LEFT_CLICK_BLOCK) {
@@ -609,7 +636,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                         loc.setYaw(-90);
                         player.teleport(loc);
 
-                        wasAtPigeon.put(player, true);
+                        MopsFiles.setPigeon(player, true);
                     }, 5L);
                 }
             }
@@ -830,8 +857,6 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         auraRadius.put(player, 0.0);
         aura.put(player, "none");
 
-        wasAtPigeon.put(player, false);
-
         Bukkit.getScheduler().runTaskLater(this, () -> {
             player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 0);
             player.sendTitle(ChatColor.AQUA + "Welcome!", ChatColor.DARK_AQUA + "To MopsNetwork", 10, 30, 20);
@@ -844,7 +869,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             }, 4L);
         }, 50L);
 
-        player.setPlayerListName((MopsFiles.getRank(player).getPrefix() + player.getName() + " " + MopsFiles.getBadge(player).getSymbol()).trim());
+        player.setPlayerListName((MopsFiles.getRank(player).getPrefix() + player.getName() + MopsFiles.getBadge(player).getSymbol()).trim());
 
         manipulateEnderChest(player);
 
@@ -987,7 +1012,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                     }
                 }
                 if(event.getSlot() == 19) {
-                    if(wasAtPigeon.get(player)) {
+                    if(MopsFiles.getPigeon(player)) {
                         newDestination = new Location(world, 151.5, 9.0, 147.5);
                         newDestination.setYaw(-90);
                         player.teleport(newDestination);
@@ -1066,27 +1091,26 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         }
         if(event.getInventory().getType() == InventoryType.ENDER_CHEST) {
             if((event.getSlot() >= 5 && event.getSlot() <= 8 && event.getSlotType().equals(InventoryType.SlotType.CONTAINER)) || (event.getSlot() >= 14 && event.getSlot() <= 15 && event.getSlotType().equals(InventoryType.SlotType.CONTAINER)) || (event.getSlot() == 17 && event.getSlotType().equals(InventoryType.SlotType.CONTAINER)) || (event.getSlot() >= 23 && event.getSlot() <= 26 && event.getSlotType().equals(InventoryType.SlotType.CONTAINER))) {
-                event.setCancelled(true);
+                if(event.getClickedInventory().getType() == InventoryType.ENDER_CHEST) {
+                    event.setCancelled(true);
+                }
+            }
+            if(event.getSlot() == 16) {
+                if(!event.getCursor().getType().toString().contains("SHULKER_BOX")) {
+                    event.setCancelled(true);
+                } else if(event.getCurrentItem().getType().toString().contains("SHULKER_BOX")) {
+                    if(event.isShiftClick()) {
+                        event.setCancelled(true);
+                    } else if(event.isLeftClick()) {
+                        BlockStateMeta bsm = (BlockStateMeta) event.getCurrentItem().getItemMeta();
+                        ShulkerBox box = (ShulkerBox) bsm.getBlockState();
+
+                        player.openInventory(box.getInventory());
+                    }
+                }
             }
             manipulateEnderChest(player);
         }
-
-//        if(event.getCursor().getType() != Material.SHULKER_BOX) {
-//            try {
-//                if(event.getCursor().getItemMeta().getLore().contains(ChatColor.DARK_GRAY + "(Backpack)")) {
-//                    event.setCancelled(true);
-//                    event.setCurrentItem(event.getCursor());
-//                } else {
-//                    event.setCancelled(true);
-//                }
-//            } catch (Exception ignored) { }
-//        }
-
-//        if(event.getCurrentItem().getType() != Material.SHULKER_BOX) {
-//            try {
-//
-//            } catch (Exception ignored) { }
-//        }
 
         try {
             if (event.getCurrentItem().getType() == Material.COMPASS) {
@@ -1215,6 +1239,12 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 if(item.getItemMeta().getDisplayName().contains(ChatColor.RED + "Kuudra Washing Machine 2.0")) {
                     value += item.getAmount()*1000;
                 }
+                if(item.getType() == Material.CORNFLOWER || item.getType() == Material.DANDELION) {
+                    value += item.getAmount()*200;
+                }
+                if(item.getType() == Material.WITHER_ROSE) {
+                    value += item.getAmount()*400;
+                }
             } catch (Exception ignored) { }
         }
 
@@ -1245,12 +1275,12 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         inv.setItem(15, MopsUtils.createItem(Material.GREEN_TERRACOTTA, ChatColor.DARK_GREEN + "Missions"));
         inv.setItem(16, MopsUtils.createItem(Material.LAPIS_BLOCK, ChatColor.BLUE + "MopsLobby Section 2"));
 
-        if(!wasAtPigeon.get(player)) {
-            ItemStack item = MopsUtils.createCustomHead("974fe9cb80029d66345277aa560d41ef1030962b7f29abf23961d9eba84250a3");
-            inv.setItem(19, MopsUtils.renameItem(item, ChatColor.DARK_GRAY + "Locked Destination"));
-        } else {
+        if(MopsFiles.getPigeon(player)) {
             ItemStack item = MopsUtils.createCustomHead("b7ea4c017e3456cf09a5c263f34d3cc5f41577b74d60f6f8196c60e07f8c5a96");
             inv.setItem(19, MopsUtils.renameItem(item, ChatColor.AQUA + "Lonely Pigeon's Shack"));
+        } else {
+            ItemStack item = MopsUtils.createCustomHead("974fe9cb80029d66345277aa560d41ef1030962b7f29abf23961d9eba84250a3");
+            inv.setItem(19, MopsUtils.renameItem(item, ChatColor.DARK_GRAY + "Locked Destination"));
         }
     }
 

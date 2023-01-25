@@ -699,6 +699,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 		slimeCooldownSeconds.putIfAbsent(player, 0);
 		stickCooldownTicks.putIfAbsent(player, 0);
+		killCount.putIfAbsent(player, 0);
 
 		event.setJoinMessage("");
 		for(Player players : Bukkit.getOnlinePlayers()) {
@@ -1889,8 +1890,8 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		double yellowpercent = yellowcount/98.0*100;
 		double greenpercent = greencount/98.0*100;
 		double bluepercent = bluecount/98.0*100;
-		double orangepercent = bluecount/98.0*100;
-		double pinkpercent = bluecount/98.0*100;
+		double orangepercent = orangecount/98.0*100;
+		double pinkpercent = pinkcount/98.0*100;
 
 		double biggestpercentage = Math.max(Math.max(redpercent, Math.max(yellowpercent, orangepercent)), Math.max(greenpercent, Math.max(bluepercent, pinkpercent)));
 
