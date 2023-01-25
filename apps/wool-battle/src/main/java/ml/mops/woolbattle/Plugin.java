@@ -736,7 +736,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			player.removeScoreboardTag("spectator");
 			clearScoreboard(player);
 
-			player.setPlayerListName((MopsFiles.getRank(player) + player.getName() + " " + MopsFiles.getBadge(player)).trim());
+			player.setPlayerListName((MopsFiles.getRank(player).getPrefix() + player.getName() + " " + MopsFiles.getBadge(player).getSymbol()).trim());
 
 			resetEveryFuckingKillScoreboard(player);
 			try {
@@ -838,19 +838,8 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 				}
 			}
 		} else {
-			String chatRank = "";
-			String name = player.getName();
-			String badgeSymbol = MopsFiles.getBadge(player).getSymbol();
-			String badgeDescription = MopsFiles.getBadge(player).getDescription();
-
-			if(MopsFiles.getRank(player) == MopsRank.NONE) {
-				name = ChatColor.GRAY + player.getName();
-			} else {
-				chatRank =MopsFiles.getRank(player).getPrefix() + " ";
-			}
-
-			TextComponent preMessage = Component.text(chatRank + name);
-			TextComponent messageBadge = Component.text(badgeSymbol).hoverEvent(Component.text(badgeDescription));
+			TextComponent preMessage = Component.text(MopsFiles.getRank(player).getPrefix() + player.getName());
+			TextComponent messageBadge = Component.text(MopsFiles.getBadge(player).getSymbol()).hoverEvent(Component.text(MopsFiles.getBadge(player).getDescription()));
 			TextComponent afterMessage = Component.text(ChatColor.RESET + ": " + msg.trim());
 
 			TextComponent fullMessage = preMessage.append(messageBadge).append(afterMessage);
@@ -2286,7 +2275,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 			mainboard.getTeam("nothing").addPlayer(onlinePlayer);
 
-			onlinePlayer.setPlayerListName((MopsFiles.getRank(onlinePlayer) + onlinePlayer.getName() + " " + MopsFiles.getBadge(onlinePlayer).getSymbol()).trim());
+			onlinePlayer.setPlayerListName((MopsFiles.getRank(onlinePlayer).getPrefix() + onlinePlayer.getName() + " " + MopsFiles.getBadge(onlinePlayer).getSymbol()).trim());
 
 			resetEveryFuckingKillScoreboard(onlinePlayer);
 			try {

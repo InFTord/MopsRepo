@@ -53,13 +53,8 @@ public class MopsFiles {
         String[] list = MopsUtils.readFile("D:\\servers\\MopsNetwork\\data.txt").split("\n");
         for (String row : list) {
             String[] array = row.split(":");
-            System.out.println(uuid);
-            System.out.println(UUID.fromString(array[0]));
             if(UUID.fromString(array[0]).equals(uuid)) {
                 rank = MopsRank.valueOf(array[2]);
-                System.out.println("connect");
-            } else {
-                System.out.println("didnt");
             }
         }
         return rank;

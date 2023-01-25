@@ -894,21 +894,6 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     public void onPlayerChat(PlayerChatEvent event) {
         Player player = event.getPlayer();
 
-        String chatRank = "";
-        String name = player.getName();
-        String badgeSymbol = "";
-        String badgeDescription = "";
-
-        if(MopsFiles.getRank(player) == MopsRank.NONE) {
-            name = ChatColor.GRAY + player.getName();
-        } else {
-            chatRank = MopsFiles.getRank(player).getPrefix() + " ";
-        }
-        if(MopsFiles.getBadge(player) != MopsBadge.NONE) {
-            badgeSymbol = " " + MopsFiles.getBadge(player).getSymbol();
-            badgeDescription = MopsFiles.getBadge(player).getDescription();
-        }
-
         String message = event.getMessage().replaceAll(":skull:", ChatColor.GRAY + "☠" + ChatColor.RESET);
         if(MopsFiles.getRank(player).getPermLevel() > 10) {
             message = MopsUtils.convertColorCodes(message);
@@ -922,8 +907,8 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             }
         }
 
-        TextComponent preMessage = Component.text(chatRank + name);
-        TextComponent messageBadge = Component.text(badgeSymbol).hoverEvent(Component.text(badgeDescription));
+        TextComponent preMessage = Component.text(MopsFiles.getRank(player).getPrefix() + player.getName());
+        TextComponent messageBadge = Component.text(MopsFiles.getBadge(player).getSymbol()).hoverEvent(Component.text(MopsFiles.getBadge(player).getDescription()));
         TextComponent afterMessage = Component.text(ChatColor.RESET + ": " + message.trim());
 
         TextComponent fullMessage = preMessage.append(messageBadge).append(afterMessage);
