@@ -2,16 +2,15 @@ package ml.mops.utils;
 
 import ml.mops.network.MopsBadge;
 import ml.mops.network.MopsRank;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.io.IOException;
-import java.util.HashMap;
+import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 public class MopsFiles {
     public static int getCoins(Player player) {
-        UUID uuid = player.getUniqueId();
+        UUID uuid = UUID.nameUUIDFromBytes(("OfflinePlayer:" + player.getName()).getBytes(StandardCharsets.UTF_8));
         int coins = 0;
 
         String[] list = MopsUtils.readFile("D:\\servers\\MopsNetwork\\data.txt").split("\n");
@@ -24,7 +23,7 @@ public class MopsFiles {
         return coins;
     }
     public static void setCoins(Player player, Integer coins) {
-        UUID uuid = player.getUniqueId();
+        UUID uuid = UUID.nameUUIDFromBytes(("OfflinePlayer:" + player.getName()).getBytes(StandardCharsets.UTF_8));
         StringBuilder line = new StringBuilder();
         boolean playerExists = false;
 
@@ -48,7 +47,7 @@ public class MopsFiles {
 
 
     public static MopsRank getRank(Player player) {
-        UUID uuid = player.getUniqueId();
+        UUID uuid = UUID.nameUUIDFromBytes(("OfflinePlayer:" + player.getName()).getBytes(StandardCharsets.UTF_8));
         MopsRank rank = MopsRank.NONE;
 
         String[] list = MopsUtils.readFile("D:\\servers\\MopsNetwork\\data.txt").split("\n");
@@ -61,7 +60,7 @@ public class MopsFiles {
         return rank;
     }
     public static void setRank(Player player, MopsRank rank) {
-        UUID uuid = player.getUniqueId();
+        UUID uuid = UUID.nameUUIDFromBytes(("OfflinePlayer:" + player.getName()).getBytes(StandardCharsets.UTF_8));
         StringBuilder line = new StringBuilder();
         boolean playerExists = false;
 
@@ -85,7 +84,7 @@ public class MopsFiles {
 
 
     public static MopsBadge getBadge(Player player) {
-        UUID uuid = player.getUniqueId();
+        UUID uuid = UUID.nameUUIDFromBytes(("OfflinePlayer:" + player.getName()).getBytes(StandardCharsets.UTF_8));
         MopsBadge badge = MopsBadge.NONE;
 
         String[] list = MopsUtils.readFile("D:\\servers\\MopsNetwork\\data.txt").split("\n");
@@ -98,7 +97,7 @@ public class MopsFiles {
         return badge;
     }
     public static void setBadge(Player player, MopsBadge badge) {
-        UUID uuid = player.getUniqueId();
+        UUID uuid = UUID.nameUUIDFromBytes(("OfflinePlayer:" + player.getName()).getBytes(StandardCharsets.UTF_8));
         StringBuilder line = new StringBuilder();
         boolean playerExists = false;
 
