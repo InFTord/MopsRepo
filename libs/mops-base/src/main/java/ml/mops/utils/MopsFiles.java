@@ -10,30 +10,27 @@ import java.util.UUID;
 
 public class MopsFiles {
     public static int getCoins(Player player) {
-        UUID uuid = UUID.nameUUIDFromBytes(("OfflinePlayer:" + player.getName()).getBytes(StandardCharsets.UTF_8));
+        UUID uuid = player.getUniqueId();
         int coins = 0;
 
         String[] list = MopsUtils.readFile("D:\\servers\\MopsNetwork\\data.txt").split("\n");
         for (String row : list) {
             String[] array = row.split(":");
-            if(UUID.fromString(array[0]) == uuid) {
+            if(UUID.fromString(array[0]).equals(uuid)) {
                 coins = Integer.parseInt(array[1]);
             }
-            System.out.println(uuid);
-            System.out.println(player.getUniqueId());
-            System.out.println(UUID.fromString(array[0]));
         }
         return coins;
     }
     public static void setCoins(Player player, Integer coins) {
-        UUID uuid = UUID.nameUUIDFromBytes(("OfflinePlayer:" + player.getName()).getBytes(StandardCharsets.UTF_8));
+        UUID uuid = player.getUniqueId();
         StringBuilder line = new StringBuilder();
         boolean playerExists = false;
 
         String[] list = MopsUtils.readFile("D:\\servers\\MopsNetwork\\data.txt").split("\n");
         for (String row : list) {
             String[] array = row.split(":");
-            if(UUID.fromString(array[0]) == uuid) {
+            if(UUID.fromString(array[0]).equals(uuid)) {
                 array[1] = String.valueOf(coins);
                 playerExists = true;
             }
@@ -50,27 +47,32 @@ public class MopsFiles {
 
 
     public static MopsRank getRank(Player player) {
-        UUID uuid = UUID.nameUUIDFromBytes(("OfflinePlayer:" + player.getName()).getBytes(StandardCharsets.UTF_8));
+        UUID uuid = player.getUniqueId();
         MopsRank rank = MopsRank.NONE;
 
         String[] list = MopsUtils.readFile("D:\\servers\\MopsNetwork\\data.txt").split("\n");
         for (String row : list) {
             String[] array = row.split(":");
-            if(UUID.fromString(array[0]) == uuid) {
+            System.out.println(uuid);
+            System.out.println(UUID.fromString(array[0]));
+            if(UUID.fromString(array[0]).equals(uuid)) {
                 rank = MopsRank.valueOf(array[2]);
+                System.out.println("connect");
+            } else {
+                System.out.println("didnt");
             }
         }
         return rank;
     }
     public static void setRank(Player player, MopsRank rank) {
-        UUID uuid = UUID.nameUUIDFromBytes(("OfflinePlayer:" + player.getName()).getBytes(StandardCharsets.UTF_8));
+        UUID uuid = player.getUniqueId();
         StringBuilder line = new StringBuilder();
         boolean playerExists = false;
 
         String[] list = MopsUtils.readFile("D:\\servers\\MopsNetwork\\data.txt").split("\n");
         for (String row : list) {
             String[] array = row.split(":");
-            if(UUID.fromString(array[0]) == uuid) {
+            if(UUID.fromString(array[0]).equals(uuid)) {
                 array[2] = String.valueOf(rank);
                 playerExists = true;
             }
@@ -87,27 +89,27 @@ public class MopsFiles {
 
 
     public static MopsBadge getBadge(Player player) {
-        UUID uuid = UUID.nameUUIDFromBytes(("OfflinePlayer:" + player.getName()).getBytes(StandardCharsets.UTF_8));
+        UUID uuid = player.getUniqueId();
         MopsBadge badge = MopsBadge.NONE;
 
         String[] list = MopsUtils.readFile("D:\\servers\\MopsNetwork\\data.txt").split("\n");
         for (String row : list) {
             String[] array = row.split(":");
-            if(UUID.fromString(array[0]) == uuid) {
+            if(UUID.fromString(array[0]).equals(uuid)) {
                 badge = MopsBadge.valueOf(array[3]);
             }
         }
         return badge;
     }
     public static void setBadge(Player player, MopsBadge badge) {
-        UUID uuid = UUID.nameUUIDFromBytes(("OfflinePlayer:" + player.getName()).getBytes(StandardCharsets.UTF_8));
+        UUID uuid = player.getUniqueId();
         StringBuilder line = new StringBuilder();
         boolean playerExists = false;
 
         String[] list = MopsUtils.readFile("D:\\servers\\MopsNetwork\\data.txt").split("\n");
         for (String row : list) {
             String[] array = row.split(":");
-            if(UUID.fromString(array[0]) == uuid) {
+            if(UUID.fromString(array[0]).equals(uuid)) {
                 array[3] = String.valueOf(badge);
                 playerExists = true;
             }
