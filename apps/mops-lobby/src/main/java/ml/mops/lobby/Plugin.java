@@ -1173,6 +1173,10 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         player.getInventory().remove(Material.BROWN_STAINED_GLASS_PANE);
 
         try {
+            if(player.getItemOnCursor().getType() == Material.BROWN_STAINED_GLASS_PANE) {
+                player.setItemOnCursor(new ItemStack(Material.BROWN_STAINED_GLASS_PANE, 0));
+            }
+
             if (event.getCurrentItem().getType() == Material.COMPASS) {
                 event.setCancelled(true);
             }
@@ -1190,12 +1194,22 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
                     BlockStateMeta bsm = (BlockStateMeta) item.getItemMeta();
                     ShulkerBox box = (ShulkerBox) bsm.getBlockState();
-                    box.getInventory().setContents(player.getOpenInventory().getTopInventory().getContents());
+                    Inventory shulkerBoxInv = player.getOpenInventory().getTopInventory();
+                    box.getInventory().setContents(shulkerBoxInv.getContents());
+
                     bsm.setBlockState(box);
                     box.update();
                     item.setItemMeta(bsm);
 
-                    player.getEnderChest().setItem(16, item);
+                    Bukkit.getScheduler().runTaskLater(this, () -> {
+                        box.getInventory().setContents(shulkerBoxInv.getContents());
+
+                        bsm.setBlockState(box);
+                        box.update();
+                        item.setItemMeta(bsm);
+
+                        player.getEnderChest().setItem(16, item);
+                    }, 5L);
                 }
             }
         } catch (Exception ignored) { }
@@ -1295,6 +1309,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             if(player.getEnderChest().contains(Material.BROWN_STAINED_GLASS_PANE)) {
                 player.getEnderChest().remove(Material.BROWN_STAINED_GLASS_PANE);
             }
+            player.getInventory().remove(Material.BROWN_STAINED_GLASS_PANE);
 
             try {
                 if (!player.getEnderChest().getItem(16).getType().toString().contains("SHULKER_BOX") && !(player.getEnderChest().getItem(16).getType() == Material.BROWN_STAINED_GLASS_PANE)) {
