@@ -1144,6 +1144,8 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 try {
                     if (!event.getCursor().getType().toString().contains("SHULKER_BOX")) {
                         event.setCancelled(true);
+                    } else {
+                        player.getInventory().remove(Material.BROWN_STAINED_GLASS_PANE);
                     }
                 } catch (Exception ignored) { }
 
@@ -1188,12 +1190,9 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
                     ItemStack item = enderChestBackpack.get(player);
 
-                    BlockStateMeta shulkerBsm = (BlockStateMeta) player.getOpenInventory();
-                    ShulkerBox shulkerBox = (ShulkerBox) shulkerBsm.getBlockState();
-
                     BlockStateMeta bsm = (BlockStateMeta) item.getItemMeta();
                     ShulkerBox box = (ShulkerBox) bsm.getBlockState();
-                    box.getInventory().setContents(shulkerBox.getInventory().getContents());
+                    box.getInventory().setContents(player.getOpenInventory().getTopInventory().getContents());
                     bsm.setBlockState(box);
                     box.update();
                     item.setItemMeta(bsm);
@@ -1208,6 +1207,9 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             event.setCancelled(true);
         }
         if(event.getItem().getType() == Material.GLISTERING_MELON_SLICE) {
+            event.setCancelled(true);
+        }
+        if(event.getItem().getType() == Material.BROWN_STAINED_GLASS_PANE) {
             event.setCancelled(true);
         }
     }
