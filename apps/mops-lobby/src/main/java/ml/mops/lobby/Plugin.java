@@ -1181,12 +1181,13 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                     if (!event.getCursor().getType().toString().contains("SHULKER_BOX")) {
                         event.setCancelled(true);
                     } else {
-                        ItemStack item = event.getCurrentItem();
+                        ItemStack item = event.getCursor();
                         ItemMeta meta = item.getItemMeta();
                         List<String> lore = meta.getLore();
                         lore.add(ChatColor.YELLOW + "Left-Click to open" + ChatColor.GOLD + " | " + ChatColor.YELLOW + "Right-Click to remove");
                         meta.setLore(lore);
                         item.setItemMeta(meta);
+
                         player.getEnderChest().setItem(16, item);
                     }
                 } catch (Exception ignored) { }
@@ -1385,7 +1386,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         int value = getAmount(contents, new Items().mopsCoin());
 
         try {
-            BlockStateMeta bsm = (BlockStateMeta) player.getEnderChest().getItem(16);
+            BlockStateMeta bsm = (BlockStateMeta) player.getEnderChest().getItem(16).getItemMeta();
             ShulkerBox box = (ShulkerBox) bsm.getBlockState();
             ItemStack[] boxContents = box.getInventory().getContents();
 
