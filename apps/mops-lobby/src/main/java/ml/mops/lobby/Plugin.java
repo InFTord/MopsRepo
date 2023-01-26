@@ -186,6 +186,8 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                     double equation = Math.sin(snowDoge*2) * Math.cos(snowDoge*2) * 50;
                     int result = (int) Math.round(equation) + 265;
                     stand.setRightArmPose(new EulerAngle(Math.toRadians(result), Math.toRadians(320), Math.toRadians(150)));
+
+                    mainworld.spawnParticle(Particle.SNOWBALL, entity.getLocation(), 10, 2, 1, 2);
                 }
             }
 
@@ -641,7 +643,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                             ChatColor.DARK_GREEN + " + " + ChatColor.BLACK + "Woolbattle now" + "\n" +
                             "    gives coins" + "\n" +
                             ChatColor.GRAY + " - " + ChatColor.BLACK + "Other Bug Fixes" + "\n" +
-                            ChatColor.DARK_GREEN + " + " + ChatColor.BLACK + "SnowDoge animatin" + "\n"
+                            ChatColor.DARK_GREEN + " + " + ChatColor.BLACK + "SnowDoge animation" + "\n"
                     );
                     bookMeta.setPages(pages);
 
@@ -1387,27 +1389,12 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         ItemStack[] contents = player.getEnderChest().getContents();
         int value = getAmount(contents, new Items().mopsCoin());
 
-        try {
-            BlockStateMeta bsm = (BlockStateMeta) player.getEnderChest().getItem(16);
-            ShulkerBox box = (ShulkerBox) bsm.getBlockState();
-            ItemStack[] boxContents = box.getInventory().getContents();
-
-            value += getAmount(boxContents, new Items().mopsCoin());
-
-            for(ItemStack item : boxContents) {
-                try {
-                    if(item.getItemMeta().getDisplayName().contains(ChatColor.RED + "Kuudra Washing Machine 2.0")) {
-                        value += item.getAmount()*1000;
-                    }
-                    if(item.getType() == Material.CORNFLOWER || item.getType() == Material.DANDELION) {
-                        value += item.getAmount()*200;
-                    }
-                    if(item.getType() == Material.WITHER_ROSE || item.getType() == Material.BAMBOO) {
-                        value += item.getAmount()*400;
-                    }
-                } catch (Exception ignored) { }
-            }
-        } catch (Exception igonred) { }
+//        try {
+//            BlockStateMeta bsm = (BlockStateMeta) player.getEnderChest().getItem(16);
+//            ShulkerBox box = (ShulkerBox) bsm.getBlockState();
+//            ItemStack[] boxContents = box.getInventory().getContents();
+//            add value here
+//        } catch (Exception igonred) { }
 
 
         for(ItemStack item : contents) {
