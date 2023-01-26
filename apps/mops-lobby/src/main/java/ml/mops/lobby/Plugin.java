@@ -187,7 +187,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                     int result = (int) Math.round(equation) + 265;
                     stand.setRightArmPose(new EulerAngle(Math.toRadians(result), Math.toRadians(320), Math.toRadians(150)));
 
-                    mainworld.spawnParticle(Particle.SNOWBALL, new Location(mainworld, -95, 9, -181), 15, 0.5, 0.2, 0.5);
+                    mainworld.spawnParticle(Particle.SNOWBALL, new Location(mainworld, -94.5, 9, -180.5), 20, 0.5, 0.2, 0.5);
                 }
             }
 
@@ -1187,6 +1187,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                         lore.add(ChatColor.YELLOW + "Left-Click to open" + ChatColor.GOLD + " | " + ChatColor.YELLOW + "Right-Click to remove");
                         meta.setLore(lore);
                         item.setItemMeta(meta);
+                        player.getEnderChest().setItem(16, item);
                     }
                 } catch (Exception ignored) { }
 
@@ -1266,6 +1267,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                         item.setItemMeta(bsm);
 
                         player.getEnderChest().setItem(16, item);
+                        manipulateEnderChest(player);
                     }, 5L);
                 }
             }
@@ -1403,7 +1405,6 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 } catch (Exception ignored) { }
             }
         } catch (Exception igonred) { }
-
 
         for(ItemStack item : contents) {
             try {
