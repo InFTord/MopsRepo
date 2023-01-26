@@ -181,9 +181,9 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             for(Entity entity : mainworld.getEntities()) {
                 if(entity.getScoreboardTags().contains("snowCleaningDoge")) {
                     ArmorStand stand = (ArmorStand) entity;
-                    snowDoge += 0.1;
+                    snowDoge += 0.2;
 
-                    double equation = Math.sin(snowDoge) * Math.cos(snowDoge) * 50;
+                    double equation = Math.sin(snowDoge*2) * Math.cos(snowDoge*2) * 50;
                     int result = (int) Math.round(equation) + 265;
                     stand.setRightArmPose(new EulerAngle(Math.toRadians(result), Math.toRadians(320), Math.toRadians(150)));
                 }
@@ -1384,14 +1384,31 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     }
 
     public int getEnderchestValue(Player player) {
-        List<ItemStack> contents = Arrays.asList(player.getEnderChest().getContents());
+        ItemStack[] contents = player.getEnderChest().getContents();
+        int value = getAmount(contents, new Items().mopsCoin());
+
         try {
             BlockStateMeta bsm = (BlockStateMeta) player.getEnderChest().getItem(16);
             ShulkerBox box = (ShulkerBox) bsm.getBlockState();
-            contents.addAll(Arrays.asList(box.getInventory().getContents()));
+            ItemStack[] boxContents = box.getInventory().getContents();
+
+            value += getAmount(boxContents, new Items().mopsCoin());
+
+            for(ItemStack item : boxContents) {
+                try {
+                    if(item.getItemMeta().getDisplayName().contains(ChatColor.RED + "Kuudra Washing Machine 2.0")) {
+                        value += item.getAmount()*1000;
+                    }
+                    if(item.getType() == Material.CORNFLOWER || item.getType() == Material.DANDELION) {
+                        value += item.getAmount()*200;
+                    }
+                    if(item.getType() == Material.WITHER_ROSE || item.getType() == Material.BAMBOO) {
+                        value += item.getAmount()*400;
+                    }
+                } catch (Exception ignored) { }
+            }
         } catch (Exception igonred) { }
 
-        int value = getAmount((ItemStack[]) contents.toArray(), new Items().mopsCoin());
 
         for(ItemStack item : contents) {
             try {
