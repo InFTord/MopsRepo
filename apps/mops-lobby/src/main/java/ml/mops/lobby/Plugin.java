@@ -612,11 +612,11 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
                     ArrayList<String> pages = new ArrayList<>();
                     pages.add(0,
-                            "     " + ChatColor.GREEN + "CHANGELOG" + "\n" +
-                            ChatColor.DARK_GREEN + " + " + ChatColor.GOLD + "EnderChest " + "\n" +
-                            "Backpacks Fix" + "\n" +
-                            ChatColor.GRAY + " - " + ChatColor.GOLD + "Other Bug Fixes" + "\n" +
-                            ChatColor.GRAY + " - " + ChatColor.GOLD + "Something New 3" + "\n"
+                            "     " + ChatColor.GREEN + ChatColor.BOLD + "CHANGELOG" + "\n" + ChatColor.RESET +
+                            ChatColor.DARK_GREEN + " + " + ChatColor.BLACK + "EnderChest Back" + "\n" +
+                            "   packs Fix" + "\n" +
+                            ChatColor.GRAY + " - " + ChatColor.BLACK + "Other Bug Fixes" + "\n" +
+                            ChatColor.GRAY + " - " + ChatColor.BLACK + "Something New 3" + "\n"
                     );
                     bookMeta.setPages(pages);
 
@@ -1144,8 +1144,6 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 try {
                     if (!event.getCursor().getType().toString().contains("SHULKER_BOX")) {
                         event.setCancelled(true);
-                    } else {
-                        player.getInventory().remove(Material.BROWN_STAINED_GLASS_PANE);
                     }
                 } catch (Exception ignored) { }
 
@@ -1169,10 +1167,10 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                     }
                 }
             }
-            player.getInventory().remove(Material.BROWN_STAINED_GLASS_PANE);
-
             manipulateEnderChest(player);
         }
+
+        player.getInventory().remove(Material.BROWN_STAINED_GLASS_PANE);
 
         try {
             if (event.getCurrentItem().getType() == Material.COMPASS) {
@@ -1196,6 +1194,8 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                     bsm.setBlockState(box);
                     box.update();
                     item.setItemMeta(bsm);
+
+                    player.getEnderChest().setItem(16, item);
                 }
             }
         } catch (Exception ignored) { }
