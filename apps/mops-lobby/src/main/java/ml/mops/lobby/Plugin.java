@@ -613,8 +613,9 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                     ArrayList<String> pages = new ArrayList<>();
                     pages.add(0,
                             "     " + ChatColor.GREEN + "CHANGELOG" + "\n" +
-                            ChatColor.DARK_GREEN + " + " + ChatColor.GOLD + "EChest Backpacks" + "\n" +
-                            ChatColor.GRAY + " - " + ChatColor.GOLD + "Bug Fixes" + "\n" +
+                            ChatColor.DARK_GREEN + " + " + ChatColor.GOLD + "EnderChest " + "\n" +
+                            "Backpacks Fix" + "\n" +
+                            ChatColor.GRAY + " - " + ChatColor.GOLD + "Other Bug Fixes" + "\n" +
                             ChatColor.GRAY + " - " + ChatColor.GOLD + "Something New 3" + "\n"
                     );
                     bookMeta.setPages(pages);
@@ -1148,7 +1149,9 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
                 if(event.getCurrentItem().getType().toString().contains("SHULKER_BOX")) {
                     if (event.isShiftClick()) {
-                        event.setCancelled(true);
+                        if(!event.isRightClick()) {
+                            event.setCancelled(true);
+                        }
                     }
                     if(event.isLeftClick()) {
                         BlockStateMeta bsm = (BlockStateMeta) event.getCurrentItem().getItemMeta();
@@ -1160,6 +1163,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                     }
                     if(event.isRightClick()) {
                         enderChestBackpack.put(player, null);
+                        event.setCancelled(false);
                     }
                 }
             }
@@ -1184,7 +1188,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
                     ItemStack item = enderChestBackpack.get(player);
 
-                    BlockStateMeta shulkerBsm = (BlockStateMeta) enderChestBackpack.get(player);
+                    BlockStateMeta shulkerBsm = (BlockStateMeta) player.getOpenInventory();
                     ShulkerBox shulkerBox = (ShulkerBox) shulkerBsm.getBlockState();
 
                     BlockStateMeta bsm = (BlockStateMeta) item.getItemMeta();
@@ -1204,13 +1208,6 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             event.setCancelled(true);
         }
         if(event.getItem().getType() == Material.GLISTERING_MELON_SLICE) {
-            event.setCancelled(true);
-        }
-
-        if(event.getDestination() == auraGUI) {
-            event.setCancelled(true);
-        }
-        if(event.getDestination() == gamesGUI) {
             event.setCancelled(true);
         }
     }
