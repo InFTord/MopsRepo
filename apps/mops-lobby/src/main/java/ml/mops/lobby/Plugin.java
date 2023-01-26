@@ -1188,7 +1188,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                         meta.setLore(lore);
                         item.setItemMeta(meta);
 
-                        player.getEnderChest().setItem(16, item);
+                        event.setCursor(item);
                     }
                 } catch (Exception ignored) { }
 
