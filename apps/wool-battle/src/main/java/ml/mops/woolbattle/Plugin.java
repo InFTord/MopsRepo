@@ -85,6 +85,8 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 	private final HashMap<Player, BukkitTask> deathmsg = new HashMap<>();
 	private final HashMap<Player, Player> lastDamager = new HashMap<>();
 	private final HashMap<Player, Integer> killCount = new HashMap<>();
+	private final HashMap<Player, Integer> expectedMopsCoinMin = new HashMap<>();
+	private final HashMap<Player, Integer> expectedMopsCoinMax = new HashMap<>();
 
 	private final HashMap<Player, Boolean> hasWrittenAnything = new HashMap<>();
 	private final HashMap<Player, Boolean> globalChat = new HashMap<>();
@@ -700,6 +702,9 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		slimeCooldownSeconds.putIfAbsent(player, 0);
 		stickCooldownTicks.putIfAbsent(player, 0);
 		killCount.putIfAbsent(player, 0);
+
+		expectedMopsCoinMin.putIfAbsent(player, 1);
+		expectedMopsCoinMax.putIfAbsent(player, 3);
 
 		event.setJoinMessage("");
 		for(Player players : Bukkit.getOnlinePlayers()) {
@@ -2335,6 +2340,15 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 	}
 
 	public void winningBroadcast(int winner, String key) {
+		Player maxKillsPlayer = null;
+		String mostKills = "";
+
+		for(Player players : killCount.keySet()) {
+			if(killCount.get(players).equals(Collections.max(killCount.values()))) {
+				mostKills = MopsFiles.getRank(players) + players.getName() + ChatColor.RESET + ChatColor.GRAY + " - " + ChatColor.YELLOW + Collections.max(killCount.values()) + " kills";
+				maxKillsPlayer = players;
+			}
+		}
 
 		for(Player player : Bukkit.getOnlinePlayers()) {
 			String colorWon;
@@ -2348,57 +2362,44 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 				case 6 -> colorWon = "PINK";
 				default -> colorWon = "NO ONE";
 			}
+			if(player == maxKillsPlayer) {
+				expectedMopsCoinMin.put(player, expectedMopsCoinMax.get(maxKillsPlayer) + 2);
+				expectedMopsCoinMax.put(player, expectedMopsCoinMax.get(maxKillsPlayer) + 3);
+			}
+			expectedMopsCoinMin.put(player, expectedMopsCoinMax.get(maxKillsPlayer) + killCount.get(player));
+
+			int expectedCoins = (int) (Math.random() * (expectedMopsCoinMax.get(player) - expectedMopsCoinMin.get(player) + 1)) + expectedMopsCoinMin.get(player);
+			double equation = expectedCoins * (-expectedCoins)/80.0 + expectedCoins;
+			int coins = (int) Math.round(equation);
+
+			String string = getStringByLang(lang, "coinReward.1");
+			if(coins > 1) {
+				string = getStringByLang(lang, "coinReward.2");
+			}
+
+			player.sendMessage(ChatColor.YELLOW + "==============================");
 
 			switch (key) {
 				case "win" -> {
-					player.sendMessage(ChatColor.YELLOW + "==============================");
 					player.sendMessage("        " + getStringByLang(lang, "game.win") + " " + ChatColor.RESET + getStringByLang(lang, "team." + colorWon) + " " + getStringByLang(lang, "team.won"));
-					player.sendMessage(" ");
-					for(Player maxKillsPlayer : killCount.keySet()) {
-						if(killCount.get(maxKillsPlayer).equals(Collections.max(killCount.values()))) {
-							player.sendMessage(MopsFiles.getRank(maxKillsPlayer) + maxKillsPlayer.getName() + ChatColor.RESET + ChatColor.GRAY + " - " + ChatColor.YELLOW + Collections.max(killCount.values()) + " kills");
-						}
-					}
-					player.sendMessage("You got awarded " + ChatColor.GOLD + "1 MopsCoin" + ChatColor.RESET + ".");
-					player.sendMessage(ChatColor.YELLOW + "==============================");
-
-					MopsFiles.setCoins(player, MopsFiles.getCoins(player) + 1);
-
 					player.sendTitle(getStringByLang(lang, "game.win"), getStringByLang(lang, "team." + colorWon) + " " + getStringByLang(lang, "team.won"), 5, 50, 40);
 				}
 				case "wipeout" -> {
-					player.sendMessage(ChatColor.YELLOW + "==============================");
 					player.sendMessage("        " + getStringByLang(lang, "game.wipeout") + " " + ChatColor.RESET + getStringByLang(lang, "team." + colorWon) + " " + getStringByLang(lang, "team.won"));
-					player.sendMessage(" ");
-					for(Player maxKillsPlayer : killCount.keySet()) {
-						if(killCount.get(maxKillsPlayer).equals(Collections.max(killCount.values()))) {
-							player.sendMessage(MopsFiles.getRank(maxKillsPlayer) + maxKillsPlayer.getName() + ChatColor.RESET + ChatColor.GRAY + " - " + ChatColor.YELLOW + Collections.max(killCount.values()) + " kills");
-						}
-					}
-					player.sendMessage("You got awarded " + ChatColor.GOLD + "1 MopsCoin" + ChatColor.RESET + ".");
-					player.sendMessage(ChatColor.YELLOW + "==============================");
-
-					MopsFiles.setCoins(player, MopsFiles.getCoins(player) + 1);
-
 					player.sendTitle(getStringByLang(lang, "game.wipeout"), getStringByLang(lang, "team." + colorWon) + " " + getStringByLang(lang, "team.won"), 5, 50, 40);
 				}
 				case "domination" -> {
-					player.sendMessage(ChatColor.YELLOW + "==============================");
 					player.sendMessage("        " + getStringByLang(lang, "game.domination") + " " + ChatColor.RESET + getStringByLang(lang, "team." + colorWon) + " " + getStringByLang(lang, "team.won"));
-					player.sendMessage(" ");
-					for(Player maxKillsPlayer : killCount.keySet()) {
-						if(killCount.get(maxKillsPlayer).equals(Collections.max(killCount.values()))) {
-							player.sendMessage(MopsFiles.getRank(maxKillsPlayer) + maxKillsPlayer.getName() + ChatColor.RESET + ChatColor.GRAY + " - " + ChatColor.YELLOW + Collections.max(killCount.values()) + " kills");
-						}
-					}
-					player.sendMessage("You got awarded " + ChatColor.GOLD + "1 MopsCoin" + ChatColor.RESET + ".");
-					player.sendMessage(ChatColor.YELLOW + "==============================");
-
-					MopsFiles.setCoins(player, MopsFiles.getCoins(player) + 1);
-
 					player.sendTitle(getStringByLang(lang, "game.domination"), getStringByLang(lang, "team." + colorWon) + " " + getStringByLang(lang, "team.won"), 5, 50, 40);
 				}
 			}
+
+			player.sendMessage(" ");
+			player.sendMessage(mostKills);
+			player.sendMessage(getStringByLang(lang, "youGotAwarded") + ChatColor.GOLD + coins + " " + string + ChatColor.RESET + ".");
+			player.sendMessage(ChatColor.YELLOW + "==============================");
+
+			MopsFiles.setCoins(player, MopsFiles.getCoins(player) + coins);
 
 			player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 0);
 			player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 0.2F);
@@ -2408,7 +2409,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 				Bukkit.getScheduler().runTaskLater(this, () -> {
 					player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 0.6F);
 					player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 0.8F);
-				}, 3L);
+				}, 6L);
 			}, 3L);
 		}
 	}

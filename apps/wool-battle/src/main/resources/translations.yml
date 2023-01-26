@@ -324,6 +324,15 @@ woolbattle:
   - game.domination:
       rus: "&e&lДОМИНАЦИЯ!"
       eng: "&e&lDOMINATION!"
+  - youGotAwarded:
+      rus: "&fВы получили "
+      eng: "&fYou got awarded !"
+  - coinReward.1:
+      rus: "&6МопсКоин"
+      eng: "&7MopsCoin"
+  - coinReward.2:
+      rus: "&6МопсКоинов"
+      eng: "&7MopsCoins"
   - kills.red:
       rus: "&cУбито Красными"
       eng: "&cKilled by Red"
