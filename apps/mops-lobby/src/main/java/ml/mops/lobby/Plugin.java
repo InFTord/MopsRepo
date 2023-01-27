@@ -178,19 +178,6 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 player.getInventory().remove(Material.BROWN_STAINED_GLASS_PANE);
             }
 
-            for(Entity entity : mainworld.getEntities()) {
-                if(entity.getScoreboardTags().contains("snowCleaningDoge")) {
-                    ArmorStand stand = (ArmorStand) entity;
-                    snowDoge += 0.2;
-
-                    double equation = Math.sin(snowDoge*2) * Math.cos(snowDoge*2) * 50;
-                    int result = (int) Math.round(equation) + 265;
-                    stand.setRightArmPose(new EulerAngle(Math.toRadians(result), Math.toRadians(320), Math.toRadians(150)));
-
-                    mainworld.spawnParticle(Particle.SNOWBALL, new Location(mainworld, -94.5, 9, -180.5), 20, 0.5, 0.2, 0.5);
-                }
-            }
-
             String serverName = MopsUtils.getPath(this).replace("\\plugins", "").replace("D:\\servers\\MopsNetwork\\", "");
 
             try {
@@ -285,6 +272,19 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                         Particle.DustOptions dustOptions = new Particle.DustOptions(Color.fromRGB(color.getRed(), color.getGreen(), color.getBlue()), 1F);
                         player.getWorld().spawnParticle(Particle.REDSTONE, player.getLocation().add(x, 0.1, y), 2, 0, 0, 0, dustOptions);
                     }
+                }
+            }
+
+            for(Entity entity : mainworld.getEntities()) {
+                if(entity.getScoreboardTags().contains("snowCleaningDoge")) {
+                    ArmorStand stand = (ArmorStand) entity;
+                    snowDoge += 0.2;
+
+                    double equation = Math.sin(snowDoge*2) * Math.cos(snowDoge*2) * 50;
+                    int result = (int) Math.round(equation) + 265;
+                    stand.setRightArmPose(new EulerAngle(Math.toRadians(result), Math.toRadians(320), Math.toRadians(150)));
+
+                    mainworld.spawnParticle(Particle.SNOWBALL, new Location(mainworld, -94.5, 9, -180.5), 20, 0.5, 0.2, 0.5);
                 }
             }
 
@@ -447,8 +447,8 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                     player.openInventory(gamesGUI.get(player));
                     event.setCancelled(true);
                 }
-                if (itemInHand.getItemMeta().getDisplayName().equals(ChatColor.GOLD + "Effects")) {
-                    Inventory inv = Bukkit.createInventory(null, 27, "Effects");
+                if (itemInHand.getItemMeta().getDisplayName().equals(ChatColor.GOLD + "Customize")) {
+                    Inventory inv = Bukkit.createInventory(null, 27, "Customization");
                     fillCosmeticSelector(inv);
 
                     cosmeticsSelector.put(player, inv);
