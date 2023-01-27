@@ -2037,6 +2037,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		}
 	}
 
+	//f
 
 	public void onCapture(String oldA, String oldB, String oldC, String oldD, String newA, String newB, String newC, String newD) {
 		String genAcopy = newA.replace("woolbattle.generator.", "");

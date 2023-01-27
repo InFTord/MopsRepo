@@ -1420,7 +1420,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         inv.setItem(13, MopsUtils.createItem(Material.LIGHT_BLUE_SHULKER_BOX, ChatColor.AQUA + "Kits"));
         inv.setItem(14, MopsUtils.createItem(Material.MELON, ChatColor.GREEN + "Market"));
         inv.setItem(15, MopsUtils.createItem(Material.GREEN_TERRACOTTA, ChatColor.DARK_GREEN + "Missions"));
-        inv.setItem(16, MopsUtils.createItem(Material.LAPIS_BLOCK, ChatColor.BLUE + "MopsLobby Section 2"));
+        inv.setItem(16, MopsUtils.createItem(Material.LAPIS_BLOCK, ChatColor.BLUE + "Smelter"));
 
         if(MopsFiles.getPigeon(player)) {
             ItemStack item = MopsUtils.createCustomHead("b7ea4c017e3456cf09a5c263f34d3cc5f41577b74d60f6f8196c60e07f8c5a96");
