@@ -167,15 +167,15 @@ woolbattle:
   - slimeball.name:
       rus: "&aНадувной Батут"
       eng: "&aInflatable Trampoline"
-  - slimeball.lore:
-      rus: |
-        &7Спасает тебя при падении. &e&lПКМ
-        &r&e&lШИФТ &7чтобы прыгнуть выше. Кулдаун: &b5с
-        &r&bСтоимость: 160 шерсти
-      eng: |
-        &7Saves you from falling. &e&lRIGHT CLICK
-        &r&e&lSHIFT &7to jump higher. Cooldown: &b5s
-        &r&bCost: 160 wool
+  - slimeball.lore1:
+      rus: "&7Спасает тебя при падении. &e&lПКМ"
+      eng: "&7Saves you from falling. &e&lRIGHT CLICK"
+  - slimeball.lore2:
+      rus: "&e&lШИФТ &7чтобы прыгнуть выше. Кулдаун: &b5с"
+      eng: "&e&lSHIFT &7to jump higher. Cooldown: &b5s"
+  - slimeball.lore3:
+      rus: "&bСтоимость: 160 шерсти"
+      eng: "&r&bCost: 160 wool"
   - platform.name:
       rus: "&cПлатформа!"
       eng: "&cPlatform!"

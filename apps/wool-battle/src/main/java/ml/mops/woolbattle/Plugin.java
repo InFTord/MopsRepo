@@ -525,10 +525,12 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 						}
 					}
 
-					if (attacker.getScoreboardTags().contains("ingame")) {
-						combo.put(attacker, (combo.get(attacker) + 1));
-					} else {
-						combo.put(attacker, 0);
+					if(!victim.getScoreboardTags().contains("immunity")) {
+						if (attacker.getScoreboardTags().contains("ingame")) {
+							combo.put(attacker, (combo.get(attacker) + 1));
+						} else {
+							combo.put(attacker, 0);
+						}
 					}
 
 					Team team = mainboard.getPlayerTeam(attacker);
@@ -2068,6 +2070,8 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 				if(entity.getScoreboardTags().contains("genAtitle")) {
 					ArmorStand stand = (ArmorStand) entity;
 					stand.setHelmet(item);
+					stand.setCustomNameVisible(true);
+					stand.setCustomName(team.getChatColor + "Generator A");
 
 					Particle.DustOptions dustOptions = new Particle.DustOptions(leatherColor, 1F);
 					stand.getWorld().spawnParticle(Particle.REDSTONE, stand.getLocation().add(0, 1.5, 0), 10, 0.5, 0.5, 0.5, dustOptions);
@@ -2090,6 +2094,8 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 				if(entity.getScoreboardTags().contains("genBtitle")) {
 					ArmorStand stand = (ArmorStand) entity;
 					stand.setHelmet(item);
+					stand.setCustomNameVisible(true);
+					stand.setCustomName(team.getChatColor + "Generator B");
 
 					Particle.DustOptions dustOptions = new Particle.DustOptions(leatherColor, 1F);
 					stand.getWorld().spawnParticle(Particle.REDSTONE, stand.getLocation().add(0, 1.5, 0), 10, 0.5, 0.5, 0.5, dustOptions);
@@ -2112,6 +2118,8 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 				if(entity.getScoreboardTags().contains("genCtitle")) {
 					ArmorStand stand = (ArmorStand) entity;
 					stand.setHelmet(item);
+					stand.setCustomNameVisible(true);
+					stand.setCustomName(team.getChatColor + "Generator C");
 
 					Particle.DustOptions dustOptions = new Particle.DustOptions(leatherColor, 1F);
 					stand.getWorld().spawnParticle(Particle.REDSTONE, stand.getLocation().add(0, 1.5, 0), 10, 0.5, 0.5, 0.5, dustOptions);
@@ -2134,6 +2142,8 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 				if(entity.getScoreboardTags().contains("genDtitle")) {
 					ArmorStand stand = (ArmorStand) entity;
 					stand.setHelmet(item);
+					stand.setCustomNameVisible(true);
+					stand.setCustomName(team.getChatColor + "Generator D");
 
 					Particle.DustOptions dustOptions = new Particle.DustOptions(leatherColor, 1F);
 					stand.getWorld().spawnParticle(Particle.REDSTONE, stand.getLocation().add(0, 1.5, 0), 10, 0.5, 0.5, 0.5, dustOptions);
@@ -2208,6 +2218,20 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			if(entity.getScoreboardTags().contains("generatorTitle")) {
 				ArmorStand stand = (ArmorStand) entity;
 				stand.setHelmet(new ItemStack(Material.IRON_BLOCK));
+
+				stand.setCustomNameVisible(true);
+				if(entity.getScoreboardTags().contains("genAtitle")) {
+					stand.setCustomName(ChatColor.WHITE + "Generator A");
+				}
+				if(entity.getScoreboardTags().contains("genBtitle")) {
+					stand.setCustomName(ChatColor.WHITE + "Generator B");
+				}
+				if(entity.getScoreboardTags().contains("genCtitle")) {
+					stand.setCustomName(ChatColor.WHITE + "Generator C");
+				}
+				if(entity.getScoreboardTags().contains("genDtitle")) {
+					stand.setCustomName(ChatColor.WHITE + "Generator D");
+				}
 			}
 		}
 	}
@@ -2346,7 +2370,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 		for(Player players : killCount.keySet()) {
 			if(killCount.get(players).equals(Collections.max(killCount.values()))) {
-				mostKills = MopsFiles.getRank(players) + players.getName() + ChatColor.RESET + ChatColor.GRAY + " - " + ChatColor.YELLOW + Collections.max(killCount.values()) + " kills";
+				mostKills = MopsFiles.getRank(players).getPrefix() + players.getName() + ChatColor.RESET + ChatColor.GRAY + " - " + ChatColor.YELLOW + Collections.max(killCount.values()) + " kills";
 				maxKillsPlayer = players;
 			}
 		}
@@ -2378,7 +2402,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 				string = getStringByLang(lang, "coinReward.2");
 			}
 
-			player.sendMessage(ChatColor.YELLOW + "==============================");
+			player.sendMessage(ChatColor.YELLOW + "====================================");
 
 			switch (key) {
 				case "win" -> {
@@ -2398,7 +2422,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			player.sendMessage(" ");
 			player.sendMessage(mostKills);
 			player.sendMessage(getStringByLang(lang, "youGotAwarded") + ChatColor.GOLD + coins + " " + string + ChatColor.RESET + ".");
-			player.sendMessage(ChatColor.YELLOW + "==============================");
+			player.sendMessage(ChatColor.YELLOW + "====================================");
 
 			MopsFiles.setCoins(player, MopsFiles.getCoins(player) + coins);
 

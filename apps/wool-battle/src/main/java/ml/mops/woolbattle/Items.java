@@ -1,7 +1,10 @@
 package ml.mops.woolbattle;
 
 import ml.mops.utils.MopsUtils;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.TextComponentTagVisitor;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Material;
@@ -71,13 +74,11 @@ public class Items {
         ItemMeta meta = item.getItemMeta();
         meta.displayName(plugin.getByLang(lang, "slimeball.name"));
 
-        List<String> lore = new ArrayList<>(Arrays.asList(MopsUtils.textComponentToString(plugin.getByLang(lang, "slimeball.lore")).split("\n")));
-        int i = 0;
-        while(i < lore.size()) {
-            lore.set(i, MopsUtils.convertColorCodes(ChatColor.RESET + "" + ChatColor.GRAY + lore.get(i)));
-            i++;
-        }
-        meta.setLore(lore);
+        List<Component> lore = new ArrayList<>();
+        lore.add(plugin.getByLang(lang, "slimeball.lore1"));
+        lore.add(plugin.getByLang(lang, "slimeball.lore2"));
+        lore.add(plugin.getByLang(lang, "slimeball.lore3"));
+        meta.lore(lore);
 
         meta.addEnchant(Enchantment.DURABILITY, 1, true);
         meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
