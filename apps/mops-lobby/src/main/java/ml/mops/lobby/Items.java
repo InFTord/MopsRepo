@@ -24,10 +24,10 @@ public class Items {
 
         return item;
     }
-    public ItemStack effects() {
+    public ItemStack customization() {
         ItemStack item = new ItemStack(Material.GLISTERING_MELON_SLICE);
         ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(ChatColor.GOLD + "Effects");
+        meta.setDisplayName(ChatColor.GOLD + "Customizations");
         meta.setLore(new ArrayList<String>(Collections.singletonList(ChatColor.GRAY + "Change your appearance.")));
         item.setItemMeta(meta);
 

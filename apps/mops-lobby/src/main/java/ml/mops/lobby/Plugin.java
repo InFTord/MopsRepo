@@ -71,7 +71,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     HashMap<Player, Double> auraRadius = new HashMap<>();
 
     HashMap<Player, Inventory> gamesGUI = new HashMap<>();
-    HashMap<Player, Inventory> effectsSelector = new HashMap<>();
+    HashMap<Player, Inventory> cosmeticsSelector = new HashMap<>();
     HashMap<Player, Inventory> effectsGUI = new HashMap<>();
     HashMap<Player, Inventory> auraGUI = new HashMap<>();
     List<Inventory> overviewInventories = new ArrayList<>();
@@ -376,7 +376,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             if (command.getName().equals("e")) {
                 switch (args[0]) {
                     case "compass" -> player.getInventory().addItem(new Items().compass());
-                    case "effects" -> player.getInventory().addItem(new Items().effects());
+                    case "custom" -> player.getInventory().addItem(new Items().customization());
                     case "mopscoin" -> player.getInventory().addItem(new Items().mopsCoin());
                     case "washingmachine" -> player.getInventory().addItem(new Items().kuudraWashingMachine());
                     case "chemistryset" -> player.getInventory().addItem(new Items().mopsChemistrySet());
@@ -449,10 +449,10 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 }
                 if (itemInHand.getItemMeta().getDisplayName().equals(ChatColor.GOLD + "Effects")) {
                     Inventory inv = Bukkit.createInventory(null, 27, "Effects");
-                    fillEffectSelector(inv);
+                    fillCosmeticSelector(inv);
 
-                    effectsSelector.put(player, inv);
-                    player.openInventory(effectsSelector.get(player));
+                    cosmeticsSelector.put(player, inv);
+                    player.openInventory(cosmeticsSelector.get(player));
                     event.setCancelled(true);
                 }
                 if (action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK) {
@@ -915,7 +915,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         player.getInventory().clear();
         Items items = new Items();
         player.getInventory().setItem(0, items.compass());
-        player.getInventory().setItem(8, items.effects());
+        player.getInventory().setItem(8, items.customization());
 
         Location spawn = new Location(player.getWorld(), -106.0, 9, -186.0);
         spawn.setYaw(-90);
@@ -1066,11 +1066,12 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         if (event.getClickedInventory() == effectsGUI.get(player)) {
             event.setCancelled(true);
         }
-        if (event.getClickedInventory() == effectsSelector.get(player)) {
+        if (event.getClickedInventory() == cosmeticsSelector.get(player)) {
             event.setCancelled(true);
 
             if(event.getSlot() == 12) {
                 Inventory inv = Bukkit.createInventory(null, 36, "Select Your Effect");
+                fillEffectsGUI(inv, player);
 
                 effectsGUI.put(player, inv);
                 player.openInventory(effectsGUI.get(player));
@@ -1520,7 +1521,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         infinityItem.setItemMeta(infinityMeta);
 
         ItemStack resetItem = new ItemStack(Material.BARRIER);
-        ItemMeta resetMeta = infinityItem.getItemMeta();
+        ItemMeta resetMeta = resetItem.getItemMeta();
         resetMeta.setDisplayName(ChatColor.RED + "Reset");
         resetMeta.setLore(new ArrayList<String>(Collections.singletonList(ChatColor.GRAY + "Resets your auras.")));
         resetItem.setItemMeta(resetMeta);
@@ -1531,81 +1532,32 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         inv.setItem(35, resetItem);
     }
 
-//    public void fillEffectsGUI(Inventory inv, Player player) {
-//        int i = 0;
-//        while(i < 9) {
-//            inv.setItem(i, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
-//            i++;
-//        }
-//        int i2 = 27;
-//        while(i2 < 36) {
-//            inv.setItem(i2, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
-//            i2++;
-//        }
-//        inv.setItem(9, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
-//        inv.setItem(17, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
-//        inv.setItem(18, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
-//        inv.setItem(26, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
-//
-//        ItemStack emeraldItem = new ItemStack(Material.EMERALD_BLOCK);
-//        ItemMeta emeraldMeta = emeraldItem.getItemMeta();
-//        emeraldMeta.setDisplayName(ChatColor.GREEN + "Emerald Cube");
-//        List<String> emeraldLore = new ArrayList<>();
-//        emeraldLore.add(ChatColor.GREEN + "Spawns a large emerald cube around you.");
-//        emeraldMeta.setLore(emeraldLore);
-//        emeraldItem.setItemMeta(emeraldMeta);
-//
-//        boolean andromedaBool = badge.get(player.getName()) == MopsBadge.SILLY;
-//        ChatColor andromedaColor = ChatColor.RED;
-//        if(andromedaBool) {
-//            andromedaColor = ChatColor.GREEN;
-//        }
-//        ItemStack andromedaItem = new ItemStack(Material.FIRE_CHARGE);
-//        ItemMeta andromedaMeta = andromedaItem.getItemMeta();
-//        andromedaMeta.setDisplayName(andromedaColor + "Andromeda");
-//        List<String> andromedaLore = new ArrayList<>();
-//        andromedaLore.add(ChatColor.GOLD + "Spawns a large planet around you.");
-//        andromedaLore.add(" ");
-//        andromedaLore.add(ChatColor.GOLD + "⚡ Silly " + ChatColor.GRAY + "club members only aura.");
-//        if(!andromedaBool) {
-//            andromedaLore.add(ChatColor.RED + "You can't use this!");
-//        }
-//        andromedaMeta.setLore(andromedaLore);
-//        andromedaItem.setItemMeta(andromedaMeta);
-//
-//
-//        boolean infinityBool = badge.get(player.getName()) == MopsBadge.STAFF || player.getName().equals("SirCat07");
-//        ChatColor infinityColor = ChatColor.RED;
-//        if(infinityBool) {
-//            infinityColor = ChatColor.GREEN;
-//        }
-//        ItemStack infinityItem = new ItemStack(Material.MUSIC_DISC_5);
-//        ItemMeta infinityMeta = infinityItem.getItemMeta();
-//        infinityMeta.setDisplayName(infinityColor + "Infinity");
-//        infinityMeta.addItemFlags(ItemFlag.HIDE_POTION_EFFECTS);
-//        List<String> infinityLore = new ArrayList<>();
-//        infinityLore.add(ChatColor.DARK_AQUA + "Truly Infinite.");
-//        infinityLore.add(" ");
-//        infinityLore.add(ChatColor.BLUE + "⭐ Staff " + ChatColor.GRAY + "members only aura.");
-//        if(!infinityBool) {
-//            infinityLore.add(ChatColor.RED + "You can't use this!");
-//        }
-//        infinityMeta.setLore(infinityLore);
-//        infinityItem.setItemMeta(infinityMeta);
-//
-//        ItemStack resetItem = new ItemStack(Material.BARRIER);
-//        ItemMeta resetMeta = infinityItem.getItemMeta();
-//        resetMeta.setDisplayName(ChatColor.RED + "Reset");
-//        resetMeta.setLore(new ArrayList<String>(Collections.singletonList(ChatColor.GRAY + "Resets your auras.")));
-//        resetItem.setItemMeta(resetMeta);
-//
-//        inv.setItem(10, emeraldItem);
-//        inv.setItem(11, andromedaItem);
-//        inv.setItem(12, infinityItem);
-//        inv.setItem(35, resetItem);
-//    }
+    public void fillEffectsGUI(Inventory inv, Player player) {
+        int i = 0;
+        while(i < 9) {
+            inv.setItem(i, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
+            i++;
+        }
+        int i2 = 27;
+        while(i2 < 36) {
+            inv.setItem(i2, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
+            i2++;
+        }
+        inv.setItem(9, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
+        inv.setItem(17, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
+        inv.setItem(18, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
+        inv.setItem(26, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
 
-    public void fillEffectSelector(Inventory inv) {
+        ItemStack resetItem = new ItemStack(Material.BARRIER);
+        ItemMeta resetMeta = resetItem.getItemMeta();
+        resetMeta.setDisplayName(ChatColor.RED + "Reset");
+        resetMeta.setLore(new ArrayList<String>(Collections.singletonList(ChatColor.GRAY + "Resets your effects.")));
+        resetItem.setItemMeta(resetMeta);
+
+        inv.setItem(35, resetItem);
+    }
+
+    public void fillCosmeticSelector(Inventory inv) {
         int i = 0;
         while(i < 27) {
             inv.setItem(i, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
