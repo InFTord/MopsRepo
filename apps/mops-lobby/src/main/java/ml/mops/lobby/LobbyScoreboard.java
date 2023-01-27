@@ -26,7 +26,7 @@ public class LobbyScoreboard {
         String score1 = ChatColor.GRAY + "Welcome! " + timeChar;
         String score2 = ChatColor.RED + " ";
         String score3 = ChatColor.WHITE + "Your coins: " + ChatColor.GOLD + "" + ChatColor.BOLD + MopsFiles.getCoins(player);
-        String score4 = ChatColor.WHITE + "Your rank: " + playerRank.getPrefix().trim();
+        String score4 = ChatColor.WHITE + "Your rank: " + playerRank.getScoreboardText().trim();
         String score5 = ChatColor.GOLD + " ";
         String score6 = ChatColor.WHITE + "You are in: " + ChatColor.YELLOW + "Lobby";
 
