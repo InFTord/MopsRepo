@@ -326,7 +326,7 @@ woolbattle:
       eng: "&e&lDOMINATION!"
   - youGotAwarded:
       rus: "&fВы получили "
-      eng: "&fYou got awarded !"
+      eng: "&fYou got awarded "
   - coinReward.1:
       rus: "&6МопсКоин"
       eng: "&7MopsCoin"
