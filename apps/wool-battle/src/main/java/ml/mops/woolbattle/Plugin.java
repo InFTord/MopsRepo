@@ -543,21 +543,23 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 						combo.put(attacker, 0);
 					}
 
-					if(victim.getScoreboardTags().contains("ingame")) {
-						if (teamname.contains("red")) {
-							obj.getScore(victim.getName()).setScore(1);
-						}
-						if (teamname.contains("yellow")) {
-							obj.getScore(victim.getName()).setScore(2);
-						}
-						if (teamname.contains("green")) {
-							obj.getScore(victim.getName()).setScore(3);
-						}
-						if (teamname.contains("blue")) {
-							obj.getScore(victim.getName()).setScore(4);
-						}
+					if(gameactive) {
+						if (victim.getScoreboardTags().contains("ingame")) {
+							if (teamname.contains("red")) {
+								obj.getScore(victim.getName()).setScore(1);
+							}
+							if (teamname.contains("yellow")) {
+								obj.getScore(victim.getName()).setScore(2);
+							}
+							if (teamname.contains("green")) {
+								obj.getScore(victim.getName()).setScore(3);
+							}
+							if (teamname.contains("blue")) {
+								obj.getScore(victim.getName()).setScore(4);
+							}
 
-						lastDamager.put(victim, attacker);
+							lastDamager.put(victim, attacker);
+						}
 					}
 
 					if (damagetask0.get(victim) != null) {
@@ -2279,39 +2281,42 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 	}
 
 	public void stopGame() {
-		for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-			clearScoreboard(onlinePlayer);
-			if(onlinePlayer.getScoreboardTags().contains("ingame")) {
-				onlinePlayer.getInventory().clear();
-				onlinePlayer.setHealth(20);
-				onlinePlayer.setFoodLevel(20);
+		for (Player player : Bukkit.getOnlinePlayers()) {
+			try {
+				deathmsg.get(player).cancel();
+			} catch (Throwable ignored) { }
 
-				onlinePlayer.getScoreboardTags().add("spectator");
-				onlinePlayer.setAllowFlight(true);
-				onlinePlayer.setFlying(true);
+			if(player.getGameMode() == GameMode.SPECTATOR) {
+				player.setGameMode(GameMode.SURVIVAL);
+			}
 
-				updateLevels(onlinePlayer);
+			clearScoreboard(player);
+			if(player.getScoreboardTags().contains("ingame")) {
+				player.getInventory().clear();
+				player.setHealth(20);
+				player.setFoodLevel(20);
 
-				onlinePlayer.getScoreboardTags().remove("ingame");
+				player.getScoreboardTags().add("spectator");
+				player.setAllowFlight(true);
+				player.setFlying(true);
+
+				updateLevels(player);
+
+				player.getScoreboardTags().remove("ingame");
 			}
 
 			ItemStack leaveButton = new Items(this).leaveButton(lang);
-			onlinePlayer.getInventory().setItem(8, leaveButton);
+			player.getInventory().setItem(8, leaveButton);
 
-			onlinePlayer.setCollidable(true);
-			onlinePlayer.removePotionEffect(PotionEffectType.JUMP);
-			onlinePlayer.removePotionEffect(PotionEffectType.INVISIBILITY);
+			player.setCollidable(true);
+			player.removePotionEffect(PotionEffectType.JUMP);
+			player.removePotionEffect(PotionEffectType.INVISIBILITY);
 
-			clearScoreboard(onlinePlayer);
+			clearScoreboard(player);
+			mainboard.getTeam("nothing").addPlayer(player);
 
-			mainboard.getTeam("nothing").addPlayer(onlinePlayer);
-
-			onlinePlayer.setPlayerListName((MopsFiles.getRank(onlinePlayer).getPrefix() + onlinePlayer.getName() + " " + MopsFiles.getBadge(onlinePlayer).getSymbol()).trim());
-
-			resetEveryFuckingKillScoreboard(onlinePlayer);
-			try {
-				deathmsg.get(onlinePlayer).cancel();
-			} catch (Throwable ignored) { }
+			player.setPlayerListName((MopsFiles.getRank(player).getPrefix() + player.getName() + " " + MopsFiles.getBadge(player).getSymbol()).trim());
+			resetEveryFuckingKillScoreboard(player);
 		}
 
 		stopGameDominationCancel();
