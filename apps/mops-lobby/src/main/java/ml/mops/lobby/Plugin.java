@@ -975,6 +975,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                     }
                     i++;
                 }
+                message = MopsUtils.combineStrings(texts, " ");
             }
         }
 

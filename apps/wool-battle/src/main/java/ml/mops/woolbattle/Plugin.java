@@ -780,8 +780,16 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 			if(msg.toLowerCase(Locale.ROOT).contains(onlinePlayer.getName().toLowerCase(Locale.ROOT))) {
-				msg = msg.replaceAll(onlinePlayer.getName().toLowerCase(Locale.ROOT), MopsFiles.getRank(player).getPrefix() + onlinePlayer.getName() + ChatColor.RESET);
-				onlinePlayer.playSound(onlinePlayer.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
+				String[] texts = msg.split(" ");
+				int i = 0;
+				while (i < texts.length) {
+					if(texts[i].toLowerCase(Locale.ROOT).equals(onlinePlayer.getName().toLowerCase(Locale.ROOT))) {
+						texts[i] = MopsFiles.getRank(onlinePlayer).getPrefix() + onlinePlayer.getName() + ChatColor.RESET;
+						onlinePlayer.playSound(onlinePlayer.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
+					}
+					i++;
+				}
+				msg = MopsUtils.combineStrings(texts, " ");
 			}
 		}
 
