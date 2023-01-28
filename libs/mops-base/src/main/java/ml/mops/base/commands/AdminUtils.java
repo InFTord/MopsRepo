@@ -2,8 +2,11 @@ package ml.mops.base.commands;
 
 import ml.mops.base.kits.Kit;
 import ml.mops.base.inventory.KitGUI;
+import ml.mops.network.MopsBadge;
+import ml.mops.network.MopsRank;
 import ml.mops.utils.Cuboid;
 import ml.mops.utils.MopsColor;
+import ml.mops.utils.MopsFiles;
 import ml.mops.utils.MopsUtils;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -57,6 +60,26 @@ public class AdminUtils {
                         }
                         if(args[0].equals("givehead")) {
                             player.getInventory().addItem(MopsUtils.createCustomHead(args[1]));
+                            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
+                        }
+                        if(args[0].equals("coins")) {
+                            MopsFiles.setCoins(player, Integer.parseInt(args[1]));
+                            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
+                        }
+                        if(args[0].equals("rank")) {
+                            MopsFiles.setRank(player, MopsRank.valueOf(args[1]));
+                            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
+                        }
+                        if(args[0].equals("badge")) {
+                            MopsFiles.setBadge(player, MopsBadge.valueOf(args[1]));
+                            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
+                        }
+                        if(args[0].equals("wasAtPigeon")) {
+                            MopsFiles.setPigeon(player, Boolean.parseBoolean(args[1]));
+                            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
+                        }
+                        if(args[0].equals("language")) {
+                            MopsFiles.setLanguage(player, args[1]);
                             player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
                         }
                         if(args[0].equals("lookingat")) {

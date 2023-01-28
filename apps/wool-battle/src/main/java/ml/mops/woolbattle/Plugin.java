@@ -8,8 +8,6 @@ import com.xxmicloxx.NoteBlockAPI.songplayer.NoteBlockSongPlayer;
 import com.xxmicloxx.NoteBlockAPI.utils.NBSDecoder;
 import ml.mops.base.MopsPlugin;
 import ml.mops.base.commands.Commands;
-import ml.mops.network.MopsBadge;
-import ml.mops.network.MopsRank;
 import ml.mops.utils.Cuboid;
 import ml.mops.utils.MopsFiles;
 import ml.mops.utils.Translation;
@@ -80,7 +78,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 	Generator genD = new Generator("D");
 
 	private final HashMap<Player, Integer> combo = new HashMap<>();
-	private final HashMap<Player, BukkitTask> deathmsg = new HashMap<>();
+	private final HashMap<Player, Integer> deathmsg = new HashMap<>();
 	private final HashMap<Player, Player> lastDamager = new HashMap<>();
 	private final HashMap<Player, Integer> killCount = new HashMap<>();
 	private final HashMap<Player, Integer> expectedMopsCoinMin = new HashMap<>();
@@ -107,6 +105,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 	boolean infinitewool = false;
 
 	String connectToIP = "mopsnet.ml";
+	int respawnTime = 4;
 
 	final String colon = ChatColor.WHITE + ": ";
 
@@ -733,7 +732,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 			resetEveryFuckingKillScoreboard(player);
 			try {
-				deathmsg.get(player).cancel();
+				Bukkit.getScheduler().cancelTask(deathmsg.get(player));
 			} catch (Throwable ignored) { }
 		}
 	}
@@ -2274,7 +2273,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 	public void stopGame() {
 		for (Player player : Bukkit.getOnlinePlayers()) {
 			try {
-				deathmsg.get(player).cancel();
+				Bukkit.getScheduler().cancelTask(deathmsg.get(player));
 			} catch (Throwable ignored) { }
 
 			if(player.getGameMode() == GameMode.SPECTATOR) {
@@ -2488,9 +2487,9 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		player.getInventory().setItem(8, leaveButton);
 	}
 
-	public void broadcastDeath(Player dead, String deathcause) {
-		for(Player players : Bukkit.getOnlinePlayers()) {
-			if(players.getScoreboardTags().contains("ingame") || players == dead) {
+	public void broadcastDeath(Player dead, String deathCause, String afterDeathCause) {
+		for(Player player : Bukkit.getOnlinePlayers()) {
+			if(player.getScoreboardTags().contains("ingame") || player == dead) {
 				Team team = mainboard.getPlayerTeam(dead);
 				String teamname = team.getName();
 
@@ -2514,7 +2513,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 					color = ChatColor.LIGHT_PURPLE;
 				}
 
-				players.sendMessage(ChatColor.RED + "[☠] " + color + dead.getName() + ChatColor.GRAY + " " + deathcause);
+				player.sendMessage(ChatColor.RED + "[☠] " + color + dead.getName() + ChatColor.GRAY + " " + getStringByLang(MopsFiles.getLanguage(player), deathCause) + afterDeathCause);
 			}
 		}
 	}
@@ -2594,28 +2593,33 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		}
 	}
 
-	public void gameStartingTitle(Player player1) {
-		int max = 12;
+	public void gameStartingTitle(Player player) {
+		List<String> mainTitles = new ArrayList<>();
+		List<String> subTitles = new ArrayList<>();
+
+		mainTitles.add("frog"); subTitles.add("bottom text");
+		mainTitles.add("guys win pls"); subTitles.add("i want to go eat");
+		mainTitles.add(ChatColor.GOLD + "" + ChatColor.BOLD + "WoolBattle"); subTitles.add("The game has started.");
+		mainTitles.add("el"); subTitles.add("gato");
+		mainTitles.add("there are"); subTitles.add("no pigeons");
+		mainTitles.add("me when the"); subTitles.add("when the uhhh");
+		mainTitles.add("Sponsored by"); subTitles.add("Astarta");
+		mainTitles.add("Made in"); subTitles.add("Ukraine");
+		mainTitles.add("but here's"); subTitles.add("the woolbattler");
+		mainTitles.add("hi"); subTitles.add("hello");
+		mainTitles.add("im so silly"); subTitles.add("blehhh");
+
+		int maxMain = mainTitles.size();
+		int maxSub = subTitles.size();
 		int min = 1;
-		int randomtitle = (int) (Math.random() * (max - min + 1)) + min;
+		int randomMainTitle = (int) (Math.random() * (maxMain - min + 1)) + min;
+		int randomSubTitle = (int) (Math.random() * (maxSub - min + 1)) + min;
 
 		int fadeIn = 5;
 		int hold = 40;
 		int fadeOut = 35;
 
-		switch (randomtitle) {
-			case 1 -> player1.sendTitle(ChatColor.WHITE + "frog", ChatColor.WHITE + "bottom text", fadeIn, hold, fadeOut);
-			case 2 -> player1.sendTitle(ChatColor.WHITE + "guys win pls", ChatColor.WHITE + "i want to go eat", fadeIn, hold, fadeOut);
-			case 3 -> player1.sendTitle(ChatColor.GOLD + "" + ChatColor.BOLD + "WoolBattle", ChatColor.WHITE + "The game has started.", fadeIn, hold, fadeOut);
-			case 4 -> player1.sendTitle(ChatColor.WHITE + "el", ChatColor.WHITE + "gato", fadeIn, hold, fadeOut);
-			case 5 -> player1.sendTitle(ChatColor.WHITE + "there are", ChatColor.WHITE + "no pigeons", fadeIn, hold, fadeOut);
-			case 6 -> player1.sendTitle(ChatColor.WHITE + "me when the", ChatColor.WHITE + "the uhhh", fadeIn, hold, fadeOut);
-			case 8 -> player1.sendTitle(ChatColor.WHITE + "Sponsored by", ChatColor.WHITE + "Astarta", fadeIn, hold, fadeOut);
-			case 9 -> player1.sendTitle(ChatColor.WHITE + "but here's", ChatColor.WHITE + "the woolbattler", fadeIn, hold, fadeOut);
-			case 10 -> player1.sendTitle(ChatColor.WHITE + "gl", ChatColor.WHITE + "hf", fadeIn, hold, fadeOut);
-			case 11 -> player1.sendTitle(ChatColor.WHITE + "im so silly", ChatColor.WHITE + "blehhh", fadeIn, hold, fadeOut);
-			case 12 -> player1.sendTitle(ChatColor.WHITE + "компот", ChatColor.WHITE + "компот", fadeIn, hold, fadeOut);
-		}
+		player.sendTitle(mainTitles.get(randomMainTitle-1), subTitles.get(randomSubTitle-1), fadeIn, hold, fadeOut);
 	}
 
 	public void gameStartSequence(Player player, String teamname) {
@@ -2865,6 +2869,56 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			mainboard.getTeam(Teams.GREEN.getID).addPlayer(playerList.get(2));
 			mainboard.getTeam(Teams.GREEN.getID).addPlayer(playerList.get(3));
 		}
+	}
+
+	public void respawnPlayer(Player player, String teamname, ItemStack[] inventory) {
+		player.setGameMode(GameMode.SURVIVAL);
+		updateLevels(player);
+
+		if (teamname.contains("red")) {
+			Location loc = new Location(player.getWorld(), 9, 257, -28);
+			while (loc.getBlock().getType() != Material.AIR && !(loc.getY() >= 319)) {
+				loc = loc.add(0, 1, 0);
+			}
+			player.teleport(loc.add(0.5, 1, 0.5));
+		}
+		if (teamname.contains("yellow")) {
+			Location loc = new Location(player.getWorld(), -28, 257, 9);
+			while (loc.getBlock().getType() != Material.AIR && !(loc.getY() >= 319)) {
+				loc = loc.add(0, 1, 0);
+			}
+			loc.setYaw(-90);
+			player.teleport(loc.add(0.5, 1, 0.5));
+		}
+		if (teamname.contains("green")) {
+			Location loc = new Location(player.getWorld(), 9, 257, 46);
+			while (loc.getBlock().getType() != Material.AIR && !(loc.getY() >= 319)) {
+				loc = loc.add(0, 1, 0);
+			}
+			loc.setYaw(-180);
+			player.teleport(loc.add(0.5, 1, 0.5));
+		}
+		if (teamname.contains("blue")) {
+			Location loc = new Location(player.getWorld(), 46, 257, 9);
+			while (loc.getBlock().getType() != Material.AIR && !(loc.getY() >= 319)) {
+				loc = loc.add(0, 1, 0);
+			}
+			loc.setYaw(90);
+			player.teleport(loc.add(0.5, 1, 0.5));
+		}
+
+		player.setAllowFlight(false);
+		player.setFlying(false);
+		player.removeScoreboardTag("spectator");
+
+		player.getInventory().clear();
+		player.getInventory().setContents(inventory);
+		player.updateInventory();
+
+		player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
+
+		player.addScoreboardTag("immunity");
+		Bukkit.getScheduler().runTaskLater(this, () -> player.removeScoreboardTag("immunity"), 80L);
 	}
 
 	public void startGame(String[] args) {
@@ -3265,48 +3319,48 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 							redkills++;
 							killCount.put(lastDamager.get(player), killCount.get(lastDamager.get(player)) + 1);
 							if (!hardmode) {
-								broadcastDeath(player, getStringByLang(lang, "woolbattle.gotKilledBy") + " " + ChatColor.RED + lastDamager.get(player).getName() + ChatColor.GRAY + ".");
+								broadcastDeath(player, "woolbattle.gotKilledBy", " " + ChatColor.RED + lastDamager.get(player).getName() + ChatColor.GRAY + ".");
 							}
 						}
 						case 2 -> {
 							yellowkills++;
 							killCount.put(lastDamager.get(player), killCount.get(lastDamager.get(player)) + 1);
 							if (!hardmode) {
-								broadcastDeath(player, getStringByLang(lang, "woolbattle.gotKilledBy") + " " + ChatColor.YELLOW + "" + lastDamager.get(player).getName() + ChatColor.GRAY + ".");
+								broadcastDeath(player, "woolbattle.gotKilledBy", " " + ChatColor.YELLOW + "" + lastDamager.get(player).getName() + ChatColor.GRAY + ".");
 							}
 						}
 						case 3 -> {
 							greenkills++;
 							killCount.put(lastDamager.get(player), killCount.get(lastDamager.get(player)) + 1);
 							if (!hardmode) {
-								broadcastDeath(player, getStringByLang(lang, "woolbattle.gotKilledBy") + " " + ChatColor.GREEN + "" + lastDamager.get(player).getName() + ChatColor.GRAY + ".");
+								broadcastDeath(player, "woolbattle.gotKilledBy", " " + ChatColor.GREEN + "" + lastDamager.get(player).getName() + ChatColor.GRAY + ".");
 							}
 						}
 						case 4 -> {
 							bluekills++;
 							killCount.put(lastDamager.get(player), killCount.get(lastDamager.get(player)) + 1);
 							if (!hardmode) {
-								broadcastDeath(player, getStringByLang(lang, "woolbattle.gotKilledBy") + " " + ChatColor.AQUA + "" + lastDamager.get(player).getName() + ChatColor.GRAY + ".");
+								broadcastDeath(player, "woolbattle.gotKilledBy", " " + ChatColor.AQUA + "" + lastDamager.get(player).getName() + ChatColor.GRAY + ".");
 							}
 						}
 						case 5 -> {
 							orangekills++;
 							killCount.put(lastDamager.get(player), killCount.get(lastDamager.get(player)) + 1);
 							if (!hardmode) {
-								broadcastDeath(player, getStringByLang(lang, "woolbattle.gotKilledBy") + " " + ChatColor.GOLD + "" + lastDamager.get(player).getName() + ChatColor.GRAY + ".");
+								broadcastDeath(player, "woolbattle.gotKilledBy", " " + ChatColor.GOLD + "" + lastDamager.get(player).getName() + ChatColor.GRAY + ".");
 							}
 						}
 						case 6 -> {
 							pinkkills++;
 							killCount.put(lastDamager.get(player), killCount.get(lastDamager.get(player)) + 1);
 							if (!hardmode) {
-								broadcastDeath(player, getStringByLang(lang, "woolbattle.gotKilledBy") + " " + ChatColor.LIGHT_PURPLE + "" + lastDamager.get(player).getName() + ChatColor.GRAY + ".");
+								broadcastDeath(player, "woolbattle.gotKilledBy", " " + ChatColor.LIGHT_PURPLE + "" + lastDamager.get(player).getName() + ChatColor.GRAY + ".");
 							}
 						}
 
 						default -> {
 							if (!hardmode) {
-								broadcastDeath(player, getStringByLang(lang, "woolbattle.fellInVoid") + "");
+								broadcastDeath(player, "woolbattle.fellInVoid", "");
 							}
 						}
 					}
@@ -3332,70 +3386,43 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 						player.teleport(mid);
 						lastdamage.getScore(player.getName()).setScore(0);
 
-						player.sendTitle(ChatColor.RED + "4", "", 1, 10, 10);
-						player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 0);
-						deathmsg.put(player, Bukkit.getScheduler().runTaskLater(this, () -> {
-							player.sendTitle(ChatColor.GOLD + "3", "", 1, 10, 10);
-							player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 0.5F);
-							deathmsg.put(player, Bukkit.getScheduler().runTaskLater(this, () -> {
-								player.sendTitle(ChatColor.YELLOW + "2", "", 1, 10, 10);
-								player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
-								deathmsg.put(player, Bukkit.getScheduler().runTaskLater(this, () -> {
-									player.sendTitle(ChatColor.GREEN + "1", "", 1, 10, 10);
+
+
+						final int[] untilRespawn = {respawnTime};
+						final int[] part = {1};
+						int split = (int) Math.round(untilRespawn[0] / 4.0);
+
+						deathmsg.put(player, Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
+							int howMuchPassed = Math.abs(untilRespawn[0] -respawnTime);
+							if(howMuchPassed % split == 0) {
+								part[0]++;
+							}
+							switch (part[0]) {
+								case 1 -> {
+									player.sendTitle(ChatColor.RED + String.valueOf(untilRespawn[0]), "", 1, 10, 10);
+									player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 0);
+								}
+								case 2 -> {
+									player.sendTitle(ChatColor.GOLD + String.valueOf(untilRespawn[0]), "", 1, 10, 10);
+									player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 0.5F);
+								}
+								case 3 -> {
+									player.sendTitle(ChatColor.YELLOW + String.valueOf(untilRespawn[0]), "", 1, 10, 10);
+									player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
+								}
+								case 4 -> {
+									player.sendTitle(ChatColor.GREEN + String.valueOf(untilRespawn[0]), "", 1, 10, 10);
 									player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1.5F);
-									deathmsg.put(player, Bukkit.getScheduler().runTaskLater(this, () -> {
-										player.setGameMode(GameMode.SURVIVAL);
-										updateLevels(player);
+								}
+							}
+							if(untilRespawn[0] == 0) {
+								respawnPlayer(player, teamname, finalSavedInventory);
+								Bukkit.getScheduler().cancelTask(deathmsg.get(player));
+							} else {
+								untilRespawn[0]--;
+							}
+						}, 0L, 20L));
 
-										if (teamname.contains("red")) {
-											Location loc = new Location(player.getWorld(), 9, 257, -28);
-											while (loc.getBlock().getType() != Material.AIR && !(loc.getY() >= 319)) {
-												loc = loc.add(0, 1, 0);
-											}
-											player.teleport(loc.add(0.5, 1, 0.5));
-										}
-										if (teamname.contains("yellow")) {
-											Location loc = new Location(player.getWorld(), -28, 257, 9);
-											while (loc.getBlock().getType() != Material.AIR && !(loc.getY() >= 319)) {
-												loc = loc.add(0, 1, 0);
-											}
-											loc.setYaw(-90);
-											player.teleport(loc.add(0.5, 1, 0.5));
-										}
-										if (teamname.contains("green")) {
-											Location loc = new Location(player.getWorld(), 9, 257, 46);
-											while (loc.getBlock().getType() != Material.AIR && !(loc.getY() >= 319)) {
-												loc = loc.add(0, 1, 0);
-											}
-											loc.setYaw(-180);
-											player.teleport(loc.add(0.5, 1, 0.5));
-										}
-										if (teamname.contains("blue")) {
-											Location loc = new Location(player.getWorld(), 46, 257, 9);
-											while (loc.getBlock().getType() != Material.AIR && !(loc.getY() >= 319)) {
-												loc = loc.add(0, 1, 0);
-											}
-											loc.setYaw(90);
-											player.teleport(loc.add(0.5, 1, 0.5));
-										}
-
-										player.setAllowFlight(false);
-										player.setFlying(false);
-										player.removeScoreboardTag("spectator");
-
-										player.getInventory().clear();
-										player.getInventory().setContents(finalSavedInventory);
-										player.updateInventory();
-
-										player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
-
-										player.addScoreboardTag("immunity");
-										Bukkit.getScheduler().runTaskLater(this, () -> player.removeScoreboardTag("immunity"), 80L);
-
-									}, 20L));
-								}, 20L));
-							}, 20L));
-						}, 20L));
 					} else if (!player.getScoreboardTags().contains("spectator")) {
 						simulateHardmodeDeath(player);
 					}
