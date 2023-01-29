@@ -5,12 +5,10 @@ on:
     paths:
       - 'apps/mops-lobby/**'
       - '.github/workflows/build-mopslobby.yaml'
-      - 'libs/mops-base/**'
   pull_request:
     paths:
       - 'apps/mops-lobby/**'
       - '.github/workflows/build-mopslobby.yaml'
-      - 'libs/mops-base/**'
 
 jobs:
   build-plugin:
