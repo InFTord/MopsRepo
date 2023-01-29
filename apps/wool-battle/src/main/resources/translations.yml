@@ -332,10 +332,10 @@ woolbattle:
       eng: "&c&lFIRST BLOOD!"
   - coinReward.1:
       rus: "&6МопсКоин"
-      eng: "&7MopsCoin"
+      eng: "&6MopsCoin"
   - coinReward.2:
       rus: "&6МопсКоинов"
-      eng: "&7MopsCoins"
+      eng: "&6MopsCoins"
   - kills.red:
       rus: "&cУбито Красными"
       eng: "&cKilled by Red"

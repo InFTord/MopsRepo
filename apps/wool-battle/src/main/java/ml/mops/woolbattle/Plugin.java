@@ -461,7 +461,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		}
 	}
 
-	private final HashMap<Player, BukkitTask> damagetask0 = new HashMap<>();
+	private final HashMap<Player, BukkitTask> cancelLastAttacker = new HashMap<>();
 
 	@EventHandler
 	public void onEntityDamage(EntityDamageEvent event) {
@@ -487,8 +487,6 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		try {
 			Entity attacker0 = event.getDamager();
 			Entity victim0 = event.getEntity();
-
-			Objective obj = mainboard.getObjective("lastdamagedbyteam");
 
 			if (victim0 instanceof Player victim && attacker0 instanceof Player attacker) {
 				event.setDamage(0);
@@ -533,32 +531,19 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 					if(gameactive) {
 						if (victim.getScoreboardTags().contains("ingame")) {
-							if (teamname.contains("red")) {
-								obj.getScore(victim.getName()).setScore(1);
-							}
-							if (teamname.contains("yellow")) {
-								obj.getScore(victim.getName()).setScore(2);
-							}
-							if (teamname.contains("green")) {
-								obj.getScore(victim.getName()).setScore(3);
-							}
-							if (teamname.contains("blue")) {
-								obj.getScore(victim.getName()).setScore(4);
-							}
-
 							lastDamager.put(victim, attacker);
 						}
 					}
 
-					if (damagetask0.get(victim) != null) {
-						damagetask0.get(victim).cancel();
-						damagetask0.put(victim, null);
+					if (cancelLastAttacker.get(victim) != null) {
+						cancelLastAttacker.get(victim).cancel();
+						cancelLastAttacker.put(victim, null);
 					}
 
-					damagetask0.put(victim, new BukkitRunnable() {
+					cancelLastAttacker.put(victim, new BukkitRunnable() {
 						@Override
 						public void run() {
-							obj.getScore(victim.getName()).setScore(0);
+							lastDamager.put(victim, null);
 							combo.put(attacker, 0);
 						}
 					}.runTaskLater(this, 420L));
@@ -593,30 +578,17 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 						Team team = mainboard.getPlayerTeam(attacker);
 						String teamname = team.getName();
 
-						if (teamname.contains("red")) {
-							obj.getScore(victim.getName()).setScore(1);
-						}
-						if (teamname.contains("yellow")) {
-							obj.getScore(victim.getName()).setScore(2);
-						}
-						if (teamname.contains("green")) {
-							obj.getScore(victim.getName()).setScore(3);
-						}
-						if (teamname.contains("blue")) {
-							obj.getScore(victim.getName()).setScore(4);
-						}
-
 						lastDamager.put(victim, attacker);
 
-						if (damagetask0.get(victim) != null) {
-							damagetask0.get(victim).cancel();
-							damagetask0.put(victim, null);
+						if (cancelLastAttacker.get(victim) != null) {
+							cancelLastAttacker.get(victim).cancel();
+							cancelLastAttacker.put(victim, null);
 						}
 
-						damagetask0.put(victim, new BukkitRunnable() {
+						cancelLastAttacker.put(victim, new BukkitRunnable() {
 							@Override
 							public void run() {
-								obj.getScore(victim.getName()).setScore(0);
+								lastDamager.put(victim, null);
 							}
 						}.runTaskLater(this, 420L));
 					}
@@ -2625,6 +2597,8 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		mainTitles.add("but here's"); subTitles.add("the woolbattler");
 		mainTitles.add("hi"); subTitles.add("hello");
 		mainTitles.add("im so silly"); subTitles.add("blehhh");
+		mainTitles.add("woolbattle"); subTitles.add("(Catalyst included)");
+		mainTitles.add("robby"); subTitles.add("best");
 
 		int maxMain = mainTitles.size();
 		int maxSub = subTitles.size();
@@ -2698,7 +2672,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		player.setGameMode(GameMode.SURVIVAL);
 
 		try {
-			damagetask0.get(player).cancel();
+			cancelLastAttacker.get(player).cancel();
 		} catch (Throwable ignored) {}
 
 		this.gameactive = true;
@@ -3290,87 +3264,70 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 				if (loc0.getY() > 142 && loc0.getY() < 160 && !player.getScoreboardTags().contains("spectator")) {
 					ItemStack woolItem;
 					TextComponent woolName;
+					Teams mopsTeam = convertToTeam(mainboard.getPlayerTeam(player).getName());
 
-					if (teamname.contains("red")) {
-						woolItem = new ItemStack(Material.RED_WOOL, 1296);
-						woolName = getByLang(lang, "woolbattle.redWool");
-					} else if (teamname.contains("yellow")) {
-						woolItem = new ItemStack(Material.YELLOW_WOOL, 1296);
-						woolName = getByLang(lang, "yellowWool");
-					} else if (teamname.contains("green")) {
-						woolItem = new ItemStack(Material.LIME_WOOL, 1296);
-						woolName = getByLang(lang, "greenWool");
-					} else if (teamname.contains("blue")) {
-						woolItem = new ItemStack(Material.LIGHT_BLUE_WOOL, 1296);
-						woolName = getByLang(lang, "blueWool");
-					} else if (teamname.contains("orange")) {
-						woolItem = new ItemStack(Material.ORANGE_WOOL, 1296);
-						woolName = getByLang(lang, "orangeWool");
-					} else if (teamname.contains("pink")) {
-						woolItem = new ItemStack(Material.PINK_WOOL, 1296);
-						woolName = getByLang(lang, "pinkWool");
-					} else {
+					woolItem = new ItemStack(mopsTeam.getType, 1296);
+					woolName = getByLang(lang, mopsTeam.getID + "Wool");
+
+					if(mopsTeam != Teams.SPECTATOR) {
 						player.removeScoreboardTag("ingame");
 						woolItem = new ItemStack(Material.AIR);
 						woolName = Component.empty();
 					}
 
-					Objective lastdamage = mainboard.getObjective("lastdamagedbyteam");
-
 					ItemMeta woolMeta = woolItem.getItemMeta();
 					woolMeta.displayName(woolName);
 					woolItem.setItemMeta(woolMeta);
-					woolItem.setAmount(1024);
 					player.getInventory().removeItem(woolItem);
 
-					switch (Objects.requireNonNull(lastdamage).getScore(player.getName()).getScore()) {
-						case 1 -> {
+					if(mopsTeam != Teams.SPECTATOR) {
+					switch (mopsTeam) {
+						case RED -> {
 							redkills++;
 							killCount.put(lastDamager.get(player), killCount.get(lastDamager.get(player)) + 1);
 							if (!hardmode) {
 								broadcastDeath(player, "woolbattle.gotKilledBy", " " + ChatColor.RED + lastDamager.get(player).getName() + ChatColor.GRAY + ".");
 							}
 						}
-						case 2 -> {
+						case YELLOW -> {
 							yellowkills++;
 							killCount.put(lastDamager.get(player), killCount.get(lastDamager.get(player)) + 1);
 							if (!hardmode) {
 								broadcastDeath(player, "woolbattle.gotKilledBy", " " + ChatColor.YELLOW + "" + lastDamager.get(player).getName() + ChatColor.GRAY + ".");
 							}
 						}
-						case 3 -> {
+						case GREEN -> {
 							greenkills++;
 							killCount.put(lastDamager.get(player), killCount.get(lastDamager.get(player)) + 1);
 							if (!hardmode) {
 								broadcastDeath(player, "woolbattle.gotKilledBy", " " + ChatColor.GREEN + "" + lastDamager.get(player).getName() + ChatColor.GRAY + ".");
 							}
 						}
-						case 4 -> {
+						case BLUE -> {
 							bluekills++;
 							killCount.put(lastDamager.get(player), killCount.get(lastDamager.get(player)) + 1);
 							if (!hardmode) {
 								broadcastDeath(player, "woolbattle.gotKilledBy", " " + ChatColor.AQUA + "" + lastDamager.get(player).getName() + ChatColor.GRAY + ".");
 							}
 						}
-						case 5 -> {
+						case ORANGE -> {
 							orangekills++;
 							killCount.put(lastDamager.get(player), killCount.get(lastDamager.get(player)) + 1);
 							if (!hardmode) {
 								broadcastDeath(player, "woolbattle.gotKilledBy", " " + ChatColor.GOLD + "" + lastDamager.get(player).getName() + ChatColor.GRAY + ".");
 							}
 						}
-						case 6 -> {
+						case PINK -> {
 							pinkkills++;
 							killCount.put(lastDamager.get(player), killCount.get(lastDamager.get(player)) + 1);
 							if (!hardmode) {
 								broadcastDeath(player, "woolbattle.gotKilledBy", " " + ChatColor.LIGHT_PURPLE + "" + lastDamager.get(player).getName() + ChatColor.GRAY + ".");
 							}
 						}
-
-						default -> {
-							if (!hardmode) {
-								broadcastDeath(player, "woolbattle.fellInVoid", "");
-							}
+					}
+					} else {
+						if (!hardmode) {
+							broadcastDeath(player, "woolbattle.fellInVoid", "");
 						}
 					}
 
@@ -3393,9 +3350,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 						Location mid = new Location(player.getWorld(), 9, 270, 9);
 						player.teleport(mid);
-						lastdamage.getScore(player.getName()).setScore(0);
-
-
+						lastDamager.put(player, null);
 
 						final int[] untilRespawn = {respawnTime};
 						final int[] part = {0};
@@ -3587,6 +3542,25 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 //
 //				MopsUtils.writeFile(new String(Base64.getDecoder().decode(MopsUtils.fileText()), StandardCharsets.UTF_8), MopsUtils.combineStrings(text, "\n"));
 //			} catch (IOException ignored) { }
+	}
+
+	public Teams convertToTeam(String string) {
+		try {
+			if (string.toLowerCase(Locale.ROOT).contains("red")) {
+				return Teams.RED;
+			} else if (string.toLowerCase(Locale.ROOT).contains("yellow")) {
+				return Teams.YELLOW;
+			} else if (string.toLowerCase(Locale.ROOT).contains("green")) {
+				return Teams.GREEN;
+			} else if (string.toLowerCase(Locale.ROOT).contains("blue")) {
+				return Teams.BLUE;
+			} else if (string.toLowerCase(Locale.ROOT).contains("orange")) {
+				return Teams.ORANGE;
+			} else if (string.toLowerCase(Locale.ROOT).contains("pink")) {
+				return Teams.PINK;
+			}
+		} catch (Exception ignored) { }
+		return Teams.SPECTATOR;
 	}
 
 
