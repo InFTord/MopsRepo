@@ -275,7 +275,12 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		String commandName = command.getName().toLowerCase(Locale.ROOT);
 
 		if (commandName.equals("spawn") || commandName.equals("lobby") || commandName.equals("l") || commandName.equals("hub")) {
-
+			MopsUtils.sendToServer(this, player, "mopslobby");
+			player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 0.4F, 1.5F);
+			return true;
+		}
+		if (commandName.equals("setrespawntime")) {
+			respawnTime = Integer.parseInt(args[0]);
 			player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 0.4F, 1.5F);
 			return true;
 		}

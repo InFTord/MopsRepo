@@ -132,3 +132,6 @@ commands:
   addflags:
     description: ""
     usage: /addflags
+  setrespawntime:
+    description: ""
+    usage: /setrespawntime
