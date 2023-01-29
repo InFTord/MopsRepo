@@ -5,12 +5,12 @@ on:
     paths:
       - 'apps/wool-battle/**'
       - '.github/workflows/build-woolbattle.yaml'
-      - 'libs/mops-base/**'
+
   pull_request:
     paths:
       - 'apps/wool-battle/**'
       - '.github/workflows/build-woolbattle.yaml'
-      - 'libs/mops-base/**'
+
 jobs:
   build-plugin:
     name: build-plugin
