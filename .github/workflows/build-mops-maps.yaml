@@ -5,12 +5,10 @@ on:
     paths:
       - 'apps/mops-maps/**'
       - '.github/workflows/build-mops-maps.yaml'
-      - 'libs/mops-base/**'
   pull_request:
     paths:
       - 'apps/mops-maps/**'
       - '.github/workflows/build-mops-maps.yaml'
-      - 'libs/mops-base/**'
 
 jobs:
   build-plugin:
