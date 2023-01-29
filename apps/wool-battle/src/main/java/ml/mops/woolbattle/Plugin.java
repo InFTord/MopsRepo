@@ -2992,23 +2992,21 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 				actualgametime[0] = actualgametime[0] + 1;
 				actualgametime0[0] = actualgametime0[0] + 1;
 
-				String lang = "eng";
-
-				for (Player player1 : Bukkit.getServer().getOnlinePlayers()) {
-
+				for (Player player : Bukkit.getServer().getOnlinePlayers()) {
 					newboard = manager.getNewScoreboard();
 					Objective fakekills = newboard.registerNewObjective("fakekills", "dummy", Component.text("WoolBattle", NamedTextColor.GOLD, TextDecoration.BOLD));
 					fakekills.setDisplaySlot(DisplaySlot.SIDEBAR);
 
+					String lang = MopsFiles.getLanguage(player);
 
 					if (actualgametime[0] < 240) {
 						nextevent = getStringByLang(lang, "event.refill.1");
 					}
 					if (actualgametime[0] == 240) {
 						lootGenerator();
-						for (Player player0 : mainworld.getPlayers()) {
-							player0.sendTitle(getStringByLang(lang, "refill.activation.1"), getStringByLang(lang, "refill.activation.2"), 1, 20, 20);
-							player0.playSound(player0.getLocation(), Sound.BLOCK_CHEST_OPEN, 1, 1);
+						for (Player allPlayers : mainworld.getPlayers()) {
+							allPlayers.sendTitle(getStringByLang(MopsFiles.getLanguage(allPlayers), "refill.activation.1"), getStringByLang(lang, "refill.activation.2"), 1, 20, 20);
+							allPlayers.playSound(allPlayers.getLocation(), Sound.BLOCK_CHEST_OPEN, 1, 1);
 						}
 					}
 					if (actualgametime[0] < 480 && actualgametime[0] > 240) {
@@ -3016,9 +3014,9 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 					}
 					if (actualgametime[0] == 480) {
 						lootGenerator();
-						for (Player player0 : mainworld.getPlayers()) {
-							player0.sendTitle(getStringByLang(lang, "refill.activation.1"), getStringByLang(lang, "refill.activation.2"), 1, 20, 20);
-							player0.playSound(player0.getLocation(), Sound.BLOCK_CHEST_OPEN, 1, 1);
+						for (Player allPlayers : mainworld.getPlayers()) {
+							allPlayers.sendTitle(getStringByLang(MopsFiles.getLanguage(allPlayers), "refill.activation.1"), getStringByLang(lang, "refill.activation.2"), 1, 20, 20);
+							allPlayers.playSound(allPlayers.getLocation(), Sound.BLOCK_CHEST_OPEN, 1, 1);
 						}
 					}
 					if (actualgametime[0] < 720 && actualgametime[0] > 480) {
@@ -3026,9 +3024,9 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 					}
 					if (actualgametime[0] == 720) {
 						lootGenerator();
-						for (Player player0 : mainworld.getPlayers()) {
-							player0.sendTitle(getStringByLang(lang, "refill.activation.1"), getStringByLang(lang, "refill.activation.2"), 1, 20, 20);
-							player0.playSound(player0.getLocation(), Sound.BLOCK_CHEST_OPEN, 1, 1);
+						for (Player allPlayers : mainworld.getPlayers()) {
+							allPlayers.sendTitle(getStringByLang(MopsFiles.getLanguage(allPlayers), "refill.activation.1"), getStringByLang(lang, "refill.activation.2"), 1, 20, 20);
+							allPlayers.playSound(allPlayers.getLocation(), Sound.BLOCK_CHEST_OPEN, 1, 1);
 						}
 					}
 					if (actualgametime[0] < 1200 && actualgametime[0] > 720) {
@@ -3059,7 +3057,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 					}
 
 					String you = getStringByLang(lang, "kills.you");
-					Team playerteam = Objects.requireNonNull(mainboard.getPlayerTeam(player1));
+					Team playerteam = Objects.requireNonNull(mainboard.getPlayerTeam(player));
 					String teamname = playerteam.getName();
 
 					String redyourteam = "";
@@ -3111,8 +3109,8 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 					fakekills.getScore(ChatColor.GOLD + " ").setScore(6);
 
-					for(Player player : Bukkit.getServer().getOnlinePlayers()) {
-						resetGeneratorText(player);
+					for(Player allPlayers : Bukkit.getServer().getOnlinePlayers()) {
+						resetGeneratorText(allPlayers);
 					}
 
 					genA.setPercent(countGenPercents(genA.getBlocks()));
@@ -3145,7 +3143,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 					fakekills.getScore(ChatColor.YELLOW + " ").setScore(1);
 					fakekills.getScore(ChatColor.DARK_GRAY + connectToIP + ":" + Bukkit.getPort()).setScore(0);
 
-					player1.setScoreboard(fakekills.getScoreboard());
+					player.setScoreboard(fakekills.getScoreboard());
 				}
 
 				if(actualgametime[0] >= dominationTime && isDominating) {
