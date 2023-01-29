@@ -2036,8 +2036,6 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		}
 	}
 
-	//f
-
 	public void onCapture(String oldA, String oldB, String oldC, String oldD, String newA, String newB, String newC, String newD) {
 		String genAcopy = newA.replace("woolbattle.generator.", "");
 		String genBcopy = newB.replace("woolbattle.generator.", "");
@@ -3394,7 +3392,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 
 						final int[] untilRespawn = {respawnTime};
-						final int[] part = {1};
+						final int[] part = {0};
 						int split = (int) Math.round(untilRespawn[0] / 4.0);
 
 						deathmsg.put(player, Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
@@ -3403,6 +3401,10 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 								part[0]++;
 							}
 							switch (part[0]) {
+								case 0 -> {
+									player.sendTitle(ChatColor.DARK_RED + String.valueOf(untilRespawn[0]), "", 1, 10, 10);
+									player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 0);
+								}
 								case 1 -> {
 									player.sendTitle(ChatColor.RED + String.valueOf(untilRespawn[0]), "", 1, 10, 10);
 									player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 0);
@@ -3418,6 +3420,10 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 								case 4 -> {
 									player.sendTitle(ChatColor.GREEN + String.valueOf(untilRespawn[0]), "", 1, 10, 10);
 									player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1.5F);
+								}
+								case 5 -> {
+									player.sendTitle(ChatColor.DARK_GREEN + String.valueOf(untilRespawn[0]), "", 1, 10, 10);
+									player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1.75F);
 								}
 							}
 							if(untilRespawn[0] == 0) {
