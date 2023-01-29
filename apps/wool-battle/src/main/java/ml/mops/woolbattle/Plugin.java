@@ -3271,17 +3271,16 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 					woolItem = new ItemStack(mopsTeam.getType, 1296);
 					woolName = getByLang(lang, mopsTeam.getID + "Wool");
 
-					if(mopsTeam != Teams.SPECTATOR) {
-						ItemMeta woolMeta = woolItem.getItemMeta();
-						woolMeta.displayName(woolName);
-						woolItem.setItemMeta(woolMeta);
-						player.getInventory().removeItem(woolItem);
-					} else {
+					if(mopsTeam == Teams.SPECTATOR) {
 						player.removeScoreboardTag("ingame");
 						woolItem = new ItemStack(Material.AIR);
 						woolName = Component.empty();
 					}
 
+					ItemMeta woolMeta = woolItem.getItemMeta();
+					woolMeta.displayName(woolName);
+					woolItem.setItemMeta(woolMeta);
+					player.getInventory().removeItem(woolItem);
 
 					if(mopsTeam != Teams.SPECTATOR) {
 					switch (mopsTeam) {
