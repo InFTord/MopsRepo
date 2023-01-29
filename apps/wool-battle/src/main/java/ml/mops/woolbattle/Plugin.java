@@ -3282,51 +3282,51 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 					woolItem.setItemMeta(woolMeta);
 					player.getInventory().removeItem(woolItem);
 
-					if(mopsTeam != Teams.SPECTATOR) {
-					switch (mopsTeam) {
-						case RED -> {
-							redkills++;
-							killCount.put(lastDamager.get(player), killCount.get(lastDamager.get(player)) + 1);
-							if (!hardmode) {
-								broadcastDeath(player, "woolbattle.gotKilledBy", " " + ChatColor.RED + lastDamager.get(player).getName() + ChatColor.GRAY + ".");
+					if(mopsTeam != Teams.SPECTATOR && lastDamager.get(player) != null) {
+						switch (mopsTeam) {
+							case RED -> {
+								redkills++;
+								killCount.put(lastDamager.get(player), killCount.get(lastDamager.get(player)) + 1);
+								if (!hardmode) {
+									broadcastDeath(player, "woolbattle.gotKilledBy", " " + ChatColor.RED + lastDamager.get(player).getName() + ChatColor.GRAY + ".");
+								}
+							}
+							case YELLOW -> {
+								yellowkills++;
+								killCount.put(lastDamager.get(player), killCount.get(lastDamager.get(player)) + 1);
+								if (!hardmode) {
+									broadcastDeath(player, "woolbattle.gotKilledBy", " " + ChatColor.YELLOW + "" + lastDamager.get(player).getName() + ChatColor.GRAY + ".");
+								}
+							}
+							case GREEN -> {
+								greenkills++;
+								killCount.put(lastDamager.get(player), killCount.get(lastDamager.get(player)) + 1);
+								if (!hardmode) {
+									broadcastDeath(player, "woolbattle.gotKilledBy", " " + ChatColor.GREEN + "" + lastDamager.get(player).getName() + ChatColor.GRAY + ".");
+								}
+							}
+							case BLUE -> {
+								bluekills++;
+								killCount.put(lastDamager.get(player), killCount.get(lastDamager.get(player)) + 1);
+								if (!hardmode) {
+									broadcastDeath(player, "woolbattle.gotKilledBy", " " + ChatColor.AQUA + "" + lastDamager.get(player).getName() + ChatColor.GRAY + ".");
+								}
+							}
+							case ORANGE -> {
+								orangekills++;
+								killCount.put(lastDamager.get(player), killCount.get(lastDamager.get(player)) + 1);
+								if (!hardmode) {
+									broadcastDeath(player, "woolbattle.gotKilledBy", " " + ChatColor.GOLD + "" + lastDamager.get(player).getName() + ChatColor.GRAY + ".");
+								}
+							}
+							case PINK -> {
+								pinkkills++;
+								killCount.put(lastDamager.get(player), killCount.get(lastDamager.get(player)) + 1);
+								if (!hardmode) {
+									broadcastDeath(player, "woolbattle.gotKilledBy", " " + ChatColor.LIGHT_PURPLE + "" + lastDamager.get(player).getName() + ChatColor.GRAY + ".");
+								}
 							}
 						}
-						case YELLOW -> {
-							yellowkills++;
-							killCount.put(lastDamager.get(player), killCount.get(lastDamager.get(player)) + 1);
-							if (!hardmode) {
-								broadcastDeath(player, "woolbattle.gotKilledBy", " " + ChatColor.YELLOW + "" + lastDamager.get(player).getName() + ChatColor.GRAY + ".");
-							}
-						}
-						case GREEN -> {
-							greenkills++;
-							killCount.put(lastDamager.get(player), killCount.get(lastDamager.get(player)) + 1);
-							if (!hardmode) {
-								broadcastDeath(player, "woolbattle.gotKilledBy", " " + ChatColor.GREEN + "" + lastDamager.get(player).getName() + ChatColor.GRAY + ".");
-							}
-						}
-						case BLUE -> {
-							bluekills++;
-							killCount.put(lastDamager.get(player), killCount.get(lastDamager.get(player)) + 1);
-							if (!hardmode) {
-								broadcastDeath(player, "woolbattle.gotKilledBy", " " + ChatColor.AQUA + "" + lastDamager.get(player).getName() + ChatColor.GRAY + ".");
-							}
-						}
-						case ORANGE -> {
-							orangekills++;
-							killCount.put(lastDamager.get(player), killCount.get(lastDamager.get(player)) + 1);
-							if (!hardmode) {
-								broadcastDeath(player, "woolbattle.gotKilledBy", " " + ChatColor.GOLD + "" + lastDamager.get(player).getName() + ChatColor.GRAY + ".");
-							}
-						}
-						case PINK -> {
-							pinkkills++;
-							killCount.put(lastDamager.get(player), killCount.get(lastDamager.get(player)) + 1);
-							if (!hardmode) {
-								broadcastDeath(player, "woolbattle.gotKilledBy", " " + ChatColor.LIGHT_PURPLE + "" + lastDamager.get(player).getName() + ChatColor.GRAY + ".");
-							}
-						}
-					}
 					} else {
 						if (!hardmode) {
 							broadcastDeath(player, "woolbattle.fellInVoid", "");
