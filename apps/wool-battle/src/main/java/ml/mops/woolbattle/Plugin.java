@@ -294,7 +294,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
 
 			Value value = new Value();
-			value.setValues(ChatColor.YELLOW + "[", ChatColor.YELLOW + "]", "⬛", 8, ChatColor.GRAY, ChatColor.YELLOW);
+			value.setValues(ChatColor.YELLOW + "[", ChatColor.YELLOW + "]", "⬛", 8, ChatColor.YELLOW, ChatColor.GRAY);
 			value.setCurrentAmount(combo.get(player));
 			player.sendActionBar(value.getIndicator());
 			return true;
@@ -544,7 +544,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 					if (combo.get(attacker) >= 4 && !(combo.get(attacker) >= 8)) {
 						Value value = new Value();
-						value.setValues(ChatColor.YELLOW + "[", ChatColor.YELLOW + "]", "⬛", 8, ChatColor.GRAY, ChatColor.YELLOW);
+						value.setValues(ChatColor.YELLOW + "[", ChatColor.YELLOW + "]", "⬛", 8, ChatColor.YELLOW, ChatColor.GRAY);
 						value.setCurrentAmount(combo.get(attacker));
 						attacker.sendActionBar(value.getIndicator());
 					}
@@ -2494,40 +2494,45 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		int size = playerList.size();
 		Teams team = Teams.SPECTATOR;
 
-		if(size == 1) {
-			List<Teams> teamList = new ArrayList<>(Arrays.asList(Teams.RED, Teams.YELLOW, Teams.GREEN, Teams.BLUE));
-			int random = (int) (Math.random() * (4 - 1 + 1)) + 1;
-			switch (random) {
-				case 1 -> team = teamList.get(0);
-				case 2 -> team = teamList.get(1);
-				case 3 -> team = teamList.get(2);
-				case 4 -> team = teamList.get(3);
+		if(gamemode == 1) {
+			if (size == 1) {
+				List<Teams> teamList = new ArrayList<>(Arrays.asList(Teams.RED, Teams.YELLOW, Teams.GREEN, Teams.BLUE));
+				int random = (int) (Math.random() * (4 - 1 + 1)) + 1;
+				switch (random) {
+					case 1 -> team = teamList.get(0);
+					case 2 -> team = teamList.get(1);
+					case 3 -> team = teamList.get(2);
+					case 4 -> team = teamList.get(3);
+				}
+				mainboard.getTeam(team.getID).addPlayer(playerList.get(0));
 			}
-			mainboard.getTeam(team.getID).addPlayer(playerList.get(0));
-		}
-		if(size == 2) {
-			List<Teams> teamList = new ArrayList<>(Arrays.asList(Teams.RED, Teams.YELLOW, Teams.GREEN, Teams.BLUE));
-			int random = (int) (Math.random() * (4 - 1 + 1)) + 1;
-			switch (random) {
-				case 1 -> team = teamList.get(0);
-				case 2 -> team = teamList.get(1);
-				case 3 -> team = teamList.get(2);
-				case 4 -> team = teamList.get(3);
+			if (size == 2) {
+				List<Teams> teamList = new ArrayList<>(Arrays.asList(Teams.RED, Teams.YELLOW, Teams.GREEN, Teams.BLUE));
+				int random = (int) (Math.random() * (4 - 1 + 1)) + 1;
+				switch (random) {
+					case 1 -> team = teamList.get(0);
+					case 2 -> team = teamList.get(1);
+					case 3 -> team = teamList.get(2);
+					case 4 -> team = teamList.get(3);
+				}
+				mainboard.getTeam(team.getID).addPlayer(playerList.get(0));
+				mainboard.getTeam(getOppositeTeam(team).getID).addPlayer(playerList.get(1));
 			}
-			mainboard.getTeam(team.getID).addPlayer(playerList.get(0));
-			mainboard.getTeam(getOppositeTeam(team).getID).addPlayer(playerList.get(1));
-		}
 
-		if(size == 3) {
+			if (size == 3) {
+				mainboard.getTeam(Teams.RED.getID).addPlayer(playerList.get(0));
+				mainboard.getTeam(Teams.YELLOW.getID).addPlayer(playerList.get(1));
+				mainboard.getTeam(Teams.GREEN.getID).addPlayer(playerList.get(2));
+			}
+			if (size == 4) {
+				mainboard.getTeam(Teams.RED.getID).addPlayer(playerList.get(0));
+				mainboard.getTeam(Teams.YELLOW.getID).addPlayer(playerList.get(1));
+				mainboard.getTeam(Teams.GREEN.getID).addPlayer(playerList.get(2));
+				mainboard.getTeam(Teams.BLUE.getID).addPlayer(playerList.get(3));
+			}
+		} else {
 			mainboard.getTeam(Teams.RED.getID).addPlayer(playerList.get(0));
-			mainboard.getTeam(Teams.YELLOW.getID).addPlayer(playerList.get(1));
-			mainboard.getTeam(Teams.GREEN.getID).addPlayer(playerList.get(2));
-		}
-		if(size == 4) {
-			mainboard.getTeam(Teams.RED.getID).addPlayer(playerList.get(0));
-			mainboard.getTeam(Teams.YELLOW.getID).addPlayer(playerList.get(1));
-			mainboard.getTeam(Teams.GREEN.getID).addPlayer(playerList.get(2));
-			mainboard.getTeam(Teams.GREEN.getID).addPlayer(playerList.get(3));
+			mainboard.getTeam(Teams.BLUE.getID).addPlayer(playerList.get(1));
 		}
 	}
 

@@ -773,12 +773,12 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                     }
                 }
                 if (entity.getScoreboardTags().contains("woolbattle2TeamDogeNPC")) {
-                    switch (woolbattle4TeamDialogue.get(player)) {
+                    switch (woolbattle2TeamDialogue.get(player)) {
                         case 0 -> {
-                            dialogue = ChatColor.RED + "Woolbattle" + ChatColor.AQUA + " 2-Teams" + ChatColor.WHITE + "Is a gamemode of Woolbattle where you have 2 Teams. Click again to join.";
+                            dialogue = ChatColor.RED + "Woolbattle" + ChatColor.AQUA + " 2-Teams" + ChatColor.WHITE + " Is a gamemode of Woolbattle where you have 2 Teams. Click again to join.";
                             player.playSound(player.getLocation(), Sound.ENTITY_WOLF_AMBIENT, 10, 2);
 
-                            woolbattle4TeamDialogue.put(player, woolbattle4TeamDialogue.get(player) + 1);
+                            woolbattle2TeamDialogue.put(player, woolbattle2TeamDialogue.get(player) + 1);
                         }
                         case 1 -> {
                             cancelDialogue = true;
