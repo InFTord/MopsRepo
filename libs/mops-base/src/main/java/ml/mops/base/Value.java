@@ -14,9 +14,9 @@ public class Value {
     private int maxAmount = 5;
     private int currentAmount = 4;
 
-
     public void setValues(String leftBorder, String rightBorder, String fill, int count, ChatColor color, ChatColor usedcolor) {
         fillerChar = fill;
+        usedChar = fill;
         borderChar = new String[] {leftBorder, rightBorder};
         fillerCount = count;
         fillerColor = color;
@@ -42,7 +42,8 @@ public class Value {
         String firstBorder = realBorderColor + borderChar[0];
         String secondBorder = realBorderColor + borderChar[1];
 
-        int currentIndicatorCells = Math.round(currentAmount/maxAmount*fillerCount);
+        double currentIndicatorCellsDouble = ((currentAmount + 0.0)/maxAmount)*fillerCount;
+        int currentIndicatorCells = (int) Math.round(currentIndicatorCellsDouble);
         int margin = fillerCount - currentIndicatorCells;
 
         String filler = (realFillerColor + fillerChar).repeat(Math.max(0, currentIndicatorCells)) +
@@ -71,7 +72,8 @@ public class Value {
         String firstBorder = realBorderColor + borderChar[0];
         String secondBorder = realBorderColor + borderChar[1];
 
-        int currentIndicatorCells = Math.round(currentAmount/maxAmount*fillerCount);
+        double currentIndicatorCellsDouble = ((currentAmount + 0.0)/maxAmount)*fillerCount;
+        int currentIndicatorCells = (int) Math.round(currentIndicatorCellsDouble);
         int margin = fillerCount - currentIndicatorCells;
 
         String filler = (realFillerColor + fillerChar).repeat(Math.max(0, currentIndicatorCells)) +

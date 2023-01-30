@@ -60,7 +60,8 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
     HashMap<Player, Integer> deliveryDogeDialogue = new HashMap<>();
     HashMap<Player, Integer> missionDogeDialogue = new HashMap<>();
-    HashMap<Player, Integer> woolbattleDogeDialogue = new HashMap<>();
+    HashMap<Player, Integer> woolbattle2TeamDialogue = new HashMap<>();
+    HashMap<Player, Integer> woolbattle4TeamDialogue = new HashMap<>();
     HashMap<Player, Integer> pigeonDialogue = new HashMap<>();
     HashMap<Player, Integer> realPlantDialogue = new HashMap<>();
 
@@ -748,47 +749,41 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 if (entity.getScoreboardTags().contains("missionDogeNPC")) {
                     switch (missionDogeDialogue.get(player)) {
                         case 0 -> {
-                            dialogue = "Wow.";
+                            dialogue = "I can't currently give you missions.";
                             player.playSound(player.getLocation(), Sound.ENTITY_WOLF_GROWL, 10, 0);
                             player.playSound(player.getLocation(), Sound.ENTITY_WOLF_AMBIENT, 10, 0);
 
-                            missionDogeDialogue.put(player, missionDogeDialogue.get(player) + 1);
-                        }
-                        case 1 -> {
-                            dialogue = "The snow got so bad, we needed to clear it with a machine.";
-                            player.playSound(player.getLocation(), Sound.ENTITY_WOLF_GROWL, 10, 0);
-                            player.playSound(player.getLocation(), Sound.ENTITY_WOLF_AMBIENT, 10, 0);
-
-                            missionDogeDialogue.put(player, missionDogeDialogue.get(player) + 1);
-                        }
-                        case 2 -> {
-                            dialogue = "And it got stuck down here.";
-                            player.playSound(player.getLocation(), Sound.ENTITY_WOLF_GROWL, 10, 0);
-                            player.playSound(player.getLocation(), Sound.ENTITY_WOLF_AMBIENT, 10, 0);
-
-                            missionDogeDialogue.put(player, missionDogeDialogue.get(player) + 1);
-                        }
-                        case 3 -> {
-                            dialogue = "I still can't give you missions though.";
-                            player.playSound(player.getLocation(), Sound.ENTITY_WOLF_GROWL, 10, 0);
-                            player.playSound(player.getLocation(), Sound.ENTITY_WOLF_AMBIENT, 10, 0);
-
-                            missionDogeDialogue.put(player, 0);
+//                            missionDogeDialogue.put(player, missionDogeDialogue.get(player) + 1);
                         }
                     }
                 }
-                if (entity.getScoreboardTags().contains("woolbattleDogeNPC")) {
-                    switch (woolbattleDogeDialogue.get(player)) {
+                if (entity.getScoreboardTags().contains("woolbattle4TeamDoge")) {
+                    switch (woolbattle4TeamDialogue.get(player)) {
                         case 0 -> {
-                            dialogue = "Hello, woolbattle is open for testing! Click again to join.";
+                            dialogue = ChatColor.RED + "Wool" + ChatColor.YELLOW + "battle" + ChatColor.GREEN + " 4-" + ChatColor.AQUA + "Teams" + ChatColor.WHITE + "Is a gamemode of Woolbattle where you have 4 Teams. Click again to join.";
                             player.playSound(player.getLocation(), Sound.ENTITY_WOLF_AMBIENT, 10, 2);
 
-                            woolbattleDogeDialogue.put(player, woolbattleDogeDialogue.get(player) + 1);
+                            woolbattle4TeamDialogue.put(player, woolbattle4TeamDialogue.get(player) + 1);
                         }
                         case 1 -> {
                             cancelDialogue = true;
 
-                            MopsUtils.sendToServer(this, player, "woolbattle");
+                            MopsUtils.sendToServer(this, player, "woolbattle4teams");
+                        }
+                    }
+                }
+                if (entity.getScoreboardTags().contains("woolbattle2TeamDogeNPC")) {
+                    switch (woolbattle4TeamDialogue.get(player)) {
+                        case 0 -> {
+                            dialogue = ChatColor.RED + "Woolbattle" + ChatColor.AQUA + " 2-Teams" + ChatColor.WHITE + "Is a gamemode of Woolbattle where you have 2 Teams. Click again to join.";
+                            player.playSound(player.getLocation(), Sound.ENTITY_WOLF_AMBIENT, 10, 2);
+
+                            woolbattle4TeamDialogue.put(player, woolbattle4TeamDialogue.get(player) + 1);
+                        }
+                        case 1 -> {
+                            cancelDialogue = true;
+
+                            MopsUtils.sendToServer(this, player, "woolbattle2teams");
                         }
                     }
                 }
@@ -923,7 +918,8 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         player.teleport(spawn);
 
         deliveryDogeDialogue.putIfAbsent(player, 0);
-        woolbattleDogeDialogue.putIfAbsent(player, 0);
+        woolbattle2TeamDialogue.putIfAbsent(player, 0);
+        woolbattle4TeamDialogue.putIfAbsent(player, 0);
         missionDogeDialogue.putIfAbsent(player, 0);
         realPlantDialogue.putIfAbsent(player, 0);
         pigeonDialogue.putIfAbsent(player, 0);

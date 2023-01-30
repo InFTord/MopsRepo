@@ -7,6 +7,7 @@ import com.xxmicloxx.NoteBlockAPI.model.Song;
 import com.xxmicloxx.NoteBlockAPI.songplayer.NoteBlockSongPlayer;
 import com.xxmicloxx.NoteBlockAPI.utils.NBSDecoder;
 import ml.mops.base.MopsPlugin;
+import ml.mops.base.Value;
 import ml.mops.base.commands.Commands;
 import ml.mops.utils.Cuboid;
 import ml.mops.utils.MopsFiles;
@@ -18,6 +19,7 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import net.kyori.adventure.title.Title;
+import net.md_5.bungee.api.ChatMessageType;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -32,10 +34,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.FoodLevelChangeEvent;
-import org.bukkit.event.entity.ProjectileHitEvent;
+import org.bukkit.event.entity.*;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
@@ -106,6 +105,9 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 	String connectToIP = "mopsnet.ml";
 	int respawnTime = 4;
+	int gamemode = 1;
+	// 1 - 4 teams
+	// 2 - 2 teams
 
 	final String colon = ChatColor.WHITE + ": ";
 
@@ -261,6 +263,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 	String nextevent0 = ChatColor.RED + "(NO EVENT | 0:00)";
 
 	int scoreboardTask;
+	List<Player> currentPlayers = new ArrayList<>();
 
 	@Override
 	public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
@@ -283,7 +286,17 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		}
 		if (commandName.equals("setrespawntime")) {
 			respawnTime = Integer.parseInt(args[0]);
-			player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 0.4F, 1.5F);
+			player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
+			return true;
+		}
+		if (commandName.equals("setcombo")) {
+			combo.put(player, Integer.parseInt(args[0]));
+			player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
+
+			Value value = new Value();
+			value.setValues(ChatColor.YELLOW + "[", ChatColor.YELLOW + "]", "⬛", 8, ChatColor.GRAY, ChatColor.YELLOW);
+			value.setCurrentAmount(combo.get(player));
+			player.sendActionBar(value.getIndicator());
 			return true;
 		}
 		if(commandName.equals("playsong")) {
@@ -453,6 +466,16 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 	}
 
 	@EventHandler
+	public void onProjectileLaunchEvent(ProjectileLaunchEvent event) {
+		try {
+			if (event.getEntity().getType() == EntityType.ENDER_PEARL) {
+				Player player = (Player) event.getEntity().getShooter();
+				event.getEntity().addPassenger(player);
+			}
+		} catch (Exception | Error ignored) { }
+	}
+
+	@EventHandler
 	public void onFoodLevelChange(FoodLevelChangeEvent event) {
 		if (!hardmode) {
 			event.setFoodLevel(20);
@@ -519,8 +542,12 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 						}
 					}
 
-					Team team = mainboard.getPlayerTeam(attacker);
-					String teamname = team.getName();
+					if (combo.get(attacker) >= 4 && !(combo.get(attacker) >= 8)) {
+						Value value = new Value();
+						value.setValues(ChatColor.YELLOW + "[", ChatColor.YELLOW + "]", "⬛", 8, ChatColor.GRAY, ChatColor.YELLOW);
+						value.setCurrentAmount(combo.get(attacker));
+						attacker.sendActionBar(value.getIndicator());
+					}
 
 					if (combo.get(attacker) >= 8) {
 						victim.setVelocity(attacker.getEyeLocation().getDirection().multiply(0.75).add(victim.getVelocity()).add(new Vector(0, 0.75, 0)));
@@ -560,23 +587,21 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 				if (victim.getScoreboardTags().contains("immunity")) {
 					event.setCancelled(true);
-					attacker.sendMessage(getByLang(MopsFiles.getLanguage(attacker), "woolbattle.immunity.guideline"));
+					if (victim != attacker) {
+						attacker.sendMessage(getByLang(MopsFiles.getLanguage(attacker), "woolbattle.immunity.guideline"));
+					}
 				}
-
 
 				if(!mainboard.getPlayerTeam(attacker).getName().equals(mainboard.getPlayerTeam(victim).getName())) {
 					if(victim.getHealth()-1 <= 0) {
 						simulateHardmodeDeath(victim);
-						broadcastFinalDeath(victim, true);
+						broadcastFinalDeath(victim);
 						victim.playSound(victim.getLocation(), Sound.ENTITY_PLAYER_DEATH, 0.8F, 1);
 					} else if (hardmode) {
 						event.setDamage(1);
 					}
 
 					if (victim != attacker) {
-						Team team = mainboard.getPlayerTeam(attacker);
-						String teamname = team.getName();
-
 						lastDamager.put(victim, attacker);
 
 						if (cancelLastAttacker.get(victim) != null) {
@@ -670,9 +695,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		expectedMopsCoinMax.putIfAbsent(player, 3);
 
 		event.setJoinMessage("");
-		for(Player players : Bukkit.getOnlinePlayers()) {
-			players.sendMessage(player.getName() + " joined the game.");
-		}
+		boolean sendJoinMessage = true;
 
 		if(!gameactive) {
 			mainboard.getTeam("nothing").addPlayer(player);
@@ -713,6 +736,18 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			try {
 				Bukkit.getScheduler().cancelTask(deathTimer.get(player));
 			} catch (Throwable ignored) { }
+		} else {
+			if(!currentPlayers.contains(player)) {
+				player.sendMessage(ChatColor.RED + "Game already started, leaving the server...");
+				MopsUtils.sendToServer(this, player, "mopslobby");
+				sendJoinMessage = false;
+			}
+		}
+
+		if(sendJoinMessage) {
+			for (Player players : Bukkit.getOnlinePlayers()) {
+				players.sendMessage(MopsFiles.getRank(player).getPrefix() + player.getName() + " joined the game.");
+			}
 		}
 	}
 
@@ -721,8 +756,11 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		Player player = event.getPlayer();
 
 		event.setQuitMessage("");
-		for(Player players : Bukkit.getOnlinePlayers()) {
-			players.sendMessage(player.getName() + " left the game.");
+
+		if(currentPlayers.contains(player)) {
+			for (Player players : Bukkit.getOnlinePlayers()) {
+				players.sendMessage(MopsFiles.getRank(player).getPrefix() + player.getName() + " left the game.");
+			}
 		}
 	}
 
@@ -740,7 +778,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		}
 
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-			if(msg.toLowerCase(Locale.ROOT).contains(onlinePlayer.getName().toLowerCase(Locale.ROOT))) {
+			if(msg.toLowerCase(Locale.ROOT).contains(onlinePlayer.getName().toLowerCase(Locale.ROOT)) && !MopsUtils.isAutomodded(msg)) {
 				String[] texts = msg.split(" ");
 				int i = 0;
 				while (i < texts.length) {
@@ -758,60 +796,65 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 		ChatColor color = convertToTeam(teamname).getChatColor;
 
-		if(gameactive) {
-			if (!player.getScoreboardTags().contains("spectator")) {
-				if (!globalChat.get(player)) {
-					if (msg.startsWith("!")) {
-						for (Player players : Bukkit.getOnlinePlayers()) {
-							players.sendMessage(ChatColor.AQUA + "[!] " + color + player.getName() + ChatColor.WHITE + ": " + msg.replaceFirst("!", ""));
+		if (MopsUtils.isAutomodded(msg)) {
+			player.sendMessage(ChatColor.GRAY + "Your message was automodded or not delivered.");
+			player.sendMessage(ChatColor.RED + ChatColor.stripColor(MopsFiles.getRank(player).getPrefix() + player.getName() + MopsFiles.getBadge(player).getSymbol() + ChatColor.RESET + ": " + msg.trim()));
+		} else {
+			if(gameactive) {
+				if (!player.getScoreboardTags().contains("spectator")) {
+					if (!globalChat.get(player)) {
+						if (msg.startsWith("!")) {
+							for (Player players : Bukkit.getOnlinePlayers()) {
+								players.sendMessage(ChatColor.AQUA + "[!] " + color + player.getName() + ChatColor.WHITE + ": " + msg.replaceFirst("!", ""));
+							}
+							hasWrittenAnything.put(player, true);
+						} else {
+							if (!hasWrittenAnything.get(player)) {
+								player.sendMessage(getByLang(MopsFiles.getLanguage(player), "chat.guideline"));
+								hasWrittenAnything.put(player, true);
+							}
+
+							for (OfflinePlayer teamPlayer : team.getPlayers()) {
+								if (teamPlayer.isOnline()) {
+									teamPlayer.getPlayer().sendMessage(ChatColor.DARK_GREEN + "[" + getStringByLang(MopsFiles.getLanguage(player), "woolbattle.team") + "] " + color + player.getName() + ChatColor.WHITE + ": " + color + msg);
+								}
+							}
+						}
+					} else {
+						if (msg.startsWith("!")) {
+							for (OfflinePlayer teamPlayer : team.getPlayers()) {
+								if (teamPlayer.isOnline()) {
+									teamPlayer.getPlayer().sendMessage(ChatColor.DARK_GREEN + "[" + getStringByLang(MopsFiles.getLanguage(player), "woolbattle.team") + "] " + color + player.getName() + ChatColor.WHITE + ": " + color + msg.replaceFirst("!", ""));
+								}
+							}
+						} else {
+							for (Player players : Bukkit.getOnlinePlayers()) {
+								players.sendMessage(ChatColor.AQUA + "[!] " + color + player.getName() + ChatColor.WHITE + ": " + msg);
+							}
 						}
 						hasWrittenAnything.put(player, true);
-					} else {
-						if (!hasWrittenAnything.get(player)) {
-							player.sendMessage(getByLang(MopsFiles.getLanguage(player), "chat.guideline"));
-							hasWrittenAnything.put(player, true);
-						}
-
-						for (OfflinePlayer teamPlayer : team.getPlayers()) {
-							if (teamPlayer.isOnline()) {
-								teamPlayer.getPlayer().sendMessage(ChatColor.DARK_GREEN + "[" + getStringByLang(MopsFiles.getLanguage(player), "woolbattle.team") + "] " + color + player.getName() + ChatColor.WHITE + ": " + color + msg);
-							}
-						}
 					}
-				} else {
-					if (msg.startsWith("!")) {
-						for (OfflinePlayer teamPlayer : team.getPlayers()) {
-							if (teamPlayer.isOnline()) {
-								teamPlayer.getPlayer().sendMessage(ChatColor.DARK_GREEN + "[" + getStringByLang(MopsFiles.getLanguage(player), "woolbattle.team") + "] " + color + player.getName() + ChatColor.WHITE + ": " + color + msg.replaceFirst("!", ""));
-							}
-						}
-					} else {
-						for (Player players : Bukkit.getOnlinePlayers()) {
-							players.sendMessage(ChatColor.AQUA + "[!] " + color + player.getName() + ChatColor.WHITE + ": " + msg);
-						}
-					}
-					hasWrittenAnything.put(player, true);
 				}
-			}
 
-			if (player.getScoreboardTags().contains("spectator")) {
+				if (player.getScoreboardTags().contains("spectator")) {
+					for (Player players : Bukkit.getOnlinePlayers()) {
+						if (msg.startsWith("!")) {
+							msg = msg.replaceFirst("!", "");
+						}
+
+						players.sendMessage(ChatColor.GRAY + "[" + getStringByLang(MopsFiles.getLanguage(player), "woolbattle.spectators") + "] " + color + player.getName() + ChatColor.WHITE + ": " + msg);
+					}
+				}
+			} else {
+				TextComponent preMessage = Component.text(MopsFiles.getRank(player).getPrefix() + player.getName());
+				TextComponent messageBadge = Component.text(MopsFiles.getBadge(player).getSymbol()).hoverEvent(Component.text(MopsFiles.getBadge(player).getDescription()));
+				TextComponent afterMessage = Component.text(ChatColor.RESET + ": " + msg.trim());
+
+				TextComponent fullMessage = preMessage.append(messageBadge).append(afterMessage);
+
 				for (Player players : Bukkit.getOnlinePlayers()) {
-					if (msg.startsWith("!")) {
-						msg = msg.replaceFirst("!", "");
-					}
-
-					players.sendMessage(ChatColor.GRAY + "[" + getStringByLang(MopsFiles.getLanguage(player), "woolbattle.spectators") + "] " + color + player.getName() + ChatColor.WHITE + ": " + msg);
+					players.sendMessage(fullMessage);
 				}
-			}
-		} else {
-			TextComponent preMessage = Component.text(MopsFiles.getRank(player).getPrefix() + player.getName());
-			TextComponent messageBadge = Component.text(MopsFiles.getBadge(player).getSymbol()).hoverEvent(Component.text(MopsFiles.getBadge(player).getDescription()));
-			TextComponent afterMessage = Component.text(ChatColor.RESET + ": " + msg.trim());
-
-			TextComponent fullMessage = preMessage.append(messageBadge).append(afterMessage);
-
-			for(Player players : Bukkit.getOnlinePlayers()) {
-				players.sendMessage(fullMessage);
 			}
 		}
 	}
@@ -957,6 +1000,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 							}
 						} else {
 							player.sendActionBar(getByLang(MopsFiles.getLanguage(player), "woolbattle.onCooldown"));
+							player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 0.5F, 0);
 						}
 					} else {
 						player.sendActionBar(getByLang(MopsFiles.getLanguage(player), "woolbattle.notEnoughWool"));
@@ -1047,6 +1091,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 							}
 						} else {
 							player.sendActionBar(getByLang(MopsFiles.getLanguage(player), "woolbattle.onCooldown"));
+							player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 0.5F, 0);
 						}
 					} else {
 						player.sendActionBar(getByLang(MopsFiles.getLanguage(player), "woolbattle.notEnoughWool"));
@@ -1079,6 +1124,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 							}
 						} else {
 							player.sendActionBar(getByLang(MopsFiles.getLanguage(player), "woolbattle.onCooldown"));
+							player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 0.5F, 0);
 						}
 					} else {
 						player.sendActionBar(getByLang(MopsFiles.getLanguage(player), "woolbattle.notEnoughWool"));
@@ -1151,6 +1197,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 							}, 4L);
 						} else {
 							player.sendActionBar(getByLang(MopsFiles.getLanguage(player), "woolbattle.onCooldown"));
+							player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 0.5F, 0);
 						}
 					} else {
 						player.sendActionBar(getByLang(MopsFiles.getLanguage(player), "woolbattle.notEnoughWool"));
@@ -1163,25 +1210,8 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 						Team team = mainboard.getPlayerTeam(player);
 						String teamname = team.getName();
 
-						Material mat = Material.AIR;
-						if(teamname.contains("red")) {
-							mat = Material.RED_WOOL;
-						}
-						if(teamname.contains("yellow")) {
-							mat = Material.YELLOW_WOOL;
-						}
-						if(teamname.contains("green")) {
-							mat = Material.LIME_WOOL;
-						}
-						if(teamname.contains("blue")) {
-							mat = Material.LIGHT_BLUE_WOOL;
-						}
-						if (teamname.contains("orange")) {
-							mat = Material.ORANGE_WOOL;
-						}
-						if (teamname.contains("pink")) {
-							mat = Material.MAGENTA_WOOL;
-						}
+						Material mat = convertToTeam(teamname).getType;
+						if(mat == Material.WHITE_WOOL) { mat = Material.AIR; }
 
 						if(block.getType() == mat) {
 							boolean hasItems = woolRemove(6, player, teamname);
@@ -1266,65 +1296,15 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		boolean hasItems = infinitewool;
 
 		if(!infinitewool) {
-			if (teamname.contains("red")) {
-				if (player.getInventory().contains(Material.RED_WOOL, itemcount)) {
-					ItemStack woolitem = new ItemStack(Material.RED_WOOL, itemcount);
-					ItemMeta woolmeta = woolitem.getItemMeta();
-					woolmeta.displayName(getByLang(MopsFiles.getLanguage(player), "woolbattle.redWool"));
-					woolitem.setItemMeta(woolmeta);
-					player.getInventory().removeItem(woolitem);
-					hasItems = true;
-				}
-			}
-			if (teamname.contains("yellow")) {
-				if (player.getInventory().contains(Material.YELLOW_WOOL, itemcount)) {
-					ItemStack woolitem = new ItemStack(Material.YELLOW_WOOL, itemcount);
-					ItemMeta woolmeta = woolitem.getItemMeta();
-					woolmeta.displayName(getByLang(MopsFiles.getLanguage(player), "woolbattle.yellowWool"));
-					woolitem.setItemMeta(woolmeta);
-					player.getInventory().removeItem(woolitem);
-					hasItems = true;
-				}
-			}
-			if (teamname.contains("green")) {
-				if (player.getInventory().contains(Material.LIME_WOOL, itemcount)) {
-					ItemStack woolitem = new ItemStack(Material.LIME_WOOL, itemcount);
-					ItemMeta woolmeta = woolitem.getItemMeta();
-					woolmeta.displayName(getByLang(MopsFiles.getLanguage(player), "woolbattle.greenWool"));
-					woolitem.setItemMeta(woolmeta);
-					player.getInventory().removeItem(woolitem);
-					hasItems = true;
-				}
-			}
-			if (teamname.contains("blue")) {
-				if (player.getInventory().contains(Material.LIGHT_BLUE_WOOL, itemcount)) {
-					ItemStack woolitem = new ItemStack(Material.LIGHT_BLUE_WOOL, itemcount);
-					ItemMeta woolmeta = woolitem.getItemMeta();
-					woolmeta.displayName(getByLang(MopsFiles.getLanguage(player), "woolbattle.blueWool"));
-					woolitem.setItemMeta(woolmeta);
-					player.getInventory().removeItem(woolitem);
-					hasItems = true;
-				}
-			}
-			if (teamname.contains("orange")) {
-				if (player.getInventory().contains(Material.ORANGE_WOOL, itemcount)) {
-					ItemStack woolitem = new ItemStack(Material.ORANGE_WOOL, itemcount);
-					ItemMeta woolmeta = woolitem.getItemMeta();
-					woolmeta.displayName(getByLang(MopsFiles.getLanguage(player), "woolbattle.orangeWool"));
-					woolitem.setItemMeta(woolmeta);
-					player.getInventory().removeItem(woolitem);
-					hasItems = true;
-				}
-			}
-			if (teamname.contains("pink")) {
-				if (player.getInventory().contains(Material.MAGENTA_WOOL, itemcount)) {
-					ItemStack woolitem = new ItemStack(Material.MAGENTA_WOOL, itemcount);
-					ItemMeta woolmeta = woolitem.getItemMeta();
-					woolmeta.displayName(getByLang(MopsFiles.getLanguage(player), "woolbattle.pinkWool"));
-					woolitem.setItemMeta(woolmeta);
-					player.getInventory().removeItem(woolitem);
-					hasItems = true;
-				}
+			Teams mopsTeam = convertToTeam(teamname);
+
+			if (player.getInventory().contains(mopsTeam.getType, itemcount)) {
+				ItemStack woolitem = new ItemStack(mopsTeam.getType, itemcount);
+				ItemMeta woolmeta = woolitem.getItemMeta();
+				woolmeta.displayName(getByLang(MopsFiles.getLanguage(player), mopsTeam.getID + "Wool"));
+				woolitem.setItemMeta(woolmeta);
+				player.getInventory().removeItem(woolitem);
+				hasItems = true;
 			}
 		}
 
@@ -1337,59 +1317,15 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		boolean hasItems = infinitewool;
 
 		if(!infinitewool) {
-			if (teamname.contains("red")) {
-				if (player.getInventory().contains(Material.RED_WOOL, itemcount)) {
-					ItemStack woolitem = new ItemStack(Material.RED_WOOL, itemcount);
-					ItemMeta woolmeta = woolitem.getItemMeta();
-					woolmeta.displayName(getByLang(MopsFiles.getLanguage(player), "woolbattle.redWool"));
-					woolitem.setItemMeta(woolmeta);
-					hasItems = true;
-				}
-			}
-			if (teamname.contains("yellow")) {
-				if (player.getInventory().contains(Material.YELLOW_WOOL, itemcount)) {
-					ItemStack woolitem = new ItemStack(Material.YELLOW_WOOL, itemcount);
-					ItemMeta woolmeta = woolitem.getItemMeta();
-					woolmeta.displayName(getByLang(MopsFiles.getLanguage(player), "woolbattle.yellowWool"));
-					woolitem.setItemMeta(woolmeta);
-					hasItems = true;
-				}
-			}
-			if (teamname.contains("green")) {
-				if (player.getInventory().contains(Material.LIME_WOOL, itemcount)) {
-					ItemStack woolitem = new ItemStack(Material.LIME_WOOL, itemcount);
-					ItemMeta woolmeta = woolitem.getItemMeta();
-					woolmeta.displayName(getByLang(MopsFiles.getLanguage(player), "woolbattle.greenWool"));
-					woolitem.setItemMeta(woolmeta);
-					hasItems = true;
-				}
-			}
-			if (teamname.contains("blue")) {
-				if (player.getInventory().contains(Material.LIGHT_BLUE_WOOL, itemcount)) {
-					ItemStack woolitem = new ItemStack(Material.LIGHT_BLUE_WOOL, itemcount);
-					ItemMeta woolmeta = woolitem.getItemMeta();
-					woolmeta.displayName(getByLang(MopsFiles.getLanguage(player), "woolbattle.blueWool"));
-					woolitem.setItemMeta(woolmeta);
-					hasItems = true;
-				}
-			}
-			if (teamname.contains("orange")) {
-				if (player.getInventory().contains(Material.ORANGE_WOOL, itemcount)) {
-					ItemStack woolitem = new ItemStack(Material.ORANGE_WOOL, itemcount);
-					ItemMeta woolmeta = woolitem.getItemMeta();
-					woolmeta.displayName(getByLang(MopsFiles.getLanguage(player), "woolbattle.orangeWool"));
-					woolitem.setItemMeta(woolmeta);
-					hasItems = true;
-				}
-			}
-			if (teamname.contains("pink")) {
-				if (player.getInventory().contains(Material.MAGENTA_WOOL, itemcount)) {
-					ItemStack woolitem = new ItemStack(Material.MAGENTA_WOOL, itemcount);
-					ItemMeta woolmeta = woolitem.getItemMeta();
-					woolmeta.displayName(getByLang(MopsFiles.getLanguage(player), "woolbattle.pinkWool"));
-					woolitem.setItemMeta(woolmeta);
-					hasItems = true;
-				}
+			Teams mopsTeam = convertToTeam(teamname);
+
+			if (player.getInventory().contains(mopsTeam.getType, itemcount)) {
+				ItemStack woolitem = new ItemStack(mopsTeam.getType, itemcount);
+				ItemMeta woolmeta = woolitem.getItemMeta();
+				woolmeta.displayName(getByLang(MopsFiles.getLanguage(player), mopsTeam.getID + "Wool"));
+				woolitem.setItemMeta(woolmeta);
+				player.getInventory().removeItem(woolitem);
+				hasItems = true;
 			}
 		}
 
@@ -1584,48 +1520,13 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 		int woolcount = 0;
 
-		if (teamname.contains("red")) {
-			for (ItemStack contents : player.getInventory().getContents()) {
-				if (contents != null && contents.getType().equals(Material.RED_WOOL)) {
-					woolcount += contents.getAmount();
-				}
+		Teams mopsTeam = convertToTeam(teamname);
+		for (ItemStack contents : player.getInventory().getContents()) {
+			if (contents != null && contents.getType().equals(mopsTeam.getType)) {
+				woolcount += contents.getAmount();
 			}
 		}
-		if (teamname.contains("yellow")) {
-			for (ItemStack contents : player.getInventory().getContents()) {
-				if (contents != null && contents.getType().equals(Material.YELLOW_WOOL)) {
-					woolcount += contents.getAmount();
-				}
-			}
-		}
-		if (teamname.contains("green")) {
-			for (ItemStack contents : player.getInventory().getContents()) {
-				if (contents != null && contents.getType().equals(Material.LIME_WOOL)) {
-					woolcount += contents.getAmount();
-				}
-			}
-		}
-		if (teamname.contains("blue")) {
-			for (ItemStack contents : player.getInventory().getContents()) {
-				if (contents != null && contents.getType().equals(Material.LIGHT_BLUE_WOOL)) {
-					woolcount += contents.getAmount();
-				}
-			}
-		}
-		if (teamname.contains("orange")) {
-			for (ItemStack contents : player.getInventory().getContents()) {
-				if (contents != null && contents.getType().equals(Material.ORANGE_WOOL)) {
-					woolcount += contents.getAmount();
-				}
-			}
-		}
-		if (teamname.contains("pink")) {
-			for (ItemStack contents : player.getInventory().getContents()) {
-				if (contents != null && contents.getType().equals(Material.PINK_WOOL)) {
-					woolcount += contents.getAmount();
-				}
-			}
-		}
+
 		player.setExp(0);
 		player.setLevel(Math.min(woolcount, 512));
 	}
@@ -2289,7 +2190,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 	}
 
 	public void simulateHardmodeDeath(Player player) {
-		broadcastFinalDeath(player, true);
+		broadcastFinalDeath(player);
 
 		player.addScoreboardTag("spectator");
 		player.hidePlayer(this, player);
@@ -2333,10 +2234,10 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		}
 	}
 
-	public void broadcastFinalDeath(Player dead, boolean blood) {
+	public void broadcastFinalDeath(Player dead) {
 		String firstBloodText = "";
 		boolean finalBloodCheck = false;
-		if(firstBlood && blood) {
+		if(firstBlood) {
 			firstBlood = false;
 			finalBloodCheck = true;
 		}
@@ -2521,67 +2422,16 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 	public void checkForWoolCap(Player player) {
 		Team team = mainboard.getPlayerTeam(player);
 		String teamname = team.getName();
-		String lang = MopsFiles.getLanguage(player);
+		Teams mopsTeam = convertToTeam(teamname);
 
-		if (teamname.contains("red")) {
-			if (player.getInventory().contains(Material.RED_WOOL, 512)) {
-				ItemStack woolitem = new ItemStack(Material.RED_WOOL);
-				ItemMeta woolmeta = woolitem.getItemMeta();
-				woolmeta.displayName(getByLang(lang, "woolbattle.redWool"));
-				woolitem.setItemMeta(woolmeta);
-				woolitem.setAmount(getAmount(player, woolitem)-512);
-				player.getInventory().removeItem(woolitem);
-			}
-		}
-		if (teamname.contains("yellow")) {
-			if (player.getInventory().contains(Material.YELLOW_WOOL, 512)) {
-				ItemStack woolitem = new ItemStack(Material.YELLOW_WOOL);
-				ItemMeta woolmeta = woolitem.getItemMeta();
-				woolmeta.displayName(getByLang(lang, "woolbattle.yellowWool"));
-				woolitem.setItemMeta(woolmeta);
-				woolitem.setAmount(getAmount(player, woolitem)-512);
-				player.getInventory().removeItem(woolitem);
-			}
-		}
-		if (teamname.contains("green")) {
-			if (player.getInventory().contains(Material.LIME_WOOL, 512)) {
-				ItemStack woolitem = new ItemStack(Material.LIME_WOOL);
-				ItemMeta woolmeta = woolitem.getItemMeta();
-				woolmeta.displayName(getByLang(lang, "woolbattle.greenWool"));
-				woolitem.setItemMeta(woolmeta);
-				woolitem.setAmount(getAmount(player, woolitem)-512);
-				player.getInventory().removeItem(woolitem);
-			}
-		}
-		if (teamname.contains("blue")) {
-			if (player.getInventory().contains(Material.LIGHT_BLUE_WOOL, 512)) {
-				ItemStack woolitem = new ItemStack(Material.LIGHT_BLUE_WOOL);
-				ItemMeta woolmeta = woolitem.getItemMeta();
-				woolmeta.displayName(getByLang(lang, "blueWool"));
-				woolitem.setItemMeta(woolmeta);
-				woolitem.setAmount(getAmount(player, woolitem)-512);
-				player.getInventory().removeItem(woolitem);
-			}
-		}
-		if (teamname.contains("orange")) {
-			if (player.getInventory().contains(Material.ORANGE_WOOL, 512)) {
-				ItemStack woolitem = new ItemStack(Material.ORANGE_WOOL);
-				ItemMeta woolmeta = woolitem.getItemMeta();
-				woolmeta.displayName(getByLang(lang, "orangeWool"));
-				woolitem.setItemMeta(woolmeta);
-				woolitem.setAmount(getAmount(player, woolitem)-512);
-				player.getInventory().removeItem(woolitem);
-			}
-		}
-		if (teamname.contains("pink")) {
-			if (player.getInventory().contains(Material.MAGENTA_WOOL, 512)) {
-				ItemStack woolitem = new ItemStack(Material.MAGENTA_WOOL);
-				ItemMeta woolmeta = woolitem.getItemMeta();
-				woolmeta.displayName(getByLang(lang, "pinkWool"));
-				woolitem.setItemMeta(woolmeta);
-				woolitem.setAmount(getAmount(player, woolitem)-512);
-				player.getInventory().removeItem(woolitem);
-			}
+		if (player.getInventory().contains(mopsTeam.getType, 512)) {
+			ItemStack woolitem = new ItemStack(mopsTeam.getType);
+			ItemMeta woolmeta = woolitem.getItemMeta();
+			woolmeta.displayName(getByLang(MopsFiles.getLanguage(player), mopsTeam.getID + "Wool"));
+			woolitem.setItemMeta(woolmeta);
+			woolitem.setAmount(getAmount(player, woolitem)-512);
+
+			player.getInventory().removeItem(woolitem);
 		}
 	}
 
@@ -2744,6 +2594,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 				String teamname = team.getName();
 
 				player.setFoodLevel(20);
+				currentPlayers.add(player);
 
 				try {
 					if (args[0].equals("instant")) {
