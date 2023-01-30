@@ -565,7 +565,6 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 
 				if(!mainboard.getPlayerTeam(attacker).getName().equals(mainboard.getPlayerTeam(victim).getName())) {
-
 					if(victim.getHealth()-1 <= 0) {
 						simulateHardmodeDeath(victim);
 						broadcastFinalDeath(victim, true);
@@ -609,6 +608,8 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		matList.add(Material.YELLOW_WOOL);
 		matList.add(Material.LIME_WOOL);
 		matList.add(Material.LIGHT_BLUE_WOOL);
+		matList.add(Material.ORANGE_WOOL);
+		matList.add(Material.MAGENTA_WOOL);
 
 		event.setCancelled(!matList.contains(item.getType()));
 
@@ -647,10 +648,9 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		Material type = item.getType();
 
 		Team team = mainboard.getPlayerTeam(player);
-		String teamname = team.getName();
+		Teams mopsTeam = convertToTeam(team.getName());
 
-		if((teamname.contains("red") && type == Material.RED_WOOL) || (teamname.contains("yellow") && type == Material.YELLOW_WOOL) ||
-				(teamname.contains("green") && type == Material.LIME_WOOL) || (teamname.contains("blue") && type == Material.LIGHT_BLUE_WOOL)) {
+		if(mopsTeam.getType == type) {
 			event.setCancelled(player.getInventory().contains(Material.RED_WOOL, 512) || player.getInventory().contains(Material.YELLOW_WOOL, 512) || player.getInventory().contains(Material.LIME_WOOL, 512) || player.getInventory().contains(Material.LIGHT_BLUE_WOOL, 512));
 		} else {
 			event.setCancelled(true);
@@ -756,20 +756,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 		event.setCancelled(true);
 
-		ChatColor color = ChatColor.WHITE;
-
-		if(teamname.contains("red")) {
-			color = ChatColor.RED;
-		}
-		if(teamname.contains("yellow")) {
-			color = ChatColor.YELLOW;
-		}
-		if(teamname.contains("green")) {
-			color = ChatColor.GREEN;
-		}
-		if(teamname.contains("blue")) {
-			color = ChatColor.AQUA;
-		}
+		ChatColor color = convertToTeam(teamname).getChatColor;
 
 		if(gameactive) {
 			if (!player.getScoreboardTags().contains("spectator")) {

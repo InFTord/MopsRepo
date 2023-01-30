@@ -504,6 +504,19 @@ public class MopsUtils <OBJ extends Object, COMPONENT_COLLECTION extends Collect
 		player.sendMessage(ChatColor.YELLOW + "[NPC] " + entity.getCustomName() + ChatColor.WHITE + ": " + dialogue);
 	}
 
+	static public boolean isAutomodded(String string) {
+		String noSpace = string.toLowerCase(Locale.ROOT).replaceAll(" ", "");
+		List<String> strings = Arrays.asList(string.toLowerCase(Locale.ROOT).split(" "));
+
+		if(strings.contains("kys")) {
+			return true;
+		}
+		if(noSpace.contains("killyourself")) {
+			return true;
+		}
+		return false;
+	}
+
 	static public String sendRandomDialogueMessage(List<String> dialogue, Player player, Entity entity) {
 		int max = dialogue.size()-1;
 		int min = 0;

@@ -965,7 +965,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         event.setCancelled(true);
 
         for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-            if(message.toLowerCase(Locale.ROOT).contains(onlinePlayer.getName().toLowerCase(Locale.ROOT))) {
+            if(message.toLowerCase(Locale.ROOT).contains(onlinePlayer.getName().toLowerCase(Locale.ROOT)) && !MopsUtils.isAutomodded(message)) {
                 String[] texts = message.split(" ");
                 int i = 0;
                 while (i < texts.length) {
@@ -985,8 +985,13 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
         TextComponent fullMessage = preMessage.append(messageBadge).append(afterMessage);
 
-        for(Player allPlayers : Bukkit.getOnlinePlayers()) {
-            MopsUtils.sendTextComponentMessage(allPlayers, fullMessage);
+        if(MopsUtils.isAutomodded(message)) {
+            player.sendMessage(ChatColor.GRAY + "Your message was automodded or not delivered.");
+            player.sendMessage(ChatColor.RED + ChatColor.stripColor(MopsFiles.getRank(player).getPrefix() + player.getName() + MopsFiles.getBadge(player).getSymbol() + ChatColor.RESET + ": " + message.trim()));
+        } else {
+            for (Player allPlayers : Bukkit.getOnlinePlayers()) {
+                MopsUtils.sendTextComponentMessage(allPlayers, fullMessage);
+            }
         }
     }
 
