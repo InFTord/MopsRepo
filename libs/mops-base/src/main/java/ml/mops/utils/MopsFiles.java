@@ -168,8 +168,7 @@ public class MopsFiles {
         String[] list = MopsUtils.readFile(path).split("\n");
         List<String> valuesList = new ArrayList<>();
         for (String row : list) {
-            String[] array = row.split(":");
-            valuesList.add(array[1]);
+            valuesList.add(row.substring(0, row.indexOf(":")));
         }
         return valuesList;
     }
