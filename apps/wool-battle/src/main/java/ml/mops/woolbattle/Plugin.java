@@ -1112,7 +1112,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 					String teamname = team.getName();
 
 					boolean hasItems = hasWool(40, player, teamname);
-//КТО Я НХАУЙ
+//КТО Я НХАУЙ 2
 					if (hasItems) {
 						if (stickCooldownTicks.get(player) == 0) {
 							woolRemove(28, player, teamname);
