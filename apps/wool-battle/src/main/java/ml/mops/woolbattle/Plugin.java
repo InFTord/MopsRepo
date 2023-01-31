@@ -1110,7 +1110,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 				} else if (boomsticksMK2.contains(item)) {
 					Team team = mainboard.getPlayerTeam(player);
 					String teamname = team.getName();
-//билднись
+
 					boolean hasItems = hasWool(40, player, teamname);
 
 					if (hasItems) {
