@@ -494,6 +494,9 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		if(event.getDismounted().getType() == EntityType.ENDER_PEARL) {
 			event.getDismounted().remove();
 		}
+		if(event.getEntity().getType() == EntityType.ENDER_PEARL) {
+			event.getEntity().remove();
+		}
 	}
 
 	private final HashMap<Player, BukkitTask> cancelLastAttacker = new HashMap<>();
@@ -1097,7 +1100,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 							double z = playerZ - interactionPointZ;
 
 							x = x * 0.4 + (player.getEyeLocation().getDirection().getX() * -0.5);
-							y = (y * 0.1) + 0.4;
+							y = (y * 0.075) + 0.35;
 							z = z * 0.4 + (player.getEyeLocation().getDirection().getZ() * -0.5);
 
 							player.setVelocity(player.getVelocity().add((new Vector(x, y, z))));
@@ -1136,7 +1139,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 							double z = playerZ - interactionPointZ;
 
 							x = x * 0.6 + (player.getEyeLocation().getDirection().getX() * -0.6);
-							y = (y * 0.1) + 0.5;
+							y = (y * 0.075) + 0.4;
 							z = z * 0.6 + (player.getEyeLocation().getDirection().getZ() * -0.6);
 
 							player.setVelocity(player.getVelocity().add((new Vector(x, y, z))));
@@ -2299,10 +2302,25 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			player.teleport(loc);
 			team = Teams.GREEN;
 		} else if (teamname.contains("blue")) {
-			Location loc = new Location(player.getWorld(), 46.5, 258, 9.5);
-			loc.setYaw(90);
-			player.teleport(loc);
-			team = Teams.BLUE;
+			if(gamemode == 1) {
+
+				Location loc = new Location(player.getWorld(), 46.5, 257, 9.5);
+				while (loc.getBlock().getType() != Material.AIR && !(loc.getY() >= 319)) {
+					loc = loc.add(0, 1, 0);
+				}
+				loc.setYaw(90);
+				player.teleport(loc.add(0.5, 1, 0.5));
+
+			} else if(gamemode == 2) {
+
+				Location loc = new Location(player.getWorld(), 9.5, 257, 46.5);
+				while (loc.getBlock().getType() != Material.AIR && !(loc.getY() >= 319)) {
+					loc = loc.add(0, 1, 0);
+				}
+				loc.setYaw(-180);
+				player.teleport(loc.add(0.5, 1, 0.5));
+
+			}
 		}
 
 		player.setPlayerListName(team.getChatColor + player.getName());
