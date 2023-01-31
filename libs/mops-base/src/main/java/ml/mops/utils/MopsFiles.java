@@ -163,7 +163,7 @@ public class MopsFiles {
 
     public static List<String> getServerData(Plugin plugin) {
         String path = plugin.getServer().getPluginsFolder().getAbsolutePath();
-        path += "serverData.txt";
+        path += "\\serverData.txt";
 
         String[] list = MopsUtils.readFile(path).split("\n");
         List<String> valuesList = new ArrayList<>();
