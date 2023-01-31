@@ -75,7 +75,7 @@ public class AdminUtils {
                             player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
                         }
                         if(args[0].equals("wasAtPigeon")) {
-                            MopsFiles.setPigeon(player, Boolean.parseBoolean(args[1]));
+                            MopsFiles.setWasAtPigeon(player, Boolean.parseBoolean(args[1]));
                             player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
                         }
                         if(args[0].equals("language")) {
