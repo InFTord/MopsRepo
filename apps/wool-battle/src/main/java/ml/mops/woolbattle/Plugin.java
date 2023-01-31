@@ -48,6 +48,7 @@ import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.spigotmc.event.entity.EntityDismountEvent;
 
 import java.io.*;
 import java.net.URI;
@@ -485,6 +486,13 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			event.setFoodLevel(20);
 		} else {
 			event.setFoodLevel(14);
+		}
+	}
+
+	@EventHandler
+	public void onDismountEvent(EntityDismountEvent event) {
+		if(event.getDismounted().getType() == EntityType.ENDER_PEARL) {
+			event.getDismounted().remove();
 		}
 	}
 
