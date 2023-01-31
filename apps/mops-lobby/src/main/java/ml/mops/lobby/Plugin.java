@@ -652,7 +652,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                     bookMeta.setPages(pages);
 
                     book.setItemMeta(bookMeta);
-
+//забилдись ты
                     player.openBook(book);
                     player.playSound(player.getLocation(), Sound.ITEM_BOOK_PAGE_TURN, 1, 0);
                 }

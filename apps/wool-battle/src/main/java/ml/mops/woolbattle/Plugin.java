@@ -1107,7 +1107,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 					} else {
 						player.sendActionBar(getByLang(MopsFiles.getLanguage(player), "woolbattle.notEnoughWool"));
 					}
-
+//забилдись ты
 				} else if (boomsticksMK2.contains(item)) {
 					Team team = mainboard.getPlayerTeam(player);
 					String teamname = team.getName();
