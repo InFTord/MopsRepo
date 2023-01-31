@@ -801,7 +801,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		ChatColor color = convertToTeam(teamname).getChatColor;
 
 		if (MopsUtils.isAutomodded(msg)) {
-			player.sendMessage(ChatColor.GRAY + "Your message was automodded or not delivered.");
+			player.sendMessage(ChatColor.GRAY + "Your message was blocked or not delivered.");
 			player.sendMessage(ChatColor.RED + ChatColor.stripColor(MopsFiles.getRank(player).getPrefix() + player.getName() + MopsFiles.getBadge(player).getSymbol() + ChatColor.RESET + ": " + msg.trim()));
 		} else {
 			if(gameactive) {
@@ -1088,9 +1088,9 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 							double y = playerY - interactionPointY;
 							double z = playerZ - interactionPointZ;
 
-							x = x * 0.5;
-							z = z * 0.5;
-							y = (y * 0.2) + 0.5;
+							x = x * 0.4 + (player.getEyeLocation().getDirection().getX() * -0.5);
+							y = (y * 0.1) + 0.4;
+							z = z * 0.4 + (player.getEyeLocation().getDirection().getZ() * -0.5);
 
 							player.setVelocity(player.getVelocity().add((new Vector(x, y, z))));
 
@@ -1127,9 +1127,9 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 							double y = playerY - interactionPointY;
 							double z = playerZ - interactionPointZ;
 
-							x = x * 0.7;
-							z = z * 0.7;
-							y = (y * 0.3) + 0.5;
+							x = x * 0.6 + (player.getEyeLocation().getDirection().getX() * -0.6);
+							y = (y * 0.1) + 0.5;
+							z = z * 0.6 + (player.getEyeLocation().getDirection().getZ() * -0.6);
 
 							player.setVelocity(player.getVelocity().add((new Vector(x, y, z))));
 
@@ -1265,7 +1265,6 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 				ItemMeta woolmeta = woolitem.getItemMeta();
 				woolmeta.displayName(getByLang(MopsFiles.getLanguage(player), mopsTeam.getID + "Wool"));
 				woolitem.setItemMeta(woolmeta);
-				player.getInventory().removeItem(woolitem);
 				hasItems = true;
 			}
 		}
@@ -2511,12 +2510,25 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			player.teleport(loc.add(0.5, 1, 0.5));
 		}
 		if (teamname.contains("blue")) {
-			Location loc = new Location(player.getWorld(), 46, 257, 9);
-			while (loc.getBlock().getType() != Material.AIR && !(loc.getY() >= 319)) {
-				loc = loc.add(0, 1, 0);
+			if(gamemode == 1) {
+
+				Location loc = new Location(player.getWorld(), 46, 257, 9);
+				while (loc.getBlock().getType() != Material.AIR && !(loc.getY() >= 319)) {
+					loc = loc.add(0, 1, 0);
+				}
+				loc.setYaw(90);
+				player.teleport(loc.add(0.5, 1, 0.5));
+
+			} else if(gamemode == 2) {
+
+				Location loc = new Location(player.getWorld(), 9, 257, 46);
+				while (loc.getBlock().getType() != Material.AIR && !(loc.getY() >= 319)) {
+					loc = loc.add(0, 1, 0);
+				}
+				loc.setYaw(-180);
+				player.teleport(loc.add(0.5, 1, 0.5));
+
 			}
-			loc.setYaw(90);
-			player.teleport(loc.add(0.5, 1, 0.5));
 		}
 
 		player.setAllowFlight(false);
