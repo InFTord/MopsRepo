@@ -3,9 +3,12 @@ package ml.mops.utils;
 import ml.mops.network.MopsBadge;
 import ml.mops.network.MopsRank;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class MopsFiles {
@@ -158,11 +161,28 @@ public class MopsFiles {
 
 
 
+    public static List<String> getServerData(Plugin plugin) {
+        String path = plugin.getServer().getPluginsFolder().getAbsolutePath();
+        path += "serverData.txt";
+
+        String[] list = MopsUtils.readFile(path).split("\n");
+        List<String> valuesList = new ArrayList<>();
+        for (String row : list) {
+            String[] array = row.split(":");
+            valuesList.add(array[1]);
+        }
+        return valuesList;
+    }
 
 
 
 
-    public static boolean getPigeon(Player player) {
+
+
+
+
+
+    public static boolean getWasAtPigeon(Player player) {
         UUID uuid = player.getUniqueId();
         boolean bool = false;
 
@@ -175,7 +195,7 @@ public class MopsFiles {
         }
         return bool;
     }
-    public static void setPigeon(Player player, boolean bool) {
+    public static void setWasAtPigeon(Player player, boolean bool) {
         UUID uuid = player.getUniqueId();
         StringBuilder line = new StringBuilder();
         boolean playerExists = false;

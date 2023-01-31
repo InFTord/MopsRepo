@@ -34,21 +34,20 @@ public class ItemGUI implements Listener {
         inv.setItem(0, items.shears("eng"));
         inv.setItem(1, items.boomstickMK1("eng"));
         inv.setItem(2, items.boomstickMK2("eng"));
-        inv.setItem(3, items.boomstickMK3("eng"));
-        inv.setItem(4, items.slimeball("eng"));
-        inv.setItem(5, items.platform("eng"));
-        inv.setItem(6, items.platform3d("eng"));
-        inv.setItem(7, items.doubleJumpBoots("eng", Teams.RED));
-        inv.setItem(8, items.doubleJumpBoots("eng", Teams.YELLOW));
-        inv.setItem(9, items.doubleJumpBoots("eng", Teams.GREEN));
-        inv.setItem(10, items.doubleJumpBoots("eng", Teams.BLUE));
-        inv.setItem(11, items.doubleJumpBoots("eng", Teams.SPECTATOR));
-        inv.setItem(12, items.leaves("eng"));
-        inv.setItem(13, items.enderpearl("eng"));
-        inv.setItem(14, items.shield("eng"));
-        inv.setItem(15, items.axe("eng"));
-        inv.setItem(16, items.stockBow("eng"));
-        inv.setItem(17, items.potion("eng"));
+        inv.setItem(3, items.slimeball("eng"));
+        inv.setItem(4, items.platform("eng"));
+        inv.setItem(5, items.platform3d("eng"));
+        inv.setItem(6, items.doubleJumpBoots("eng", Teams.RED));
+        inv.setItem(7, items.doubleJumpBoots("eng", Teams.YELLOW));
+        inv.setItem(8, items.doubleJumpBoots("eng", Teams.GREEN));
+        inv.setItem(9, items.doubleJumpBoots("eng", Teams.BLUE));
+        inv.setItem(10, items.doubleJumpBoots("eng", Teams.SPECTATOR));
+        inv.setItem(11, items.leaves("eng"));
+        inv.setItem(12, items.enderpearl("eng"));
+        inv.setItem(13, items.shield("eng"));
+        inv.setItem(14, items.axe("eng"));
+        inv.setItem(15, items.stockBow("eng"));
+        inv.setItem(16, items.potion("eng"));
 
     }
 

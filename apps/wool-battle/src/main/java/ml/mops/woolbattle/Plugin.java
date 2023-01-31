@@ -113,7 +113,6 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 	final List<ItemStack> boomsticks = new ArrayList<>();
 	final List<ItemStack> boomsticksMK2 = new ArrayList<>();
-	final List<ItemStack> boomsticksMK3 = new ArrayList<>();
 	List<ItemStack> platforms = new ArrayList<>();
 	List<ItemStack> platforms3d = new ArrayList<>();
 	List<ItemStack> slimeballs = new ArrayList<>();
@@ -158,7 +157,6 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		platforms.add(items.platform("eng"));
 		platforms3d.add(items.platform3d("eng"));
 		boomsticksMK2.add(items.boomstickMK2("eng"));
-		boomsticksMK3.add(items.boomstickMK3("eng"));
 
 		mainworld = Bukkit.getServer().getWorlds().get(0);
 		manager = Bukkit.getScoreboardManager();
@@ -187,6 +185,8 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			}
 		}
 
+		gamemode = Integer.parseInt(MopsFiles.getServerData(this).get(0));
+
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, this::every5Ticks, 80L, 5L);
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, this::everyTick, 80L, 1L);
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, this::everySecond, 80L, 20L);
@@ -205,7 +205,11 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		}, 80L, 160L);
 
 		wipeoutWorld(mainworld, 150, 144, 319);
-		loadCuboid("https://cdn.discordapp.com/attachments/897853554340020254/1065378410572021843/cubes.txt", mainworld);
+		if(gamemode == 1) {
+			loadCuboid("https://cdn.discordapp.com/attachments/897853554340020254/1065378410572021843/cubes.txt", mainworld);
+		} else if (gamemode == 2) {
+			loadCuboid("https://cdn.discordapp.com/attachments/897853554340020254/1070045595831636158/cubes2v2.txt", mainworld);
+		}
 
 		for (Entity entity : mainworld.getEntities()) {
 			if (entity.getScoreboardTags().contains("lootstands")) {
@@ -1075,12 +1079,19 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 							woolRemove(28, player, teamname);
 							stickCooldownTicks.put(player, 1);
 
-							double x = player.getEyeLocation().getDirection().getX();
-							double z = player.getEyeLocation().getDirection().getZ();
-							double y = 0.4;
+							double interactionPointX = event.getInteractionPoint().getX();
+							double interactionPointY = event.getInteractionPoint().getY();
+							double interactionPointZ = event.getInteractionPoint().getZ();
+							double playerX = player.getLocation().getX();
+							double playerY = player.getLocation().getY();
+							double playerZ = player.getLocation().getZ();
+							double x = playerX - interactionPointX;
+							double y = playerY - interactionPointY;
+							double z = playerZ - interactionPointZ;
 
-							x = x * -1.9;
-							z = z * -1.9;
+							x = x * 0.7;
+							z = z * 0.7;
+							y = y * 0.3;
 
 							player.setVelocity(player.getVelocity().add((new Vector(x, y, z))));
 
@@ -1108,12 +1119,19 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 							woolRemove(28, player, teamname);
 							stickCooldownTicks.put(player, 1);
 
-							double x = player.getEyeLocation().getDirection().getX();
-							double z = player.getEyeLocation().getDirection().getZ();
-							double y = 0.5;
+							double interactionPointX = event.getInteractionPoint().getX();
+							double interactionPointY = event.getInteractionPoint().getY();
+							double interactionPointZ = event.getInteractionPoint().getZ();
+							double playerX = player.getLocation().getX();
+							double playerY = player.getLocation().getY();
+							double playerZ = player.getLocation().getZ();
+							double x = playerX - interactionPointX;
+							double y = playerY - interactionPointY;
+							double z = playerZ - interactionPointZ;
 
-							x = x * -2.3;
-							z = z * -2.3;
+							x = x * 1.1;
+							z = z * 1.1;
+							y = y * 0.5;
 
 							player.setVelocity(player.getVelocity().add((new Vector(x, y, z))));
 
@@ -1129,81 +1147,6 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 					} else {
 						player.sendActionBar(getByLang(MopsFiles.getLanguage(player), "woolbattle.notEnoughWool"));
 					}
-				} else if (boomsticksMK3.contains(item)) {
-					Team team = mainboard.getPlayerTeam(player);
-					String teamname = team.getName();
-
-					boolean hasItems = hasWool(120, player, teamname);
-
-					if (hasItems) {
-						if (stickCooldownTicks.get(player) == 0) {
-							woolRemove(120, player, teamname);
-							stickCooldownTicks.put(player, 1);
-
-							double x = player.getEyeLocation().getDirection().getX();
-							double z = player.getEyeLocation().getDirection().getZ();
-							double y = 0.8;
-
-							x = x * -4.6;
-							z = z * -4.6;
-
-							Location loc = event.getClickedBlock().getLocation();
-							loc.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, loc, 1);
-
-							player.playSound(player.getLocation(), Sound.BLOCK_PISTON_EXTEND, 1, 0);
-							player.playSound(player.getLocation(), Sound.WEATHER_RAIN, 0.5F, 0);
-							double finalZ = z;
-							double finalX = x;
-
-							Bukkit.getScheduler().runTaskLater(this, () -> {
-								loc.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, loc, 1);
-								player.playSound(player.getLocation(), Sound.BLOCK_PISTON_EXTEND, 1, 0);
-								Bukkit.getScheduler().runTaskLater(this, () -> {
-									loc.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, loc, 1);
-									player.playSound(player.getLocation(), Sound.BLOCK_PISTON_EXTEND, 1, 0);
-									player.playSound(player.getLocation(), Sound.ENTITY_WARDEN_AGITATED, 1, 2);
-									Bukkit.getScheduler().runTaskLater(this, () -> {
-										loc.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, loc, 1);
-										player.playSound(player.getLocation(), Sound.ENTITY_WARDEN_SONIC_CHARGE, 1, 0);
-										player.playSound(player.getLocation(), Sound.ENTITY_WARDEN_SONIC_CHARGE, 1, 1);
-										Bukkit.getScheduler().runTaskLater(this, () -> {
-											loc.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, loc, 1);
-											player.playSound(player.getLocation(), Sound.ENTITY_WARDEN_SONIC_CHARGE, 1, 1);
-											Bukkit.getScheduler().runTaskLater(this, () -> {
-												loc.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, loc, 1);
-												player.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_ROCKET_SHOOT, 1, 1);
-												player.playSound(player.getLocation(), Sound.ENTITY_WARDEN_SONIC_BOOM, 1, 0);
-												player.playSound(player.getLocation(), Sound.ENTITY_WARDEN_SONIC_BOOM, 1, 1);
-												player.playSound(player.getLocation(), Sound.ENTITY_WARDEN_SONIC_BOOM, 1, 2);
-												Bukkit.getScheduler().runTaskLater(this, () -> {
-													player.playSound(player.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, 1, 2);
-													for (Player players : Bukkit.getOnlinePlayers()) {
-														players.playSound(player.getLocation(), Sound.ITEM_TRIDENT_THUNDER, 1, 2);
-													}
-													player.playSound(player.getLocation(), Sound.ITEM_TRIDENT_THUNDER, 1, 2);
-													player.playSound(player.getLocation(), Sound.ITEM_TRIDENT_THUNDER, 1, 2);
-													player.playSound(player.getLocation(), Sound.ITEM_TOTEM_USE, 1, 1);
-													player.playSound(player.getLocation(), Sound.ENTITY_WARDEN_SONIC_BOOM, 1, 1);
-													player.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_ROCKET_LAUNCH, 1, 1);
-													player.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_ROCKET_LAUNCH, 1, 0);
-
-													loc.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, loc, 1);
-													player.setVelocity(player.getVelocity().add((new Vector(finalX, y, finalZ))));
-												}, 16L);
-											}, 8L);
-										}, 2L);
-									}, 4L);
-								}, 4L);
-							}, 4L);
-						} else {
-							player.sendActionBar(getByLang(MopsFiles.getLanguage(player), "woolbattle.onCooldown"));
-							player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 0.5F, 0);
-						}
-					} else {
-						player.sendActionBar(getByLang(MopsFiles.getLanguage(player), "woolbattle.notEnoughWool"));
-					}
-
-
 				} else if(shears.contains(item)) {
 					Block block = event.getClickedBlock();
 					if(genA.getBlocks().contains(block) || genB.getBlocks().contains(block) || genC.getBlocks().contains(block) || genD.getBlocks().contains(block)) {
@@ -2075,7 +2018,6 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		shears.clear();
 		boomsticks.clear();
 		boomsticksMK2.clear();
-		boomsticksMK3.clear();
 		platforms.clear();
 		platforms3d.clear();
 		slimeballs.clear();
@@ -2530,9 +2472,16 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 				mainboard.getTeam(Teams.GREEN.getID).addPlayer(playerList.get(2));
 				mainboard.getTeam(Teams.BLUE.getID).addPlayer(playerList.get(3));
 			}
-		} else {
-			mainboard.getTeam(Teams.RED.getID).addPlayer(playerList.get(0));
-			mainboard.getTeam(Teams.BLUE.getID).addPlayer(playerList.get(1));
+		} else if (gamemode == 2) {
+			int i = 0;
+			while (i < Bukkit.getOnlinePlayers().size()) {
+				if(i % 2 == 0) {
+					mainboard.getTeam(Teams.BLUE.getID).addPlayer(playerList.get(i));
+				} else {
+					mainboard.getTeam(Teams.RED.getID).addPlayer(playerList.get(i));
+				}
+				i++;
+			}
 		}
 	}
 
@@ -2632,7 +2581,6 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		platforms.add(items.platform("eng"));
 		platforms3d.add(items.platform3d("eng"));
 		boomsticksMK2.add(items.boomstickMK2("eng"));
-		boomsticksMK3.add(items.boomstickMK3("eng"));
 
 		lootGenerator();
 

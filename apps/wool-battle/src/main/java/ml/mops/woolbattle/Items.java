@@ -307,24 +307,4 @@ public class Items {
 
         return item;
     }
-
-    public ItemStack boomstickMK3(String lang) {
-        ItemStack item = new ItemStack(Material.ECHO_SHARD);
-        ItemMeta meta = item.getItemMeta();
-        meta.displayName(plugin.getByLang(lang, "boomstickMK3.name"));
-
-        List<String> lore = new ArrayList<>(Arrays.asList(MopsUtils.textComponentToString(plugin.getByLang(lang, "boomstickMK3.lore")).split("\n")));
-        int i = 0;
-        while(i < lore.size()) {
-            lore.set(i, MopsUtils.convertColorCodes(ChatColor.RESET + "" + ChatColor.GRAY + lore.get(i)));
-            i++;
-        }
-        meta.setLore(lore);
-
-        meta.addEnchant(Enchantment.DURABILITY, 1, true);
-        meta.addItemFlags(ItemFlag.HIDE_ENCHANTS);
-        item.setItemMeta(meta);
-
-        return item;
-    }
 }

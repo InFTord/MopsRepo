@@ -644,7 +644,10 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                             ChatColor.DARK_GREEN + " + " + ChatColor.BLACK + "Woolbattle now" + "\n" +
                             "    gives coins" + "\n" +
                             ChatColor.GRAY + " - " + ChatColor.BLACK + "Other Bug Fixes" + "\n" +
-                            ChatColor.DARK_GREEN + " + " + ChatColor.BLACK + "SnowDoge animation" + "\n"
+                            ChatColor.DARK_GREEN + " + " + ChatColor.BLACK + "SnowDoge animation" + "\n" +
+                            ChatColor.GRAY + " - " + ChatColor.BLACK + "Boomstick Changes" + "\n" +
+                            ChatColor.GRAY + " - " + ChatColor.BLACK + "Code Changes" + "\n" +
+                            ChatColor.DARK_GREEN + " + " + ChatColor.BLACK + "WB 2 Teams mode"
                     );
                     bookMeta.setPages(pages);
 
@@ -667,7 +670,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                         loc.setYaw(-90);
                         player.teleport(loc);
 
-                        MopsFiles.setPigeon(player, true);
+                        MopsFiles.setWasAtPigeon(player, true);
                     }, 5L);
                 }
             }
@@ -760,7 +763,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 if (entity.getScoreboardTags().contains("woolbattle4TeamDoge")) {
                     switch (woolbattle4TeamDialogue.get(player)) {
                         case 0 -> {
-                            dialogue = ChatColor.RED + "Wool" + ChatColor.YELLOW + "battle" + ChatColor.GREEN + " 4-" + ChatColor.AQUA + "Teams" + ChatColor.WHITE + "Is a gamemode of Woolbattle where you have 4 Teams. Click again to join.";
+                            dialogue = ChatColor.RED + "Wool" + ChatColor.YELLOW + "battle" + ChatColor.GREEN + " 4-" + ChatColor.AQUA + "Teams" + ChatColor.WHITE + " Is a gamemode of Woolbattle where you have 4 Teams. Click again to join.";
                             player.playSound(player.getLocation(), Sound.ENTITY_WOLF_AMBIENT, 10, 2);
 
                             woolbattle4TeamDialogue.put(player, woolbattle4TeamDialogue.get(player) + 1);
@@ -772,7 +775,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                         }
                     }
                 }
-                if (entity.getScoreboardTags().contains("woolbattle2TeamDogeNPC")) {
+                if (entity.getScoreboardTags().contains("woolbattle2TeamDoge")) {
                     switch (woolbattle2TeamDialogue.get(player)) {
                         case 0 -> {
                             dialogue = ChatColor.RED + "Woolbattle" + ChatColor.AQUA + " 2-Teams" + ChatColor.WHITE + " Is a gamemode of Woolbattle where you have 2 Teams. Click again to join.";
@@ -1060,7 +1063,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                     }
                 }
                 if(event.getSlot() == 19) {
-                    if(MopsFiles.getPigeon(player)) {
+                    if(MopsFiles.getWasAtPigeon(player)) {
                         newDestination = new Location(world, 151.5, 9.0, 147.5);
                         newDestination.setYaw(-90);
                         player.teleport(newDestination);
@@ -1424,7 +1427,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         inv.setItem(15, MopsUtils.createItem(Material.GREEN_TERRACOTTA, ChatColor.DARK_GREEN + "Missions"));
         inv.setItem(16, MopsUtils.createItem(Material.LAPIS_BLOCK, ChatColor.BLUE + "Smelter"));
 
-        if(MopsFiles.getPigeon(player)) {
+        if(MopsFiles.getWasAtPigeon(player)) {
             ItemStack item = MopsUtils.createCustomHead("b7ea4c017e3456cf09a5c263f34d3cc5f41577b74d60f6f8196c60e07f8c5a96");
             inv.setItem(19, MopsUtils.renameItem(item, ChatColor.AQUA + "Lonely Pigeon's Shack"));
         } else {
