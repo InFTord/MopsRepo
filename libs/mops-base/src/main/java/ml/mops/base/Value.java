@@ -34,7 +34,6 @@ public class Value {
         } else if(realFillerColor == null) {
             realFillerColor = borderColor;
         }
-
         if(realUsedChar == null) {
             realUsedChar = fillerChar;
         }
@@ -42,7 +41,7 @@ public class Value {
         String firstBorder = realBorderColor + borderChar[0];
         String secondBorder = realBorderColor + borderChar[1];
 
-        double currentIndicatorCellsDouble = ((currentAmount + 0.0)/maxAmount*fillerCount);
+        double currentIndicatorCellsDouble = (((currentAmount + 0.0)/maxAmount)*fillerCount);
         int currentIndicatorCells = (int) Math.round(currentIndicatorCellsDouble);
         int margin = fillerCount - currentIndicatorCells;
 
@@ -72,7 +71,7 @@ public class Value {
         String firstBorder = realBorderColor + borderChar[0];
         String secondBorder = realBorderColor + borderChar[1];
 
-        double currentIndicatorCellsDouble = ((currentAmount + 0.0)/maxAmount*fillerCount);
+        double currentIndicatorCellsDouble = (((currentAmount + 0.0)/maxAmount)*fillerCount);
         int currentIndicatorCells = (int) Math.round(currentIndicatorCellsDouble);
         int margin = fillerCount - currentIndicatorCells;
 
