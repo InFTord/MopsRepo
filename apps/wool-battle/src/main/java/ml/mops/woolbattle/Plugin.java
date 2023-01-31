@@ -927,7 +927,6 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 							block.setType(Material.AIR);
 
 							materialstuff = (type == Material.WHITE_WOOL || type == Material.RED_WOOL || type == Material.YELLOW_WOOL || type == Material.LIME_WOOL || type == Material.LIGHT_BLUE_WOOL || type == Material.ORANGE_WOOL || type == Material.MAGENTA_WOOL);
-
 						} else {
 							event.setCancelled(true);
 						}
@@ -943,7 +942,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 				if (!player.getInventory().contains(mopsTeam.getType, 512)) {
 					ItemStack woolitem = new ItemStack(mopsTeam.getType, 1);
 					ItemMeta woolmeta = woolitem.getItemMeta();
-					woolmeta.displayName(getByLang(MopsFiles.getLanguage(player), getStringByLang(MopsFiles.getLanguage(player), mopsTeam.getID + "Wool")));
+					woolmeta.displayName(getByLang(MopsFiles.getLanguage(player), mopsTeam.getID + "Wool"));
 					woolitem.setItemMeta(woolmeta);
 					player.getInventory().addItem(woolitem);
 				} else {
@@ -1089,9 +1088,9 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 							double y = playerY - interactionPointY;
 							double z = playerZ - interactionPointZ;
 
-							x = x * 0.7;
-							z = z * 0.7;
-							y = y * 0.3;
+							x = x * 0.5;
+							z = z * 0.5;
+							y = (y * 0.2) + 0.5;
 
 							player.setVelocity(player.getVelocity().add((new Vector(x, y, z))));
 
@@ -1112,7 +1111,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 					String teamname = team.getName();
 
 					boolean hasItems = hasWool(40, player, teamname);
-//КТО Я НХАУЙ 2
+
 					if (hasItems) {
 						if (stickCooldownTicks.get(player) == 0) {
 							woolRemove(28, player, teamname);
@@ -1128,9 +1127,9 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 							double y = playerY - interactionPointY;
 							double z = playerZ - interactionPointZ;
 
-							x = x * 1.1;
-							z = z * 1.1;
-							y = y * 0.5;
+							x = x * 0.7;
+							z = z * 0.7;
+							y = (y * 0.3) + 0.5;
 
 							player.setVelocity(player.getVelocity().add((new Vector(x, y, z))));
 
