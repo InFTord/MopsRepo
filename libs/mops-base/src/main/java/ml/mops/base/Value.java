@@ -3,82 +3,40 @@ package ml.mops.base;
 import org.bukkit.ChatColor;
 
 public class Value {
-    private String fillerChar = "-";
-    private int fillerCount = 5;
     private String[] borderChar = new String[] {"[", "]"};
     private ChatColor borderColor = ChatColor.GOLD;
-    private ChatColor fillerColor = ChatColor.YELLOW;
-    private ChatColor usedColor = ChatColor.GRAY;
+    private String defaultChar = "-";
+    private ChatColor defaultColor = ChatColor.YELLOW;
     private String usedChar = "X";
+    private ChatColor usedColor = ChatColor.GRAY;
+
+    // if you need to squish the amount into X bars use this
+    // isnt implemented yet actually i would need to do that later
+    private int squishAmount = 0;
 
     private int maxAmount = 5;
     private int currentAmount = 4;
 
-    public void setValues(String leftBorder, String rightBorder, String fill, int count, ChatColor color, ChatColor usedcolor) {
-        fillerChar = fill;
-        usedChar = fill;
+    public void setValues(String leftBorder, String rightBorder, ChatColor borderColor, ChatColor defaultColor, ChatColor usedColor, String usedChar, String defaultChar) {
+        this.defaultColor = defaultColor;
+        this.usedColor = usedColor;
+        this.borderColor = borderColor;
+        this.usedChar = usedChar;
+        this.defaultChar = defaultChar;
         borderChar = new String[] {leftBorder, rightBorder};
-        fillerCount = count;
-        fillerColor = color;
-        borderColor = color;
-        usedColor = usedcolor;
     }
 
     public String getIndicator() {
-        ChatColor realBorderColor = borderColor;
-        ChatColor realFillerColor = fillerColor;
-        String realUsedChar = usedChar;
+        String firstBorder = borderColor + borderChar[0];
+        String secondBorder = borderColor + borderChar[1];
 
-        if(realBorderColor == null) {
-            realBorderColor = fillerColor;
-        } else if(realFillerColor == null) {
-            realFillerColor = borderColor;
-        }
-        if(realUsedChar == null) {
-            realUsedChar = fillerChar;
+        String bar = "";
+
+        if(squishAmount == 0) {
+            bar = (usedColor + usedChar).repeat(currentAmount) + (defaultChar + defaultColor).repeat(maxAmount-currentAmount);
         }
 
-        String firstBorder = realBorderColor + borderChar[0];
-        String secondBorder = realBorderColor + borderChar[1];
-
-        double currentIndicatorCellsDouble = (((currentAmount + 0.0)/maxAmount)*fillerCount);
-        int currentIndicatorCells = (int) Math.round(currentIndicatorCellsDouble);
-        int margin = fillerCount - currentIndicatorCells;
-
-        String filler = (realFillerColor + fillerChar).repeat(Math.max(0, currentIndicatorCells)) +
-                        (usedColor + realUsedChar).repeat(Math.max(0, margin));
-
-        return firstBorder + filler + secondBorder;
-    }
-
-    public String getIndicator(int value) {
-        ChatColor realBorderColor = borderColor;
-        ChatColor realFillerColor = fillerColor;
-        String realUsedChar = usedChar;
-
-        currentAmount = value;
-
-        if(realBorderColor == null) {
-            realBorderColor = fillerColor;
-        } else if(realFillerColor == null) {
-            realFillerColor = borderColor;
-        }
-
-        if(realUsedChar == null) {
-            realUsedChar = fillerChar;
-        }
-
-        String firstBorder = realBorderColor + borderChar[0];
-        String secondBorder = realBorderColor + borderChar[1];
-
-        double currentIndicatorCellsDouble = (((currentAmount + 0.0)/maxAmount)*fillerCount);
-        int currentIndicatorCells = (int) Math.round(currentIndicatorCellsDouble);
-        int margin = fillerCount - currentIndicatorCells;
-
-        String filler = (realFillerColor + fillerChar).repeat(Math.max(0, currentIndicatorCells)) +
-                (usedColor + realUsedChar).repeat(Math.max(0, margin));
-
-        return firstBorder + filler + secondBorder;
+        return firstBorder + bar + secondBorder;
     }
 
 
@@ -89,29 +47,7 @@ public class Value {
     public void setMaxAmount(int value) {
         maxAmount = value;
     }
-    public void setFillerCount(int value) {
-        fillerCount = value;
-    }
-
-
-    public void setFillerChar(String character) {
-        fillerChar = character;
-    }
-    public void setUsedChar(String character) {
-        usedChar = character;
-    }
-    public void setBorderChar(String[] array) {
-        borderChar = array;
-    }
-
-
-    public void setBorderColor(ChatColor color) {
-        borderColor = color;
-    }
-    public void setFillerColor(ChatColor color) {
-        fillerColor = color;
-    }
-    public void setUsedColor(ChatColor color) {
-        usedColor = color;
+    public void setSquishAmount(int value) {
+        squishAmount = value;
     }
 }

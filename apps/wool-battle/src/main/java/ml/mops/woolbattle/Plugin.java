@@ -307,8 +307,9 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
 
 			Value value = new Value();
-			value.setValues(ChatColor.YELLOW + "[", ChatColor.YELLOW + "]", "⬛", 8, ChatColor.YELLOW, ChatColor.GRAY);
+			value.setValues("[", "]", ChatColor.YELLOW, ChatColor.GRAY, ChatColor.YELLOW, "⬛", "⬛");
 			value.setCurrentAmount(combo.get(player));
+			value.setMaxAmount(8);
 			player.sendActionBar(value.getIndicator());
 			return true;
 		}
@@ -567,8 +568,9 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 
 					if (combo.get(attacker) >= 4 && !(combo.get(attacker) >= 8)) {
 						Value value = new Value();
-						value.setValues(ChatColor.YELLOW + "[", ChatColor.YELLOW + "]", "⬛", 8, ChatColor.YELLOW, ChatColor.GRAY);
+						value.setValues("[", "]", ChatColor.YELLOW, ChatColor.GRAY, ChatColor.YELLOW, "⬛", "⬛");
 						value.setCurrentAmount(combo.get(attacker));
+						value.setMaxAmount(8);
 						attacker.sendActionBar(value.getIndicator());
 					}
 

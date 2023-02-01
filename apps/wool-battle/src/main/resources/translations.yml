@@ -128,6 +128,9 @@ woolbattle:
   - flareGun.lore:
       rus: "&7Выстреливает ракеты которые сжигают шерсть!"
       eng: "&7Shoots flares that burn through wool!"
+  - flareGun.lore2:
+      rus: "&e&lПКМ &7для активации."
+      eng: "&e&lRIGHT-CLICK &7to activate."
   - flareGun.flareCount:
       rus: "&cРакеты: "
       eng: "&cFlares: "
@@ -155,6 +158,18 @@ woolbattle:
   - bow.lore:
       rus: "&7Лук, ломает шерсть при попадании."
       eng: "&7A bow, breaks wool if shot."
+  - sniperRifle.name:
+      rus: "&6Снайперская Винтовка"
+      eng: "&6Sniper Rifle"
+  - sniperRifle.lore:
+      rus: "&7Снайперская винтовка."
+      eng: "&7A sniper rifle."
+  - sniperRifle.lore2:
+      rus: "&e&lПКМ &7для прицела."
+      eng: "&e&lRIGHT-CLICK &7to aim."
+  - sniperRifle.lore3:
+      rus: "&e&lЛКМ &7для выстрела."
+      eng: "&e&lLEFT-CLICK &7to shoot."
   - arrow.name:
       rus: "&7Стрела"
       eng: "&7Arrow"

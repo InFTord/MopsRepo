@@ -287,6 +287,8 @@ public class Items {
 
         List<String> lore = new ArrayList<>();
         lore.add(plugin.getStringByLang(lang, "flareGun.lore"));
+        lore.add(plugin.getStringByLang(lang, "flareGun.lore2"));
+        lore.add(" ");
         lore.add(plugin.getStringByLang(lang, "flareGun.flareCount") + ChatColor.RED + "3/3");
 
         meta.addItemFlags(ItemFlag.HIDE_DYE);
@@ -304,7 +306,23 @@ public class Items {
 
 
 
+    public ItemStack sniperRifle(String lang) {
+        ItemStack item = new ItemStack(Material.SPYGLASS);
+        LeatherArmorMeta meta = (LeatherArmorMeta) item.getItemMeta();
+        meta.displayName(plugin.getByLang(lang, "sniperRifle.name"));
 
+        List<String> lore = new ArrayList<>();
+        lore.add(plugin.getStringByLang(lang, "sniperRifle.lore"));
+        lore.add(plugin.getStringByLang(lang, "sniperRifle.lore2"));
+
+        meta.addItemFlags(ItemFlag.HIDE_DYE);
+        meta.setColor(Color.fromRGB(204, 47, 47));
+        item.setItemMeta(meta);
+
+        item.setAmount(1);
+
+        return item;
+    }
 
     public ItemStack platform3d(String lang) {
         ItemStack item = new ItemStack(Material.BRICKS);

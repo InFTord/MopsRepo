@@ -49,6 +49,7 @@ public class ItemGUI implements Listener {
         inv.setItem(15, items.stockBow("eng"));
         inv.setItem(16, items.potion("eng"));
         inv.setItem(17, items.flareGun("eng"));
+        inv.setItem(18, items.sniperRifle("eng"));
 
     }
 
