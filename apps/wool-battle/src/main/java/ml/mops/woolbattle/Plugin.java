@@ -580,7 +580,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 						attacker.playSound(attacker.getLocation(), Sound.ENTITY_ZOMBIE_BREAK_WOODEN_DOOR, 1, 2);
 						combo.put(attacker, 0);
 					}
-//a
+
 					if(gameactive) {
 						if (victim.getScoreboardTags().contains("ingame")) {
 							lastDamager.put(victim, attacker);
