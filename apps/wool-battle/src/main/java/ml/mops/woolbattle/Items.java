@@ -280,6 +280,24 @@ public class Items {
         return item;
     }
 
+    public ItemStack flareGun(String lang) {
+        ItemStack item = new ItemStack(Material.LEATHER_HORSE_ARMOR);
+        LeatherArmorMeta meta = (LeatherArmorMeta) item.getItemMeta();
+        meta.displayName(plugin.getByLang(lang, "flareGun.name"));
+
+        List<String> lore = new ArrayList<>();
+        lore.add(plugin.getStringByLang(lang, "flareGun.lore"));
+        lore.add(plugin.getStringByLang(lang, "flareGun.flareCount") + ChatColor.RED + "3/3");
+
+        meta.addItemFlags(ItemFlag.HIDE_DYE);
+        meta.setColor(Color.fromRGB(204, 47, 47));
+        item.setItemMeta(meta);
+
+        item.setAmount(1);
+
+        return item;
+    }
+
 
 
 

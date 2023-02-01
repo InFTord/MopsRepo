@@ -122,18 +122,15 @@ woolbattle:
         &7Stick that throws you backwards harder. &e&lRIGHT CLICK
         &c&lREQUIRES &r&7aiming at a block. &8(Spammable)
         &bCost: 40 wool
-  - boomstickMK3.name:
-      rus: "&3Взрывная Палка (T3)"
-      eng: "&3Boomstick (Mk III)"
-  - boomstickMK3.lore:
-      rus: |
-        &7Палка откидывающая тебя назад очень сильно. &e&lПКМ
-        &c&lНУЖНО &r&7навестись на блок. &8(Можно спамить)
-        &bСтоимость: 120 шерсти
-      eng: |
-        &7Stick that throws you with extreme force. &e&lRIGHT CLICK
-        &c&lREQUIRES &r&7aiming at a block. &8(Spammable)
-        &bCost: 120 wool
+  - flareGun.name:
+      rus: "&cСигнальная Ракетница"
+      eng: "&cFlare Gun"
+  - flareGun.lore:
+      rus: "&7Выстреливает ракеты которые сжигают шерсть!"
+      eng: "&7Shoots flares that burn through wool!"
+  - flareGun.flareCount:
+      rus: "&cРакеты: "
+      eng: "&cFlares: "
   - shears.name:
       rus: "&bНожницы"
       eng: "&bShears"

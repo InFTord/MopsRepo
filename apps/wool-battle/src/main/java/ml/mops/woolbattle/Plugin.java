@@ -119,6 +119,8 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 	List<ItemStack> slimeballs = new ArrayList<>();
 	List<ItemStack> doubleJumpBoots = new ArrayList<>();
 	List<ItemStack> shears = new ArrayList<>();
+	List<ItemStack> flareGuns = new ArrayList<>();
+	List<ItemStack> sniperRifles = new ArrayList<>();
 
 	boolean firstBlood = true;
 
@@ -158,6 +160,12 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		platforms.add(items.platform("eng"));
 		platforms3d.add(items.platform3d("eng"));
 		boomsticksMK2.add(items.boomstickMK2("eng"));
+		flareGuns.add(items.flareGun("eng"));
+
+		platforms.add(items.platform("rus"));
+		platforms3d.add(items.platform3d("rus"));
+		boomsticksMK2.add(items.boomstickMK2("rus"));
+		flareGuns.add(items.flareGun("rus"));
 
 		mainworld = Bukkit.getServer().getWorlds().get(0);
 		manager = Bukkit.getScoreboardManager();
@@ -182,7 +190,13 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		for(Entity entity : mainworld.getEntities()) {
 			if(entity.getScoreboardTags().contains("generatorTitle")) {
 				ArmorStand stand = (ArmorStand) entity;
-				stand.setHelmet(new ItemStack(Material.AIR));
+
+				stand.setHelmet(new ItemStack(Material.IRON_BLOCK));
+			}
+			if (entity.getScoreboardTags().contains("lootstands")) {
+				ArmorStand lootstand = (ArmorStand) entity;
+
+				lootstand.getHelmet().setAmount(0);
 			}
 		}
 
@@ -212,13 +226,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			loadCuboid("https://cdn.discordapp.com/attachments/897853554340020254/1070045595831636158/cubes2v2.txt", mainworld);
 		}
 
-		for (Entity entity : mainworld.getEntities()) {
-			if (entity.getScoreboardTags().contains("lootstands")) {
-				ArmorStand lootstand = (ArmorStand) entity;
 
-				lootstand.setHelmet(new ItemStack(Material.AIR));
-			}
-		}
 
 		WebhookClient client = WebhookClient.withUrl(new String(Base64.getDecoder().decode(MopsUtils.statusText()), StandardCharsets.UTF_8));
 
