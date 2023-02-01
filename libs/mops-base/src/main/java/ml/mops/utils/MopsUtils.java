@@ -511,7 +511,10 @@ public class MopsUtils <OBJ extends Object, COMPONENT_COLLECTION extends Collect
 		if(strings.contains("kys")) {
 			return true;
 		}
-		if(noSpace.contains("killyourself")) {
+		if(noSpace.contains("killyoursel") || noSpace.contains("卐")) {
+			return true;
+		}
+		if(string.contains("k y s")) {
 			return true;
 		}
 		return false;
