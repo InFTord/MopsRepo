@@ -5,27 +5,18 @@ import club.minnced.discord.webhook.send.WebhookEmbed;
 import club.minnced.discord.webhook.send.WebhookEmbedBuilder;
 import ml.mops.base.commands.Commands;
 import ml.mops.utils.MopsUtils;
-import org.bukkit.*;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockFadeEvent;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scoreboard.Scoreboard;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
-import java.awt.Color;
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import java.util.Base64;
-import java.util.Calendar;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class Plugin extends JavaPlugin implements Listener {
     @Override

@@ -5,7 +5,7 @@ import org.bukkit.ChatColor;
 public class Value {
     private String fillerChar = "-";
     private int fillerCount = 5;
-    private String[] borderChar = new String[] {"[", "]"};
+    private String[] borderChar = new String[]{"[", "]"};
     private ChatColor borderColor = ChatColor.GOLD;
     private ChatColor fillerColor = ChatColor.YELLOW;
     private ChatColor usedColor = ChatColor.GRAY;
@@ -17,7 +17,7 @@ public class Value {
 
     public void setValues(String leftBorder, String rightBorder, String fill, int count, ChatColor color, ChatColor usedcolor) {
         fillerChar = fill;
-        borderChar = new String[] {leftBorder, rightBorder};
+        borderChar = new String[]{leftBorder, rightBorder};
         fillerCount = count;
         fillerColor = color;
         borderColor = color;
@@ -29,24 +29,24 @@ public class Value {
         ChatColor realFillerColor = fillerColor;
         String realUsedChar = usedChar;
 
-        if(realBorderColor == null) {
+        if (realBorderColor == null) {
             realBorderColor = fillerColor;
-        } else if(realFillerColor == null) {
+        } else if (realFillerColor == null) {
             realFillerColor = borderColor;
         }
 
-        if(realUsedChar == null) {
+        if (realUsedChar == null) {
             realUsedChar = fillerChar;
         }
 
         String firstBorder = realBorderColor + borderChar[0];
         String secondBorder = realBorderColor + borderChar[1];
 
-        int currentIndicatorCells = Math.round(currentAmount/maxAmount*fillerCount);
+        int currentIndicatorCells = Math.round(currentAmount / maxAmount * fillerCount);
         int margin = fillerCount - currentIndicatorCells;
 
         String filler = (realFillerColor + fillerChar).repeat(Math.max(0, currentIndicatorCells)) +
-                        (usedColor + realUsedChar).repeat(Math.max(0, margin));
+                (usedColor + realUsedChar).repeat(Math.max(0, margin));
 
         return firstBorder + filler + secondBorder;
     }
@@ -58,20 +58,20 @@ public class Value {
 
         currentAmount = value;
 
-        if(realBorderColor == null) {
+        if (realBorderColor == null) {
             realBorderColor = fillerColor;
-        } else if(realFillerColor == null) {
+        } else if (realFillerColor == null) {
             realFillerColor = borderColor;
         }
 
-        if(realUsedChar == null) {
+        if (realUsedChar == null) {
             realUsedChar = fillerChar;
         }
 
         String firstBorder = realBorderColor + borderChar[0];
         String secondBorder = realBorderColor + borderChar[1];
 
-        int currentIndicatorCells = Math.round(currentAmount/maxAmount*fillerCount);
+        int currentIndicatorCells = Math.round(currentAmount / maxAmount * fillerCount);
         int margin = fillerCount - currentIndicatorCells;
 
         String filler = (realFillerColor + fillerChar).repeat(Math.max(0, currentIndicatorCells)) +
@@ -81,13 +81,14 @@ public class Value {
     }
 
 
-
     public void setCurrentAmount(int value) {
         currentAmount = value;
     }
+
     public void setMaxAmount(int value) {
         maxAmount = value;
     }
+
     public void setFillerCount(int value) {
         fillerCount = value;
     }
@@ -96,9 +97,11 @@ public class Value {
     public void setFillerChar(String character) {
         fillerChar = character;
     }
+
     public void setUsedChar(String character) {
         usedChar = character;
     }
+
     public void setBorderChar(String[] array) {
         borderChar = array;
     }
@@ -107,9 +110,11 @@ public class Value {
     public void setBorderColor(ChatColor color) {
         borderColor = color;
     }
+
     public void setFillerColor(ChatColor color) {
         fillerColor = color;
     }
+
     public void setUsedColor(ChatColor color) {
         usedColor = color;
     }

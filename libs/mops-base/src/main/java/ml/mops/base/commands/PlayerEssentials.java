@@ -1,7 +1,6 @@
 package ml.mops.base.commands;
 
 
-
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -54,12 +53,8 @@ public class PlayerEssentials extends Commands {
                 player.sendMessage("штуки пати, я хз как они будут работать :)");
 
                 switch (args[0]) {
-                    case "invite" -> {
-                        player.sendMessage("инвайт в пати, я хз как он будет работать :)");
-                    }
-                    case "disband" -> {
-                        player.sendMessage("роспуск пати, я хз как он будет работать :)");
-                    }
+                    case "invite" -> player.sendMessage("инвайт в пати, я хз как он будет работать :)");
+                    case "disband" -> player.sendMessage("роспуск пати, я хз как он будет работать :)");
                 }
             }
         }

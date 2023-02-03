@@ -32,7 +32,7 @@ public class KitGUI implements Listener {
 
         int i = 0;
 
-        while(i < availableKits.size()) {
+        while (i < availableKits.size()) {
             Kit kit = availableKits.get(i);
 
             ItemStack kitItem = new ItemStack(kit.getShulker());

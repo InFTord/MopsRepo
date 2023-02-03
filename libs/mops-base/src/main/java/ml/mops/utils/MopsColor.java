@@ -1,7 +1,6 @@
 package ml.mops.utils;
 
 import org.bukkit.ChatColor;
-import org.bukkit.Color;
 import org.bukkit.Material;
 
 public enum MopsColor {
@@ -34,7 +33,7 @@ public enum MopsColor {
     final String color;
     final Material shulker;
 
-    MopsColor (String color, Material shulker) {
+    MopsColor(String color, Material shulker) {
         this.color = color;
         this.shulker = shulker;
     }
@@ -42,6 +41,7 @@ public enum MopsColor {
     public Material getShulker() {
         return shulker;
     }
+
     public String getColor() {
         return color;
     }

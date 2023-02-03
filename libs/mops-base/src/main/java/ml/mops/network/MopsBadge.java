@@ -10,7 +10,7 @@ public enum MopsBadge {
     final String symbol;
     final String description;
 
-    MopsBadge (String symbol, String description) {
+    MopsBadge(String symbol, String description) {
         this.symbol = symbol;
         this.description = description;
     }
@@ -18,5 +18,8 @@ public enum MopsBadge {
     public String getSymbol() {
         return symbol;
     }
-    public String getDescription() { return description; }
+
+    public String getDescription() {
+        return description;
+    }
 }

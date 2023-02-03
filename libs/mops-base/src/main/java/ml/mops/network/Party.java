@@ -6,29 +6,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Party {
-	public Party(Player player) {
-		partyMembers.add(player);
-		owner = player;
-	}
+    public Party(Player player) {
+        partyMembers.add(player);
+        owner = player;
+    }
 
-	List<Player> partyMembers = new ArrayList<>();
-	Player owner;
+    List<Player> partyMembers = new ArrayList<>();
+    Player owner;
 
-	public List<Player> getPartyMembers() {
-		return partyMembers;
-	}
-	public void setPartyMembers(List<Player> memberList) {
-		this.partyMembers = memberList;
-	}
+    public List<Player> getPartyMembers() {
+        return partyMembers;
+    }
 
-	public void addMember(Player player) {
-		partyMembers.add(player);
-	}
-	public void removeMember(Player player) {
-		partyMembers.remove(player);
-	}
+    public void setPartyMembers(List<Player> memberList) {
+        this.partyMembers = memberList;
+    }
 
-	public void setOwner(Player player) {
-		owner = player;
-	}
+    public void addMember(Player player) {
+        partyMembers.add(player);
+    }
+
+    public void removeMember(Player player) {
+        partyMembers.remove(player);
+    }
+
+    public void setOwner(Player player) {
+        owner = player;
+    }
 }

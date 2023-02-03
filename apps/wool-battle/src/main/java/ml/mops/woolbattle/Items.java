@@ -34,7 +34,7 @@ public class Items {
 
         List<String> lore = new ArrayList<>(Arrays.asList(MopsUtils.textComponentToString(plugin.getByLang(lang, "shears.lore")).split("\n")));
         int i = 0;
-        while(i < lore.size()) {
+        while (i < lore.size()) {
             lore.set(i, MopsUtils.convertColorCodes(ChatColor.RESET + "" + ChatColor.GRAY + lore.get(i)));
             i++;
         }
@@ -55,7 +55,7 @@ public class Items {
 
         List<String> lore = new ArrayList<>(Arrays.asList(MopsUtils.textComponentToString(plugin.getByLang(lang, "boomstick.lore")).split("\n")));
         int i = 0;
-        while(i < lore.size()) {
+        while (i < lore.size()) {
             lore.set(i, MopsUtils.convertColorCodes(ChatColor.RESET + "" + ChatColor.GRAY + lore.get(i)));
             i++;
         }
@@ -73,7 +73,7 @@ public class Items {
 
         List<String> lore = new ArrayList<>(Arrays.asList(MopsUtils.textComponentToString(plugin.getByLang(lang, "slimeball.lore")).split("\n")));
         int i = 0;
-        while(i < lore.size()) {
+        while (i < lore.size()) {
             lore.set(i, MopsUtils.convertColorCodes(ChatColor.RESET + "" + ChatColor.GRAY + lore.get(i)));
             i++;
         }
@@ -121,7 +121,7 @@ public class Items {
 
         List<String> lore = new ArrayList<>(Arrays.asList(MopsUtils.textComponentToString(plugin.getByLang(lang, "doubleJumpBoots.lore")).split("\n")));
         int i = 0;
-        while(i < lore.size()) {
+        while (i < lore.size()) {
             lore.set(i, MopsUtils.convertColorCodes(ChatColor.RESET + "" + ChatColor.GRAY + lore.get(i)));
             i++;
         }
@@ -135,14 +135,6 @@ public class Items {
     }
 
 
-
-
-
-
-
-
-
-
     public ItemStack shield(String lang) {
         ItemStack item = new ItemStack(Material.SHIELD);
         ItemMeta meta = item.getItemMeta();
@@ -150,7 +142,7 @@ public class Items {
 
         List<String> lore = new ArrayList<>(Arrays.asList(MopsUtils.textComponentToString(plugin.getByLang(lang, "shield.lore")).split("\n")));
         int i = 0;
-        while(i < lore.size()) {
+        while (i < lore.size()) {
             lore.set(i, MopsUtils.convertColorCodes(ChatColor.RESET + "" + ChatColor.GRAY + lore.get(i)));
             i++;
         }
@@ -180,7 +172,7 @@ public class Items {
 
         List<String> lore = new ArrayList<>(Arrays.asList(MopsUtils.textComponentToString(plugin.getByLang(lang, "axe.lore")).split("\n")));
         int i = 0;
-        while(i < lore.size()) {
+        while (i < lore.size()) {
             lore.set(i, MopsUtils.convertColorCodes(ChatColor.RESET + "" + ChatColor.GRAY + lore.get(i)));
             i++;
         }
@@ -213,7 +205,7 @@ public class Items {
 
         List<String> lore = new ArrayList<>(Arrays.asList(MopsUtils.textComponentToString(plugin.getByLang(lang, "platform.lore")).split("\n")));
         int i = 0;
-        while(i < lore.size()) {
+        while (i < lore.size()) {
             lore.set(i, MopsUtils.convertColorCodes(ChatColor.RESET + "" + ChatColor.GRAY + lore.get(i)));
             i++;
         }
@@ -255,7 +247,7 @@ public class Items {
 
         List<String> lore = new ArrayList<>(Arrays.asList(MopsUtils.textComponentToString(plugin.getByLang(lang, "boomstickMK2.lore")).split("\n")));
         int i = 0;
-        while(i < lore.size()) {
+        while (i < lore.size()) {
             lore.set(i, MopsUtils.convertColorCodes(ChatColor.RESET + "" + ChatColor.GRAY + lore.get(i)));
             i++;
         }
@@ -271,13 +263,6 @@ public class Items {
     }
 
 
-
-
-
-
-
-
-
     public ItemStack platform3d(String lang) {
         ItemStack item = new ItemStack(Material.BRICKS);
         ItemMeta meta = item.getItemMeta();
@@ -285,7 +270,7 @@ public class Items {
 
         List<String> lore = new ArrayList<>(Arrays.asList(MopsUtils.textComponentToString(plugin.getByLang(lang, "platform3d.lore")).split("\n")));
         int i = 0;
-        while(i < lore.size()) {
+        while (i < lore.size()) {
             lore.set(i, MopsUtils.convertColorCodes(ChatColor.RESET + "" + ChatColor.GRAY + lore.get(i)));
             i++;
         }
@@ -305,7 +290,7 @@ public class Items {
 
         List<String> lore = new ArrayList<>(Arrays.asList(MopsUtils.textComponentToString(plugin.getByLang(lang, "boomstickMK3.lore")).split("\n")));
         int i = 0;
-        while(i < lore.size()) {
+        while (i < lore.size()) {
             lore.set(i, MopsUtils.convertColorCodes(ChatColor.RESET + "" + ChatColor.GRAY + lore.get(i)));
             i++;
         }

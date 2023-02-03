@@ -6,13 +6,13 @@ import net.minecraft.server.network.PlayerConnection;
 import org.bukkit.entity.Player;
 
 public class HandlePlayer {
-	EntityPlayer entityPlayer;
+    EntityPlayer entityPlayer;
 
-	public HandlePlayer(Player player) {
-		entityPlayer = ((CraftPlayer) player).getHandle();
-	}
+    public HandlePlayer(Player player) {
+        entityPlayer = ((CraftPlayer) player).getHandle();
+    }
 
-	public PlayerConnection getPlayerConnection() {
-		return entityPlayer.b;
-	}
+    public PlayerConnection getPlayerConnection() {
+        return entityPlayer.b;
+    }
 }

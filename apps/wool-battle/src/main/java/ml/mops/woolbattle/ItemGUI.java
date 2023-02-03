@@ -1,20 +1,9 @@
 package ml.mops.woolbattle;
 
-import ml.mops.base.maps.Map;
-import ml.mops.base.maps.MapManager;
-import ml.mops.utils.MopsUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
-
-import java.util.List;
-import java.util.Objects;
 
 public class ItemGUI implements Listener {
     private final Inventory inv;

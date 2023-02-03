@@ -25,6 +25,7 @@ public class KitGUI implements Listener {
     public ItemStack item(Material material) {
         return new ItemStack(material);
     }
+
     public ItemStack item(Material material, int i) {
         return new ItemStack(material, i);
     }

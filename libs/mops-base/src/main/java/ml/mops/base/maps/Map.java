@@ -25,7 +25,7 @@ public enum Map {
     final Material type;
     final Biome biome;
 
-    Map (String fileName, String name, MapType mapType, Material type, Biome biome) {
+    Map(String fileName, String name, MapType mapType, Material type, Biome biome) {
         this.fileURL = fileName;
         this.name = name;
         this.mapType = mapType;
@@ -38,7 +38,7 @@ public enum Map {
     }
 
     public String[] getRowArray() {
-        String[] rowArray = new String[] {""};
+        String[] rowArray = new String[]{""};
 
         try {
             InputStream stream = new URL(fileURL).openStream();
@@ -53,8 +53,10 @@ public enum Map {
             }
             bufferedReader.close();
 
-            rowArray = stringBuilder.toString().split("\n");;
-        } catch (IOException ignored) { }
+            rowArray = stringBuilder.toString().split("\n");
+            ;
+        } catch (IOException ignored) {
+        }
 
         return rowArray;
     }
@@ -66,6 +68,7 @@ public enum Map {
     public String getName() {
         return name;
     }
+
     public MapType getMapType() {
         return mapType;
     }

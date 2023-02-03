@@ -58,11 +58,11 @@
             <artifactId>v1_19_R1</artifactId>
             <version>b3513</version>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>ml.mops.base</groupId>-->
-<!--            <artifactId>mops-base</artifactId>-->
-<!--            <version>${project.version}</version>-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>ml.mops.base</groupId>-->
+        <!--            <artifactId>mops-base</artifactId>-->
+        <!--            <version>${project.version}</version>-->
+        <!--        </dependency>-->
         <dependency>
             <groupId>ml.mops.base</groupId>
             <artifactId>mops-base</artifactId>

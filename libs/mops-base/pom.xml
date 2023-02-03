@@ -22,41 +22,41 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
 
-<!--    <profiles>-->
-<!--        <profile>-->
-<!--            <id>windows</id>-->
-<!--            <activation>-->
-<!--                <os>-->
-<!--                    <family>Windows</family>-->
-<!--                </os>-->
-<!--            </activation>-->
-<!--            <properties>-->
-<!--                <script.executor>powershell.exe</script.executor>-->
-<!--                <script.to.execute>Get-Process | Sort CPU -descending | Select -first 5 -Property ID,ProcessName,CPU</script.to.execute>-->
-<!--            </properties>-->
-<!--        </profile>-->
-<!--        <profile>-->
-<!--            <id>unix</id>-->
-<!--            <activation>-->
-<!--                <os>-->
-<!--                    <family>unix</family>-->
-<!--                </os>-->
-<!--            </activation>-->
-<!--            <properties>-->
-<!--                <script.executor>bash</script.executor>-->
-<!--                <script.to.execute>${basedir}/scripts/nvn-install-1_19.sh</script.to.execute>-->
-<!--            </properties>-->
-<!--        </profile>-->
-<!--        <profile>-->
-<!--            <id>auto</id>-->
-<!--            <activation>-->
-<!--                <property>-->
-<!--                    <name>!unsetDefaultProfile</name>-->
-<!--                </property>-->
-<!--            </activation>-->
+    <!--    <profiles>-->
+    <!--        <profile>-->
+    <!--            <id>windows</id>-->
+    <!--            <activation>-->
+    <!--                <os>-->
+    <!--                    <family>Windows</family>-->
+    <!--                </os>-->
+    <!--            </activation>-->
+    <!--            <properties>-->
+    <!--                <script.executor>powershell.exe</script.executor>-->
+    <!--                <script.to.execute>Get-Process | Sort CPU -descending | Select -first 5 -Property ID,ProcessName,CPU</script.to.execute>-->
+    <!--            </properties>-->
+    <!--        </profile>-->
+    <!--        <profile>-->
+    <!--            <id>unix</id>-->
+    <!--            <activation>-->
+    <!--                <os>-->
+    <!--                    <family>unix</family>-->
+    <!--                </os>-->
+    <!--            </activation>-->
+    <!--            <properties>-->
+    <!--                <script.executor>bash</script.executor>-->
+    <!--                <script.to.execute>${basedir}/scripts/nvn-install-1_19.sh</script.to.execute>-->
+    <!--            </properties>-->
+    <!--        </profile>-->
+    <!--        <profile>-->
+    <!--            <id>auto</id>-->
+    <!--            <activation>-->
+    <!--                <property>-->
+    <!--                    <name>!unsetDefaultProfile</name>-->
+    <!--                </property>-->
+    <!--            </activation>-->
 
-<!--        </profile>-->
-<!--    </profiles>-->
+    <!--        </profile>-->
+    <!--    </profiles>-->
 
     <repositories>
         <repository>
@@ -165,13 +165,13 @@
             <artifactId>exec-maven-plugin</artifactId>
             <version>3.1.0</version>
         </dependency>
-<!--        Я их добавил в пом только мопс бейса так как по идеи они должны загружать и в другие (ну типо зависимость зависимости), но скорее всего оно не будет работать без include (чекни pom.xml у вулбатла для примера) -->
+        <!--        Я их добавил в пом только мопс бейса так как по идеи они должны загружать и в другие (ну типо зависимость зависимости), но скорее всего оно не будет работать без include (чекни pom.xml у вулбатла для примера) -->
         <dependency>
             <groupId>club.minnced</groupId>
             <artifactId>discord-webhooks</artifactId>
             <version>0.8.2</version>
         </dependency>
-<!--        ДЛЯ РАБОТЫ НЕОБХОДИМ МЕМ в plugin.yml: softdepend: [NoteBlockAPI]-->
+        <!--        ДЛЯ РАБОТЫ НЕОБХОДИМ МЕМ в plugin.yml: softdepend: [NoteBlockAPI]-->
         <dependency>
             <groupId>com.github.koca2000</groupId>
             <artifactId>NoteBlockAPI</artifactId>
@@ -185,28 +185,28 @@
     <build>
         <finalName>mops-base</finalName>
         <plugins>
-<!--            <plugin>-->
-<!--                <groupId>org.codehaus.mojo</groupId>-->
-<!--                <artifactId>exec-maven-plugin</artifactId>-->
-<!--                <version>3.1.0</version>-->
-<!--                <executions>-->
-<!--                    <execution>-->
-<!--                        <id>minecraft_server</id>-->
-<!--                        <phase>initialize</phase>-->
-<!--                        <configuration>-->
-<!--                            <executable>${script.executor}</executable>-->
-<!--                            <commandlineArgs>${script.to.execute}</commandlineArgs>-->
-<!--                        </configuration>-->
-<!--                        <goals>-->
-<!--                            <goal>exec</goal>-->
-<!--                        </goals>-->
-<!--                    </execution>-->
-<!--                </executions>-->
-<!--                <configuration>-->
-<!--                    <executable>${basedir}\scripts\mvn-install-1_19.sh</executable>-->
-<!--                    <workingDirectory>${basedir}</workingDirectory>-->
-<!--                </configuration>-->
-<!--            </plugin>-->
+            <!--            <plugin>-->
+            <!--                <groupId>org.codehaus.mojo</groupId>-->
+            <!--                <artifactId>exec-maven-plugin</artifactId>-->
+            <!--                <version>3.1.0</version>-->
+            <!--                <executions>-->
+            <!--                    <execution>-->
+            <!--                        <id>minecraft_server</id>-->
+            <!--                        <phase>initialize</phase>-->
+            <!--                        <configuration>-->
+            <!--                            <executable>${script.executor}</executable>-->
+            <!--                            <commandlineArgs>${script.to.execute}</commandlineArgs>-->
+            <!--                        </configuration>-->
+            <!--                        <goals>-->
+            <!--                            <goal>exec</goal>-->
+            <!--                        </goals>-->
+            <!--                    </execution>-->
+            <!--                </executions>-->
+            <!--                <configuration>-->
+            <!--                    <executable>${basedir}\scripts\mvn-install-1_19.sh</executable>-->
+            <!--                    <workingDirectory>${basedir}</workingDirectory>-->
+            <!--                </configuration>-->
+            <!--            </plugin>-->
             <plugin>
                 <version>3.10.1</version>
                 <groupId>org.apache.maven.plugins</groupId>

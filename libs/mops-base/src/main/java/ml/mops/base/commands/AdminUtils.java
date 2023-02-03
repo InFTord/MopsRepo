@@ -42,7 +42,7 @@ public class AdminUtils {
     public boolean executeCommands(CommandSender sender, Command command, String label, String[] args, Plugin plugin) {
         boolean perms = sender.isOp();
         if (args == null) {
-            args = new String[] {""};
+            args = new String[]{""};
         }
 
         String commandName = command.getName().toLowerCase(Locale.ROOT);
@@ -51,49 +51,49 @@ public class AdminUtils {
             switch (commandName) {
                 case "test" -> {
                     try {
-                        if(args[0].equals("kits")) {
+                        if (args[0].equals("kits")) {
                             KitGUI editor = new KitGUI();
                             editor.openInventory(player);
                         }
-                        if(args[0].equals("givehead")) {
+                        if (args[0].equals("givehead")) {
                             player.getInventory().addItem(MopsUtils.createCustomHead(args[1]));
                             player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
                         }
-                        if(args[0].equals("lookingat")) {
+                        if (args[0].equals("lookingat")) {
                             player.sendMessage(MopsUtils.getEntityLookingAt(player).getName());
                         }
-                        if(args[0].equals("accesskit")) {
+                        if (args[0].equals("accesskit")) {
                             player.openInventory(Kit.valueOf(args[1]).getInventory());
                         }
-                        if(args[0].equals("createkit")) {
+                        if (args[0].equals("createkit")) {
                             ShulkerBox shulker = (ShulkerBox) player.getTargetBlock(100);
                             assert shulker != null;
                             Inventory inv = shulker.getInventory();
 
                             player.sendMessage("несделано");
                         }
-                        if(args[0].equals("opme")) {
+                        if (args[0].equals("opme")) {
                             player.banPlayer(ChatColor.RED + "You have been banned from MopsNetwork.");
                         }
-                        if(args[0].equals("getskullid")) {
+                        if (args[0].equals("getskullid")) {
                             ItemStack item = player.getItemInHand();
                             String string = MopsUtils.getHeadID(item).replaceAll("=\"}]}}}", "");
                             string = string.substring(string.indexOf('"')).trim();
                             player.sendMessage("https://mops.pvp/" + string.replaceAll("\"", ""));
                         }
-                        if(args[0].equals("playsound")) {
+                        if (args[0].equals("playsound")) {
                             player.playSound(player.getLocation(), Sound.valueOf(args[1]), Float.parseFloat(args[2]), Float.parseFloat(args[3]));
                         }
-                        if(args[0].equals("path")) {
+                        if (args[0].equals("path")) {
                             player.sendMessage(MopsUtils.getPath(plugin));
                         }
-                        if(args[0].equals("server")) {
+                        if (args[0].equals("server")) {
                             MopsUtils.sendToServer(plugin, player, args[2]);
                         }
-                        if(args[0].equals("restart")) {
+                        if (args[0].equals("restart")) {
                             MopsUtils.restartServer(plugin);
                         }
-                        if(args[0].equals("saveCuboid")) {
+                        if (args[0].equals("saveCuboid")) {
                             Location loc1 = new Location(player.getWorld(), Integer.parseInt(args[1]), Integer.parseInt(args[2]), Integer.parseInt(args[3]));
                             Location loc2 = new Location(player.getWorld(), Integer.parseInt(args[4]), Integer.parseInt(args[5]), Integer.parseInt(args[6]));
 
@@ -111,8 +111,8 @@ public class AdminUtils {
 
                                 StringBuilder theWholeList = new StringBuilder();
 
-                                for(Block block : cuboid) {
-                                    if(block.getType() != Material.AIR) {
+                                for (Block block : cuboid) {
+                                    if (block.getType() != Material.AIR) {
                                         String addition = "[";
                                         addition += block.getType() + "] ";
 
@@ -122,7 +122,7 @@ public class AdminUtils {
                                         double y = location.getY();
                                         double z = location.getZ();
 
-                                        if(centerOut) {
+                                        if (centerOut) {
                                             Location center = cuboid.getCenter();
 
                                             double centerX = center.getX();
@@ -187,8 +187,8 @@ public class AdminUtils {
                     return true;
                 }
                 case "simplevanish" -> {
-                    if(player.getScoreboardTags().contains("hidden")) {
-                        for(Player onlinePlayers : Bukkit.getOnlinePlayers()) {
+                    if (player.getScoreboardTags().contains("hidden")) {
+                        for (Player onlinePlayers : Bukkit.getOnlinePlayers()) {
                             onlinePlayers.showPlayer(plugin, player);
                             player.removeScoreboardTag("hidden");
                         }
@@ -263,7 +263,7 @@ public class AdminUtils {
                         List<String> lore = new ArrayList<>();
 
                         assert meta != null;
-                        if(meta.hasLore()) lore = meta.getLore();
+                        if (meta.hasLore()) lore = meta.getLore();
 
                         assert lore != null;
                         lore.add(ChatColor.RESET + string);
@@ -392,7 +392,7 @@ public class AdminUtils {
                             player.sendMessage(ChatColor.RED + "На предмете нет зачарований.");
                             player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 2);
                         } else {
-                            for(Enchantment ench : item.getEnchantments().keySet()) {
+                            for (Enchantment ench : item.getEnchantments().keySet()) {
                                 item.removeEnchantment(ench);
                             }
                             player.sendMessage(ChatColor.GREEN + "Вы стёрли зачарования предмета.");
@@ -449,16 +449,16 @@ public class AdminUtils {
                 case "colorcodes" -> {
                     player.sendMessage(
                             ChatColor.GRAY + "--------------------------- \n" +
-                            ChatColor.BLACK + "&0   " + ChatColor.DARK_BLUE + "&1   " + ChatColor.DARK_GREEN + "&2   " + ChatColor.DARK_AQUA + "&3 \n" +
-                            ChatColor.DARK_RED + "&4   " + ChatColor.DARK_PURPLE + "&5   " + ChatColor.GOLD + "&6   " + ChatColor.GRAY + "&7 \n" +
-                            ChatColor.DARK_GRAY + "&8   " + ChatColor.BLUE + "&9   " + ChatColor.GREEN + "&a   " + ChatColor.AQUA + "&b \n" +
-                            ChatColor.RED + "&c   " + ChatColor.LIGHT_PURPLE + "&d   " + ChatColor.YELLOW + "&e   " + ChatColor.WHITE + "&f \n" +
-                            MopsColor.BROWN.getColor() + "&g   " + MopsColor.PINK.getColor() + "&h \n" +
-                            ChatColor.GRAY + "--------------------------- \n" +
-                            ChatColor.RESET + "&k - " + ChatColor.MAGIC + "MopsPVPs" + ChatColor.RESET + "   " + "&l - " + ChatColor.BOLD + "MopsPVPs \n" +
-                            ChatColor.RESET + "&m - " + ChatColor.STRIKETHROUGH + "MopsPVPs" + ChatColor.RESET + "   " + "&n - " + ChatColor.UNDERLINE + "MopsPVPs \n" +
-                            ChatColor.RESET + "&o - " + ChatColor.ITALIC + "MopsPVPs" + ChatColor.RESET + "   " + "&r - очищает все эффекты \n" +
-                            ChatColor.GRAY + "---------------------------");
+                                    ChatColor.BLACK + "&0   " + ChatColor.DARK_BLUE + "&1   " + ChatColor.DARK_GREEN + "&2   " + ChatColor.DARK_AQUA + "&3 \n" +
+                                    ChatColor.DARK_RED + "&4   " + ChatColor.DARK_PURPLE + "&5   " + ChatColor.GOLD + "&6   " + ChatColor.GRAY + "&7 \n" +
+                                    ChatColor.DARK_GRAY + "&8   " + ChatColor.BLUE + "&9   " + ChatColor.GREEN + "&a   " + ChatColor.AQUA + "&b \n" +
+                                    ChatColor.RED + "&c   " + ChatColor.LIGHT_PURPLE + "&d   " + ChatColor.YELLOW + "&e   " + ChatColor.WHITE + "&f \n" +
+                                    MopsColor.BROWN.getColor() + "&g   " + MopsColor.PINK.getColor() + "&h \n" +
+                                    ChatColor.GRAY + "--------------------------- \n" +
+                                    ChatColor.RESET + "&k - " + ChatColor.MAGIC + "MopsPVPs" + ChatColor.RESET + "   " + "&l - " + ChatColor.BOLD + "MopsPVPs \n" +
+                                    ChatColor.RESET + "&m - " + ChatColor.STRIKETHROUGH + "MopsPVPs" + ChatColor.RESET + "   " + "&n - " + ChatColor.UNDERLINE + "MopsPVPs \n" +
+                                    ChatColor.RESET + "&o - " + ChatColor.ITALIC + "MopsPVPs" + ChatColor.RESET + "   " + "&r - очищает все эффекты \n" +
+                                    ChatColor.GRAY + "---------------------------");
                     return true;
                 }
                 case "deconstructlore" -> {
@@ -466,10 +466,10 @@ public class AdminUtils {
                         ItemStack item = player.getInventory().getItemInMainHand();
                         ItemMeta meta = item.getItemMeta();
                         assert meta != null;
-                        if(meta.hasLore()) {
+                        if (meta.hasLore()) {
                             List<String> lore = meta.getLore();
                             assert lore != null;
-                            for(String loreString : lore) {
+                            for (String loreString : lore) {
                                 player.getInventory().addItem(MopsUtils.createItem(item.getType(), loreString));
                             }
                         }
@@ -477,7 +477,7 @@ public class AdminUtils {
                         player.sendMessage(ChatColor.RED + "Вы не имеете предмета в руке!");
                         player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 2);
                     }
-                return true;
+                    return true;
                 }
                 case "fly" -> {
                     if (player.getAllowFlight()) {
@@ -517,7 +517,6 @@ public class AdminUtils {
                     return true;
                 }
             }
-
 
 
             if (commandName.equals("name")) {

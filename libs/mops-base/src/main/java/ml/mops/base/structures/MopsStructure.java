@@ -11,12 +11,12 @@ import java.util.HashMap;
 import java.util.List;
 
 public class MopsStructure {
-    Location center = null;
-    List<MopsStructureBlock> blockList = new ArrayList<>();
-    HashMap<MopsStructureBlock, Location> offset = new HashMap<>();
-    HashMap<MopsStructureBlock, EulerAngle> angle = new HashMap<>();
+    Location center;
+    List<MopsStructureBlock> blockList;
+    HashMap<MopsStructureBlock, Location> offset;
+    HashMap<MopsStructureBlock, EulerAngle> angle;
 
-    World world = null;
+    World world;
 
     List<ArmorStand> standList = new ArrayList<>();
 
@@ -29,10 +29,10 @@ public class MopsStructure {
     }
 
     public void summonStructure() {
-        for(MopsStructureBlock block : blockList) {
+        for (MopsStructureBlock block : blockList) {
             ArmorStand stand = (ArmorStand) world.spawnEntity(center.add(offset.get(block)), EntityType.ARMOR_STAND);
 
-            stand.setHelmet(block.getBlock());
+            stand.getEquipment().setHelmet(block.getBlock());
             stand.setHeadPose(angle.get(block));
 
             standList.add(stand);

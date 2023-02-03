@@ -11,71 +11,73 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class Config {
-	public Config() {}
+    public Config() {
+    }
 
-	private List<String> subConfigs;
-	private String configsFolder;
-	private Translations translations;
+    private List<String> subConfigs;
+    private String configsFolder;
+    private Translations translations;
 
-	static class Translations {
-		public Translations() {}
+    static class Translations {
+        public Translations() {
+        }
 
-		private List<String> languages;
+        private List<String> languages;
 
-		public List<String> getLanguages() {
-			return languages;
-		}
+        public List<String> getLanguages() {
+            return languages;
+        }
 
-		public void setLanguages(List<String> languages) {
-			this.languages = languages;
-		}
-	}
+        public void setLanguages(List<String> languages) {
+            this.languages = languages;
+        }
+    }
 
-	@NotNull
-	public String parseToString() throws ParseCfgToYAMLException, BlankConfigException {
-		ObjectMapper objectMapper = new ObjectMapper(new YAMLFactory());
-		try {
-			String yml = objectMapper.writeValueAsString(this);
-			if (yml.isBlank()) {
-				throw new BlankConfigException();
-			}
-			return yml;
-		} catch (JsonProcessingException e) {
-			throw new ParseCfgToYAMLException(e);
-		}
-	}
+    @NotNull
+    public String parseToString() throws ParseCfgToYAMLException, BlankConfigException {
+        ObjectMapper objectMapper = new ObjectMapper(new YAMLFactory());
+        try {
+            String yml = objectMapper.writeValueAsString(this);
+            if (yml.isBlank()) {
+                throw new BlankConfigException();
+            }
+            return yml;
+        } catch (JsonProcessingException e) {
+            throw new ParseCfgToYAMLException(e);
+        }
+    }
 
-	@Override
-	@Nullable
-	public String toString() {
-		try {
-			return this.parseToString();
-		} catch (Exception e) {
-			return null;
-		}
-	}
+    @Override
+    @Nullable
+    public String toString() {
+        try {
+            return this.parseToString();
+        } catch (Exception e) {
+            return null;
+        }
+    }
 
-	public List<String> getSubConfigs() {
-		return subConfigs;
-	}
+    public List<String> getSubConfigs() {
+        return subConfigs;
+    }
 
-	public void setSubConfigs(List<String> subConfigs) {
-		this.subConfigs = subConfigs;
-	}
+    public void setSubConfigs(List<String> subConfigs) {
+        this.subConfigs = subConfigs;
+    }
 
-	public String getConfigsFolder() {
-		return configsFolder;
-	}
+    public String getConfigsFolder() {
+        return configsFolder;
+    }
 
-	public void setConfigsFolder(String configsFolder) {
-		this.configsFolder = configsFolder;
-	}
+    public void setConfigsFolder(String configsFolder) {
+        this.configsFolder = configsFolder;
+    }
 
-	public Translations getTranslations() {
-		return translations;
-	}
+    public Translations getTranslations() {
+        return translations;
+    }
 
-	public void setTranslations(Translations translations) {
-		this.translations = translations;
-	}
+    public void setTranslations(Translations translations) {
+        this.translations = translations;
+    }
 }
