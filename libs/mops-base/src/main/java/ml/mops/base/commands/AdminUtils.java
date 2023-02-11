@@ -637,7 +637,7 @@ public class AdminUtils {
                         player.sendMessage(ChatColor.RED + "Вам нужно написать хоть что то.");
                         player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_HURT, 1, 2);
                     } else {
-                        String string = MopsUtils.convertColorCodes(MopsUtils.combineStrings(args, " "));
+                        String string = MopsUtils.emojify(MopsUtils.convertColorCodes(MopsUtils.combineStrings(args, " ")));
 
                         for (Player player1 : Bukkit.getServer().getOnlinePlayers()) {
                             player1.sendMessage(string);

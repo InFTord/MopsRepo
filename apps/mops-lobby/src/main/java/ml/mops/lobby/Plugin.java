@@ -81,6 +81,9 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     HashMap<Player, Inventory> cancelledInventory = new HashMap<>();
     List<Inventory> overviewInventories = new ArrayList<>();
 
+    boolean defaultDialogue = true;
+    String universalDialogue = ChatColor.RED + "no dialogue found :p blehh (report to sircat)";
+
     float rgb = 0;
     float snowDoge = 0;
     boolean doVillagerParticle = true;
@@ -467,7 +470,10 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
             return true;
         }
-
+        if (command.getName().equals("defaultdialogue")) {
+            defaultDialogue = !defaultDialogue;
+            return true;
+        }
         return false;
     }
 
@@ -810,173 +816,172 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         Entity entity = event.getRightClicked();
 
         if(event.getHand().equals(EquipmentSlot.HAND)) {
-
-            String dialogue = ChatColor.RED + "no dialogue found :p blehh (report to sircat)";
+            String dialogue = universalDialogue;
             boolean cancelDialogue = false;
 
             if (entity.getScoreboardTags().contains("armorStandHubNPC")) {
                 event.setCancelled(true);
-                if (entity.getScoreboardTags().contains("fishermanDogeNPC")) {
-                    dialogue = "Giv me gfish please i want fis!!!1!!";
-                    player.playSound(player.getLocation(), Sound.ENTITY_FISH_SWIM, 10, 2);
-                }
-                if (entity.getScoreboardTags().contains("snowCleaningDoge")) {
-                    Calendar calendar = Calendar.getInstance();
+                Set<String> scoreboardTags = entity.getScoreboardTags();
 
-                    if(calendar.get(Calendar.MONTH) == Calendar.DECEMBER || calendar.get(Calendar.MONTH) == Calendar.JANUARY) {
-                        dialogue = "i am cleaning snow i think";
-                        player.playSound(player.getLocation(), Sound.ENTITY_WOLF_AMBIENT, 10, 2);
-                    } else {
-                        dialogue = "i am cleaning something i think, i may not be";
+                if(defaultDialogue) {
+                    if (scoreboardTags.contains("fishermanDogeNPC")) {
+                        dialogue = "Giv me gfish please i want fis!!!1!!";
+                        player.playSound(player.getLocation(), Sound.ENTITY_FISH_SWIM, 10, 2);
+                    }
+                    if (scoreboardTags.contains("snowCleaningDoge")) {
+                        Calendar calendar = Calendar.getInstance();
+
+                        if (calendar.get(Calendar.MONTH) == Calendar.DECEMBER || calendar.get(Calendar.MONTH) == Calendar.JANUARY) {
+                            dialogue = "i am cleaning snow i think";
+                            player.playSound(player.getLocation(), Sound.ENTITY_WOLF_AMBIENT, 10, 2);
+                        } else {
+                            dialogue = "i am cleaning something i think, i may not be";
+                            player.playSound(player.getLocation(), Sound.ENTITY_WOLF_AMBIENT, 10, 2);
+                        }
+                    }
+                    if (scoreboardTags.contains("builderDogeNPC")) {
+                        dialogue = "hi this par t of hub not buildt please wait!!1";
                         player.playSound(player.getLocation(), Sound.ENTITY_WOLF_AMBIENT, 10, 2);
                     }
-                }
-                if (entity.getScoreboardTags().contains("builderDogeNPC")) {
-                    dialogue = "hi this par t of hub not buildt please wait!!1";
-                    player.playSound(player.getLocation(), Sound.ENTITY_WOLF_AMBIENT, 10, 2);
-                }
-                if (entity.getScoreboardTags().contains("tord")) {
-                    List<String> dialogueList = new ArrayList<>();
-                    dialogueList.add("hi im clown");
-                    dialogueList.add("hi");
+                    if (scoreboardTags.contains("tord")) {
+                        List<String> dialogueList = new ArrayList<>();
+                        dialogueList.add("hi im clown");
+                        dialogueList.add("hi");
 
-                    player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BANJO, 2, 0);
+                        player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BANJO, 2, 0);
 
-                    MopsUtils.sendRandomDialogueMessage(dialogueList, player, entity);
-                    cancelDialogue = true;
-                }
-                if (entity.getScoreboardTags().contains("missionDogeNPC")) {
-                    switch (missionDogeDialogue.get(player)) {
-                        case 0 -> {
-                            dialogue = "I can't currently give you missions.";
-                            player.playSound(player.getLocation(), Sound.ENTITY_WOLF_GROWL, 10, 0);
-                            player.playSound(player.getLocation(), Sound.ENTITY_WOLF_AMBIENT, 10, 0);
+                        MopsUtils.sendRandomDialogueMessage(dialogueList, player, entity);
+                        cancelDialogue = true;
+                    }
+                    if (scoreboardTags.contains("missionDogeNPC")) {
+                        switch (missionDogeDialogue.get(player)) {
+                            case 0 -> {
+                                dialogue = "I can't currently give you missions.";
+                                player.playSound(player.getLocation(), Sound.ENTITY_WOLF_GROWL, 10, 0);
+                                player.playSound(player.getLocation(), Sound.ENTITY_WOLF_AMBIENT, 10, 0);
 
 //                            missionDogeDialogue.put(player, missionDogeDialogue.get(player) + 1);
+                            }
                         }
                     }
-                }
-                if (entity.getScoreboardTags().contains("woolbattle4TeamDoge")) {
-                    switch (woolbattle4TeamDialogue.get(player)) {
-                        case 0 -> {
-                            dialogue = ChatColor.RED + "Wool" + ChatColor.YELLOW + "battle" + ChatColor.GREEN + " 4-" + ChatColor.AQUA + "Teams" + ChatColor.WHITE + " Is a gamemode of Woolbattle where you have 4 Teams. Click again to join.";
-                            player.playSound(player.getLocation(), Sound.ENTITY_WOLF_AMBIENT, 10, 2);
+                    if (scoreboardTags.contains("woolbattle4TeamDoge")) {
+                        switch (woolbattle4TeamDialogue.get(player)) {
+                            case 0 -> {
+                                dialogue = ChatColor.RED + "Wool" + ChatColor.YELLOW + "battle" + ChatColor.GREEN + " 4-" + ChatColor.AQUA + "Teams" + ChatColor.WHITE + " Is a gamemode of Woolbattle where you have 4 Teams. Click again to join.";
+                                player.playSound(player.getLocation(), Sound.ENTITY_WOLF_AMBIENT, 10, 2);
 
-                            woolbattle4TeamDialogue.put(player, woolbattle4TeamDialogue.get(player) + 1);
-                        }
-                        case 1 -> {
-                            cancelDialogue = true;
+                                woolbattle4TeamDialogue.put(player, woolbattle4TeamDialogue.get(player) + 1);
+                            }
+                            case 1 -> {
+                                cancelDialogue = true;
 
-                            try {
-                                Runtime.getRuntime().exec("cmd /c start D:\\servers\\MopsNetwork\\woolbattle4teams\\start.bat");
-                            } catch (Exception ignored) { }
-                            MopsUtils.sendToServer(this, player, "woolbattle4teams");
-                        }
-                    }
-                }
-                if (entity.getScoreboardTags().contains("woolbattle2TeamDoge")) {
-                    switch (woolbattle2TeamDialogue.get(player)) {
-                        case 0 -> {
-                            dialogue = ChatColor.RED + "Woolbattle" + ChatColor.AQUA + " 2-Teams" + ChatColor.WHITE + " Is a gamemode of Woolbattle where you have 2 Teams. Click again to join.";
-                            player.playSound(player.getLocation(), Sound.ENTITY_WOLF_AMBIENT, 10, 2);
-
-                            woolbattle2TeamDialogue.put(player, woolbattle2TeamDialogue.get(player) + 1);
-                        }
-                        case 1 -> {
-                            cancelDialogue = true;
-
-                            MopsUtils.sendToServer(this, player, "woolbattle2teams");
+                                try {
+                                    Runtime.getRuntime().exec("cmd /c start D:\\servers\\MopsNetwork\\woolbattle4teams\\start.bat");
+                                } catch (Exception ignored) {
+                                }
+                                MopsUtils.sendToServer(this, player, "woolbattle4teams");
+                            }
                         }
                     }
-                }
-                if (entity.getScoreboardTags().contains("woolbattleADDoge")) {
-                    switch (woolbattleADDialogue.get(player)) {
-                        case 0 -> {
-                            dialogue = "Woolbattle " + ChatColor.GOLD + "Attack" + ChatColor.GRAY + "/" + ChatColor.GREEN + "Defense" + ChatColor.WHITE + " Is a gamemode of Woolbattle where the " + ChatColor.GREEN + "Defense" + ChatColor.WHITE + " command has all the Generators, and the goal of " + ChatColor.GOLD + "Attack" + ChatColor.WHITE + " team is to capture them all. Click again to join.";
-                            player.playSound(player.getLocation(), Sound.ENTITY_WOLF_AMBIENT, 10, 2);
+                    if (scoreboardTags.contains("woolbattle2TeamDoge")) {
+                        switch (woolbattle2TeamDialogue.get(player)) {
+                            case 0 -> {
+                                dialogue = ChatColor.RED + "Woolbattle" + ChatColor.AQUA + " 2-Teams" + ChatColor.WHITE + " Is a gamemode of Woolbattle where you have 2 Teams. Click again to join.";
+                                player.playSound(player.getLocation(), Sound.ENTITY_WOLF_AMBIENT, 10, 2);
 
-                            woolbattleADDialogue.put(player, woolbattleADDialogue.get(player) + 1);
-                        }
-                        case 1 -> {
-                            cancelDialogue = true;
+                                woolbattle2TeamDialogue.put(player, woolbattle2TeamDialogue.get(player) + 1);
+                            }
+                            case 1 -> {
+                                cancelDialogue = true;
 
-                            MopsUtils.sendToServer(this, player, "woolbattleAD");
-                        }
-                    }
-                }
-                if (entity.getScoreboardTags().contains("kitManager")) {
-                    dialogue = "hi i manage kits";
-                    player.playSound(player.getLocation(), Sound.ENTITY_FROG_AMBIENT, 2, 1);
-                }
-                if (entity.getScoreboardTags().contains("realPlantNPC")) {
-                    switch (realPlantDialogue.get(player)) {
-                        case 0 -> {
-                            dialogue = "shhh, im a plant.";
-                            player.playSound(player.getLocation(), Sound.BLOCK_GRASS_BREAK, 0.5F, 1.5F);
-
-                            realPlantDialogue.put(player, realPlantDialogue.get(player) + 1);
-                        }
-                        case 1 -> {
-                            dialogue = "a real real plant! can you believe it?";
-                            player.playSound(player.getLocation(), Sound.BLOCK_GRASS_BREAK, 0.5F, 1.5F);
-
-                            realPlantDialogue.put(player, realPlantDialogue.get(player) + 1);
-                        }
-                        case 2 -> {
-                            dialogue = "you could join private games if you donate";
-                            player.playSound(player.getLocation(), Sound.BLOCK_GRASS_BREAK, 0.5F, 1.5F);
-
-                            realPlantDialogue.put(player, realPlantDialogue.get(player) + 1);
-                        }
-                        case 3 -> {
-                            dialogue = "right here, at the plant!";
-                            player.playSound(player.getLocation(), Sound.BLOCK_GRASS_BREAK, 0.5F, 1.5F);
-
-                            realPlantDialogue.put(player, realPlantDialogue.get(player) + 1);
-                        }
-                        case 4 -> {
-                            dialogue = "crazy world we live in....";
-                            player.playSound(player.getLocation(), Sound.BLOCK_GRASS_BREAK, 0.5F, 1.5F);
-
-                            realPlantDialogue.put(player, 0);
+                                MopsUtils.sendToServer(this, player, "woolbattle2teams");
+                            }
                         }
                     }
-                }
-                if (entity.getScoreboardTags().contains("pvpDogeNPC")) {
-                    switch (deliveryDogeDialogue.get(player)) {
-                        case 0 -> {
-                            dialogue = "Oops, looks like your delivery got stolen.";
-                            player.playSound(player.getLocation(), Sound.ENTITY_WOLF_AMBIENT, 10, 2);
+                    if (scoreboardTags.contains("woolbattleADDoge")) {
+                        switch (woolbattleADDialogue.get(player)) {
+                            case 0 -> {
+                                dialogue = "Woolbattle " + ChatColor.GOLD + "Attack" + ChatColor.GRAY + "/" + ChatColor.GREEN + "Defense" + ChatColor.WHITE + " Is a gamemode of Woolbattle where the " + ChatColor.GREEN + "Defense" + ChatColor.WHITE + " command has all the Generators, and the goal of " + ChatColor.GOLD + "Attack" + ChatColor.WHITE + " team is to capture them all. Click again to join.";
+                                player.playSound(player.getLocation(), Sound.ENTITY_WOLF_AMBIENT, 10, 2);
+
+                                woolbattleADDialogue.put(player, woolbattleADDialogue.get(player) + 1);
+                            }
+                            case 1 -> {
+                                cancelDialogue = true;
+
+                                MopsUtils.sendToServer(this, player, "woolbattleAD");
+                            }
+                        }
+                    }
+                    if (scoreboardTags.contains("kitManager")) {
+                        dialogue = "hi i manage kits";
+                        player.playSound(player.getLocation(), Sound.ENTITY_FROG_AMBIENT, 2, 1);
+                    }
+                    if (scoreboardTags.contains("realPlantNPC")) {
+                        switch (realPlantDialogue.get(player)) {
+                            case 0 -> {
+                                dialogue = "shhh, im a plant.";
+                                player.playSound(player.getLocation(), Sound.BLOCK_GRASS_BREAK, 0.5F, 1.5F);
+
+                                realPlantDialogue.put(player, realPlantDialogue.get(player) + 1);
+                            }
+                            case 1 -> {
+                                dialogue = "a real real plant! can you believe it?";
+                                player.playSound(player.getLocation(), Sound.BLOCK_GRASS_BREAK, 0.5F, 1.5F);
+
+                                realPlantDialogue.put(player, realPlantDialogue.get(player) + 1);
+                            }
+                            case 2 -> {
+                                dialogue = "you could join private games if you donate";
+                                player.playSound(player.getLocation(), Sound.BLOCK_GRASS_BREAK, 0.5F, 1.5F);
+
+                                realPlantDialogue.put(player, realPlantDialogue.get(player) + 1);
+                            }
+                            case 3 -> {
+                                dialogue = "right here, at the plant!";
+                                player.playSound(player.getLocation(), Sound.BLOCK_GRASS_BREAK, 0.5F, 1.5F);
+
+                                realPlantDialogue.put(player, realPlantDialogue.get(player) + 1);
+                            }
+                            case 4 -> {
+                                dialogue = "crazy world we live in....";
+                                player.playSound(player.getLocation(), Sound.BLOCK_GRASS_BREAK, 0.5F, 1.5F);
+
+                                realPlantDialogue.put(player, 0);
+                            }
+                        }
+                    }
+                    if (scoreboardTags.contains("pvpDogeNPC")) {
+                        switch (deliveryDogeDialogue.get(player)) {
+                            case 0 -> {
+                                dialogue = "Oops, looks like your delivery got stolen.";
+                                player.playSound(player.getLocation(), Sound.ENTITY_WOLF_AMBIENT, 10, 2);
 
 //                            deliveryDogeDialogue.put(player, deliveryDogeDialogue.get(player) + 1);
-                        }
+                            }
 //                        case 1 -> {
 //                            dialogue = "IM SILLY IM SILLY IM SILLY IM SILLY";
 //                            player.playSound(player.getLocation(), Sound.ENTITY_WOLF_AMBIENT, 10, 2);
 //
 //                            deliveryDogeDialogue.put(player, deliveryDogeDialogue.get(player) - 1);
 //                        }
+                        }
+                    }
+
+                    if (scoreboardTags.contains("lonelyPigeon")) {
+                        dialogue = "hey " + ChatColor.GRAY + "(add quest later)";
+                        player.playSound(player.getLocation(), Sound.ENTITY_PARROT_AMBIENT, 10, 2);
                     }
                 }
 
-                if (entity.getScoreboardTags().contains("lonelyPigeon")) {
-                    dialogue = "hey " + ChatColor.GRAY + "(add quest later)";
-                    player.playSound(player.getLocation(), Sound.ENTITY_PARROT_AMBIENT, 10, 2);
-                }
-
-
-                if(!entity.getScoreboardTags().contains("guideline") && !cancelDialogue) {
+                if(!scoreboardTags.contains("guideline") && !cancelDialogue) {
                     MopsUtils.sendDialogueMessage(dialogue, player, entity);
-                } else if (entity.getScoreboardTags().contains("furnaceGuideline")) {
+                } else if (scoreboardTags.contains("furnaceGuideline")) {
                     player.sendMessage(ChatColor.GRAY + "This furnace is the only one in the hub. It smelts corn for the Theatre, or fish for the Fisherman. It also needs to be fueled, however, not by coal. It uses MopsCoins. But the Doge are not always smart. They tried to put all sorts of items in there to fuel the Smelter. And sometimes when you put in MopsCoins, it gives you some cool items. It may still give you something!");
                 }
             }
-            if (entity.getScoreboardTags().contains("adminfrog")) {
-                dialogue = "It is Friday, my dudes.";
-                player.playSound(player.getLocation(), Sound.ENTITY_FROG_AMBIENT, 10, 1);
 
-                MopsUtils.sendDialogueMessage(dialogue, player, entity);
-            }
+
             if (entity.getScoreboardTags().contains("blehhcat")) {
                 List<String> dialogueList = new ArrayList<>();
                 dialogueList.add("meow");
