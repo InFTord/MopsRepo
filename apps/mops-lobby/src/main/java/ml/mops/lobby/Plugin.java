@@ -218,62 +218,62 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             }
 
             for(Entity entity : mainworld.getEntities()) {
-                ArmorStand stand = (ArmorStand) entity;
+                if(entity instanceof ArmorStand stand) {
+                    HashMap<UUID, Integer> totalWbWins = MopsFiles.getTotalWinHash();
 
-                HashMap<UUID, Integer> totalWbWins = MopsFiles.getTotalWinHash();
+                    List<Integer> winList = new ArrayList<>(totalWbWins.values().stream().toList());
+                    Collections.sort(winList);
+                    Collections.reverse(winList);
 
-                List<Integer> winList = new ArrayList<>(totalWbWins.values().stream().toList());
-                Collections.sort(winList);
-                Collections.reverse(winList);
-
-                if(stand.getScoreboardTags().contains("wbLeader1")) {
-                    for(UUID uuid : totalWbWins.keySet()) {
-                        if(totalWbWins.get(uuid).equals(winList.get(0))) {
-                            String string = " wins";
-                            if(winList.get(0) == 1) {
-                                string = " win";
+                    if (stand.getScoreboardTags().contains("wbLeader1")) {
+                        for (UUID uuid : totalWbWins.keySet()) {
+                            if (totalWbWins.get(uuid).equals(winList.get(0))) {
+                                String string = " wins";
+                                if (winList.get(0) == 1) {
+                                    string = " win";
+                                }
+                                stand.setCustomName(Bukkit.getOfflinePlayer(uuid).getName() + ChatColor.GRAY + " - " + ChatColor.YELLOW + winList.get(0) + string);
                             }
-                            stand.setCustomName(Bukkit.getOfflinePlayer(uuid).getName() + ChatColor.GRAY + " - " + ChatColor.YELLOW + winList.get(0) + string);
                         }
-                    }
-                } else if(stand.getScoreboardTags().contains("wbLeader2")) {
-                    for(UUID uuid : totalWbWins.keySet()) {
-                        if(totalWbWins.get(uuid).equals(winList.get(1))) {
-                            String string = " wins";
-                            if(winList.get(1) == 1) {
-                                string = " win";
+                    } else if (stand.getScoreboardTags().contains("wbLeader2")) {
+                        for (UUID uuid : totalWbWins.keySet()) {
+                            if (totalWbWins.get(uuid).equals(winList.get(1))) {
+                                String string = " wins";
+                                if (winList.get(1) == 1) {
+                                    string = " win";
+                                }
+                                stand.setCustomName(Bukkit.getOfflinePlayer(uuid).getName() + ChatColor.GRAY + " - " + ChatColor.YELLOW + winList.get(1) + string);
                             }
-                            stand.setCustomName(Bukkit.getOfflinePlayer(uuid).getName() + ChatColor.GRAY + " - " + ChatColor.YELLOW + winList.get(1) + string);
                         }
-                    }
-                } else if(stand.getScoreboardTags().contains("wbLeader3")) {
-                    for(UUID uuid : totalWbWins.keySet()) {
-                        if(totalWbWins.get(uuid).equals(winList.get(2))) {
-                            String string = " wins";
-                            if(winList.get(2) == 1) {
-                                string = " win";
+                    } else if (stand.getScoreboardTags().contains("wbLeader3")) {
+                        for (UUID uuid : totalWbWins.keySet()) {
+                            if (totalWbWins.get(uuid).equals(winList.get(2))) {
+                                String string = " wins";
+                                if (winList.get(2) == 1) {
+                                    string = " win";
+                                }
+                                stand.setCustomName(Bukkit.getOfflinePlayer(uuid).getName() + ChatColor.GRAY + " - " + ChatColor.YELLOW + winList.get(2) + string);
                             }
-                            stand.setCustomName(Bukkit.getOfflinePlayer(uuid).getName() + ChatColor.GRAY + " - " + ChatColor.YELLOW + winList.get(2) + string);
                         }
-                    }
-                } else if(stand.getScoreboardTags().contains("wbLeader4")) {
-                    for(UUID uuid : totalWbWins.keySet()) {
-                        if(totalWbWins.get(uuid).equals(winList.get(3))) {
-                            String string = " wins";
-                            if(winList.get(3) == 1) {
-                                string = " win";
+                    } else if (stand.getScoreboardTags().contains("wbLeader4")) {
+                        for (UUID uuid : totalWbWins.keySet()) {
+                            if (totalWbWins.get(uuid).equals(winList.get(3))) {
+                                String string = " wins";
+                                if (winList.get(3) == 1) {
+                                    string = " win";
+                                }
+                                stand.setCustomName(Bukkit.getOfflinePlayer(uuid).getName() + ChatColor.GRAY + " - " + ChatColor.YELLOW + winList.get(3) + string);
                             }
-                            stand.setCustomName(Bukkit.getOfflinePlayer(uuid).getName() + ChatColor.GRAY + " - " + ChatColor.YELLOW + winList.get(3) + string);
                         }
-                    }
-                } else if(stand.getScoreboardTags().contains("wbLeader5")) {
-                    for(UUID uuid : totalWbWins.keySet()) {
-                        if(totalWbWins.get(uuid).equals(winList.get(4))) {
-                            String string = " wins";
-                            if(winList.get(4) == 1) {
-                                string = " win";
+                    } else if (stand.getScoreboardTags().contains("wbLeader5")) {
+                        for (UUID uuid : totalWbWins.keySet()) {
+                            if (totalWbWins.get(uuid).equals(winList.get(4))) {
+                                String string = " wins";
+                                if (winList.get(4) == 1) {
+                                    string = " win";
+                                }
+                                stand.setCustomName(Bukkit.getOfflinePlayer(uuid).getName() + ChatColor.GRAY + " - " + ChatColor.YELLOW + winList.get(4) + string);
                             }
-                            stand.setCustomName(Bukkit.getOfflinePlayer(uuid).getName() + ChatColor.GRAY + " - " + ChatColor.YELLOW + winList.get(4) + string);
                         }
                     }
                 }
@@ -455,12 +455,14 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 }
             }
             if (command.getName().equals("sit")) {
-                ArmorStand stand = (ArmorStand) player.getWorld().spawnEntity(player.getLocation().add(0, -0.2, 0), EntityType.ARMOR_STAND);
+                ArmorStand stand = (ArmorStand) player.getWorld().spawnEntity(player.getLocation(), EntityType.ARMOR_STAND);
                 stand.setInvisible(true);
                 stand.setMarker(true);
                 stand.addPassenger(player);
 
-                stand.addScoreboardTag("sitingStand");
+                stand.addScoreboardTag("sittingStand");
+
+                return true;
             }
         }
 
@@ -823,7 +825,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                         dialogue = "i am cleaning snow i think";
                         player.playSound(player.getLocation(), Sound.ENTITY_WOLF_AMBIENT, 10, 2);
                     } else {
-                        dialogue = "i am cleaning something i think i may not be";
+                        dialogue = "i am cleaning something i think, i may not be";
                         player.playSound(player.getLocation(), Sound.ENTITY_WOLF_AMBIENT, 10, 2);
                     }
                 }
@@ -888,7 +890,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 if (entity.getScoreboardTags().contains("woolbattleADDoge")) {
                     switch (woolbattleADDialogue.get(player)) {
                         case 0 -> {
-                            dialogue = "Woolbattle" + ChatColor.GOLD + "Attack" + ChatColor.GRAY + "/" + ChatColor.GREEN + "Defense" + ChatColor.WHITE + " Is a gamemode of Woolbattle where the " + ChatColor.GREEN + "Defense" + ChatColor.WHITE + " command has all the Generators, and the goal of " + ChatColor.GOLD + "Attack" + ChatColor.WHITE + " team is to capture them all. Click again to join.";
+                            dialogue = "Woolbattle " + ChatColor.GOLD + "Attack" + ChatColor.GRAY + "/" + ChatColor.GREEN + "Defense" + ChatColor.WHITE + " Is a gamemode of Woolbattle where the " + ChatColor.GREEN + "Defense" + ChatColor.WHITE + " command has all the Generators, and the goal of " + ChatColor.GOLD + "Attack" + ChatColor.WHITE + " team is to capture them all. Click again to join.";
                             player.playSound(player.getLocation(), Sound.ENTITY_WOLF_AMBIENT, 10, 2);
 
                             woolbattleADDialogue.put(player, woolbattleADDialogue.get(player) + 1);
@@ -994,7 +996,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
                 int i = 0;
                 while(i < maxSize) {
-                    int letterNumber = (int) (Math.random() * (26 + 1)) + 1;
+                    int letterNumber = (int) (Math.random() * (25 + 1)) + 1;
                     text.append(alphabet.charAt(letterNumber-1));
                     i++;
                 }
@@ -1072,11 +1074,11 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         pigeonDialogue.putIfAbsent(player, 0);
 
         player.setGameMode(GameMode.ADVENTURE);
-        player.sendMessage( ChatColor.BLUE + "[MopsDeliveryService] " + ChatColor.RED + "You have " + ChatColor.BOLD + "1" + ChatColor.RESET + "" + ChatColor.RED + " unclaimed delivery.");
-
         for(Player allPlayers : Bukkit.getOnlinePlayers()) {
             allPlayers.sendMessage( ChatColor.GOLD + "[MopsPVPs] " + ChatColor.YELLOW + player.getName() + " joined the game.");
         }
+
+        player.sendMessage( ChatColor.BLUE + "[MopsDeliveryService] " + ChatColor.RED + "You have " + ChatColor.BOLD + "1" + ChatColor.RESET + "" + ChatColor.RED + " unclaimed delivery.");
     }
 
     @EventHandler
@@ -1606,7 +1608,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
         ItemStack effects = MopsUtils.createItem(Material.GOLDEN_CARROT, ChatColor.GOLD + "Effects");
         ItemMeta effectsMeta = effects.getItemMeta();
-        effectsMeta.setLore(new ArrayList<>(Collections.singleton(ChatColor.GRAY + "Selected Aura: NONE")));
+        effectsMeta.setLore(new ArrayList<>(Collections.singleton(ChatColor.GRAY + "Selected Effect: NONE")));
         effectsMeta.addItemFlags(ItemFlag.HIDE_POTION_EFFECTS);
         effects.setItemMeta(effectsMeta);
 

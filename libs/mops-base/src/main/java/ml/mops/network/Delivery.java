@@ -92,7 +92,7 @@ public class Delivery {
         String alphabet = "abcdefghijklmnopqrstuvwxyz1234567890!@";
         int i = 0;
         while(i < maxSize) {
-            int letterNumber = (int) (Math.random() * (38 + 1)) + 1;
+            int letterNumber = (int) (Math.random() * (37 + 1)) + 1;
             text.append(alphabet.charAt(letterNumber-1));
             i++;
         }
