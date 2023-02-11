@@ -222,7 +222,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
                 HashMap<UUID, Integer> totalWbWins = MopsFiles.getTotalWinHash();
 
-                List<Integer> winList = totalWbWins.values().stream().toList();
+                List<Integer> winList = new ArrayList<>(totalWbWins.values().stream().toList());
                 Collections.sort(winList);
                 Collections.reverse(winList);
 
@@ -989,8 +989,8 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
                 int i = 0;
                 while(i < maxSize) {
-                    int letterNumber = (int) (Math.random() * (26 - 1 + 1)) + 1;
-                    text.append(alphabet.charAt(letterNumber));
+                    int letterNumber = (int) (Math.random() * (26 + 1)) + 1;
+                    text.append(alphabet.charAt(letterNumber-1));
                     i++;
                 }
                 String realText = text.toString().replace("mops", ChatColor.GOLD + "mops" + ChatColor.RESET);
@@ -1009,8 +1009,8 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                     i++;
                 }
                 inv.setItem(11, MopsUtils.createItem(Material.BOOK, ChatColor.GRAY + "Killwins: " + ChatColor.YELLOW + MopsFiles.getWoolbattleWins(player)));
-                inv.setItem(14, MopsUtils.createItem(Material.BOOK, ChatColor.GRAY + "Wipeouts: " + ChatColor.YELLOW + MopsFiles.getWoolbattleWipeouts(player)));
-                inv.setItem(17, MopsUtils.createItem(Material.BOOK, ChatColor.GRAY + "Dominations: " + ChatColor.YELLOW + MopsFiles.getWoolbattleDominations(player)));
+                inv.setItem(13, MopsUtils.createItem(Material.BOOK, ChatColor.GRAY + "Wipeouts: " + ChatColor.YELLOW + MopsFiles.getWoolbattleWipeouts(player)));
+                inv.setItem(15, MopsUtils.createItem(Material.BOOK, ChatColor.GRAY + "Dominations: " + ChatColor.YELLOW + MopsFiles.getWoolbattleDominations(player)));
 
                 cancelledInventory.put(player, inv);
                 player.openInventory(inv);
