@@ -21,6 +21,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.*;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scoreboard.Scoreboard;
 import org.jetbrains.annotations.NotNull;
@@ -219,7 +221,13 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 			player2.teleport(spawn.get(player2));
 		}
 
+		player.getInventory().clear();
+		ItemStack readyUpper = MopsUtils.createItem(Material.LIME_WOOL, ChatColor.GREEN + "Ready Up!");
+		ItemMeta meta = readyUpper.getItemMeta();
+		meta.setLore(Collections.singletonList(ChatColor.GRAY + "Place to Ready Up!"));
+		readyUpper.setItemMeta(meta);
 
+		player.getInventory().addItem(readyUpper);
 
 		ready.put(player, false);
 		spawn.putIfAbsent(player, new Location(player.getWorld(), 0, 0, 0));
@@ -260,6 +268,15 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
 		List<Block> blocks = playerPlaced.get(player);
 		blocks.add(block);
+
+		if(block.getType() == Material.LIME_WOOL) {
+			ready.put(player, true);
+			event.getBlock().setType(Material.AIR);
+
+			for(Player onlinePlayers : Bukkit.getOnlinePlayers()) {
+				onlinePlayers.sendMessage(ChatColor.GREEN + player.getName() + " readied up!");
+			}
+		}
 
 		playerPlaced.put(player, blocks);
 	}

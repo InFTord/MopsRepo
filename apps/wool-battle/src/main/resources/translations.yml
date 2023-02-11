@@ -224,9 +224,11 @@ woolbattle:
   - axe.lore:
       rus: |
         &7Топор с большим откидыванием.
+        Наносит больше урона при &4Хардмоде&7.
         &cНачальная прочность - 16
       eng: |
         &7Axe with a bigger knockback.
+        Deals more damage during &4Hardmode&7.
         &cStarting durability - 16
   - leaves.name:
       rus: "&2Листья"

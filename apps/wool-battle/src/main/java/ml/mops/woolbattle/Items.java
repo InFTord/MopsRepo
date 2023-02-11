@@ -46,6 +46,8 @@ public class Items {
         meta.addEnchant(Enchantment.DIG_SPEED, 5, true);
         meta.addEnchant(Enchantment.KNOCKBACK, 2, true);
         meta.setUnbreakable(true);
+        meta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
+
         item.setItemMeta(meta);
 
         return item;
@@ -97,6 +99,8 @@ public class Items {
         meta.addEnchant(Enchantment.ARROW_KNOCKBACK, 2, true);
         meta.addEnchant(Enchantment.ARROW_INFINITE, 1, true);
         meta.setUnbreakable(true);
+        meta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
+
         item.setItemMeta(meta);
 
         return item;

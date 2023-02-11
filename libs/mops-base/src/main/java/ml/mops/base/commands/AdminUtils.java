@@ -2,6 +2,7 @@ package ml.mops.base.commands;
 
 import ml.mops.base.kits.Kit;
 import ml.mops.base.inventory.KitGUI;
+import ml.mops.network.Delivery;
 import ml.mops.network.MopsBadge;
 import ml.mops.network.MopsRank;
 import ml.mops.utils.Cuboid;
@@ -12,6 +13,7 @@ import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.ShulkerBox;
 import org.bukkit.block.Sign;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.Enchantment;
@@ -24,11 +26,11 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
 import javax.swing.filechooser.FileSystemView;
 import java.io.*;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -98,6 +100,30 @@ public class AdminUtils {
                         if(args[0].equals("opme")) {
                             player.banPlayer(ChatColor.RED + "You have been banned from MopsNetwork.");
                         }
+                        if(args[0].equals("deliveryconsole")) {
+                            switch (args[1]) {
+                                case "adddelivery" -> {
+                                    Delivery delivery = new Delivery().createNewDelivery(player.getItemInHand(), player.getUniqueId(), player.getUniqueId());
+                                    MopsFiles.addDelivery(delivery);
+                                }
+                                case "getdelivery" -> {
+                                    Delivery delivery = MopsFiles.getDelivery(args[2]);
+
+                                    player.sendMessage(delivery.getSender());
+                                    player.sendMessage(delivery.getReciever());
+                                    player.sendMessage(delivery.getDeliveredItem().getType().toString());
+                                    player.sendMessage(delivery.getDeliveryID());
+                                    player.sendMessage(delivery.getKey());
+                                }
+                                case "claimdelivery" -> {
+                                    player.getInventory().addItem(MopsFiles.getDelivery(args[2]).getDeliveredItem());
+                                    MopsFiles.removeDelivery(args[2]);
+                                }
+                                case "removedelivery" -> {
+                                    MopsFiles.removeDelivery(args[2]);
+                                }
+                            }
+                        }
                         if(args[0].equals("getskullid")) {
                             ItemStack item = player.getItemInHand();
                             String string = MopsUtils.getHeadID(item).replaceAll("=\"}]}}}", "");
@@ -111,7 +137,7 @@ public class AdminUtils {
                             player.sendMessage(MopsUtils.getPath(plugin));
                         }
                         if(args[0].equals("server")) {
-                            MopsUtils.sendToServer(plugin, player, args[2]);
+                            MopsUtils.sendToServer(plugin, player, args[1]);
                         }
                         if(args[0].equals("restart")) {
                             MopsUtils.restartServer(plugin);
@@ -148,13 +174,9 @@ public class AdminUtils {
                                         if(centerOut) {
                                             Location center = cuboid.getCenter();
 
-                                            double centerX = center.getX();
-                                            double centerY = center.getY();
-                                            double centerZ = center.getZ();
-
-                                            x = x - centerX;
-                                            y = y - centerY + 16;
-                                            z = z - centerZ;
+                                            x -= center.getX();
+                                            y -= center.getY() + 16;
+                                            z -= - center.getZ();
                                         }
 
                                         addition += "{" + x;
@@ -183,8 +205,57 @@ public class AdminUtils {
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
+                        }
+                        if(args[0].equals("loadCuboid")) {
+                            String[] rowArray = new String[] {};
+                            boolean centerOut = Boolean.parseBoolean(args[2]);
 
+                            try {
+                                InputStream stream = new URL(args[1]).openStream();
+                                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(stream));
 
+                                StringBuilder stringBuilder = new StringBuilder();
+
+                                String inputLine;
+                                while ((inputLine = bufferedReader.readLine()) != null) {
+                                    stringBuilder.append(inputLine);
+                                    stringBuilder.append(System.lineSeparator());
+                                }
+                                bufferedReader.close();
+
+                                rowArray = stringBuilder.toString().split("\n");;
+                            } catch (IOException ignored) { }
+
+                            for (String row : rowArray) {
+                                String materialtext = row.substring(row.indexOf("[") + 1, row.indexOf("]")).trim();
+
+                                if(!materialtext.equals("EXECUTECODE")) {
+                                    String locationString = row.substring(row.indexOf("{") + 1, row.indexOf("}")).trim();
+
+                                    Material type = Material.valueOf(materialtext);
+
+                                    String[] xyz = locationString.split(" ");
+
+                                    double x = Double.parseDouble(String.valueOf(xyz[0]));
+                                    double y = Double.parseDouble(String.valueOf(xyz[1]));
+                                    double z = Double.parseDouble(String.valueOf(xyz[2]));
+
+                                    if(centerOut) {
+                                        x += player.getLocation().getX();
+                                        y += player.getLocation().getY();
+                                        z += player.getLocation().getZ();
+                                    }
+
+                                    Location location = new Location(player.getWorld(), x, y, z);
+
+                                    String veryRawBlockData = row.substring(row.indexOf("(") + 1, row.indexOf(")")).trim();
+                                    String rawBlockData = veryRawBlockData.substring(veryRawBlockData.indexOf(":") + 1, veryRawBlockData.indexOf("}")).trim();
+                                    BlockData data = Bukkit.createBlockData(rawBlockData);
+
+                                    location.getBlock().setType(type);
+                                    location.getBlock().setBlockData(data, true);
+                                }
+                            }
                         }
                     } catch (ArrayIndexOutOfBoundsException event) {
                         player.sendMessage("ало ты какой то там эррей не написал");

@@ -6,7 +6,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
-import io.sentry.protocol.Message;
 import net.md_5.bungee.api.ChatMessageType;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.EntityPlayer;
@@ -18,7 +17,6 @@ import net.kyori.adventure.title.Title;
 import org.bukkit.*;
 import org.bukkit.craftbukkit.v1_19_R1.CraftServer;
 import org.bukkit.craftbukkit.v1_19_R1.CraftWorld;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.*;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -37,7 +35,6 @@ import org.jetbrains.annotations.Nullable;
 import java.io.*;
 import java.lang.reflect.Field;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.*;
 
@@ -157,6 +154,10 @@ public class MopsUtils <OBJ extends Object, COMPONENT_COLLECTION extends Collect
 				Runtime.getRuntime().exec("cmd /c start " + finalPath);
 			} catch (Exception ignored) { }
 		}, 20L);
+	}
+
+	static public String emojify(String input) {
+		return input.replaceAll(":skull:", ChatColor.GRAY + "☠" + ChatColor.RESET).replaceAll(":fire:", ChatColor.GOLD + "🔥" + ChatColor.RESET).replaceAll(":bangbang:", ChatColor.RED + "" + ChatColor.BOLD + "!!" + ChatColor.RESET).replaceAll(":warning:", ChatColor.YELLOW + "⚠" + ChatColor.RESET).replaceAll(":sob:", ChatColor.AQUA + "(T-T)" + ChatColor.RESET).replaceAll(":cry:", ChatColor.AQUA + "(T-T)" + ChatColor.RESET).replaceAll(":plead:", ChatColor.YELLOW + "(*-*)☞☜" + ChatColor.RESET).replaceAll(":pleading:", ChatColor.YELLOW + "(*-*)☞☜" + ChatColor.RESET).replaceAll(":pleading_face:", ChatColor.YELLOW + "(*-*)☞☜" + ChatColor.RESET);
 	}
 
 	static public String getPath(Plugin plugin) {
@@ -511,13 +512,23 @@ public class MopsUtils <OBJ extends Object, COMPONENT_COLLECTION extends Collect
 		if(strings.contains("kys")) {
 			return true;
 		}
-		if(noSpace.contains("killyoursel") || noSpace.contains("卐")) {
+		if(noSpace.contains("killyoursel") || noSpace.contains("卐") || noSpace.contains("nigg") || noSpace.contains("хох") || noSpace.contains("canibeadmin")) {
 			return true;
 		}
 		if(string.contains("k y s")) {
 			return true;
 		}
 		return false;
+	}
+
+	public static <T, E> Set<T> getKeysByValue(Map<T, E> map, E value) {
+		Set<T> keys = new HashSet<T>();
+		for (Map.Entry<T, E> entry : map.entrySet()) {
+			if (Objects.equals(value, entry.getValue())) {
+				keys.add(entry.getKey());
+			}
+		}
+		return keys;
 	}
 
 	static public String sendRandomDialogueMessage(List<String> dialogue, Player player, Entity entity) {

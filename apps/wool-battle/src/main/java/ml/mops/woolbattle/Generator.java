@@ -12,7 +12,9 @@ public class Generator {
     List<Block> blockListLong;
 
     String percent = ChatColor.GRAY + " (0%)";
-    String genLetter = "";
+    String genLetter;
+
+    boolean firstCapture = true;
 
     Generator(String genLetter) {
         this.genLetter = genLetter;
