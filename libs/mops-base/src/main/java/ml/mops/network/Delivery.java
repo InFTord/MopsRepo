@@ -18,7 +18,7 @@ public class Delivery {
     private UUID sender = UUID.randomUUID();
     private UUID reciever = UUID.randomUUID();
     private String deliveryID;
-    private String key = "ptp";
+    private String key = "player";
 
     public Delivery() {
         generateNewID();

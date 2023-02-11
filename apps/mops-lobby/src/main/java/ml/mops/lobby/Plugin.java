@@ -283,6 +283,8 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             }
         }, 0L, 1200L);
 
+        //забилдисьл
+
         Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
             for(Player player : Bukkit.getOnlinePlayers()) {
                 if(auraTimer.get(player) == 0) {
