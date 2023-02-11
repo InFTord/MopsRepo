@@ -408,7 +408,7 @@ public class MopsFiles {
 
 
     public static void removeDelivery(String deliveryID) {
-        List<String> list = Arrays.asList(MopsUtils.readFile("D:\\servers\\MopsNetwork\\packages.txt").split("\n"));
+        List<String> list = new LinkedList<>(Arrays.asList(MopsUtils.readFile("D:\\servers\\MopsNetwork\\packages.txt").split("\n")));
         for (String row : list) {
             String[] array = row.split(";;");
             if(array[3].equals(deliveryID)) {
@@ -480,7 +480,7 @@ public class MopsFiles {
         } catch (IOException ignored) { }
     }
     public static void removeUsedUpDeliveryID(String deliveryID) {
-        List<String> list = Arrays.asList(MopsUtils.readFile("D:\\servers\\MopsNetwork\\usedUpDeliveryIDs.txt").split("\n"));
+        List<String> list = new LinkedList<>(Arrays.asList(MopsUtils.readFile("D:\\servers\\MopsNetwork\\usedUpDeliveryIDs.txt").split("\n")));
         list.remove(deliveryID);
 
         try {

@@ -1080,7 +1080,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             allPlayers.sendMessage( ChatColor.GOLD + "[MopsPVPs] " + ChatColor.YELLOW + player.getName() + " joined the game.");
         }
 
-        player.sendMessage( ChatColor.BLUE + "[MopsDeliveryService] " + ChatColor.RED + "You have " + ChatColor.BOLD + "1" + ChatColor.RESET + "" + ChatColor.RED + " unclaimed delivery.");
+        player.sendMessage( ChatColor.BLUE + "[MopsDeliveryService] " + ChatColor.RED + "You have " + ChatColor.BOLD + "1" + ChatColor.RESET + "" + ChatColor.RED + " unclaimed delivery!");
     }
 
     @EventHandler
