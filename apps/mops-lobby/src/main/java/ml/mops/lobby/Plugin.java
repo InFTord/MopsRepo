@@ -278,12 +278,12 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                     }
                 }
                 if(entity.getScoreboardTags().contains("sittingStand")) {
-                    entity.remove();
+                    if(entity.getPassengers().isEmpty()) {
+                        entity.remove();
+                    }
                 }
             }
         }, 0L, 1200L);
-
-        //забилдисьл
 
         Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
             for(Player player : Bukkit.getOnlinePlayers()) {
@@ -456,16 +456,16 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                     case "rulebreaker" -> player.getInventory().addItem(new Items().ruleBreaker());
                 }
             }
-            if (command.getName().equals("sit")) {
-                ArmorStand stand = (ArmorStand) player.getWorld().spawnEntity(player.getLocation(), EntityType.ARMOR_STAND);
-                stand.setInvisible(true);
-                stand.setMarker(true);
-                stand.addPassenger(player);
+        }
+        if (command.getName().equals("sit")) {
+            ArmorStand stand = (ArmorStand) player.getWorld().spawnEntity(player.getLocation(), EntityType.ARMOR_STAND);
+            stand.setInvisible(true);
+            stand.setMarker(true);
+            stand.addPassenger(player);
 
-                stand.addScoreboardTag("sittingStand");
+            stand.addScoreboardTag("sittingStand");
 
-                return true;
-            }
+            return true;
         }
 
         return false;
@@ -792,7 +792,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 ItemStack head = new ItemStack(Material.PLAYER_HEAD);
                 SkullMeta meta = (SkullMeta) head.getItemMeta();
                 meta.setOwner(clickedAt.getName());
-                meta.setDisplayName(MopsFiles.getRank(clickedAt).getPrefix() + clickedAt.getName() + MopsFiles.getBadge(clickedAt).getSymbol() + "'s Profile");
+                meta.setDisplayName(MopsFiles.getRank(clickedAt).getPrefix() + clickedAt.getName() + MopsFiles.getBadge(clickedAt).getSymbol() + ChatColor.AQUA + "'s Profile");
                 head.setItemMeta(meta);
 
                 inv.setItem(13, head);
@@ -1144,8 +1144,6 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
         System.out.println(player.getName() + ": " + message);
     }
-
-    // билд пж ! !
 
     @EventHandler
     public void onFoodLevelChange(FoodLevelChangeEvent event) {
