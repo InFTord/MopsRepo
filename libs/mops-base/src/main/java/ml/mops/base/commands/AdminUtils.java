@@ -9,6 +9,9 @@ import ml.mops.utils.Cuboid;
 import ml.mops.utils.MopsColor;
 import ml.mops.utils.MopsFiles;
 import ml.mops.utils.MopsUtils;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.event.ClickEvent;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.ShulkerBox;
@@ -142,7 +145,18 @@ public class AdminUtils {
                         if(args[0].equals("restart")) {
                             MopsUtils.restartServer(plugin);
                         }
-                        if(args[0].equals("saveCuboid")) {
+                        if(args[0].equals("point")) {
+                            String text = "";
+                            Block block = player.getTargetBlock(50);
+
+                            text += block.getX() + " ";
+                            text += block.getY() + " ";
+                            text += block.getZ();
+
+                            TextComponent message = Component.text(text).hoverEvent(Component.text("Click to copy")).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, text));
+                            player.sendMessage(message);
+                        }
+                        if(args[0].equals("saveCuboid") || args[0].equals("sc")) {
                             Location loc1 = new Location(player.getWorld(), Integer.parseInt(args[1]), Integer.parseInt(args[2]), Integer.parseInt(args[3]));
                             Location loc2 = new Location(player.getWorld(), Integer.parseInt(args[4]), Integer.parseInt(args[5]), Integer.parseInt(args[6]));
 
@@ -176,7 +190,7 @@ public class AdminUtils {
 
                                             x -= center.getX();
                                             y -= center.getY() + 16;
-                                            z -= - center.getZ();
+                                            z -= center.getZ();
                                         }
 
                                         addition += "{" + x;
@@ -206,7 +220,7 @@ public class AdminUtils {
                                 e.printStackTrace();
                             }
                         }
-                        if(args[0].equals("loadCuboid")) {
+                        if(args[0].equals("loadCuboid") || args[0].equals("lc")) {
                             String[] rowArray = new String[] {};
                             boolean centerOut = Boolean.parseBoolean(args[2]);
 
