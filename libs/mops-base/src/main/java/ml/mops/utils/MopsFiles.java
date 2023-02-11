@@ -387,7 +387,7 @@ public class MopsFiles {
     public static void addDelivery(UUID recieverUUID, ItemStack item, UUID senderUUID) {
         String string = MopsUtils.readFile("D:\\servers\\MopsNetwork\\packages.txt");
         Delivery delivery = new Delivery().createNewDelivery(item, senderUUID, recieverUUID);
-        string += delivery.toString() + "\n";
+        string += delivery.toString().toString().replaceAll("\n", "") + "\n";
         addUsedUpDeliveryID(delivery.getDeliveryID());
 
         try {
@@ -397,7 +397,7 @@ public class MopsFiles {
 
     public static void addDelivery(Delivery delivery) {
         String string = MopsUtils.readFile("D:\\servers\\MopsNetwork\\packages.txt");
-        string += delivery.toString() + "\n";
+        string += delivery.toString().replaceAll("\n", "") + "\n";
         addUsedUpDeliveryID(delivery.getDeliveryID());
 
         try {

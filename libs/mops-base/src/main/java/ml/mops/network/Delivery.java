@@ -40,8 +40,9 @@ public class Delivery {
             dataOutput.close();
 
             string = Base64Coder.encodeLines(outputStream.toByteArray());
-            string = string.replaceAll("\n", "");
         } catch (Exception ignored) { }
+
+        string = string.replaceAll("\n", "");
 
         return reciever.toString() + ";;" +
                string + ";;" +

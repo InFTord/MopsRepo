@@ -186,7 +186,7 @@ public class AdminUtils {
                                             Location center = cuboid.getCenter();
 
                                             x -= center.getX();
-                                            y -= center.getY() + 16;
+                                            y -= center.getY();
                                             z -= center.getZ();
                                         }
 
@@ -211,9 +211,9 @@ public class AdminUtils {
                                 }
 
                                 if(!centerOut) {
-                                    player.sendMessage("Saved a Cuboid from " + loc1.getX() + " " + loc1.getY() + " " + loc1.getZ() + " to " + loc2.getX() + " " + loc2.getY() + " " + loc2.getZ() + " to your desktop named " + args[7] + ".txt");
+                                    player.sendMessage("Saved a Cuboid from " + loc1.getX() + " " + loc1.getY() + " " + loc1.getZ() + " to " + loc2.getX() + " " + loc2.getY() + " " + loc2.getZ() + " to the Cuboid Library named " + ChatColor.AQUA + args[7] + ".txt");
                                 } else {
-                                    player.sendMessage("Saved a Cuboid from " + loc1.getX() + " " + loc1.getY() + " " + loc1.getZ() + " to " + loc2.getX() + " " + loc2.getY() + " " + loc2.getZ() + " to your desktop named " + args[7] + ".txt" + ChatColor.GRAY + " (Centered out)");
+                                    player.sendMessage("Saved a Cuboid from " + loc1.getX() + " " + loc1.getY() + " " + loc1.getZ() + " to " + loc2.getX() + " " + loc2.getY() + " " + loc2.getZ() + " to the Cuboid Library named " + ChatColor.AQUA + args[7] + ".txt" + ChatColor.GRAY + " (Centered out)");
                                 }
 
                                 output.write(theWholeList.toString());
@@ -281,15 +281,15 @@ public class AdminUtils {
 
                             if(fromLibrary) {
                                 if (!centerOut) {
-                                    player.sendMessage("Loaded a Cuboid from library named " + args[1] + ".txt");
+                                    player.sendMessage("Loaded a Cuboid from library named " + ChatColor.AQUA + args[1] + ".txt");
                                 } else {
-                                    player.sendMessage("Loaded a Cuboid from library named " + args[1] + ".txt relative to your position");
+                                    player.sendMessage("Loaded a Cuboid from library named " + ChatColor.AQUA + args[1] + ".txt" + ChatColor.WHITE + " relative to your position");
                                 }
                             } else {
                                 if (!centerOut) {
-                                    player.sendMessage("Loaded a Cuboid from the link " + args[1]);
+                                    player.sendMessage("Loaded a Cuboid from the link " + ChatColor.YELLOW + args[1]);
                                 } else {
-                                    player.sendMessage("Loaded a Cuboid relative to your position from the link " + args[1]);
+                                    player.sendMessage("Loaded a Cuboid relative to your position from the link " + ChatColor.YELLOW + args[1]);
                                 }
                             }
                         }
