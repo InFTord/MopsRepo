@@ -1432,7 +1432,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     public void onEntityDamage(EntityDamageEvent event) {
         if(event.getEntityType() == EntityType.PLAYER) {
             event.setDamage(0);
-        } else if(event.getCause().equals(EntityDamageEvent.DamageCause.VOID)) {
+        } else if(!event.getCause().equals(EntityDamageEvent.DamageCause.VOID)) {
             event.setCancelled(true);
         }
     }

@@ -814,8 +814,6 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		}
 	}
 
-	//надо битлд
-
 	@EventHandler
 	public void onPlayerChat(AsyncPlayerChatEvent event) {
 		Player player = event.getPlayer();
@@ -2058,6 +2056,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		recoloringGenerators(genB.getBlocks(), genB.getLongBlocks());
 		recoloringGenerators(genC.getBlocks(), genC.getLongBlocks());
 		recoloringGenerators(genD.getBlocks(), genD.getLongBlocks());
+
 		gensLocked = false;
 
 		mainworld.getWorldBorder().setSize(200, 1);
