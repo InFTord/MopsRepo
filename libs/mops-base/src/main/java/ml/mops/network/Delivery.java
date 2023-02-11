@@ -23,7 +23,7 @@ public class Delivery {
     public Delivery() {
         generateNewID();
 
-        while (!MopsFiles.getUsedUpDeliveryIDs().contains(deliveryID)) {
+        while(MopsFiles.getUsedUpDeliveryIDs().contains(deliveryID)) {
             generateNewID();
         }
     }
@@ -78,7 +78,7 @@ public class Delivery {
 
         generateNewID();
 
-        while (!MopsFiles.getUsedUpDeliveryIDs().contains(deliveryID)) {
+        while(MopsFiles.getUsedUpDeliveryIDs().contains(deliveryID)) {
             generateNewID();
         }
 
