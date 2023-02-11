@@ -277,6 +277,9 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                         }
                     }
                 }
+                if(entity.getScoreboardTags().contains("sittingStand")) {
+                    entity.remove();
+                }
             }
         }, 0L, 1200L);
 
@@ -452,10 +455,12 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 }
             }
             if (command.getName().equals("sit")) {
-                ArmorStand stand = (ArmorStand) player.getWorld().spawnEntity(player.getLocation(), EntityType.ARMOR_STAND);
+                ArmorStand stand = (ArmorStand) player.getWorld().spawnEntity(player.getLocation().add(0, -0.2, 0), EntityType.ARMOR_STAND);
                 stand.setInvisible(true);
                 stand.setMarker(true);
                 stand.addPassenger(player);
+
+                stand.addScoreboardTag("sitingStand");
             }
         }
 
