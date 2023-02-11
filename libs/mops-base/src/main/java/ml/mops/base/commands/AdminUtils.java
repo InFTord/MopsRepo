@@ -164,11 +164,8 @@ public class AdminUtils {
 
                             boolean centerOut = Boolean.parseBoolean(args[8]);
 
-                            Path path = Paths.get(FileSystemView.getFileSystemView().getHomeDirectory().getAbsolutePath() + "\\" + args[7] + ".txt"); //creates Path instance
+                            Path path = Paths.get("D:\\servers\\MopsNetwork\\Cuboid Library\\" + args[7] + ".txt"); //creates Path instance
                             try {
-                                Path p = Files.createFile(path);
-                                System.out.println("File Created at Path: " + p);
-
                                 File file = new File(path.toString());
                                 Writer output = new BufferedWriter(new FileWriter(file));
 
@@ -213,9 +210,14 @@ public class AdminUtils {
                                     }
                                 }
 
+                                if(!centerOut) {
+                                    player.sendMessage("Saved a Cuboid from " + loc1.getX() + " " + loc1.getY() + " " + loc1.getZ() + " to " + loc2.getX() + " " + loc2.getY() + " " + loc2.getZ() + " to your desktop named " + args[7] + ".txt");
+                                } else {
+                                    player.sendMessage("Saved a Cuboid from " + loc1.getX() + " " + loc1.getY() + " " + loc1.getZ() + " to " + loc2.getX() + " " + loc2.getY() + " " + loc2.getZ() + " to your desktop named " + args[7] + ".txt" + ChatColor.GRAY + " (Centered out)");
+                                }
+
                                 output.write(theWholeList.toString());
                                 output.close();
-
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
@@ -223,21 +225,27 @@ public class AdminUtils {
                         if(args[0].equals("loadCuboid") || args[0].equals("lc")) {
                             String[] rowArray = new String[] {};
                             boolean centerOut = Boolean.parseBoolean(args[2]);
+                            boolean fromLibrary = false;
 
                             try {
-                                InputStream stream = new URL(args[1]).openStream();
-                                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(stream));
+                                if(args[1].startsWith("https:")) {
+                                    InputStream stream = new URL(args[1]).openStream();
+                                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(stream));
 
-                                StringBuilder stringBuilder = new StringBuilder();
+                                    StringBuilder stringBuilder = new StringBuilder();
 
-                                String inputLine;
-                                while ((inputLine = bufferedReader.readLine()) != null) {
-                                    stringBuilder.append(inputLine);
-                                    stringBuilder.append(System.lineSeparator());
+                                    String inputLine;
+                                    while ((inputLine = bufferedReader.readLine()) != null) {
+                                        stringBuilder.append(inputLine);
+                                        stringBuilder.append(System.lineSeparator());
+                                    }
+                                    bufferedReader.close();
+
+                                    rowArray = stringBuilder.toString().split("\n");
+                                } else {
+                                    rowArray = MopsUtils.readFile("D:\\servers\\MopsNetwork\\Cuboid Library\\" + args[1] + ".txt").split("\n");
+                                    fromLibrary = true;
                                 }
-                                bufferedReader.close();
-
-                                rowArray = stringBuilder.toString().split("\n");;
                             } catch (IOException ignored) { }
 
                             for (String row : rowArray) {
@@ -268,6 +276,20 @@ public class AdminUtils {
 
                                     location.getBlock().setType(type);
                                     location.getBlock().setBlockData(data, true);
+                                }
+                            }
+
+                            if(fromLibrary) {
+                                if (!centerOut) {
+                                    player.sendMessage("Loaded a Cuboid from library named " + args[1] + ".txt");
+                                } else {
+                                    player.sendMessage("Loaded a Cuboid from library named " + args[1] + ".txt relative to your position");
+                                }
+                            } else {
+                                if (!centerOut) {
+                                    player.sendMessage("Loaded a Cuboid from the link " + args[1]);
+                                } else {
+                                    player.sendMessage("Loaded a Cuboid relative to your position from the link " + args[1]);
                                 }
                             }
                         }

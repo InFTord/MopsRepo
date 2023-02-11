@@ -47,7 +47,7 @@ public class PlayerEssentials extends Commands {
                 if (usage.equals("/")) {
                     result = number1 / number2;
                 }
-                player.sendMessage("Результат: " + result + "");
+                player.sendMessage("Result: " + result + "");
                 return true;
             }
             case "party" -> {
