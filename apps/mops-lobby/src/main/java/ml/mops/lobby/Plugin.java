@@ -78,6 +78,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     HashMap<Player, Inventory> effectsGUI = new HashMap<>();
     HashMap<Player, Inventory> auraGUI = new HashMap<>();
     HashMap<Player, Inventory> cosmeticSelector = new HashMap<>();
+    HashMap<Player, Inventory> deliveryInventory = new HashMap<>();
 
     HashMap<Player, Inventory> cancelledInventory = new HashMap<>();
     List<Inventory> overviewInventories = new ArrayList<>();
@@ -956,7 +957,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                         Inventory inventory = Bukkit.createInventory(null, 45, "Your Deliveries");
                         fillDeliveryInventory(inventory, player);
 
-                        cancelledInventory.put(player, inventory);
+                        deliveryInventory.put(player, inventory);
                         player.openInventory(inventory);
                     }
                 }
@@ -1159,6 +1160,27 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
         if (event.getClickedInventory() == cancelledInventory.get(player)) {
             event.setCancelled(true);
+        }
+        if (event.getClickedInventory() == deliveryInventory.get(player)) {
+            event.setCancelled(true);
+
+            try {
+                ItemStack item = event.getClickedInventory().getItem(event.getSlot());
+                ItemMeta meta = item.getItemMeta();
+                String deliveryID = meta.getLore().get(5).replace(ChatColor.DARK_GRAY + "Delivery ID: ", "");
+
+                player.getInventory().addItem(MopsFiles.getDelivery(deliveryID).getDeliveredItem());
+                MopsFiles.removeDelivery(deliveryID);
+
+                Inventory inventory = Bukkit.createInventory(null, 45, "Your Deliveries");
+                fillDeliveryInventory(inventory, player);
+
+                deliveryInventory.put(player, inventory);
+                player.openInventory(inventory);
+
+                player.sendMessage(ChatColor.GREEN + "You claimed your delivery!");
+                player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
+            } catch (Exception ignored) { }
         }
         if (event.getClickedInventory() == gamesGUI.get(player)) {
             event.setCancelled(true);
@@ -1750,7 +1772,13 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             Delivery delivery = deliveries.get(i);
             ItemStack deliveredItem = delivery.getDeliveredItem();
 
-            ItemStack packageItem = MopsUtils.createItem(Material.BARREL, MopsColor.BROWN.getColor() + "Package #" + i+1);
+            int number = i+1;
+            String zeroInfront = "";
+            if(number < 10) {
+                zeroInfront = "0";
+            }
+
+            ItemStack packageItem = MopsUtils.createItem(Material.BARREL, MopsColor.BROWN.getColor() + "Package #" + zeroInfront + number);
             ItemMeta packageMeta = packageItem.getItemMeta();
             List<String> lore = new ArrayList<>();
 
