@@ -58,6 +58,17 @@ public class MopsFiles {
         return rank;
     }
 
+    public static MopsRank getRank(UUID uuid) {
+        MopsRank rank = MopsRank.NONE;
+
+        String text = getString("data.txt", uuid, 2);
+        if(!text.equals("")) {
+            rank = MopsRank.valueOf(text);
+        }
+        return rank;
+    }
+
+
     public static void setRank(Player player, MopsRank rank) {
         UUID uuid = player.getUniqueId();
         StringBuilder line = new StringBuilder();

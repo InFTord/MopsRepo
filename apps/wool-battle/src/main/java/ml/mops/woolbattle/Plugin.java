@@ -1776,8 +1776,10 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			if(genA.firstCapture) {
 				for(OfflinePlayer offlinePlayer : mainboard.getTeam(team.getID).getPlayers()) {
 					Player player = offlinePlayer.getPlayer();
-					expectedMopsCoinMin.put(player, expectedMopsCoinMin.get(player) + 1);
-					expectedMopsCoinMax.put(player, expectedMopsCoinMax.get(player) + 2);
+					if(Bukkit.getOnlinePlayers().contains(player)) {
+						expectedMopsCoinMin.put(player, expectedMopsCoinMin.get(player) + 1);
+						expectedMopsCoinMax.put(player, expectedMopsCoinMax.get(player) + 2);
+					}
 				}
 			}
 			genA.firstCapture = false;
@@ -1809,8 +1811,10 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			if(genB.firstCapture) {
 				for(OfflinePlayer offlinePlayer : mainboard.getTeam(team.getID).getPlayers()) {
 					Player player = offlinePlayer.getPlayer();
-					expectedMopsCoinMin.put(player, expectedMopsCoinMin.get(player) + 1);
-					expectedMopsCoinMax.put(player, expectedMopsCoinMax.get(player) + 2);
+					if(Bukkit.getOnlinePlayers().contains(player)) {
+						expectedMopsCoinMin.put(player, expectedMopsCoinMin.get(player) + 1);
+						expectedMopsCoinMax.put(player, expectedMopsCoinMax.get(player) + 2);
+					}
 				}
 			}
 			genB.firstCapture = false;
@@ -1842,8 +1846,10 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			if(genC.firstCapture) {
 				for(OfflinePlayer offlinePlayer : mainboard.getTeam(team.getID).getPlayers()) {
 					Player player = offlinePlayer.getPlayer();
-					expectedMopsCoinMin.put(player, expectedMopsCoinMin.get(player) + 1);
-					expectedMopsCoinMax.put(player, expectedMopsCoinMax.get(player) + 2);
+					if(Bukkit.getOnlinePlayers().contains(player)) {
+						expectedMopsCoinMin.put(player, expectedMopsCoinMin.get(player) + 1);
+						expectedMopsCoinMax.put(player, expectedMopsCoinMax.get(player) + 2);
+					}
 				}
 			}
 			genC.firstCapture = false;
@@ -1875,8 +1881,10 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			if(genD.firstCapture) {
 				for(OfflinePlayer offlinePlayer : mainboard.getTeam(team.getID).getPlayers()) {
 					Player player = offlinePlayer.getPlayer();
-					expectedMopsCoinMin.put(player, expectedMopsCoinMin.get(player) + 1);
-					expectedMopsCoinMax.put(player, expectedMopsCoinMax.get(player) + 2);
+					if(Bukkit.getOnlinePlayers().contains(player)) {
+						expectedMopsCoinMin.put(player, expectedMopsCoinMin.get(player) + 1);
+						expectedMopsCoinMax.put(player, expectedMopsCoinMax.get(player) + 2);
+					}
 				}
 			}
 			genD.firstCapture = false;

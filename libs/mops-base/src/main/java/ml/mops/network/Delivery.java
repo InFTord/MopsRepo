@@ -89,11 +89,10 @@ public class Delivery {
 
 
     public void generateNewID() {
-        int maxSize = (int) (Math.random() * (12 - 6 + 1)) + 10;
         StringBuilder text = new StringBuilder();
         String alphabet = "abcdefghijklmnopqrstuvwxyz1234567890!@";
         int i = 0;
-        while(i < maxSize) {
+        while(i < 8) {
             int letterNumber = (int) (Math.random() * (37 + 1)) + 1;
             text.append(alphabet.charAt(letterNumber-1));
             i++;
