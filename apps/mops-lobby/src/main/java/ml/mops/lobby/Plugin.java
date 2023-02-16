@@ -82,6 +82,8 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     HashMap<Player, Inventory> cancelledInventory = new HashMap<>();
     List<Inventory> overviewInventories = new ArrayList<>();
 
+    HashMap<Player, ItemStack> insertedItem = new HashMap<>();
+
     float rgb = 0;
     float snowDoge = 0;
     boolean doVillagerParticle = true;
@@ -953,6 +955,9 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
                         Inventory inventory = Bukkit.createInventory(null, 45, "Your Deliveries");
                         fillDeliveryInventory(inventory, player);
+
+                        cancelledInventory.put(player, inventory);
+                        player.openInventory(inventory);
                     }
                 }
 
