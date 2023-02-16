@@ -42,7 +42,7 @@ public class Delivery {
             string = Base64Coder.encodeLines(outputStream.toByteArray());
         } catch (Exception ignored) { }
 
-        string = string.replaceAll("\n", "");
+        string = string.replaceAll("\n", "").replaceAll("\r", "");
 
         return reciever.toString() + ";;" +
                string + ";;" +

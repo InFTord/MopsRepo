@@ -1750,7 +1750,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             Delivery delivery = deliveries.get(i);
             ItemStack deliveredItem = delivery.getDeliveredItem();
 
-            ItemStack packageItem = MopsUtils.createItem(Material.BARREL, MopsColor.BROWN.getColor() + "Package #" + i);
+            ItemStack packageItem = MopsUtils.createItem(Material.BARREL, MopsColor.BROWN.getColor() + "Package #" + i+1);
             ItemMeta packageMeta = packageItem.getItemMeta();
             List<String> lore = new ArrayList<>();
 
