@@ -787,13 +787,22 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 }
 
                 ItemStack head = new ItemStack(Material.PLAYER_HEAD);
-                SkullMeta meta = (SkullMeta) head.getItemMeta();
-                meta.setOwner(clickedAt.getName());
-                meta.setDisplayName(MopsFiles.getRank(clickedAt).getPrefix() + clickedAt.getName() + MopsFiles.getBadge(clickedAt).getSymbol() + ChatColor.AQUA + "'s Profile");
-                head.setItemMeta(meta);
+                SkullMeta skullMeta = (SkullMeta) head.getItemMeta();
+                skullMeta.setOwner(clickedAt.getName());
+                skullMeta.setDisplayName(MopsFiles.getRank(clickedAt).getPrefix() + clickedAt.getName() + MopsFiles.getBadge(clickedAt).getSymbol() + ChatColor.AQUA + "'s Profile");
+                head.setItemMeta(skullMeta);
+
+                ItemStack deliver = new ItemStack(Material.BARREL);
+                ItemMeta deliverMeta = head.getItemMeta();
+                deliverMeta.setDisplayName(MopsColor.BROWN.getColor() + "Deliver");
+                List<String> lore = new ArrayList<>();
+                lore.add(ChatColor.GRAY + "Send a Delivery to " + MopsFiles.getRank(clickedAt).getPrefix() + clickedAt.getName() + MopsFiles.getBadge(clickedAt).getSymbol());
+                deliverMeta.setLore(lore);
+                deliver.setItemMeta(deliverMeta);
 
                 inv.setItem(13, head);
                 inv.setItem(22, MopsUtils.createItem(Material.GOLD_INGOT, ChatColor.GOLD + "EnderChest Value: " + getEnderchestValue(clickedAt)));
+                inv.setItem(35, deliver);
 
                 overviewInventories.add(inv);
                 event.getPlayer().openInventory(inv);
@@ -1164,17 +1173,21 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 ItemMeta meta = item.getItemMeta();
                 String deliveryID = meta.getLore().get(5).replace(ChatColor.DARK_GRAY + "Delivery ID: ", "");
 
+                player.sendMessage(deliveryID);
+
                 player.getInventory().addItem(MopsFiles.getDelivery(deliveryID).getDeliveredItem());
                 MopsFiles.removeDelivery(deliveryID);
+
+                player.sendMessage("removed");
+
+                player.sendMessage(ChatColor.GREEN + "You claimed your delivery!");
+                player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
 
                 Inventory inventory = Bukkit.createInventory(null, 45, "Your Deliveries");
                 fillDeliveryInventory(inventory, player);
 
                 deliveryInventory.put(player, inventory);
                 player.openInventory(inventory);
-
-                player.sendMessage(ChatColor.GREEN + "You claimed your delivery from" + Bukkit.getOfflinePlayer(MopsFiles.getDelivery(deliveryID).getSender()).getName() + "!");
-                player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
             } catch (Exception ignored) { }
         }
         if (event.getClickedInventory() == gamesGUI.get(player)) {
@@ -1789,10 +1802,10 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
             if (i <= 6) {
                 inv.setItem(i+10, packageItem);
-            } else if (i <= 12) {
+            } else if (i <= 13) {
                 inv.setItem(i + 12, packageItem);
             } else {
-                inv.setItem(i+14, packageItem);
+                inv.setItem(i+15, packageItem);
             }
             i++;
         }

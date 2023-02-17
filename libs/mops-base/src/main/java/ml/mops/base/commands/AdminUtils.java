@@ -90,6 +90,10 @@ public class AdminUtils {
                         if(args[0].equals("lookingat")) {
                             player.sendMessage(MopsUtils.getEntityLookingAt(player).getName());
                         }
+                        if(args[0].equals("endersee")) {
+                            Player player1 = Bukkit.getPlayer(args[1]);
+                            player.openInventory(player1.getEnderChest());
+                        }
                         if(args[0].equals("accesskit")) {
                             player.openInventory(Kit.valueOf(args[1]).getInventory());
                         }
