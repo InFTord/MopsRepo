@@ -448,8 +448,8 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     public boolean lobbyCommands(CommandSender sender, Command command, @NotNull String label, String[] args) {
         Player player = (Player) sender;
 
-        if(MopsFiles.getRank(player).getPermLevel() > 10) {
-            if (command.getName().equals("e")) {
+        if (command.getName().equals("e")) {
+            if(MopsFiles.getRank(player).getPermLevel() > 10) {
                 switch (args[0]) {
                     case "compass" -> player.getInventory().addItem(new Items().compass());
                     case "custom" -> player.getInventory().addItem(new Items().customization());
@@ -466,6 +466,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                     }
                 }
             }
+            return true;
         }
         if (command.getName().equals("sit")) {
             if(!player.isInsideVehicle()) {
@@ -929,7 +930,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                     if(MopsFiles.getDeliveries(player.getUniqueId()).isEmpty()) {
                         switch (deliveryDogeDialogue.get(player)) {
                             case 0 -> {
-                                dialogue = "Oops, looks like your delivery got stolen.";
+                                dialogue = "You don't have any Deliveries.";
                                 player.playSound(player.getLocation(), Sound.ENTITY_WOLF_AMBIENT, 10, 2);
                             }
                         }
@@ -1065,9 +1066,10 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             allPlayers.sendMessage( ChatColor.GOLD + "[MopsPVPs] " + ChatColor.YELLOW + player.getName() + " joined the game.");
         }
 
-        int unclaimedDeliveries = 1 + MopsFiles.getDeliveries(player.getUniqueId()).size();
-
-        player.sendMessage( ChatColor.BLUE + "[MopsDeliveryService] " + ChatColor.RED + "You have " + ChatColor.BOLD + unclaimedDeliveries + ChatColor.RESET + "" + ChatColor.RED + " unclaimed delivery!");
+        if(!MopsFiles.getDeliveries(player.getUniqueId()).isEmpty()) {
+            int unclaimedDeliveries = MopsFiles.getDeliveries(player.getUniqueId()).size();
+            player.sendMessage( ChatColor.BLUE + "[MopsDeliveryService] " + ChatColor.RED + "You have " + ChatColor.BOLD + unclaimedDeliveries + ChatColor.RESET + "" + ChatColor.RED + " unclaimed delivery!");
+        }
     }
 
     @EventHandler
@@ -1154,12 +1156,8 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 ItemMeta meta = item.getItemMeta();
                 String deliveryID = meta.getLore().get(5).replace(ChatColor.DARK_GRAY + "Delivery ID: ", "");
 
-                player.sendMessage(deliveryID);
-
                 player.getInventory().addItem(MopsFiles.getDelivery(deliveryID).getDeliveredItem());
                 MopsFiles.removeDelivery(deliveryID);
-
-                player.sendMessage("removed");
 
                 player.sendMessage(ChatColor.GREEN + "You claimed your delivery!");
                 player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
@@ -1594,7 +1592,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         head.setItemMeta(skullMeta);
 
         ItemStack deliver = new ItemStack(Material.BARREL);
-        ItemMeta deliverMeta = head.getItemMeta();
+        ItemMeta deliverMeta = deliver.getItemMeta();
         deliverMeta.setDisplayName(MopsColor.BROWN.getColor() + "Deliver");
         List<String> lore = new ArrayList<>();
         lore.add(ChatColor.GRAY + "Send a Delivery to " + MopsFiles.getRank(clickedAt).getPrefix() + clickedAt.getName() + MopsFiles.getBadge(clickedAt).getSymbol());

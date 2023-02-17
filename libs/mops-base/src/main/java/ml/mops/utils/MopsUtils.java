@@ -508,6 +508,7 @@ public class MopsUtils <OBJ extends Object, COMPONENT_COLLECTION extends Collect
 	static public boolean isAutomodded(String string) {
 		String noSpace = string.toLowerCase(Locale.ROOT).replaceAll(" ", "");
 		List<String> strings = Arrays.asList(string.toLowerCase(Locale.ROOT).split(" "));
+		String lowercase = string.toLowerCase(Locale.ROOT);
 
 		if(strings.contains("kys")) {
 			return true;
@@ -515,7 +516,7 @@ public class MopsUtils <OBJ extends Object, COMPONENT_COLLECTION extends Collect
 		if(noSpace.contains("killyoursel") || noSpace.contains("卐") || noSpace.contains("nigg") || noSpace.contains("хох") || noSpace.contains("canibeadmin")) {
 			return true;
 		}
-		if(string.contains("k y s")) {
+		if(lowercase.contains("k y s")) {
 			return true;
 		}
 		return false;
