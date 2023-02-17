@@ -420,12 +420,15 @@ public class MopsFiles {
 
     public static void removeDelivery(String deliveryID) {
         List<String> list = new LinkedList<>(Arrays.asList(MopsUtils.readFile("D:\\servers\\MopsNetwork\\packages.txt").split("\n")));
+        String removedString = "";
         for (String row : list) {
             String[] array = row.split(";;");
             if(array[3].equals(deliveryID)) {
-                list.remove(row);
+                removedString = row;
             }
         }
+        list.remove(removedString);
+
         removeUsedUpDeliveryID(deliveryID);
 
         try {
