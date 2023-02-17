@@ -457,6 +457,13 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                     case "washingmachine" -> player.getInventory().addItem(new Items().kuudraWashingMachine());
                     case "chemistryset" -> player.getInventory().addItem(new Items().mopsChemistrySet());
                     case "rulebreaker" -> player.getInventory().addItem(new Items().ruleBreaker());
+                    case "overview" -> {
+                        if(args[1].equals("self")) {
+                            craftNewOverview(player, player);
+                        } else {
+                            craftNewOverview(player, Bukkit.getPlayer(args[1]));
+                        }
+                    }
                 }
             }
         }
@@ -779,33 +786,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     public void onEntityInteract(PlayerInteractEntityEvent event) {
         if(event.getHand().equals(EquipmentSlot.HAND)) {
             if(event.getRightClicked() instanceof Player clickedAt) {
-                Inventory inv = Bukkit.createInventory(null, 36, ChatColor.AQUA + clickedAt.getName() + "'s Overview");
-                int i = 0;
-                while(i < 36) {
-                    inv.setItem(i, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
-                    i++;
-                }
-
-                ItemStack head = new ItemStack(Material.PLAYER_HEAD);
-                SkullMeta skullMeta = (SkullMeta) head.getItemMeta();
-                skullMeta.setOwner(clickedAt.getName());
-                skullMeta.setDisplayName(MopsFiles.getRank(clickedAt).getPrefix() + clickedAt.getName() + MopsFiles.getBadge(clickedAt).getSymbol() + ChatColor.AQUA + "'s Profile");
-                head.setItemMeta(skullMeta);
-
-                ItemStack deliver = new ItemStack(Material.BARREL);
-                ItemMeta deliverMeta = head.getItemMeta();
-                deliverMeta.setDisplayName(MopsColor.BROWN.getColor() + "Deliver");
-                List<String> lore = new ArrayList<>();
-                lore.add(ChatColor.GRAY + "Send a Delivery to " + MopsFiles.getRank(clickedAt).getPrefix() + clickedAt.getName() + MopsFiles.getBadge(clickedAt).getSymbol());
-                deliverMeta.setLore(lore);
-                deliver.setItemMeta(deliverMeta);
-
-                inv.setItem(13, head);
-                inv.setItem(22, MopsUtils.createItem(Material.GOLD_INGOT, ChatColor.GOLD + "EnderChest Value: " + getEnderchestValue(clickedAt)));
-                inv.setItem(35, deliver);
-
-                overviewInventories.add(inv);
-                event.getPlayer().openInventory(inv);
+                craftNewOverview(clickedAt, event.getPlayer());
             }
         }
     }
@@ -1598,6 +1579,36 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         return value;
     }
 
+    public void craftNewOverview(Player clickedAt, Player opening) {
+        Inventory inv = Bukkit.createInventory(null, 36, ChatColor.AQUA + clickedAt.getName() + "'s Overview");
+        int i = 0;
+        while(i < 36) {
+            inv.setItem(i, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
+            i++;
+        }
+
+        ItemStack head = new ItemStack(Material.PLAYER_HEAD);
+        SkullMeta skullMeta = (SkullMeta) head.getItemMeta();
+        skullMeta.setOwner(clickedAt.getName());
+        skullMeta.setDisplayName(MopsFiles.getRank(clickedAt).getPrefix() + clickedAt.getName() + MopsFiles.getBadge(clickedAt).getSymbol() + ChatColor.AQUA + "'s Profile");
+        head.setItemMeta(skullMeta);
+
+        ItemStack deliver = new ItemStack(Material.BARREL);
+        ItemMeta deliverMeta = head.getItemMeta();
+        deliverMeta.setDisplayName(MopsColor.BROWN.getColor() + "Deliver");
+        List<String> lore = new ArrayList<>();
+        lore.add(ChatColor.GRAY + "Send a Delivery to " + MopsFiles.getRank(clickedAt).getPrefix() + clickedAt.getName() + MopsFiles.getBadge(clickedAt).getSymbol());
+        deliverMeta.setLore(lore);
+        deliver.setItemMeta(deliverMeta);
+
+        inv.setItem(13, head);
+        inv.setItem(22, MopsUtils.createItem(Material.GOLD_INGOT, ChatColor.GOLD + "EnderChest Value: " + getEnderchestValue(clickedAt)));
+        inv.setItem(35, deliver);
+
+        overviewInventories.add(inv);
+        opening.openInventory(inv);
+    }
+
     public void fillGamesGUI(Inventory inv, Player player) {
         int i = 0;
         while(i < 9) {
@@ -1800,12 +1811,12 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             packageMeta.setLore(lore);
             packageItem.setItemMeta(packageMeta);
 
-            if (i <= 6) {
+            if(i <= 6) {
                 inv.setItem(i+10, packageItem);
-            } else if (i <= 13) {
+            } else if(i <= 13) {
                 inv.setItem(i + 12, packageItem);
-            } else {
-                inv.setItem(i+15, packageItem);
+            } else if(i <= 20) {
+                inv.setItem(i+14, packageItem);
             }
             i++;
         }
