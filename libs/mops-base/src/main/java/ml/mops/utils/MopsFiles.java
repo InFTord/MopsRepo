@@ -455,13 +455,15 @@ public class MopsFiles {
         List<Delivery> deliveries = new ArrayList<>();
 
         String[] list = MopsUtils.readFile("D:\\servers\\MopsNetwork\\packages.txt").split("\n");
-        for (String row : list) {
-            String[] array = row.split(";;");
-            if(UUID.fromString(array[0]).equals(recieverUUID)) {
-                Delivery delivery = new Delivery().fromString(row);
-                deliveries.add(delivery);
+        try {
+            for (String row : list) {
+                String[] array = row.split(";;");
+                if (UUID.fromString(array[0]).equals(recieverUUID)) {
+                    Delivery delivery = new Delivery().fromString(row);
+                    deliveries.add(delivery);
+                }
             }
-        }
+        } catch (Exception ignored) { }
         return deliveries;
     }
 
@@ -471,10 +473,12 @@ public class MopsFiles {
         List<Delivery> deliveries = new ArrayList<>();
 
         String[] list = MopsUtils.readFile("D:\\servers\\MopsNetwork\\packages.txt").split("\n");
-        for (String row : list) {
-            Delivery delivery = new Delivery().fromString(row);
-            deliveries.add(delivery);
-        }
+        try {
+            for (String row : list) {
+                Delivery delivery = new Delivery().fromString(row);
+                deliveries.add(delivery);
+            }
+        } catch (Exception ignored) { }
         return deliveries;
     }
 

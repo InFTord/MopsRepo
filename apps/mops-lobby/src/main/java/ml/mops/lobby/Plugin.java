@@ -1082,7 +1082,9 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             allPlayers.sendMessage( ChatColor.GOLD + "[MopsPVPs] " + ChatColor.YELLOW + player.getName() + " joined the game.");
         }
 
-        player.sendMessage( ChatColor.BLUE + "[MopsDeliveryService] " + ChatColor.RED + "You have " + ChatColor.BOLD + "1" + ChatColor.RESET + "" + ChatColor.RED + " unclaimed delivery!");
+        int unclaimedDeliveries = 1 + MopsFiles.getDeliveries(player.getUniqueId()).size();
+
+        player.sendMessage( ChatColor.BLUE + "[MopsDeliveryService] " + ChatColor.RED + "You have " + ChatColor.BOLD + unclaimedDeliveries + ChatColor.RESET + "" + ChatColor.RED + " unclaimed delivery!");
     }
 
     @EventHandler
@@ -1178,7 +1180,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 deliveryInventory.put(player, inventory);
                 player.openInventory(inventory);
 
-                player.sendMessage(ChatColor.GREEN + "You claimed your delivery!");
+                player.sendMessage(ChatColor.GREEN + "You claimed your delivery from" + Bukkit.getOfflinePlayer(MopsFiles.getDelivery(deliveryID).getSender()).getName() + "!");
                 player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
             } catch (Exception ignored) { }
         }
@@ -1783,7 +1785,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             List<String> lore = new ArrayList<>();
 
             lore.add(" ");
-            lore.add(ChatColor.GRAY + "Item: " + deliveredItem.getItemMeta().getDisplayName() + ChatColor.DARK_GRAY + " x" + deliveredItem.getAmount());
+            lore.add(ChatColor.GRAY + "Item: " + ChatColor.RESET + deliveredItem.getItemMeta().getDisplayName() + ChatColor.DARK_GRAY + " x" + deliveredItem.getAmount());
             lore.add(ChatColor.GRAY + "Sender: " + MopsFiles.getRank(delivery.getSender()).getPrefix() + Bukkit.getPlayer(delivery.getSender()).getName());
             lore.add(ChatColor.GRAY + "Reciever: " + ChatColor.AQUA + "You");
             lore.add(" ");
@@ -1792,12 +1794,12 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             packageMeta.setLore(lore);
             packageItem.setItemMeta(packageMeta);
 
-            if (i <= 7) {
+            if (i <= 6) {
                 inv.setItem(i+10, packageItem);
-            } else if (i <= 14) {
-                inv.setItem(i+19, packageItem);
+            } else if (i <= 12) {
+                inv.setItem(i + 12, packageItem);
             } else {
-                inv.setItem(i+28, packageItem);
+                inv.setItem(i+14, packageItem);
             }
             i++;
         }
