@@ -34,7 +34,6 @@ import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.*;
 import org.bukkit.event.vehicle.VehicleDamageEvent;
-import org.bukkit.event.vehicle.VehicleExitEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
@@ -462,12 +461,16 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             }
         }
         if (command.getName().equals("sit")) {
-            ArmorStand stand = (ArmorStand) player.getWorld().spawnEntity(player.getLocation(), EntityType.ARMOR_STAND);
-            stand.setInvisible(true);
-            stand.setMarker(true);
-            stand.addPassenger(player);
+            if(!player.isInsideVehicle()) {
+                ArmorStand stand = (ArmorStand) player.getWorld().spawnEntity(player.getLocation(), EntityType.ARMOR_STAND);
+                stand.setInvisible(true);
+                stand.setMarker(true);
+                stand.addPassenger(player);
 
-            stand.addScoreboardTag("sittingStand");
+                stand.addScoreboardTag("sittingStand");
+            } else {
+                player.sendMessage(ChatColor.AQUA + "You are already sitting you silly goose");
+            }
 
             return true;
         }
@@ -514,16 +517,6 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         Player player = event.getPlayer();
         if(MopsFiles.getRank(player).getPermLevel() < 10) {
             event.setCancelled(true);
-        }
-    }
-
-    @EventHandler
-    public void onDismountEvent(VehicleExitEvent event) {
-        if(event.getVehicle().getType() == EntityType.ARMOR_STAND) {
-            event.getVehicle().remove();
-        }
-        if(event.getExited().getType() == EntityType.ARMOR_STAND) {
-            event.getExited().remove();
         }
     }
 
