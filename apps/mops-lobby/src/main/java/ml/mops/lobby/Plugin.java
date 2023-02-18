@@ -1385,7 +1385,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 deliveryInsertInventories.add(inv);
                 player.openInventory(inv);
 
-                deliveryInProcessReciever.put(player, UUID.fromString(inventoryName.get(event.getClickedInventory())));
+                deliveryInProcessReciever.put(player, Bukkit.getOfflinePlayer(inventoryName.get(event.getClickedInventory())).getUniqueId());
             }
         }
         if(deliveryInsertInventories.contains(event.getClickedInventory())) {
@@ -1709,7 +1709,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         inv.setItem(35, deliver);
 
         overviewInventories.add(inv);
-        inventoryName.put(inv, clickedAt.getUniqueId().toString());
+        inventoryName.put(inv, clickedAt.getName());
         opening.openInventory(inv);
     }
 
