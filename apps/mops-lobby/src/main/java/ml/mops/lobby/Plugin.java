@@ -484,10 +484,22 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             } else {
                 player.sendMessage(ChatColor.AQUA + "You are already sitting you silly goose");
             }
-
             return true;
         }
 
+        if(command.getName().equals("deliver")) {
+            try {
+                deliveryInProcessReciever.put(player, UUID.fromString(args[0]));
+
+                Inventory inv = Bukkit.createInventory(null, 27, "Insert Delivery Item");
+                fillDeliveryItemInsert(inv, new ItemStack(Material.AIR), false);
+
+                deliveryInsertInventories.add(inv);
+                player.openInventory(inv);
+            } catch (ArrayIndexOutOfBoundsException e) {
+                player.sendMessage(ChatColor.AQUA + "You need to do /deliver Player_Name");
+            }
+        }
         return false;
     }
 
@@ -1396,7 +1408,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 deliveryInProcessItem.put(player, event.getClickedInventory().getItem(13));
 
                 if(event.getClickedInventory().getItem(event.getSlot()) != null && event.getClickedInventory().getItem(event.getSlot()).getType() != Material.AIR) {
-                    Inventory inv = Bukkit.createInventory(null, 36, "Insert Delivery Item");
+                    Inventory inv = Bukkit.createInventory(null, 27, "Insert Delivery Item");
                     fillDeliveryItemInsert(inv, event.getClickedInventory().getItem(13), true);
 
                     deliveryInsertInventories.add(inv);
@@ -1410,6 +1422,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                     MopsFiles.addDelivery(delivery);
 
                     player.sendMessage(ChatColor.GREEN + "You have delivered an item to " + Bukkit.getOfflinePlayer(deliveryInProcessReciever.get(player)).getName() + "!");
+                    player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
                 }
             }, 5L);
 
@@ -1937,7 +1950,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         inv.setItem(13, item);
 
         if(itemInserted) {
-            ItemStack itemStack = MopsUtils.createItem(Material.LIME_STAINED_GLASS_PANE, ChatColor.GREEN + "^ " + item.getItemMeta().getDisplayName() + " ^");
+            ItemStack itemStack = MopsUtils.createItem(Material.LIME_STAINED_GLASS_PANE, ChatColor.GREEN + "^ " + item.getItemMeta().getDisplayName() + ChatColor.GREEN + " ^");
             MopsUtils.addLore(itemStack, new String[] {ChatColor.GREEN + "Click to deliver!"});
 
             inv.setItem(22, itemStack);

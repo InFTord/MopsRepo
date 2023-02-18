@@ -92,3 +92,6 @@ commands:
   sit:
     description: ""
     usage: /sit
+  deliver:
+    description: ""
+    usage: /deliver
