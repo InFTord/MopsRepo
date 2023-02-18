@@ -529,9 +529,19 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         Player player = event.getPlayer();
         Block block = event.getBlock();
 
-        if(!(block.getX() == -99 && block.getY() == 10 && block.getZ() == -169 && event.getBlock().getType() == Material.LANTERN)) {
-            if (MopsFiles.getRank(player).getPermLevel() < 10) {
-                event.setCancelled(true);
+        player.sendMessage(String.valueOf(block.getX()));
+        player.sendMessage(String.valueOf(block.getY()));
+        player.sendMessage(String.valueOf(block.getZ()));
+        player.sendMessage(String.valueOf(block.getType()));
+
+        if(!(block.getX() == -99 && block.getY() == 10 && block.getZ() == -169)) {
+            player.sendMessage("passed the shitting check");
+            if(block.getType() != Material.LANTERN) {
+                player.sendMessage("passed the bullshit check");
+                if (MopsFiles.getRank(player).getPermLevel() < 10) {
+                    player.sendMessage("not infact an admin");
+                    event.setCancelled(true);
+                }
             }
         }
     }
