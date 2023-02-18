@@ -36,10 +36,7 @@ import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.*;
 import org.bukkit.event.vehicle.VehicleDamageEvent;
-import org.bukkit.inventory.EquipmentSlot;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemFlag;
-import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.*;
 import org.bukkit.inventory.meta.BlockStateMeta;
 import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -82,9 +79,12 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     HashMap<Player, Inventory> deliveryInventory = new HashMap<>();
 
     HashMap<Player, Inventory> cancelledInventory = new HashMap<>();
+    HashMap<Inventory, String> inventoryName = new HashMap<>();
     List<Inventory> overviewInventories = new ArrayList<>();
+    List<Inventory> deliveryInsertInventories = new ArrayList<>();
 
-    HashMap<Player, ItemStack> insertedItem = new HashMap<>();
+    HashMap<Player, ItemStack> deliveryInProcessItem = new HashMap<>();
+    HashMap<Player, UUID> deliveryInProcessReciever = new HashMap<>();
 
     float rgb = 0;
     float snowDoge = 0;
@@ -809,8 +809,17 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                     if(!usables.contains(event.getClickedBlock().getLocation())) {
                         if(!openables.contains(event.getClickedBlock().getLocation())) {
                             if(!atmButtons.contains(event.getClickedBlock().getLocation())) {
-                                if(!(event.getClickedBlock().getLocation().equals(new Location(player.getWorld(), -99, 9, -169)) && event.getBlockFace() == BlockFace.NORTH)) {
-                                    event.setCancelled(true);
+                                Block funkyAhhBlock = event.getClickedBlock().getRelative(event.getBlockFace());
+
+                                if(!funkyAhhBlock.getLocation().equals(new Location(player.getWorld(), -99, 10, -169))) {
+                                    if(funkyAhhBlock.getType() != Material.LANTERN) {
+                                        event.setCancelled(true);
+                                    }
+                                }
+                                if(funkyAhhBlock.getLocation().equals(new Location(player.getWorld(), -99, 10, -169))) {
+                                    if(funkyAhhBlock.getType() == Material.LANTERN) {
+                                        player.sendMessage(ChatColor.GRAY + "You have shined the light back again.");
+                                    }
                                 }
                             }
                         }
@@ -1368,6 +1377,43 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         }
         if(overviewInventories.contains(event.getClickedInventory())) {
             event.setCancelled(true);
+
+            if(event.getSlot() == 35) {
+                Inventory inv = Bukkit.createInventory(null, 36, "Insert Delivery Item");
+                fillDeliveryItemInsert(inv, new ItemStack(Material.AIR), false);
+
+                deliveryInsertInventories.add(inv);
+                player.openInventory(inv);
+
+                deliveryInProcessReciever.put(player, UUID.fromString(inventoryName.get(event.getClickedInventory())));
+            }
+        }
+        if(deliveryInsertInventories.contains(event.getClickedInventory())) {
+            if(event.getSlot() != 17) {
+                event.setCancelled(true);
+            }
+            Bukkit.getScheduler().runTaskLater(this, () -> {
+                deliveryInProcessItem.put(player, event.getClickedInventory().getItem(17));
+
+                if(event.getClickedInventory().getItem(event.getSlot()) != null && event.getClickedInventory().getItem(event.getSlot()).getType() != Material.AIR) {
+                    Inventory inv = Bukkit.createInventory(null, 36, "Insert Delivery Item");
+                    fillDeliveryItemInsert(inv, event.getClickedInventory().getItem(17), true);
+
+                    deliveryInsertInventories.add(inv);
+                    player.openInventory(inv);
+                }
+            }, 5L);
+
+            if(event.getSlot() == 23 && event.getClickedInventory().getItem(event.getSlot()).getType() == Material.LIME_STAINED_GLASS_PANE) {
+                player.getOpenInventory().close();
+
+                Delivery delivery = new Delivery().createNewDelivery(deliveryInProcessItem.get(player), player.getUniqueId(), deliveryInProcessReciever.get(player));
+                MopsFiles.addDelivery(delivery);
+
+                player.sendMessage(ChatColor.GREEN + "You have delivered an item to " + Bukkit.getOfflinePlayer(deliveryInProcessReciever.get(player)).getName() + "!");
+            } else {
+                player.sendMessage(ChatColor.RED + "You do not have an item inserted!");
+            }
         }
         if(event.getInventory().getType() == InventoryType.ENDER_CHEST) {
             if((event.getSlot() >= 5 && event.getSlot() <= 8 && event.getSlotType().equals(InventoryType.SlotType.CONTAINER)) || (event.getSlot() >= 14 && event.getSlot() <= 15 && event.getSlotType().equals(InventoryType.SlotType.CONTAINER)) || (event.getSlot() == 17 && event.getSlotType().equals(InventoryType.SlotType.CONTAINER)) || (event.getSlot() >= 23 && event.getSlot() <= 26 && event.getSlotType().equals(InventoryType.SlotType.CONTAINER))) {
@@ -1663,6 +1709,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         inv.setItem(35, deliver);
 
         overviewInventories.add(inv);
+        inventoryName.put(inv, clickedAt.getUniqueId().toString());
         opening.openInventory(inv);
     }
 
@@ -1876,6 +1923,27 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 inv.setItem(i+14, packageItem);
             }
             i++;
+        }
+    }
+
+    public void fillDeliveryItemInsert(Inventory inv, ItemStack item, boolean itemInserted) {
+        int b = 0;
+        while(b < 36) {
+            inv.setItem(b, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
+            b++;
+        }
+        inv.setItem(17, item);
+
+        if(itemInserted) {
+            ItemStack itemStack = MopsUtils.createItem(Material.LIME_STAINED_GLASS_PANE, ChatColor.GREEN + "^ " + item.getItemMeta().getDisplayName() + " ^");
+            MopsUtils.addLore(itemStack, new String[] {ChatColor.GREEN + "Click to deliver!"});
+
+            inv.setItem(23, itemStack);
+        } else {
+            ItemStack itemStack = MopsUtils.createItem(Material.RED_STAINED_GLASS_PANE, ChatColor.RED + "^ Insert Item ^");
+            MopsUtils.addLore(itemStack, new String[] {ChatColor.RED + "Insert an item you want to deliver above."});
+
+            inv.setItem(23, itemStack);
         }
     }
 
