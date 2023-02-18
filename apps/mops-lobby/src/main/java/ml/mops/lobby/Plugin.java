@@ -534,7 +534,11 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 if (MopsFiles.getRank(player).getPermLevel() < 10) {
                     event.setCancelled(true);
                 }
-            } else {
+            }
+        }
+
+        if(block.getLocation().equals(new Location(player.getWorld(), -99, 10, -169))) {
+            if (block.getType() == Material.LANTERN) {
                 player.sendMessage(ChatColor.GRAY + "You have shined the light back again.");
             }
         }
@@ -806,6 +810,8 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                             if(!atmButtons.contains(event.getClickedBlock().getLocation())) {
                                 if(!event.getClickedBlock().getLocation().equals(new Location(player.getWorld(), -99, 10, -169))) {
                                     event.setCancelled(true);
+                                } else {
+                                    player.sendMessage("на приколах");
                                 }
                             }
                         }
