@@ -533,7 +533,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
         Player player = event.getPlayer();
-        if(!(event.getBlockPlaced().getLocation().equals(new Location(player.getWorld(), -99, 10, -169)) && event.getBlock().getType() == Material.LANTERN)) {
+        if(!(event.getBlock().equals(new Location(player.getWorld(), -99, 10, -169).getBlock()) && event.getBlock().getType() == Material.LANTERN)) {
             if (MopsFiles.getRank(player).getPermLevel() < 10) {
                 event.setCancelled(true);
             }
@@ -565,22 +565,24 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                     event.setCancelled(true);
                 }
                 if (action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK) {
-                    if(mopsCoinCooldown.get(player) == 1) {
-                        boolean consume = true;
-                        if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-                            if (atmButtons.contains(event.getClickedBlock().getLocation())) {
-                                consume = false;
+                    if(event.getHand() == EquipmentSlot.HAND) {
+                        if (mopsCoinCooldown.get(player) == 0) {
+                            boolean consume = true;
+                            if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+                                if (atmButtons.contains(event.getClickedBlock().getLocation())) {
+                                    consume = false;
+                                }
                             }
-                        }
-                        if (consume) {
-                            if (itemInHand.getItemMeta().getDisplayName().equals(ChatColor.GOLD + "MopsCoin")) {
-                                itemInHand.setAmount(itemInHand.getAmount() - 1);
-                                MopsFiles.setCoins(player, MopsFiles.getCoins(player) + 1);
-                                player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
-                                player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_BREAK, 1, 2);
+                            if (consume) {
+                                if (itemInHand.getItemMeta().getDisplayName().equals(ChatColor.GOLD + "MopsCoin")) {
+                                    itemInHand.setAmount(itemInHand.getAmount() - 1);
+                                    MopsFiles.setCoins(player, MopsFiles.getCoins(player) + 1);
+                                    player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
+                                    player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_BREAK, 1, 2);
 
-                                event.setCancelled(true);
-                                mopsCoinCooldown.put(player, 1);
+                                    event.setCancelled(true);
+                                    mopsCoinCooldown.put(player, 1);
+                                }
                             }
                         }
                     }
@@ -768,16 +770,18 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
                 // фанни лантерн
                 if(event.getClickedBlock().getLocation().equals(new Location(player.getWorld(), -99, 10, -169))) {
-                    player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
-                    player.sendMessage(ChatColor.GRAY + "You got the secret " + ChatColor.GOLD + "Funny Lantern" + ChatColor.GRAY + "!");
+                    if(event.getHand() == EquipmentSlot.HAND) {
+                        player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
+                        player.sendMessage(ChatColor.GRAY + "You got the secret " + ChatColor.GOLD + "Funny Lantern" + ChatColor.GRAY + "!");
 
-                    ItemStack lantern = MopsUtils.createItem(Material.LANTERN, ChatColor.GOLD + "Funny Lantern");
-                    ItemMeta meta = lantern.getItemMeta();
-                    meta.setLore(Collections.singletonList(ChatColor.GRAY + "It is very funny tho"));
-                    lantern.setItemMeta(meta);
+                        ItemStack lantern = MopsUtils.createItem(Material.LANTERN, ChatColor.GOLD + "Funny Lantern");
+                        ItemMeta meta = lantern.getItemMeta();
+                        meta.setLore(Collections.singletonList(ChatColor.GRAY + "It is very funny tho"));
+                        lantern.setItemMeta(meta);
 
-                    player.getInventory().addItem(lantern);
-                    new Location(player.getWorld(), -99, 10, -169).getBlock().setType(Material.AIR);
+                        player.getInventory().addItem(lantern);
+                        new Location(player.getWorld(), -99, 10, -169).getBlock().setType(Material.AIR);
+                    }
                 }
             }
 
@@ -1100,7 +1104,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         realPlantDialogue.putIfAbsent(player, 0);
         pigeonDialogue.putIfAbsent(player, 0);
 
-        player.setGameMode(GameMode.ADVENTURE);
+        player.setGameMode(GameMode.SURVIVAL);
         for(Player allPlayers : Bukkit.getOnlinePlayers()) {
             allPlayers.sendMessage( ChatColor.GOLD + "[MopsPVPs] " + ChatColor.YELLOW + player.getName() + " joined the game.");
         }
