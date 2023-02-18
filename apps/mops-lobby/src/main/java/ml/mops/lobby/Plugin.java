@@ -83,8 +83,6 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     HashMap<Player, Inventory> cancelledInventory = new HashMap<>();
     List<Inventory> overviewInventories = new ArrayList<>();
 
-    HashMap<Player, Integer> mopsCoinCooldown = new HashMap<>();
-
     HashMap<Player, ItemStack> insertedItem = new HashMap<>();
 
     float rgb = 0;
@@ -356,10 +354,6 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 }
             }
 
-            try {
-                mopsCoinCooldown.replaceAll((p, v) -> Math.max(mopsCoinCooldown.get(p) - 1, 9));
-            } catch (Exception ignored) { }
-
             for(Entity entity : mainworld.getEntities()) {
                 if(entity.getScoreboardTags().contains("snowCleaningDoge")) {
                     ArmorStand stand = (ArmorStand) entity;
@@ -533,7 +527,9 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
         Player player = event.getPlayer();
-        if(!(event.getBlock().equals(new Location(player.getWorld(), -99, 10, -169).getBlock()) && event.getBlock().getType() == Material.LANTERN)) {
+        Block block = event.getBlock();
+
+        if(!(block.getX() == -99 && block.getY() == 10 && block.getZ() == -169 && event.getBlock().getType() == Material.LANTERN)) {
             if (MopsFiles.getRank(player).getPermLevel() < 10) {
                 event.setCancelled(true);
             }
@@ -566,23 +562,20 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 }
                 if (action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK) {
                     if(event.getHand() == EquipmentSlot.HAND) {
-                        if (mopsCoinCooldown.get(player) == 0) {
-                            boolean consume = true;
-                            if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-                                if (atmButtons.contains(event.getClickedBlock().getLocation())) {
-                                    consume = false;
-                                }
+                        boolean consume = true;
+                        if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+                            if (atmButtons.contains(event.getClickedBlock().getLocation())) {
+                                consume = false;
                             }
-                            if (consume) {
-                                if (itemInHand.getItemMeta().getDisplayName().equals(ChatColor.GOLD + "MopsCoin")) {
-                                    itemInHand.setAmount(itemInHand.getAmount() - 1);
-                                    MopsFiles.setCoins(player, MopsFiles.getCoins(player) + 1);
-                                    player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
-                                    player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_BREAK, 1, 2);
+                        }
+                        if (consume) {
+                            if (itemInHand.getItemMeta().getDisplayName().equals(ChatColor.GOLD + "MopsCoin")) {
+                                itemInHand.setAmount(itemInHand.getAmount() - 1);
+                                MopsFiles.setCoins(player, MopsFiles.getCoins(player) + 1);
+                                player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
+                                player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_BREAK, 1, 2);
 
-                                    event.setCancelled(true);
-                                    mopsCoinCooldown.put(player, 1);
-                                }
+                                event.setCancelled(true);
                             }
                         }
                     }
@@ -1067,8 +1060,6 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         auraTimer.put(player, 4);
         auraRadius.put(player, 0.0);
         aura.put(player, MopsFiles.getAura(player));
-
-        mopsCoinCooldown.put(player, 0);
 
         Bukkit.getScheduler().runTaskLater(this, () -> {
             player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 0);
