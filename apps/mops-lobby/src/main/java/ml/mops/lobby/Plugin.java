@@ -14,6 +14,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import org.bukkit.block.Block;
 import org.bukkit.block.ShulkerBox;
+import org.bukkit.block.data.type.Lantern;
 import org.bukkit.entity.Player;
 import org.bukkit.*;
 import org.bukkit.command.Command;
@@ -82,6 +83,8 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     HashMap<Player, Inventory> cancelledInventory = new HashMap<>();
     List<Inventory> overviewInventories = new ArrayList<>();
 
+    HashMap<Player, Integer> mopsCoinCooldown = new HashMap<>();
+
     HashMap<Player, ItemStack> insertedItem = new HashMap<>();
 
     float rgb = 0;
@@ -112,6 +115,8 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 entity.remove();
             }
         }
+        
+        new Location(mainworld, -99, 10, -169).getBlock().setType(Material.LANTERN);
 
         flippable.add(new Location(mainworld, -102, 9, -195));
         flippable.add(new Location(mainworld, -95, 9, -195));
@@ -351,6 +356,10 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 }
             }
 
+            try {
+                mopsCoinCooldown.replaceAll((p, v) -> Math.max(mopsCoinCooldown.get(p) - 1, 9));
+            } catch (Exception ignored) { }
+
             for(Entity entity : mainworld.getEntities()) {
                 if(entity.getScoreboardTags().contains("snowCleaningDoge")) {
                     ArmorStand stand = (ArmorStand) entity;
@@ -457,6 +466,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                     case "washingmachine" -> player.getInventory().addItem(new Items().kuudraWashingMachine());
                     case "chemistryset" -> player.getInventory().addItem(new Items().mopsChemistrySet());
                     case "rulebreaker" -> player.getInventory().addItem(new Items().ruleBreaker());
+                    case "funnylantern" -> player.getInventory().addItem(new Items().funnyLantern());
                     case "overview" -> {
                         if(args[1].equals("self")) {
                             craftNewOverview(player, player);
@@ -523,8 +533,10 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
         Player player = event.getPlayer();
-        if(MopsFiles.getRank(player).getPermLevel() < 10) {
-            event.setCancelled(true);
+        if(!event.getBlock().getLocation().equals(new Location(player.getWorld(), -99, 10, -169)) && event.getBlock().getType() != Material.LANTERN) {
+            if (MopsFiles.getRank(player).getPermLevel() < 10) {
+                event.setCancelled(true);
+            }
         }
     }
 
@@ -553,20 +565,23 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                     event.setCancelled(true);
                 }
                 if (action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK) {
-                    boolean consume = true;
-                    if(event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-                        if(atmButtons.contains(event.getClickedBlock().getLocation())) {
-                            consume = false;
+                    if(mopsCoinCooldown.get(player) == 1) {
+                        boolean consume = true;
+                        if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+                            if (atmButtons.contains(event.getClickedBlock().getLocation())) {
+                                consume = false;
+                            }
                         }
-                    }
-                    if(consume) {
-                        if (itemInHand.getItemMeta().getDisplayName().equals(ChatColor.GOLD + "MopsCoin")) {
-                            itemInHand.setAmount(itemInHand.getAmount() - 1);
-                            MopsFiles.setCoins(player, MopsFiles.getCoins(player) + 1);
-                            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
-                            player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_BREAK, 1, 2);
+                        if (consume) {
+                            if (itemInHand.getItemMeta().getDisplayName().equals(ChatColor.GOLD + "MopsCoin")) {
+                                itemInHand.setAmount(itemInHand.getAmount() - 1);
+                                MopsFiles.setCoins(player, MopsFiles.getCoins(player) + 1);
+                                player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
+                                player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_BREAK, 1, 2);
 
-                            event.setCancelled(true);
+                                event.setCancelled(true);
+                                mopsCoinCooldown.put(player, 1);
+                            }
                         }
                     }
                 }
@@ -749,6 +764,20 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
                     player.openBook(book);
                     player.playSound(player.getLocation(), Sound.ITEM_BOOK_PAGE_TURN, 1, 0);
+                }
+
+                // фанни лантерн
+                if(event.getClickedBlock().getLocation().equals(new Location(player.getWorld(), -99, 10, -169))) {
+                    player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
+                    player.sendMessage(ChatColor.GRAY + "You got the secret" + ChatColor.GOLD + "Funny Lantern" + ChatColor.GRAY + "!");
+
+                    ItemStack lantern = MopsUtils.createItem(Material.LANTERN, ChatColor.GOLD + "Funny Lantern");
+                    ItemMeta meta = lantern.getItemMeta();
+                    meta.setLore(Collections.singletonList(ChatColor.GRAY + "It is very funny tho"));
+                    lantern.setItemMeta(meta);
+
+                    player.getInventory().addItem(lantern);
+                    new Location(player.getWorld(), -99, 10, -169).getBlock().setType(Material.AIR);
                 }
             }
 
@@ -945,11 +974,19 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                         player.openInventory(inventory);
                     }
                 }
-
                 if (scoreboardTags.contains("lonelyPigeon")) {
                     dialogue = "hey " + ChatColor.GRAY + "(add quest later)";
                     player.playSound(player.getLocation(), Sound.ENTITY_PARROT_AMBIENT, 10, 2);
                 }
+
+                try {
+                    if(player.getItemInHand().getType() == Material.LANTERN) {
+                        int random = ThreadLocalRandom.current().nextInt(1, 5 + 1);
+                        if(random == 1) {
+                            dialogue = ChatColor.GOLD + "lmao thats a funny lantern";
+                        }
+                    }
+                } catch (Exception ignored) { }
 
                 if(!scoreboardTags.contains("guideline") && !cancelDialogue) {
                     MopsUtils.sendDialogueMessage(dialogue, player, entity);
@@ -1026,6 +1063,8 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         auraTimer.put(player, 4);
         auraRadius.put(player, 0.0);
         aura.put(player, MopsFiles.getAura(player));
+
+        mopsCoinCooldown.put(player, 0);
 
         Bukkit.getScheduler().runTaskLater(this, () -> {
             player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 0);

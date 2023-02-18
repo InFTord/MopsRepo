@@ -42,6 +42,16 @@ public class Items {
 
         return item;
     }
+
+    public ItemStack funnyLantern() {
+        ItemStack item = MopsUtils.createItem(Material.LANTERN, ChatColor.GOLD + "Funny Lantern");
+        ItemMeta meta = item.getItemMeta();
+        meta.setLore(new ArrayList<String>(Collections.singletonList(ChatColor.GRAY + "It is very funny tho")));
+        item.setItemMeta(meta);
+
+        return item;
+    }
+
     public ItemStack kuudraWashingMachine() {
         ItemStack item = MopsUtils.createCustomHead("c7de63d401f85eed8a5e08cfa6cb290c40b11a7c72b579b2f06e8bb4a8a7c099");
         ItemMeta meta = item.getItemMeta();
