@@ -808,10 +808,8 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                     if(!usables.contains(event.getClickedBlock().getLocation())) {
                         if(!openables.contains(event.getClickedBlock().getLocation())) {
                             if(!atmButtons.contains(event.getClickedBlock().getLocation())) {
-                                if(!event.getClickedBlock().getLocation().equals(new Location(player.getWorld(), -99, 10, -169))) {
+                                if(!event.getClickedBlock().getLocation().equals(new Location(player.getWorld(), -99, 9, -169))) {
                                     event.setCancelled(true);
-                                } else {
-                                    player.sendMessage("на приколах");
                                 }
                             }
                         }
