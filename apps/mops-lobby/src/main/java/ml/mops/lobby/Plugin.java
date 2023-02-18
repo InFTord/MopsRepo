@@ -13,6 +13,7 @@ import ml.mops.utils.MopsUtils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.block.ShulkerBox;
 import org.bukkit.block.data.type.Lantern;
 import org.bukkit.entity.Player;
@@ -808,7 +809,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                     if(!usables.contains(event.getClickedBlock().getLocation())) {
                         if(!openables.contains(event.getClickedBlock().getLocation())) {
                             if(!atmButtons.contains(event.getClickedBlock().getLocation())) {
-                                if(!event.getClickedBlock().getLocation().equals(new Location(player.getWorld(), -99, 9, -169))) {
+                                if(!(event.getClickedBlock().getLocation().equals(new Location(player.getWorld(), -99, 9, -169)) && event.getBlockFace() == BlockFace.NORTH)) {
                                     event.setCancelled(true);
                                 }
                             }
