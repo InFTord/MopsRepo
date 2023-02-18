@@ -529,19 +529,13 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         Player player = event.getPlayer();
         Block block = event.getBlock();
 
-        player.sendMessage(String.valueOf(block.getX()));
-        player.sendMessage(String.valueOf(block.getY()));
-        player.sendMessage(String.valueOf(block.getZ()));
-        player.sendMessage(String.valueOf(block.getType()));
-
-        if(!(block.getX() == -99 && block.getY() == 10 && block.getZ() == -169)) {
-            player.sendMessage("passed the shitting check");
+        if(!block.getLocation().equals(new Location(player.getWorld(), -99, 10, -169))) {
             if(block.getType() != Material.LANTERN) {
-                player.sendMessage("passed the bullshit check");
                 if (MopsFiles.getRank(player).getPermLevel() < 10) {
-                    player.sendMessage("not infact an admin");
                     event.setCancelled(true);
                 }
+            } else {
+                player.sendMessage(ChatColor.GRAY + "You have shined the light back again.");
             }
         }
     }
@@ -810,7 +804,9 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                     if(!usables.contains(event.getClickedBlock().getLocation())) {
                         if(!openables.contains(event.getClickedBlock().getLocation())) {
                             if(!atmButtons.contains(event.getClickedBlock().getLocation())) {
-                                event.setCancelled(true);
+                                if(!event.getClickedBlock().getLocation().equals(new Location(player.getWorld(), -99, 10, -169))) {
+                                    event.setCancelled(true);
+                                }
                             }
                         }
                     }
@@ -988,9 +984,23 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
                 try {
                     if(player.getItemInHand().getType() == Material.LANTERN) {
-                        int random = ThreadLocalRandom.current().nextInt(1, 5 + 1);
+                        int random = (int) (Math.random() * (10 + 1)) + 1;
                         if(random == 1) {
                             dialogue = ChatColor.GOLD + "lmao thats a funny lantern";
+                            player.sendTitle("", ChatColor.DARK_AQUA + "Something tells you to put it away.", 10, 30, 20);
+                        }
+
+                        int random2 = (int) (Math.random() * (30 + 1)) + 1;
+                        if(random2 == 1) {
+                            String name = entity.getCustomName();
+                            entity.setCustomName(ChatColor.RED + "" + ChatColor.MAGIC + "" + ChatColor.BOLD + "Funny Lantern");
+                            player.sendTitle("", ChatColor.DARK_AQUA + "" + ChatColor.BOLD + "Something tells you to put it away.", 10, 30, 20);
+
+                            Bukkit.getScheduler().runTaskLater(this, () -> {
+                                entity.setCustomName(name);
+                            }, 5L);
+
+                            cancelDialogue = true;
                         }
                     }
                 } catch (Exception ignored) { }
