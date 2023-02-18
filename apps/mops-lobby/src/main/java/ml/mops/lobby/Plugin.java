@@ -1379,7 +1379,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             event.setCancelled(true);
 
             if(event.getSlot() == 35) {
-                Inventory inv = Bukkit.createInventory(null, 36, "Insert Delivery Item");
+                Inventory inv = Bukkit.createInventory(null, 27, "Insert Delivery Item");
                 fillDeliveryItemInsert(inv, new ItemStack(Material.AIR), false);
 
                 deliveryInsertInventories.add(inv);
@@ -1389,29 +1389,31 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             }
         }
         if(deliveryInsertInventories.contains(event.getClickedInventory())) {
-            if(event.getSlot() != 17) {
+            if(event.getSlot() != 13) {
                 event.setCancelled(true);
             }
             Bukkit.getScheduler().runTaskLater(this, () -> {
-                deliveryInProcessItem.put(player, event.getClickedInventory().getItem(17));
+                deliveryInProcessItem.put(player, event.getClickedInventory().getItem(13));
 
                 if(event.getClickedInventory().getItem(event.getSlot()) != null && event.getClickedInventory().getItem(event.getSlot()).getType() != Material.AIR) {
                     Inventory inv = Bukkit.createInventory(null, 36, "Insert Delivery Item");
-                    fillDeliveryItemInsert(inv, event.getClickedInventory().getItem(17), true);
+                    fillDeliveryItemInsert(inv, event.getClickedInventory().getItem(13), true);
 
                     deliveryInsertInventories.add(inv);
                     player.openInventory(inv);
                 }
+
+                if(event.getSlot() == 22 && event.getClickedInventory().getItem(event.getSlot()).getType() == Material.LIME_STAINED_GLASS_PANE) {
+                    player.getOpenInventory().close();
+
+                    Delivery delivery = new Delivery().createNewDelivery(deliveryInProcessItem.get(player), player.getUniqueId(), deliveryInProcessReciever.get(player));
+                    MopsFiles.addDelivery(delivery);
+
+                    player.sendMessage(ChatColor.GREEN + "You have delivered an item to " + Bukkit.getOfflinePlayer(deliveryInProcessReciever.get(player)).getName() + "!");
+                }
             }, 5L);
 
-            if(event.getSlot() == 23 && event.getClickedInventory().getItem(event.getSlot()).getType() == Material.LIME_STAINED_GLASS_PANE) {
-                player.getOpenInventory().close();
-
-                Delivery delivery = new Delivery().createNewDelivery(deliveryInProcessItem.get(player), player.getUniqueId(), deliveryInProcessReciever.get(player));
-                MopsFiles.addDelivery(delivery);
-
-                player.sendMessage(ChatColor.GREEN + "You have delivered an item to " + Bukkit.getOfflinePlayer(deliveryInProcessReciever.get(player)).getName() + "!");
-            } else {
+            if(event.getSlot() == 22 && event.getClickedInventory().getItem(event.getSlot()).getType() == Material.RED_STAINED_GLASS_PANE) {
                 player.sendMessage(ChatColor.RED + "You do not have an item inserted!");
             }
         }
@@ -1928,22 +1930,22 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
     public void fillDeliveryItemInsert(Inventory inv, ItemStack item, boolean itemInserted) {
         int b = 0;
-        while(b < 36) {
+        while(b < 27) {
             inv.setItem(b, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
             b++;
         }
-        inv.setItem(17, item);
+        inv.setItem(13, item);
 
         if(itemInserted) {
             ItemStack itemStack = MopsUtils.createItem(Material.LIME_STAINED_GLASS_PANE, ChatColor.GREEN + "^ " + item.getItemMeta().getDisplayName() + " ^");
             MopsUtils.addLore(itemStack, new String[] {ChatColor.GREEN + "Click to deliver!"});
 
-            inv.setItem(23, itemStack);
+            inv.setItem(22, itemStack);
         } else {
             ItemStack itemStack = MopsUtils.createItem(Material.RED_STAINED_GLASS_PANE, ChatColor.RED + "^ Insert Item ^");
             MopsUtils.addLore(itemStack, new String[] {ChatColor.RED + "Insert an item you want to deliver above."});
 
-            inv.setItem(23, itemStack);
+            inv.setItem(22, itemStack);
         }
     }
 
