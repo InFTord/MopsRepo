@@ -533,7 +533,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
         Player player = event.getPlayer();
-        if(!event.getBlock().getLocation().equals(new Location(player.getWorld(), -99, 10, -169)) && event.getBlock().getType() != Material.LANTERN) {
+        if(!(event.getBlockPlaced().getLocation().equals(new Location(player.getWorld(), -99, 10, -169)) && event.getBlock().getType() == Material.LANTERN)) {
             if (MopsFiles.getRank(player).getPermLevel() < 10) {
                 event.setCancelled(true);
             }
@@ -769,7 +769,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 // фанни лантерн
                 if(event.getClickedBlock().getLocation().equals(new Location(player.getWorld(), -99, 10, -169))) {
                     player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
-                    player.sendMessage(ChatColor.GRAY + "You got the secret" + ChatColor.GOLD + "Funny Lantern" + ChatColor.GRAY + "!");
+                    player.sendMessage(ChatColor.GRAY + "You got the secret " + ChatColor.GOLD + "Funny Lantern" + ChatColor.GRAY + "!");
 
                     ItemStack lantern = MopsUtils.createItem(Material.LANTERN, ChatColor.GOLD + "Funny Lantern");
                     ItemMeta meta = lantern.getItemMeta();
