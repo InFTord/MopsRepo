@@ -286,7 +286,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 	String nextevent0 = ChatColor.RED + "(NO EVENT | 0:00)";
 
 	int scoreboardTask;
-	List<Player> currentPlayers = new ArrayList<>();
+	List<UUID> currentPlayers = new ArrayList<>();
 
 	@Override
 	public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
@@ -780,7 +780,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 				Bukkit.getScheduler().cancelTask(deathTimer.get(player));
 			} catch (Throwable ignored) { }
 		} else {
-			if(!currentPlayers.contains(player)) {
+			if(!currentPlayers.contains(player.getUniqueId())) {
 				player.sendMessage(ChatColor.RED + "Game already started, leaving the server...");
 				MopsUtils.sendToServer(this, player, "mopslobby");
 				sendJoinMessage = false;
@@ -802,7 +802,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		boolean sendQuitMessage = true;
 
 		if(gameactive) {
-			if (!currentPlayers.contains(player)) {
+			if (!currentPlayers.contains(player.getUniqueId())) {
 				sendQuitMessage = false;
 			}
 		}
@@ -2131,7 +2131,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 			expectedMopsCoinMin.put(player, expectedMopsCoinMax.get(maxKillsPlayer) + killCount.get(player));
 
 			int expectedCoins = (int) (Math.random() * (expectedMopsCoinMax.get(player) - expectedMopsCoinMin.get(player) + 1)) + expectedMopsCoinMin.get(player);
-			double equation = expectedCoins * (-expectedCoins)/100.0 + expectedCoins;
+			double equation = (expectedCoins * (-expectedCoins)/100.0 + expectedCoins) / 1.5;
 			int coins = (int) Math.round(equation);
 
 			String lang = MopsFiles.getLanguage(player);
@@ -2660,7 +2660,7 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 				String teamname = team.getName();
 
 				player.setFoodLevel(20);
-				currentPlayers.add(player);
+				currentPlayers.add(player.getUniqueId());
 
 				try {
 					if (args[0].equals("instant")) {

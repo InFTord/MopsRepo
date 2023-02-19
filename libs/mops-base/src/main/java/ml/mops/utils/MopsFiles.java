@@ -37,7 +37,7 @@ public class MopsFiles {
             line.append(MopsUtils.combineStrings(array, ":")).append("\n");
         }
         if(!playerExists) {
-            line.append(uuid).append(":").append(coins).append(":NONE:NONE:eng:NONE").append("\n");
+            line.append(uuid).append(":").append(coins).append(":NONE:NONE:eng:NONE:0").append("\n");
         }
         try {
             MopsUtils.writeFile("D:\\servers\\MopsNetwork\\data.txt", line.toString());
@@ -84,7 +84,7 @@ public class MopsFiles {
             line.append(MopsUtils.combineStrings(array, ":")).append("\n");
         }
         if(!playerExists) {
-            line.append(uuid).append(":0:").append(rank).append(":NONE:eng:NONE").append("\n");
+            line.append(uuid).append(":0:").append(rank).append(":NONE:eng:NONE:0").append("\n");
         }
         try {
             MopsUtils.writeFile("D:\\servers\\MopsNetwork\\data.txt", line.toString());
@@ -121,7 +121,7 @@ public class MopsFiles {
             line.append(MopsUtils.combineStrings(array, ":")).append("\n");
         }
         if(!playerExists) {
-            line.append(uuid).append(":0:NONE:").append(badge).append(":eng:NONE").append("\n");
+            line.append(uuid).append(":0:NONE:").append(badge).append(":eng:NONE:0").append("\n");
         }
         try {
             MopsUtils.writeFile("D:\\servers\\MopsNetwork\\data.txt", line.toString());
@@ -155,7 +155,7 @@ public class MopsFiles {
             line.append(MopsUtils.combineStrings(array, ":")).append("\n");
         }
         if(!playerExists) {
-            line.append(uuid).append(":0:NONE:NONE:").append(lang).append(":NONE").append("\n");
+            line.append(uuid).append(":0:NONE:NONE:").append(lang).append(":NONE:0").append("\n");
         }
         try {
             MopsUtils.writeFile("D:\\servers\\MopsNetwork\\data.txt", line.toString());
@@ -189,7 +189,7 @@ public class MopsFiles {
             line.append(MopsUtils.combineStrings(array, ":")).append("\n");
         }
         if(!playerExists) {
-            line.append(uuid).append(":0:NONE:NONE:eng:").append(aura.toString()).append("\n");
+            line.append(uuid).append(":0:NONE:NONE:eng:").append(aura.toString()).append(":0").append("\n");
         }
         try {
             MopsUtils.writeFile("D:\\servers\\MopsNetwork\\data.txt", line.toString());
@@ -197,6 +197,37 @@ public class MopsFiles {
     }
 
 
+    public static int getExperience(Player player) {
+        int exp = 0;
+
+        String text = getString("data.txt", player.getUniqueId(), 6);
+        if(!text.equals("")) {
+            exp = Integer.parseInt(text);
+        }
+        return exp;
+    }
+
+    public static void setExperience(Player player, int exp) {
+        UUID uuid = player.getUniqueId();
+        StringBuilder line = new StringBuilder();
+        boolean playerExists = false;
+
+        String[] list = MopsUtils.readFile("D:\\servers\\MopsNetwork\\data.txt").split("\n");
+        for (String row : list) {
+            String[] array = row.split(":");
+            if(UUID.fromString(array[0]).equals(uuid)) {
+                array[6] = String.valueOf(exp);
+                playerExists = true;
+            }
+            line.append(MopsUtils.combineStrings(array, ":")).append("\n");
+        }
+        if(!playerExists) {
+            line.append(uuid).append(":0:NONE:NONE:eng:NONE:").append(exp).append("\n");
+        }
+        try {
+            MopsUtils.writeFile("D:\\servers\\MopsNetwork\\data.txt", line.toString());
+        } catch (IOException ignored) { }
+    }
 
 
 
