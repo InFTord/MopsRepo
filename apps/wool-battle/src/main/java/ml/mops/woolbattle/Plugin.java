@@ -814,6 +814,8 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 		}
 	}
 
+	//забилдисьf
+
 	@EventHandler
 	public void onPlayerChat(AsyncPlayerChatEvent event) {
 		Player player = event.getPlayer();
