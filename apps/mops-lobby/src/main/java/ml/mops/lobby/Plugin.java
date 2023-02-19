@@ -1019,14 +1019,16 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                         int random2 = (int) (Math.random() * (30 + 1)) + 1;
                         if(random2 == 1) {
                             String name = entity.getCustomName();
-                            entity.setCustomName(ChatColor.RED + "" + ChatColor.MAGIC + "" + ChatColor.BOLD + "Funny Lantern");
-                            player.sendTitle("", ChatColor.DARK_AQUA + "" + ChatColor.BOLD + "Something tells you to put it away.", 10, 30, 20);
+                            if(!name.contains(ChatColor.MAGIC + "")) {
+                                entity.setCustomName(ChatColor.RED + "" + ChatColor.MAGIC + "" + ChatColor.BOLD + "Funny Lantern");
+                                player.sendTitle("", ChatColor.DARK_AQUA + "" + ChatColor.BOLD + "Something tells you to put it away.", 10, 30, 20);
 
-                            Bukkit.getScheduler().runTaskLater(this, () -> {
-                                entity.setCustomName(name);
-                            }, 5L);
+                                Bukkit.getScheduler().runTaskLater(this, () -> {
+                                    entity.setCustomName(name);
+                                }, 5L);
 
-                            cancelDialogue = true;
+                                cancelDialogue = true;
+                            }
                         }
                     }
                 } catch (Exception ignored) { }
