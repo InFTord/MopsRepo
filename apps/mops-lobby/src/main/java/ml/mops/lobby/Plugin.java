@@ -89,6 +89,8 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
     HashMap<UUID, Integer> leftSecondsAgo = new HashMap<>();
 
+    List<ItemStack> stupidItems = new ArrayList<>();
+
     float rgb = 0;
     float snowDoge = 0;
     boolean doVillagerParticle = true;
@@ -466,13 +468,27 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         if (command.getName().equals("e")) {
             if(MopsFiles.getRank(player).getPermLevel() > 10) {
                 switch (args[0]) {
-                    case "compass" -> player.getInventory().addItem(new Items().compass());
-                    case "custom" -> player.getInventory().addItem(new Items().customization());
+                    case "compass" -> {
+                        ItemStack item = new Items().compass();
+                        stupidItems.add(item);
+                        player.getInventory().addItem(item);
+                    }
+                    case "custom" -> {
+                        ItemStack item = new Items().customization();
+                        stupidItems.add(item);
+                        player.getInventory().addItem(item);
+                    }
+                    case "profile" -> {
+                        ItemStack item = new Items().profile();
+                        stupidItems.add(item);
+                        player.getInventory().addItem(item);
+                    }
                     case "mopscoin" -> player.getInventory().addItem(new Items().mopsCoin());
                     case "washingmachine" -> player.getInventory().addItem(new Items().kuudraWashingMachine());
                     case "chemistryset" -> player.getInventory().addItem(new Items().mopsChemistrySet());
                     case "rulebreaker" -> player.getInventory().addItem(new Items().ruleBreaker());
                     case "funnylantern" -> player.getInventory().addItem(new Items().funnyLantern());
+                    case "skeletonkey" -> player.getInventory().addItem(new Items().skeletonKey());
                     case "overview" -> {
                         if(args[1].equals("self")) {
                             craftNewOverview(player, player);
@@ -580,7 +596,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         try {
             if (action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK || action == Action.LEFT_CLICK_BLOCK || action == Action.LEFT_CLICK_AIR) {
                 ItemStack itemInHand = player.getItemInHand();
-                if (itemInHand.getItemMeta().getDisplayName().equals(ChatColor.GRAY + "Compass")) {
+                if (itemInHand.getItemMeta().getDisplayName().equals(new Items().compass().getItemMeta().getDisplayName())) {
                     Inventory inv = Bukkit.createInventory(null, 36, "Select Your Destination");
                     fillGamesGUI(inv, player);
 
@@ -588,7 +604,15 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                     player.openInventory(gamesGUI.get(player));
                     event.setCancelled(true);
                 }
-                if (itemInHand.getItemMeta().getDisplayName().equals(ChatColor.GOLD + "Customize")) {
+                if (itemInHand.getItemMeta().getDisplayName().equals(new Items().profile().getItemMeta().getDisplayName())) {
+                    Inventory inv = Bukkit.createInventory(null, 27, "Profile & Settings");
+//                    fillGamesGUI(inv, player);
+//
+//                    gamesGUI.put(player, inv);
+//                    player.openInventory(gamesGUI.get(player));
+                    event.setCancelled(true);
+                }
+                if (itemInHand.getItemMeta().getDisplayName().equals(new Items().customization().getItemMeta().getDisplayName())) {
                     Inventory inv = Bukkit.createInventory(null, 27, "Customization");
                     fillCosmeticSelector(inv, player);
 
@@ -605,7 +629,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                             }
                         }
                         if (consume) {
-                            if (itemInHand.getItemMeta().getDisplayName().equals(ChatColor.GOLD + "MopsCoin")) {
+                            if (itemInHand.getItemMeta().getDisplayName().equals(new Items().mopsCoin().getItemMeta().getDisplayName())) {
                                 itemInHand.setAmount(itemInHand.getAmount() - 1);
                                 MopsFiles.setCoins(player, MopsFiles.getCoins(player) + 1);
                                 player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
@@ -1017,7 +1041,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                     if(MopsFiles.getDeliveries(player.getUniqueId()).isEmpty()) {
                         switch (deliveryDogeDialogue.get(player)) {
                             case 0 -> {
-                                dialogue = "You don't have any Deliveries.";
+                                dialogue = "You don't have any Deliveries. Do you want to send one instead? Use /delivery PlayerName to deliver items!";
                                 player.playSound(player.getLocation(), Sound.ENTITY_WOLF_AMBIENT, 10, 2);
                             }
                         }
@@ -1166,11 +1190,15 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
         manipulateEnderChest(player);
 
-        if(leftSecondsAgo.get(player.getUniqueId()) > 30) {
+        if(leftSecondsAgo.get(player.getUniqueId()) > 20) {
             player.getInventory().clear();
             Items items = new Items();
-            player.getInventory().setItem(0, items.compass());
-            player.getInventory().setItem(8, items.customization());
+
+            ItemStack compass = items.compass();
+            ItemStack custom = items.customization();
+            stupidItems.add(compass); stupidItems.add(custom);
+            player.getInventory().setItem(0, compass);
+            player.getInventory().setItem(8, custom);
         } else {
             player.sendMessage(ChatColor.GREEN + "Your inventory was saved since you logged off very recently!");
         }
@@ -1304,9 +1332,9 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         if (event.getClickedInventory() == gamesGUI.get(player)) {
             event.setCancelled(true);
             if(event.getClick().isShiftClick()) {
-                gamesGUI.get(player).remove(Material.COMPASS);
-                gamesGUI.get(player).remove(Material.GLISTERING_MELON_SLICE);
-                gamesGUI.get(player).remove(Material.BOOK);
+                for(ItemStack item : stupidItems) {
+                    gamesGUI.get(player).remove(item);
+                }
             }
             try {
                 event.getClickedInventory().getItem(event.getSlot()).getType();
@@ -1390,9 +1418,9 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         if (event.getClickedInventory() == auraGUI.get(player)) {
             event.setCancelled(true);
             if(event.getClick().isShiftClick()) {
-                auraGUI.get(player).remove(Material.COMPASS);
-                auraGUI.get(player).remove(Material.GLISTERING_MELON_SLICE);
-                auraGUI.get(player).remove(Material.BOOK);
+                for(ItemStack item : stupidItems) {
+                    auraGUI.get(player).remove(item);
+                }
             }
             try {
                 event.getClickedInventory().getItem(event.getSlot()).getType();
@@ -1434,9 +1462,9 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         if (event.getClickedInventory() == effectsGUI.get(player)) {
             event.setCancelled(true);
             if(event.getClick().isShiftClick()) {
-                effectsGUI.get(player).remove(Material.COMPASS);
-                effectsGUI.get(player).remove(Material.GLISTERING_MELON_SLICE);
-                effectsGUI.get(player).remove(Material.BOOK);
+                for(ItemStack item : stupidItems) {
+                    effectsGUI.get(player).remove(item);
+                }
             }
         }
         if(overviewInventories.contains(event.getClickedInventory())) {
@@ -1469,11 +1497,9 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
                 List<Material> blockedItems = new ArrayList<>();
                 blockedItems.add(Material.AIR);
-                blockedItems.add(Material.COMPASS);
-                blockedItems.add(Material.GLISTERING_MELON_SLICE);
 
                 if(event.getSlot() == 22 && event.getClickedInventory().getItem(event.getSlot()).getType() == Material.LIME_STAINED_GLASS_PANE) {
-                    if(!blockedItems.contains(deliveryInProcessItem.get(player).getType())) {
+                    if(!(blockedItems.contains(deliveryInProcessItem.get(player).getType()) || stupidItems.contains(deliveryInProcessItem.get(player)))) {
                         player.getOpenInventory().close();
 
                         Delivery delivery = new Delivery().createNewDelivery(deliveryInProcessItem.get(player), player.getUniqueId(), deliveryInProcessReciever.get(player));
@@ -1574,13 +1600,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 player.setItemOnCursor(new ItemStack(Material.BROWN_STAINED_GLASS_PANE, 0));
             }
 
-            if (event.getCurrentItem().getType() == Material.COMPASS) {
-                event.setCancelled(true);
-            }
-            if (event.getCurrentItem().getType() == Material.GLISTERING_MELON_SLICE) {
-                event.setCancelled(true);
-            }
-            if (event.getCurrentItem().getType() == Material.BOOK) {
+            if (stupidItems.contains(event.getCurrentItem())) {
                 event.setCancelled(true);
             }
 
@@ -1621,20 +1641,18 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         Player player = (Player) event.getPlayer();
         Inventory inv = event.getInventory();
 
-        if(deliveryInsertInventories.contains(inv)) {
-            player.getInventory().addItem(inv.getItem(13));
-        }
+        try {
+            if (deliveryInsertInventories.contains(inv)) {
+                if(deliveryInProcessItem.get(player).getType() != Material.AIR) {
+                    player.getInventory().addItem(inv.getItem(13));
+                }
+            }
+        } catch (Exception ignored) { }
     }
 
     @EventHandler
     public void onMoveItemEvent(InventoryMoveItemEvent event) {
-        if(event.getItem().getType() == Material.COMPASS) {
-            event.setCancelled(true);
-        }
-        if(event.getItem().getType() == Material.GLISTERING_MELON_SLICE) {
-            event.setCancelled(true);
-        }
-        if(event.getItem().getType() == Material.BOOK) {
+        if (stupidItems.contains(event.getItem())) {
             event.setCancelled(true);
         }
         if(event.getItem().getType() == Material.BROWN_STAINED_GLASS_PANE) {
@@ -1714,14 +1732,8 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             player.getEnderChest().setItem(25, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
             player.getEnderChest().setItem(26, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
 
-            if(player.getEnderChest().contains(Material.COMPASS)) {
-                player.getEnderChest().remove(Material.COMPASS);
-            }
-            if(player.getEnderChest().contains(Material.BOOK)) {
-                player.getEnderChest().remove(Material.BOOK);
-            }
-            if(player.getEnderChest().contains(Material.GLISTERING_MELON_SLICE)) {
-                player.getEnderChest().remove(Material.GLISTERING_MELON_SLICE);
+            for(ItemStack item : stupidItems) {
+                player.getEnderChest().remove(item);
             }
             if(player.getEnderChest().contains(Material.BROWN_STAINED_GLASS_PANE)) {
                 player.getEnderChest().remove(Material.BROWN_STAINED_GLASS_PANE);

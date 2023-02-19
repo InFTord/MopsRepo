@@ -1,5 +1,6 @@
 package ml.mops.lobby;
 
+import ml.mops.utils.MopsColor;
 import ml.mops.utils.MopsUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
@@ -19,7 +20,7 @@ public class Items {
         ItemStack item = new ItemStack(Material.COMPASS);
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(ChatColor.GRAY + "Compass");
-        meta.setLore(new ArrayList<String>(Collections.singletonList(ChatColor.GRAY + "Easy teleport to games.")));
+        meta.setLore(new ArrayList<>(Collections.singletonList(ChatColor.GRAY + "Easy teleport to games.")));
         item.setItemMeta(meta);
 
         return item;
@@ -28,7 +29,16 @@ public class Items {
         ItemStack item = new ItemStack(Material.GLISTERING_MELON_SLICE);
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(ChatColor.GOLD + "Customize");
-        meta.setLore(new ArrayList<String>(Collections.singletonList(ChatColor.GRAY + "Change your appearance.")));
+        meta.setLore(new ArrayList<>(Collections.singletonList(ChatColor.GRAY + "Change your appearance.")));
+        item.setItemMeta(meta);
+
+        return item;
+    }
+    public ItemStack profile() {
+        ItemStack item = new ItemStack(Material.BOOK);
+        ItemMeta meta = item.getItemMeta();
+        meta.setDisplayName(MopsColor.BROWN.getColor() + "Profile & Settings");
+        meta.setLore(new ArrayList<>(Collections.singletonList(ChatColor.GRAY + "Change your profile and settings.")));
         item.setItemMeta(meta);
 
         return item;
@@ -37,7 +47,7 @@ public class Items {
         ItemStack item = new ItemStack(Material.GOLD_INGOT);
         ItemMeta meta = item.getItemMeta();
         meta.setDisplayName(ChatColor.GOLD + "MopsCoin");
-        meta.setLore(new ArrayList<String>(Collections.singletonList(ChatColor.GRAY + "The main currency of MopsNetwork.")));
+        meta.setLore(new ArrayList<>(Collections.singletonList(ChatColor.GRAY + "The main currency of MopsNetwork.")));
         item.setItemMeta(meta);
 
         return item;
@@ -46,11 +56,20 @@ public class Items {
     public ItemStack funnyLantern() {
         ItemStack item = MopsUtils.createItem(Material.LANTERN, ChatColor.GOLD + "Funny Lantern");
         ItemMeta meta = item.getItemMeta();
-        meta.setLore(new ArrayList<String>(Collections.singletonList(ChatColor.GRAY + "It is very funny tho")));
+        meta.setLore(new ArrayList<>(Collections.singletonList(ChatColor.GRAY + "It is very funny tho")));
         item.setItemMeta(meta);
 
         return item;
     }
+    public ItemStack skeletonKey() {
+        ItemStack item = MopsUtils.createItem(Material.BONE, ChatColor.GRAY + "Skeleton Key");
+        ItemMeta meta = item.getItemMeta();
+        meta.setLore(new ArrayList<>(Collections.singletonList(ChatColor.GRAY + "Definitely opens something.")));
+        item.setItemMeta(meta);
+
+        return item;
+    }
+
 
     public ItemStack kuudraWashingMachine() {
         ItemStack item = MopsUtils.createCustomHead("c7de63d401f85eed8a5e08cfa6cb290c40b11a7c72b579b2f06e8bb4a8a7c099");
