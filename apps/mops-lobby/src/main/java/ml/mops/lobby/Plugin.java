@@ -138,7 +138,6 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         flippable.add(new Location(mainworld, -88, 11, -171));
 
         usables.add(new Location(mainworld, -77, 9, -157));
-        usables.add(new Location(mainworld, -95, 10, -170));
         usables.add(new Location(mainworld, 151, 7, 147));
         usables.add(new Location(mainworld, -58, 10, -197));
         usables.add(new Location(mainworld, -71, 7, -255));
@@ -498,6 +497,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             } catch (ArrayIndexOutOfBoundsException e) {
                 player.sendMessage(ChatColor.AQUA + "You need to do /deliver Player_Name");
             }
+            return true;
         }
         return false;
     }
@@ -784,16 +784,24 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 // фанни лантерн
                 if(event.getClickedBlock().getLocation().equals(new Location(player.getWorld(), -99, 10, -169))) {
                     if(event.getHand() == EquipmentSlot.HAND) {
-                        player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
-                        player.sendMessage(ChatColor.GRAY + "You got the secret " + ChatColor.GOLD + "Funny Lantern" + ChatColor.GRAY + "!");
+                        boolean giveLamp = true;
+                        try {
+                            if(player.getItemInHand().getType() == Material.LANTERN) {
+                                giveLamp = false;
+                            }
+                        } catch (Exception ignored) { }
+                        if(giveLamp) {
+                            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
+                            player.sendMessage(ChatColor.GRAY + "You got the secret " + ChatColor.GOLD + "Funny Lantern" + ChatColor.GRAY + "!");
 
-                        ItemStack lantern = MopsUtils.createItem(Material.LANTERN, ChatColor.GOLD + "Funny Lantern");
-                        ItemMeta meta = lantern.getItemMeta();
-                        meta.setLore(Collections.singletonList(ChatColor.GRAY + "It is very funny tho"));
-                        lantern.setItemMeta(meta);
+                            ItemStack lantern = MopsUtils.createItem(Material.LANTERN, ChatColor.GOLD + "Funny Lantern");
+                            ItemMeta meta = lantern.getItemMeta();
+                            meta.setLore(Collections.singletonList(ChatColor.GRAY + "It is very funny tho"));
+                            lantern.setItemMeta(meta);
 
-                        player.getInventory().addItem(lantern);
-                        new Location(player.getWorld(), -99, 10, -169).getBlock().setType(Material.AIR);
+                            player.getInventory().addItem(lantern);
+                            new Location(player.getWorld(), -99, 10, -169).getBlock().setType(Material.AIR);
+                        }
                     }
                 }
             }
@@ -1417,20 +1425,27 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 }
 
                 if(event.getSlot() == 22 && event.getClickedInventory().getItem(event.getSlot()).getType() == Material.LIME_STAINED_GLASS_PANE) {
-                    player.getOpenInventory().close();
+                    if(deliveryInProcessItem.get(player).getType() != Material.AIR) {
+                        player.getOpenInventory().close();
 
-                    Delivery delivery = new Delivery().createNewDelivery(deliveryInProcessItem.get(player), player.getUniqueId(), deliveryInProcessReciever.get(player));
-                    MopsFiles.addDelivery(delivery);
+                        Delivery delivery = new Delivery().createNewDelivery(deliveryInProcessItem.get(player), player.getUniqueId(), deliveryInProcessReciever.get(player));
+                        MopsFiles.addDelivery(delivery);
 
-                    player.sendMessage(ChatColor.GREEN + "You have delivered an item to " + Bukkit.getOfflinePlayer(deliveryInProcessReciever.get(player)).getName() + "!");
-                    player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
+                        if(Bukkit.getOfflinePlayer(deliveryInProcessReciever.get(player)).getName().equals("null")) {
+                            player.sendMessage(ChatColor.GREEN + "You have delivered an item!");
+                        } else {
+                            player.sendMessage(ChatColor.GREEN + "You have delivered an item to " + Bukkit.getOfflinePlayer(deliveryInProcessReciever.get(player)).getName() + "!");
+                        }
+                        player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
+                        deliveryInProcessItem.put(player, new ItemStack(Material.AIR));
 
-                    OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(deliveryInProcessReciever.get(player));
-                    if(offlinePlayer.isOnline()) {
-                        if (!MopsFiles.getDeliveries(offlinePlayer.getUniqueId()).isEmpty()) {
-                            Player onlinePlayer = offlinePlayer.getPlayer();
-                            int unclaimedDeliveries = MopsFiles.getDeliveries(offlinePlayer.getUniqueId()).size();
-                            onlinePlayer.sendMessage(ChatColor.BLUE + "[MopsDeliveryService] " + ChatColor.RED + "You have " + ChatColor.BOLD + unclaimedDeliveries + ChatColor.RESET + "" + ChatColor.RED + " unclaimed delivery!");
+                        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(deliveryInProcessReciever.get(player));
+                        if (offlinePlayer.isOnline()) {
+                            if (!MopsFiles.getDeliveries(offlinePlayer.getUniqueId()).isEmpty()) {
+                                Player onlinePlayer = offlinePlayer.getPlayer();
+                                int unclaimedDeliveries = MopsFiles.getDeliveries(offlinePlayer.getUniqueId()).size();
+                                onlinePlayer.sendMessage(ChatColor.BLUE + "[MopsDeliveryService] " + ChatColor.RED + "You have " + ChatColor.BOLD + unclaimedDeliveries + ChatColor.RESET + "" + ChatColor.RED + " unclaimed delivery!");
+                            }
                         }
                     }
                 }
