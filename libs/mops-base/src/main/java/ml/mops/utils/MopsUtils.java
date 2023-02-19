@@ -160,6 +160,7 @@ public class MopsUtils <OBJ extends Object, COMPONENT_COLLECTION extends Collect
 		Map<String, String> emotes = new HashMap<>();
 		emotes.put("skull", ChatColor.GRAY + "☠");
 		emotes.put("fire", ChatColor.GOLD + "🔥");
+		emotes.put("bang", ChatColor.RED + "" + ChatColor.BOLD + "!!");
 		emotes.put("bangbang", ChatColor.RED + "" + ChatColor.BOLD + "!!");
 		emotes.put("exclamation", ChatColor.RED + "" + ChatColor.BOLD + "!!");
 		emotes.put("warning", ChatColor.YELLOW + "⚠");

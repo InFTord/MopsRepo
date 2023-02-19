@@ -32,6 +32,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.*;
@@ -85,6 +86,8 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
     HashMap<Player, ItemStack> deliveryInProcessItem = new HashMap<>();
     HashMap<Player, UUID> deliveryInProcessReciever = new HashMap<>();
+
+    HashMap<UUID, Integer> leftSecondsAgo = new HashMap<>();
 
     float rgb = 0;
     float snowDoge = 0;
@@ -168,6 +171,8 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         openables.add(new Location(mainworld, -61, 6, -255));
         openables.add(new Location(mainworld, -64, 6, -255));
         openables.add(new Location(mainworld, 156, 3, 148));
+        openables.add(new Location(mainworld, -91, 9, -167));
+        openables.add(new Location(mainworld, -93, 9, -167));
 
         vendingButtons.add(new Location(mainworld, -92, 9, -194));
         vendingButtons.add(new Location(mainworld, -77, 9, -192));
@@ -208,6 +213,13 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
         Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
             mainworld.spawnParticle(Particle.VILLAGER_HAPPY, new Location(mainworld, -102.9, 10.5, -181.5), 1, 0.05, 0.05, 0.05, 0);
+
+            for(UUID uuid : leftSecondsAgo.keySet()) {
+                OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
+                if(!player.isOnline()) {
+                    leftSecondsAgo.put(uuid, leftSecondsAgo.get(uuid) + 1);
+                }
+            }
         }, 0L, 20L);
 
         Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
@@ -790,10 +802,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                     if(event.getHand() == EquipmentSlot.HAND) {
                         boolean giveLamp = true;
                         try {
-                            if(player.getInventory().getItemInMainHand().getType() == Material.LANTERN) {
-                                giveLamp = false;
-                            }
-                            if(player.getInventory().getItemInOffHand().getType() == Material.LANTERN) {
+                            if(player.getInventory().contains(Material.LANTERN)) {
                                 giveLamp = false;
                             }
                         } catch (Exception ignored) { }
@@ -1090,6 +1099,16 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 player.playSound(player.getLocation(), Sound.ENTITY_SHULKER_AMBIENT, 2, 1);
             }
 
+            if (entity.getScoreboardTags().contains("actualPlant")) {
+                event.setCancelled(true);
+                player.playSound(player.getLocation(), Sound.BLOCK_GRASS_BREAK, 1F, 1.5F);
+            }
+            if (entity.getScoreboardTags().contains("skeletonLock")) {
+                event.setCancelled(true);
+                player.playSound(player.getLocation(), Sound.ENTITY_SKELETON_STEP, 4F, 0F);
+                player.sendMessage(ChatColor.GRAY + "You do not have the key.");
+            }
+
 
             if (entity.getScoreboardTags().contains("wbLeaderboard")) {
                 event.setCancelled(true);
@@ -1123,6 +1142,8 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         auraRadius.put(player, 0.0);
         aura.put(player, MopsFiles.getAura(player));
 
+        leftSecondsAgo.putIfAbsent(player.getUniqueId(), 500);
+
         Bukkit.getScheduler().runTaskLater(this, () -> {
             player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 0);
             player.sendTitle(ChatColor.AQUA + "Welcome!", ChatColor.DARK_AQUA + "To MopsNetwork", 10, 30, 20);
@@ -1139,10 +1160,14 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
         manipulateEnderChest(player);
 
-        player.getInventory().clear();
-        Items items = new Items();
-        player.getInventory().setItem(0, items.compass());
-        player.getInventory().setItem(8, items.customization());
+        if(leftSecondsAgo.get(player.getUniqueId()) > 10) {
+            player.getInventory().clear();
+            Items items = new Items();
+            player.getInventory().setItem(0, items.compass());
+            player.getInventory().setItem(8, items.customization());
+        } else {
+            player.sendMessage(ChatColor.GREEN + "Your inventory was saved since you logged off very recently!");
+        }
 
         Location spawn = new Location(player.getWorld(), -106.0, 9, -186.0);
         spawn.setYaw(-90);
@@ -1173,10 +1198,13 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         Player player = event.getPlayer();
         event.setQuitMessage("");
 
+        leftSecondsAgo.put(player.getUniqueId(), 0);
+
         for(Player allPlayers : Bukkit.getOnlinePlayers()) {
             allPlayers.sendMessage( ChatColor.GOLD + "[MopsPVPs] " + ChatColor.YELLOW + player.getName() + " left the game. " + ChatColor.AQUA + ":(");
         }
     }
+
 
     @EventHandler
     public void onDropItem(PlayerDropItemEvent event) {
@@ -1580,6 +1608,16 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 }
             }
         } catch (Exception ignored) { }
+    }
+
+    @EventHandler
+    public void onInventoryClose(InventoryCloseEvent event) {
+        Player player = (Player) event.getPlayer();
+        Inventory inv = event.getInventory();
+
+        if(deliveryInsertInventories.contains(inv)) {
+            player.getInventory().addItem(inv.getItem(13));
+        }
     }
 
     @EventHandler
