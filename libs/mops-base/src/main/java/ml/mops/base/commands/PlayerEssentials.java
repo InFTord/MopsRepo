@@ -9,6 +9,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -56,9 +58,20 @@ public class PlayerEssentials extends Commands {
             case "emotes", "emojis", "emote", "emoji" -> {
                 player.sendMessage(ChatColor.YELLOW + "====================================");
                 Map<String, String> emotes = MopsUtils.emoteMap();
+                List<String> ignoredKeys = new ArrayList<>();
 
                 for(String key : emotes.keySet()) {
-                    player.sendMessage(":" + key + ":" + ChatColor.GRAY + " -> " + ChatColor.WHITE + emotes.get(key));
+                    StringBuilder keyList = new StringBuilder(":" + key + ":");
+                    for(String key2 : emotes.keySet()) {
+                        if(!key2.equals(key)) {
+                            if(emotes.get(key).equals(emotes.get(key2))) {
+                                keyList.append(ChatColor.GOLD + ", " + ChatColor.WHITE + ":").append(key2).append(":");
+                                ignoredKeys.add(key2);
+                            }
+                        }
+                    }
+
+                    player.sendMessage(":" + keyList + ":" + ChatColor.GRAY + " -> " + ChatColor.WHITE + emotes.get(key));
                 }
                 player.sendMessage(ChatColor.YELLOW + "====================================");
                 return true;

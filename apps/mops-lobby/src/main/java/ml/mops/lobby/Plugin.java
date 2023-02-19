@@ -487,13 +487,17 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         }
         if(command.getName().equals("deliver")) {
             try {
-                deliveryInProcessReciever.put(player, Bukkit.getOfflinePlayer(args[0]).getUniqueId());
+                if(args[0].equals(player.getName())) {
+                    player.sendMessage(ChatColor.AQUA + "That's you, silly!");
+                } else {
+                    deliveryInProcessReciever.put(player, Bukkit.getOfflinePlayer(args[0]).getUniqueId());
 
-                Inventory inv = Bukkit.createInventory(null, 27, "Insert Delivery Item");
-                fillDeliveryItemInsert(inv, new ItemStack(Material.AIR), false);
+                    Inventory inv = Bukkit.createInventory(null, 27, "Insert Delivery Item");
+                    fillDeliveryItemInsert(inv, new ItemStack(Material.AIR), false);
 
-                deliveryInsertInventories.add(inv);
-                player.openInventory(inv);
+                    deliveryInsertInventories.add(inv);
+                    player.openInventory(inv);
+                }
             } catch (ArrayIndexOutOfBoundsException e) {
                 player.sendMessage(ChatColor.AQUA + "You need to do /deliver Player_Name");
             }
@@ -541,18 +545,10 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         Player player = event.getPlayer();
         Block block = event.getBlock();
 
-        boolean giveLamp = true;
-        try {
-            if(player.getItemInHand().getType() == Material.LANTERN) {
-                giveLamp = false;
-            }
-        } catch (Exception ignored) { }
-        if(giveLamp) {
-            if (!block.getLocation().equals(new Location(player.getWorld(), -99, 10, -169))) {
-                if (block.getType() != Material.LANTERN) {
-                    if (MopsFiles.getRank(player).getPermLevel() < 10) {
-                        event.setCancelled(true);
-                    }
+        if (!block.getLocation().equals(new Location(player.getWorld(), -99, 10, -169))) {
+            if (block.getType() != Material.LANTERN) {
+                if (MopsFiles.getRank(player).getPermLevel() < 10) {
+                    event.setCancelled(true);
                 }
             }
         }
@@ -794,7 +790,10 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                     if(event.getHand() == EquipmentSlot.HAND) {
                         boolean giveLamp = true;
                         try {
-                            if(player.getItemInHand().getType() == Material.LANTERN) {
+                            if(player.getInventory().getItemInMainHand().getType() == Material.LANTERN) {
+                                giveLamp = false;
+                            }
+                            if(player.getInventory().getItemInOffHand().getType() == Material.LANTERN) {
                                 giveLamp = false;
                             }
                         } catch (Exception ignored) { }
@@ -1432,8 +1431,13 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                     player.openInventory(inv);
                 }
 
+                List<Material> blockedItems = new ArrayList<>();
+                blockedItems.add(Material.AIR);
+                blockedItems.add(Material.COMPASS);
+                blockedItems.add(Material.GLISTERING_MELON_SLICE);
+
                 if(event.getSlot() == 22 && event.getClickedInventory().getItem(event.getSlot()).getType() == Material.LIME_STAINED_GLASS_PANE) {
-                    if(deliveryInProcessItem.get(player).getType() != Material.AIR) {
+                    if(!blockedItems.contains(deliveryInProcessItem.get(player).getType())) {
                         player.getOpenInventory().close();
 
                         Delivery delivery = new Delivery().createNewDelivery(deliveryInProcessItem.get(player), player.getUniqueId(), deliveryInProcessReciever.get(player));
@@ -1984,10 +1988,12 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         inv.setItem(13, item);
 
         if(itemInserted) {
-            ItemStack itemStack = MopsUtils.createItem(Material.LIME_STAINED_GLASS_PANE, ChatColor.GREEN + "^ " + item.getItemMeta().getDisplayName() + ChatColor.GREEN + " ^");
-            MopsUtils.addLore(itemStack, new String[] {ChatColor.GREEN + "Click to deliver!"});
+            try {
+                ItemStack itemStack = MopsUtils.createItem(Material.LIME_STAINED_GLASS_PANE, ChatColor.GREEN + "^ " + item.getItemMeta().getDisplayName() + ChatColor.GREEN + " ^");
+                MopsUtils.addLore(itemStack, new String[]{ChatColor.GREEN + "Click to deliver!"});
 
-            inv.setItem(22, itemStack);
+                inv.setItem(22, itemStack);
+            } catch (Exception ignored) { }
         } else {
             ItemStack itemStack = MopsUtils.createItem(Material.RED_STAINED_GLASS_PANE, ChatColor.RED + "^ Insert Item ^");
             MopsUtils.addLore(itemStack, new String[] {ChatColor.RED + "Insert an item you want to deliver above."});
