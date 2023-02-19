@@ -541,15 +541,23 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         Player player = event.getPlayer();
         Block block = event.getBlock();
 
-        if(!block.getLocation().equals(new Location(player.getWorld(), -99, 10, -169))) {
-            if(block.getType() != Material.LANTERN) {
-                if (MopsFiles.getRank(player).getPermLevel() < 10) {
-                    event.setCancelled(true);
+        boolean giveLamp = true;
+        try {
+            if(player.getItemInHand().getType() == Material.LANTERN) {
+                giveLamp = false;
+            }
+        } catch (Exception ignored) { }
+        if(giveLamp) {
+            if (!block.getLocation().equals(new Location(player.getWorld(), -99, 10, -169))) {
+                if (block.getType() != Material.LANTERN) {
+                    if (MopsFiles.getRank(player).getPermLevel() < 10) {
+                        event.setCancelled(true);
+                    }
                 }
             }
         }
 
-        if(block.getLocation().equals(new Location(player.getWorld(), -99, 10, -169))) {
+        if (block.getLocation().equals(new Location(player.getWorld(), -99, 10, -169))) {
             if (block.getType() == Material.LANTERN) {
                 player.sendMessage(ChatColor.GRAY + "You have shined the light back again.");
             }
@@ -1438,6 +1446,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                         }
                         player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
                         deliveryInProcessItem.put(player, new ItemStack(Material.AIR));
+                        event.getClickedInventory().setItem(13, new ItemStack(Material.AIR));
 
                         OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(deliveryInProcessReciever.get(player));
                         if (offlinePlayer.isOnline()) {
