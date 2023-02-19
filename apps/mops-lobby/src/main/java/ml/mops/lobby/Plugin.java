@@ -805,6 +805,12 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                             if(player.getInventory().contains(Material.LANTERN)) {
                                 giveLamp = false;
                             }
+                            if(player.getInventory().getItemInOffHand().getType() == Material.LANTERN) {
+                                giveLamp = false;
+                            }
+                            if(player.getInventory().getItemInMainHand().getType() == Material.LANTERN) {
+                                giveLamp = false;
+                            }
                         } catch (Exception ignored) { }
                         if(giveLamp) {
                             player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
@@ -1160,7 +1166,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
         manipulateEnderChest(player);
 
-        if(leftSecondsAgo.get(player.getUniqueId()) > 10) {
+        if(leftSecondsAgo.get(player.getUniqueId()) > 30) {
             player.getInventory().clear();
             Items items = new Items();
             player.getInventory().setItem(0, items.compass());
