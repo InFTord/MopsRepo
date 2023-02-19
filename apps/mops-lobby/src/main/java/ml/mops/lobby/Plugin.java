@@ -1237,6 +1237,8 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         }
     }
 
+    //надо билд
+
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
         Player player = (Player) event.getWhoClicked();
