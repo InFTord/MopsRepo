@@ -486,10 +486,9 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             }
             return true;
         }
-
         if(command.getName().equals("deliver")) {
             try {
-                deliveryInProcessReciever.put(player, UUID.fromString(args[0]));
+                deliveryInProcessReciever.put(player, Bukkit.getOfflinePlayer(args[0]).getUniqueId());
 
                 Inventory inv = Bukkit.createInventory(null, 27, "Insert Delivery Item");
                 fillDeliveryItemInsert(inv, new ItemStack(Material.AIR), false);
@@ -1010,13 +1009,13 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
                 try {
                     if(player.getItemInHand().getType() == Material.LANTERN) {
-                        int random = (int) (Math.random() * (10 + 1)) + 1;
+                        int random = (int) (Math.random() * (20 + 1)) + 1;
                         if(random == 1) {
                             dialogue = ChatColor.GOLD + "lmao thats a funny lantern";
                             player.sendTitle("", ChatColor.DARK_AQUA + "Something tells you to put it away.", 10, 30, 20);
                         }
 
-                        int random2 = (int) (Math.random() * (30 + 1)) + 1;
+                        int random2 = (int) (Math.random() * (60 + 1)) + 1;
                         if(random2 == 1) {
                             String name = entity.getCustomName();
                             if(!name.contains(ChatColor.MAGIC + "")) {
@@ -1425,6 +1424,15 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
                     player.sendMessage(ChatColor.GREEN + "You have delivered an item to " + Bukkit.getOfflinePlayer(deliveryInProcessReciever.get(player)).getName() + "!");
                     player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
+
+                    OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(deliveryInProcessReciever.get(player));
+                    if(offlinePlayer.isOnline()) {
+                        if (!MopsFiles.getDeliveries(offlinePlayer.getUniqueId()).isEmpty()) {
+                            Player onlinePlayer = offlinePlayer.getPlayer();
+                            int unclaimedDeliveries = MopsFiles.getDeliveries(offlinePlayer.getUniqueId()).size();
+                            onlinePlayer.sendMessage(ChatColor.BLUE + "[MopsDeliveryService] " + ChatColor.RED + "You have " + ChatColor.BOLD + unclaimedDeliveries + ChatColor.RESET + "" + ChatColor.RED + " unclaimed delivery!");
+                        }
+                    }
                 }
             }, 5L);
 
@@ -1923,7 +1931,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             List<String> lore = new ArrayList<>();
 
             lore.add(" ");
-            lore.add(ChatColor.GRAY + "Item: " + ChatColor.RESET + deliveredItem.getItemMeta().getDisplayName() + ChatColor.DARK_GRAY + " x" + deliveredItem.getAmount());
+            lore.add(ChatColor.GRAY + "Item: " + ChatColor.WHITE + deliveredItem.getItemMeta().getDisplayName() + ChatColor.DARK_GRAY + " x" + deliveredItem.getAmount());
             lore.add(ChatColor.GRAY + "Sender: " + MopsFiles.getRank(delivery.getSender()).getPrefix() + Bukkit.getPlayer(delivery.getSender()).getName());
             lore.add(ChatColor.GRAY + "Reciever: " + ChatColor.AQUA + "You");
             lore.add(" ");

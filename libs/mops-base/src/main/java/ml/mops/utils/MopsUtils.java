@@ -156,8 +156,31 @@ public class MopsUtils <OBJ extends Object, COMPONENT_COLLECTION extends Collect
 		}, 20L);
 	}
 
+	static public Map<String, String> emoteMap() {
+		Map<String, String> emotes = new HashMap<>();
+		emotes.put("skull", ChatColor.GRAY + "☠");
+		emotes.put("fire", ChatColor.GOLD + "🔥");
+		emotes.put("bangbang", ChatColor.RED + "" + ChatColor.BOLD + "!!");
+		emotes.put("exclamation", ChatColor.RED + "" + ChatColor.BOLD + "!!");
+		emotes.put("warning", ChatColor.YELLOW + "⚠");
+		emotes.put("sob", ChatColor.AQUA + "(T-T)");
+		emotes.put("cry", ChatColor.AQUA + "(T-T)");
+		emotes.put("plead", ChatColor.YELLOW + "(*-*)☞☜");
+		emotes.put("pleading", ChatColor.YELLOW + "(*-*)☞☜");
+		emotes.put("pleading_face", ChatColor.YELLOW + "(*-*)☞☜");
+
+		return emotes;
+	}
+
 	static public String emojify(String input) {
-		return input.replaceAll(":skull:", ChatColor.GRAY + "☠" + ChatColor.RESET).replaceAll(":fire:", ChatColor.GOLD + "🔥" + ChatColor.RESET).replaceAll(":bangbang:", ChatColor.RED + "" + ChatColor.BOLD + "!!" + ChatColor.RESET).replaceAll(":warning:", ChatColor.YELLOW + "⚠" + ChatColor.RESET).replaceAll(":sob:", ChatColor.AQUA + "(T-T)" + ChatColor.RESET).replaceAll(":cry:", ChatColor.AQUA + "(T-T)" + ChatColor.RESET).replaceAll(":plead:", ChatColor.YELLOW + "(*-*)☞☜" + ChatColor.RESET).replaceAll(":pleading:", ChatColor.YELLOW + "(*-*)☞☜" + ChatColor.RESET).replaceAll(":pleading_face:", ChatColor.YELLOW + "(*-*)☞☜" + ChatColor.RESET);
+		Map<String, String> emotes = emoteMap();
+
+		for(String key : emotes.keySet()) {
+			input = input.replaceAll(":" + key + ":", emotes.get(key) + ChatColor.RESET);
+			input = input.replaceAll(":" + key.toUpperCase(Locale.ROOT) + ":", emotes.get(key) + ChatColor.RESET);
+		}
+
+		return input;
 	}
 
 	static public String getPath(Plugin plugin) {

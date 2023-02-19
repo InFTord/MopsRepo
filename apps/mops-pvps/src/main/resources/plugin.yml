@@ -89,3 +89,15 @@ commands:
   testpvp:
     description: ""
     usage: /testpvp
+  emotes:
+    description: ""
+    usage: /emotes
+  emojis:
+    description: ""
+    usage: /emojis
+  emote:
+    description: ""
+    usage: /emote
+  emoji:
+    description: ""
+    usage: /emoji
