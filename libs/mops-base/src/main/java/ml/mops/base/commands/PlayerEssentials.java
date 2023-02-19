@@ -61,17 +61,19 @@ public class PlayerEssentials extends Commands {
                 List<String> ignoredKeys = new ArrayList<>();
 
                 for(String key : emotes.keySet()) {
-                    StringBuilder keyList = new StringBuilder(":" + key + ":");
-                    for(String key2 : emotes.keySet()) {
-                        if(!key2.equals(key)) {
-                            if(emotes.get(key).equals(emotes.get(key2))) {
-                                keyList.append(ChatColor.GOLD + ", " + ChatColor.WHITE + ":").append(key2).append(":");
-                                ignoredKeys.add(key2);
+                    if(!ignoredKeys.contains(key)) {
+                        StringBuilder keyList = new StringBuilder(":" + key + ":");
+                        for (String key2 : emotes.keySet()) {
+                            if (!key2.equals(key)) {
+                                if (emotes.get(key).equals(emotes.get(key2))) {
+                                    keyList.append(ChatColor.GOLD + ", " + ChatColor.WHITE + ":").append(key2).append(":");
+                                    ignoredKeys.add(key2);
+                                }
                             }
                         }
-                    }
 
-                    player.sendMessage(":" + keyList + ":" + ChatColor.GRAY + " -> " + ChatColor.WHITE + emotes.get(key));
+                        player.sendMessage(keyList.toString() + ChatColor.GRAY + " -> " + ChatColor.WHITE + emotes.get(key));
+                    }
                 }
                 player.sendMessage(ChatColor.YELLOW + "====================================");
                 return true;
