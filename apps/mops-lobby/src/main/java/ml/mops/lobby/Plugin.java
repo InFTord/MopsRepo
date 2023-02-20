@@ -245,63 +245,22 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                     Collections.sort(winList);
                     Collections.reverse(winList);
 
-                    List<UUID> usedUUIDs = new ArrayList<>();
-
-                    if (stand.getScoreboardTags().contains("wbLeader1")) {
-                        for (UUID uuid : totalWbWins.keySet()) {
-                            if (totalWbWins.get(uuid).equals(winList.get(0)) && !usedUUIDs.contains(uuid)) {
-                                String string = " wins";
-                                if (winList.get(0) == 1) {
-                                    string = " win";
+                    int i = 0;
+                    while (i < 5) {
+                        int iPlusOne = i + 1;
+                        if (stand.getScoreboardTags().contains("wbLeader" + iPlusOne)) {
+                            for (UUID uuid : totalWbWins.keySet()) {
+                                if (totalWbWins.get(uuid).equals(winList.get(i))) {
+                                    String string = " wins";
+                                    if (winList.get(i) == 1) {
+                                        string = " win";
+                                    }
+                                    stand.setCustomName(Bukkit.getOfflinePlayer(uuid).getName() + ChatColor.GRAY + " - " + ChatColor.YELLOW + winList.get(i) + string);
+                                    totalWbWins.remove(uuid);
                                 }
-                                stand.setCustomName(Bukkit.getOfflinePlayer(uuid).getName() + ChatColor.GRAY + " - " + ChatColor.YELLOW + winList.get(0) + string);
-                                usedUUIDs.add(uuid);
                             }
                         }
-                    } else if (stand.getScoreboardTags().contains("wbLeader2")) {
-                        for (UUID uuid : totalWbWins.keySet()) {
-                            if (totalWbWins.get(uuid).equals(winList.get(1)) && !usedUUIDs.contains(uuid)) {
-                                String string = " wins";
-                                if (winList.get(1) == 1) {
-                                    string = " win";
-                                }
-                                stand.setCustomName(Bukkit.getOfflinePlayer(uuid).getName() + ChatColor.GRAY + " - " + ChatColor.YELLOW + winList.get(1) + string);
-                                usedUUIDs.add(uuid);
-                            }
-                        }
-                    } else if (stand.getScoreboardTags().contains("wbLeader3")) {
-                        for (UUID uuid : totalWbWins.keySet()) {
-                            if (totalWbWins.get(uuid).equals(winList.get(2)) && !usedUUIDs.contains(uuid)) {
-                                String string = " wins";
-                                if (winList.get(2) == 1) {
-                                    string = " win";
-                                }
-                                stand.setCustomName(Bukkit.getOfflinePlayer(uuid).getName() + ChatColor.GRAY + " - " + ChatColor.YELLOW + winList.get(2) + string);
-                                usedUUIDs.add(uuid);
-                            }
-                        }
-                    } else if (stand.getScoreboardTags().contains("wbLeader4")) {
-                        for (UUID uuid : totalWbWins.keySet()) {
-                            if (totalWbWins.get(uuid).equals(winList.get(3)) && !usedUUIDs.contains(uuid)) {
-                                String string = " wins";
-                                if (winList.get(3) == 1) {
-                                    string = " win";
-                                }
-                                stand.setCustomName(Bukkit.getOfflinePlayer(uuid).getName() + ChatColor.GRAY + " - " + ChatColor.YELLOW + winList.get(3) + string);
-                                usedUUIDs.add(uuid);
-                            }
-                        }
-                    } else if (stand.getScoreboardTags().contains("wbLeader5")) {
-                        for (UUID uuid : totalWbWins.keySet()) {
-                            if (totalWbWins.get(uuid).equals(winList.get(4)) && !usedUUIDs.contains(uuid)) {
-                                String string = " wins";
-                                if (winList.get(4) == 1) {
-                                    string = " win";
-                                }
-                                stand.setCustomName(Bukkit.getOfflinePlayer(uuid).getName() + ChatColor.GRAY + " - " + ChatColor.YELLOW + winList.get(4) + string);
-                                usedUUIDs.add(uuid);
-                            }
-                        }
+                        i++;
                     }
                 }
                 if(entity.getScoreboardTags().contains("sittingStand")) {
@@ -1230,7 +1189,11 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
         if(!MopsFiles.getDeliveries(player.getUniqueId()).isEmpty()) {
             int unclaimedDeliveries = MopsFiles.getDeliveries(player.getUniqueId()).size();
-            player.sendMessage( ChatColor.BLUE + "[MopsDeliveryService] " + ChatColor.RED + "You have " + ChatColor.BOLD + unclaimedDeliveries + ChatColor.RESET + "" + ChatColor.RED + " unclaimed delivery!");
+            String delivery = "delivery";
+            if(unclaimedDeliveries > 1) {
+                delivery = "deliveries";
+            }
+            player.sendMessage( ChatColor.BLUE + "[MopsDeliveryService] " + ChatColor.RED + "You have " + ChatColor.BOLD + unclaimedDeliveries + ChatColor.RESET + "" + ChatColor.RED + " unclaimed " + delivery + "!");
         }
     }
 
@@ -1645,19 +1608,19 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         } catch (Exception ignored) { }
     }
 
-    @EventHandler
-    public void onInventoryClose(InventoryCloseEvent event) {
-        Player player = (Player) event.getPlayer();
-        Inventory inv = event.getInventory();
-
-        try {
-            if (deliveryInsertInventories.contains(inv)) {
-                if(deliveryInProcessItem.get(player).getType() != Material.AIR) {
-                    player.getInventory().addItem(deliveryInProcessItem.get(player));
-                }
-            }
-        } catch (Exception ignored) { }
-    }
+//    @EventHandler
+//    public void onInventoryClose(InventoryCloseEvent event) {
+//        Player player = (Player) event.getPlayer();
+//        Inventory inv = event.getInventory();
+//
+//        try {
+//            if (deliveryInsertInventories.contains(inv)) {
+//                if(deliveryInProcessItem.get(player).getType() != Material.AIR) {
+//                    player.getInventory().addItem(deliveryInProcessItem.get(player));
+//                }
+//            }
+//        } catch (Exception ignored) { }
+//    }
 
     @EventHandler
     public void onMoveItemEvent(InventoryMoveItemEvent event) {
