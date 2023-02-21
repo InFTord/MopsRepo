@@ -132,8 +132,10 @@ public class AdminUtils {
                         if(args[0].equals("getskullid")) {
                             ItemStack item = player.getItemInHand();
                             String string = MopsUtils.getHeadID(item).replaceAll("=\"}]}}}", "");
-                            string = string.substring(string.indexOf('"')).trim();
-                            player.sendMessage("https://mops.pvp/" + string.replaceAll("\"", ""));
+                            string = string.substring(string.indexOf('"')).trim().replaceAll("\"", "");
+
+                            TextComponent message = Component.text(string).hoverEvent(Component.text("Click to copy")).clickEvent(ClickEvent.clickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, string));
+                            player.sendMessage(message);
                         }
                         if(args[0].equals("playsound")) {
                             player.playSound(player.getLocation(), Sound.valueOf(args[1]), Float.parseFloat(args[2]), Float.parseFloat(args[3]));
@@ -156,19 +158,19 @@ public class AdminUtils {
                                         if (stand.getScoreboardTags().contains("wbLeader" + iPlusOne)) {
                                             List<UUID> badUUIDneedToRemove = new ArrayList<>();
                                             for (UUID uuid : totalWbWins.keySet()) {
-                                                if (totalWbWins.get(uuid).equals(winList.get(i))) {
+                                                if (totalWbWins.get(uuid).equals(winList.get(0))) {
                                                     String string = " wins";
-                                                    if (winList.get(i) == 1) {
+                                                    if (winList.get(0) == 1) {
                                                         string = " win";
                                                     }
-                                                    stand.setCustomName(Bukkit.getOfflinePlayer(uuid).getName() + ChatColor.GRAY + " - " + ChatColor.YELLOW + winList.get(i) + string);
+                                                    stand.setCustomName(Bukkit.getOfflinePlayer(uuid).getName() + ChatColor.GRAY + " - " + ChatColor.YELLOW + winList.get(0) + string);
                                                     badUUIDneedToRemove.add(uuid);
                                                 }
                                             }
                                             for(UUID badUUID : badUUIDneedToRemove) {
                                                 totalWbWins.remove(badUUID, i);
                                             }
-                                            winList.remove(i);
+                                            winList.remove(0);
                                         }
                                         i++;
                                     }

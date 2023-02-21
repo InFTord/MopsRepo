@@ -7,6 +7,7 @@ import ml.mops.base.commands.Commands;
 import ml.mops.network.Aura;
 import ml.mops.network.Delivery;
 import ml.mops.network.MopsBadge;
+import ml.mops.utils.Cuboid;
 import ml.mops.utils.MopsColor;
 import ml.mops.utils.MopsFiles;
 import ml.mops.utils.MopsUtils;
@@ -107,12 +108,13 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     List<Location> usables = new ArrayList<>();
 
     ArmorStand ball;
+    World mainworld;
 
 
     @Override
     public void onEnable() {
         Bukkit.getServer().getPluginManager().registerEvents(this, this);
-        World mainworld = Bukkit.getServer().getWorlds().get(0);
+        mainworld = Bukkit.getServer().getWorlds().get(0);
 
         for(Entity entity : mainworld.getEntities()) {
             if(entity.getScoreboardTags().contains("killOnDisable")) {
@@ -257,19 +259,19 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                         if (stand.getScoreboardTags().contains("wbLeader" + iPlusOne)) {
                             List<UUID> badUUIDneedToRemove = new ArrayList<>();
                             for (UUID uuid : totalWbWins.keySet()) {
-                                if (totalWbWins.get(uuid).equals(winList.get(i))) {
+                                if (totalWbWins.get(uuid).equals(winList.get(0))) {
                                     String string = " wins";
-                                    if (winList.get(i) == 1) {
+                                    if (winList.get(0) == 1) {
                                         string = " win";
                                     }
-                                    stand.setCustomName(Bukkit.getOfflinePlayer(uuid).getName() + ChatColor.GRAY + " - " + ChatColor.YELLOW + winList.get(i) + string);
+                                    stand.setCustomName(Bukkit.getOfflinePlayer(uuid).getName() + ChatColor.GRAY + " - " + ChatColor.YELLOW + winList.get(0) + string);
                                     badUUIDneedToRemove.add(uuid);
                                 }
                             }
                             for(UUID badUUID : badUUIDneedToRemove) {
                                 totalWbWins.remove(badUUID, i);
                             }
-                            winList.remove(i);
+                            winList.remove(0);
                         }
                         i++;
                     }
@@ -522,6 +524,22 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 ball.setVelocity(player.getEyeLocation().getDirection().multiply(random));
             }
             player.playSound(player.getLocation(), Sound.BLOCK_BAMBOO_HIT, 1, 1);
+        }
+
+        Location loc = event.getTo();
+
+        Cuboid targetsCuboid = new Cuboid(new Location(mainworld, -47, 11, -185), new Location(mainworld, -47, 8, -178));
+        Cuboid melonsCuboid = new Cuboid(new Location(mainworld, -50, 11, -175), new Location(mainworld, -57, 8, -175));
+
+        for(Block block : targetsCuboid.getBlocks()) {
+            if(block.getLocation() == loc) {
+                event.setCancelled(true);
+            }
+        }
+        for(Block block : melonsCuboid.getBlocks()) {
+            if(block.getLocation() == loc) {
+                event.setCancelled(true);
+            }
         }
 
         if(auraTimer.get(player) != 2) {
@@ -848,11 +866,14 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                             if(!atmButtons.contains(event.getClickedBlock().getLocation())) {
                                 Block funkyAhhBlock = event.getClickedBlock().getRelative(event.getBlockFace());
 
-                                if(!funkyAhhBlock.getLocation().equals(new Location(player.getWorld(), -99, 10, -169))) {
-                                    if(funkyAhhBlock.getType() != Material.LANTERN) {
-                                        event.setCancelled(true);
+                                try {
+                                    if (!funkyAhhBlock.getLocation().equals(new Location(player.getWorld(), -99, 10, -169))) {
+                                        if (player.getItemInHand().getType() != Material.LANTERN) {
+                                            event.setCancelled(true);
+                                        }
                                     }
-                                }
+                                } catch (Exception ignored) { }
+
                                 if(funkyAhhBlock.getLocation().equals(new Location(player.getWorld(), -99, 10, -169))) {
                                     if(funkyAhhBlock.getType() == Material.LANTERN) {
                                         player.sendMessage(ChatColor.GRAY + "You have shined the light back again.");
@@ -2035,6 +2056,35 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             MopsUtils.addLore(itemStack, new String[] {ChatColor.RED + "Insert an item you want to deliver above."});
 
             inv.setItem(22, itemStack);
+        }
+    }
+
+    public void spawnTarget() {
+        int random = (int) (Math.random() * (2 + 1)) + 1;
+        int random2 = (int) (Math.random() * (2 + 1)) + 1;
+        Location loc = new Location(mainworld, -44, 9, -177);
+
+        if(random == 1) {
+            loc.setZ(-186);
+        }
+        if(random2 == 1) {
+            loc.setY(7);
+        }
+
+        loc.setYaw(90);
+
+        ArmorStand target = (ArmorStand) mainworld.spawnEntity(loc, EntityType.ARMOR_STAND);
+        target.setInvisible(true);
+        target.setGravity(false);
+
+        target.setHelmet(new ItemStack(Material.TARGET));
+
+        target.addScoreboardTag("target");
+
+        if(random == 1) {
+            target.addScoreboardTag("left");
+        } else {
+            target.addScoreboardTag("right");
         }
     }
 
