@@ -257,8 +257,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
                     int i = 0;
                     while (i < 5) {
-                        int iPlusOne = i + 1;
-                        if (stand.getScoreboardTags().contains("wbLeader" + iPlusOne)) {
+                        if (stand.getScoreboardTags().contains("wbLeader" + (i+1))) {
                             boolean exhausted = false;
                             for (UUID uuid : totalWbWins.keySet()) {
                                 if (!exhausted) {
