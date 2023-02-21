@@ -144,6 +144,8 @@ public class AdminUtils {
                             player.sendMessage(MopsUtils.getPath(plugin));
                         }
                         if(args[0].equals("refreshlb")) {
+                            List<UUID> badUUID = new ArrayList<>();
+
                             for(Entity entity : player.getWorld().getEntities()) {
                                 if(entity instanceof ArmorStand stand) {
                                     HashMap<UUID, Integer> totalWbWins = MopsFiles.getTotalWinHash();
@@ -152,12 +154,10 @@ public class AdminUtils {
                                     Collections.sort(winList);
                                     Collections.reverse(winList);
 
-                                    List<UUID> badUUID = new ArrayList<>();
-
                                     int i = 0;
                                     while (i < 5) {
-                                        boolean exhausted = false;
                                         if (stand.getScoreboardTags().contains("wbLeader" + (i+1))) {
+                                            boolean exhausted = false;
                                             for (UUID uuid : totalWbWins.keySet()) {
                                                 if (!exhausted) {
                                                     if (!badUUID.contains(uuid)) {
@@ -173,8 +173,8 @@ public class AdminUtils {
                                                     }
                                                 }
                                             }
-                                            winList.remove(0);
                                         }
+                                        winList.remove(0);
                                         i++;
                                     }
                                 }

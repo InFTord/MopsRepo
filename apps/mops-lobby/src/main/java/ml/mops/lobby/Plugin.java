@@ -239,6 +239,8 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 mainworld.setStorm(true);
             }
 
+            List<UUID> badUUID = new ArrayList<>();
+
             for(Entity entity : mainworld.getEntities()) {
                 if(entity instanceof ArmorStand stand) {
                     if(entity.getScoreboardTags().contains("sittingStand")) {
@@ -252,8 +254,6 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                     List<Integer> winList = new ArrayList<>(totalWbWins.values().stream().toList());
                     Collections.sort(winList);
                     Collections.reverse(winList);
-
-                    List<UUID> badUUID = new ArrayList<>();
 
                     int i = 0;
                     while (i < 5) {
