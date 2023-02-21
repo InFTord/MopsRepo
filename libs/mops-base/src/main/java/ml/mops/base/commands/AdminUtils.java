@@ -152,25 +152,28 @@ public class AdminUtils {
                                     Collections.sort(winList);
                                     Collections.reverse(winList);
 
-                                    List<UUID> badUUIDneedToRemove = new ArrayList<>();
+                                    List<UUID> badUUID = new ArrayList<>();
 
                                     int i = 0;
                                     while (i < 5) {
                                         int iPlusOne = i + 1;
                                         if (stand.getScoreboardTags().contains("wbLeader" + iPlusOne)) {
+                                            boolean exhausted = false;
                                             for (UUID uuid : totalWbWins.keySet()) {
-                                                if (totalWbWins.get(uuid).equals(winList.get(0))) {
-                                                    String string = " wins";
-                                                    if (winList.get(0) == 1) {
-                                                        string = " win";
+                                                if (!exhausted) {
+                                                    if (!badUUID.contains(uuid)) {
+                                                        if (totalWbWins.get(uuid).equals(winList.get(0))) {
+                                                            String string = " wins";
+                                                            if (winList.get(0) == 1) {
+                                                                string = " win";
+                                                            }
+                                                            stand.setCustomName(Bukkit.getOfflinePlayer(uuid).getName() + ChatColor.GRAY + " - " + ChatColor.YELLOW + winList.get(0) + string);
+                                                            badUUID.add(uuid);
+                                                            exhausted = true;
+                                                        }
                                                     }
-                                                    stand.setCustomName(Bukkit.getOfflinePlayer(uuid).getName() + ChatColor.GRAY + " - " + ChatColor.YELLOW + winList.get(0) + string);
-                                                    badUUIDneedToRemove.add(uuid);
                                                 }
                                             }
-                                        }
-                                        for(UUID badUUID : badUUIDneedToRemove) {
-                                            totalWbWins.remove(badUUID, i);
                                         }
                                         winList.remove(0);
                                         i++;

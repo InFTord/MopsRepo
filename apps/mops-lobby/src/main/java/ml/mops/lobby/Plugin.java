@@ -259,15 +259,19 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                     while (i < 5) {
                         int iPlusOne = i + 1;
                         if (stand.getScoreboardTags().contains("wbLeader" + iPlusOne)) {
+                            boolean exhausted = false;
                             for (UUID uuid : totalWbWins.keySet()) {
-                                if(!badUUID.contains(uuid)) {
-                                    if (totalWbWins.get(uuid).equals(winList.get(0))) {
-                                        String string = " wins";
-                                        if (winList.get(0) == 1) {
-                                            string = " win";
+                                if (!exhausted) {
+                                    if (!badUUID.contains(uuid)) {
+                                        if (totalWbWins.get(uuid).equals(winList.get(0))) {
+                                            String string = " wins";
+                                            if (winList.get(0) == 1) {
+                                                string = " win";
+                                            }
+                                            stand.setCustomName(Bukkit.getOfflinePlayer(uuid).getName() + ChatColor.GRAY + " - " + ChatColor.YELLOW + winList.get(0) + string);
+                                            badUUID.add(uuid);
+                                            exhausted = true;
                                         }
-                                        stand.setCustomName(Bukkit.getOfflinePlayer(uuid).getName() + ChatColor.GRAY + " - " + ChatColor.YELLOW + winList.get(0) + string);
-                                        badUUID.add(uuid);
                                     }
                                 }
                             }
@@ -526,18 +530,16 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             player.playSound(player.getLocation(), Sound.BLOCK_BAMBOO_HIT, 1, 1);
         }
 
-        Location loc = event.getTo();
-
         Cuboid targetsCuboid = new Cuboid(new Location(mainworld, -47, 11, -185), new Location(mainworld, -47, 8, -178));
         Cuboid melonsCuboid = new Cuboid(new Location(mainworld, -50, 11, -175), new Location(mainworld, -57, 8, -175));
 
         for(Block block : targetsCuboid.getBlocks()) {
-            if(block.getLocation() == loc) {
+            if(block.getLocation().getWorld().getNearbyEntities(block.getLocation(), 0.5, 0.5, 0.5).contains(player)) {
                 event.setCancelled(true);
             }
         }
         for(Block block : melonsCuboid.getBlocks()) {
-            if(block.getLocation() == loc) {
+            if(block.getLocation().getWorld().getNearbyEntities(block.getLocation(), 0.5, 0.5, 0.5).contains(player)) {
                 event.setCancelled(true);
             }
         }
