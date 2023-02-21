@@ -533,13 +533,14 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         Cuboid melonsCuboid = new Cuboid(new Location(mainworld, -50, 11, -175), new Location(mainworld, -57, 8, -175));
 
         for(Block block : targetsCuboid.getBlocks()) {
-            if(block.getLocation().getWorld().getNearbyEntities(block.getLocation(), 0.5, 0.5, 0.5).contains(player)) {
-                event.setCancelled(true);
+            if(block.getLocation().getWorld().getNearbyEntities(block.getLocation(), 0.2, 0.2, 0.2).contains(player)) {
+                player.setVelocity(new Vector(-0.5, 0, 0));
             }
         }
         for(Block block : melonsCuboid.getBlocks()) {
-            if(block.getLocation().getWorld().getNearbyEntities(block.getLocation(), 0.5, 0.5, 0.5).contains(player)) {
+            if(block.getLocation().getWorld().getNearbyEntities(block.getLocation(), 0.2, 0.2, 0.2).contains(player)) {
                 event.setCancelled(true);
+                player.setVelocity(new Vector(0, 0, -0.5));
             }
         }
 

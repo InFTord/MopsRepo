@@ -156,8 +156,8 @@ public class AdminUtils {
 
                                     int i = 0;
                                     while (i < 5) {
+                                        boolean exhausted = false;
                                         if (stand.getScoreboardTags().contains("wbLeader" + (i+1))) {
-                                            boolean exhausted = false;
                                             for (UUID uuid : totalWbWins.keySet()) {
                                                 if (!exhausted) {
                                                     if (!badUUID.contains(uuid)) {
@@ -173,8 +173,8 @@ public class AdminUtils {
                                                     }
                                                 }
                                             }
+                                            winList.remove(0);
                                         }
-                                        winList.remove(0);
                                         i++;
                                     }
                                 }
