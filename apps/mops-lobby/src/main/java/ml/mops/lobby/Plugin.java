@@ -253,11 +253,12 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                     Collections.sort(winList);
                     Collections.reverse(winList);
 
+                    List<UUID> badUUIDneedToRemove = new ArrayList<>();
+
                     int i = 0;
                     while (i < 5) {
                         int iPlusOne = i + 1;
                         if (stand.getScoreboardTags().contains("wbLeader" + iPlusOne)) {
-                            List<UUID> badUUIDneedToRemove = new ArrayList<>();
                             for (UUID uuid : totalWbWins.keySet()) {
                                 if (totalWbWins.get(uuid).equals(winList.get(0))) {
                                     String string = " wins";
@@ -268,11 +269,11 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                                     badUUIDneedToRemove.add(uuid);
                                 }
                             }
-                            for(UUID badUUID : badUUIDneedToRemove) {
-                                totalWbWins.remove(badUUID, i);
-                            }
-                            winList.remove(0);
                         }
+                        for(UUID badUUID : badUUIDneedToRemove) {
+                            totalWbWins.remove(badUUID, i);
+                        }
+                        winList.remove(0);
                         i++;
                     }
                 }
