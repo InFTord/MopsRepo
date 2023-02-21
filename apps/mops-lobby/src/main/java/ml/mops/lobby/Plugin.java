@@ -239,6 +239,12 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
             for(Entity entity : mainworld.getEntities()) {
                 if(entity instanceof ArmorStand stand) {
+                    if(entity.getScoreboardTags().contains("sittingStand")) {
+                        if(entity.getPassengers().isEmpty()) {
+                            entity.remove();
+                        }
+                    }
+
                     HashMap<UUID, Integer> totalWbWins = MopsFiles.getTotalWinHash();
 
                     List<Integer> winList = new ArrayList<>(totalWbWins.values().stream().toList());
@@ -256,16 +262,12 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                                         string = " win";
                                     }
                                     stand.setCustomName(Bukkit.getOfflinePlayer(uuid).getName() + ChatColor.GRAY + " - " + ChatColor.YELLOW + winList.get(i) + string);
-                                    totalWbWins.remove(uuid);
+                                    totalWbWins.remove(uuid, i);
+                                    winList.remove(i);
                                 }
                             }
                         }
                         i++;
-                    }
-                }
-                if(entity.getScoreboardTags().contains("sittingStand")) {
-                    if(entity.getPassengers().isEmpty()) {
-                        entity.remove();
                     }
                 }
             }

@@ -1128,19 +1128,12 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 							woolRemove(28, player, teamname);
 							stickCooldownTicks.put(player, 1);
 
-							double interactionPointX = event.getInteractionPoint().getX();
-							double interactionPointY = event.getInteractionPoint().getY();
-							double interactionPointZ = event.getInteractionPoint().getZ();
-							double playerX = player.getLocation().getX();
-							double playerY = player.getLocation().getY();
-							double playerZ = player.getLocation().getZ();
-							double x = playerX - interactionPointX;
-							double y = playerY - interactionPointY;
-							double z = playerZ - interactionPointZ;
+							double x = player.getEyeLocation().getDirection().getX();
+							double z = player.getEyeLocation().getDirection().getZ();
+							double y = 0.4;
 
-							x = x * 0.4 + (player.getEyeLocation().getDirection().getX() * -0.5);
-							y = (y * 0.075) + 0.45;
-							z = z * 0.4 + (player.getEyeLocation().getDirection().getZ() * -0.5);
+							x = x * -1.9;
+							z = z * -1.9;
 
 							player.setVelocity(player.getVelocity().add((new Vector(x, y, z))));
 
@@ -1167,19 +1160,12 @@ public class Plugin extends MopsPlugin implements Listener, CommandExecutor {
 							woolRemove(28, player, teamname);
 							stickCooldownTicks.put(player, 1);
 
-							double interactionPointX = event.getInteractionPoint().getX();
-							double interactionPointY = event.getInteractionPoint().getY();
-							double interactionPointZ = event.getInteractionPoint().getZ();
-							double playerX = player.getLocation().getX();
-							double playerY = player.getLocation().getY();
-							double playerZ = player.getLocation().getZ();
-							double x = playerX - interactionPointX;
-							double y = playerY - interactionPointY;
-							double z = playerZ - interactionPointZ;
+							double x = player.getEyeLocation().getDirection().getX();
+							double z = player.getEyeLocation().getDirection().getZ();
+							double y = 0.5;
 
-							x = x * 0.6 + (player.getEyeLocation().getDirection().getX() * -0.6);
-							y = (y * 0.075) + 0.5;
-							z = z * 0.6 + (player.getEyeLocation().getDirection().getZ() * -0.6);
+							x = x * -2.3;
+							z = z * -2.3;
 
 							player.setVelocity(player.getVelocity().add((new Vector(x, y, z))));
 

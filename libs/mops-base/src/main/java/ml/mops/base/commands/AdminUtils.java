@@ -20,9 +20,7 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Slime;
+import org.bukkit.entity.*;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -142,6 +140,38 @@ public class AdminUtils {
                         }
                         if(args[0].equals("path")) {
                             player.sendMessage(MopsUtils.getPath(plugin));
+                        }
+                        if(args[0].equals("refreshlb")) {
+                            for(Entity entity : player.getWorld().getEntities()) {
+                                if(entity instanceof ArmorStand stand) {
+                                    HashMap<UUID, Integer> totalWbWins = MopsFiles.getTotalWinHash();
+
+                                    List<Integer> winList = new ArrayList<>(totalWbWins.values().stream().toList());
+                                    Collections.sort(winList);
+                                    Collections.reverse(winList);
+
+                                    player.sendMessage(totalWbWins.toString());
+
+                                    int i = 0;
+                                    while (i < 5) {
+                                        int iPlusOne = i + 1;
+                                        if (stand.getScoreboardTags().contains("wbLeader" + iPlusOne)) {
+                                            for (UUID uuid : totalWbWins.keySet()) {
+                                                if (totalWbWins.get(uuid).equals(winList.get(i))) {
+                                                    String string = " wins";
+                                                    if (winList.get(i) == 1) {
+                                                        string = " win";
+                                                    }
+                                                    stand.setCustomName(Bukkit.getOfflinePlayer(uuid).getName() + ChatColor.GRAY + " - " + ChatColor.YELLOW + winList.get(i) + string);
+                                                    totalWbWins.remove(uuid, i);
+                                                    winList.remove(i);
+                                                }
+                                            }
+                                        }
+                                        i++;
+                                    }
+                                }
+                            }
                         }
                         if(args[0].equals("server")) {
                             MopsUtils.sendToServer(plugin, player, args[1]);
