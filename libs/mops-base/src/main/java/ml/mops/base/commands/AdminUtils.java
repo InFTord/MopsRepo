@@ -150,12 +150,11 @@ public class AdminUtils {
                                     Collections.sort(winList);
                                     Collections.reverse(winList);
 
-                                    player.sendMessage(totalWbWins.toString());
-
                                     int i = 0;
                                     while (i < 5) {
                                         int iPlusOne = i + 1;
                                         if (stand.getScoreboardTags().contains("wbLeader" + iPlusOne)) {
+                                            List<UUID> badUUIDneedToRemove = new ArrayList<>();
                                             for (UUID uuid : totalWbWins.keySet()) {
                                                 if (totalWbWins.get(uuid).equals(winList.get(i))) {
                                                     String string = " wins";
@@ -163,10 +162,13 @@ public class AdminUtils {
                                                         string = " win";
                                                     }
                                                     stand.setCustomName(Bukkit.getOfflinePlayer(uuid).getName() + ChatColor.GRAY + " - " + ChatColor.YELLOW + winList.get(i) + string);
-                                                    totalWbWins.remove(uuid, i);
-                                                    winList.remove(i);
+                                                    badUUIDneedToRemove.add(uuid);
                                                 }
                                             }
+                                            for(UUID badUUID : badUUIDneedToRemove) {
+                                                totalWbWins.remove(badUUID, i);
+                                            }
+                                            winList.remove(i);
                                         }
                                         i++;
                                     }

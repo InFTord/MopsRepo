@@ -255,6 +255,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                     while (i < 5) {
                         int iPlusOne = i + 1;
                         if (stand.getScoreboardTags().contains("wbLeader" + iPlusOne)) {
+                            List<UUID> badUUIDneedToRemove = new ArrayList<>();
                             for (UUID uuid : totalWbWins.keySet()) {
                                 if (totalWbWins.get(uuid).equals(winList.get(i))) {
                                     String string = " wins";
@@ -262,10 +263,13 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                                         string = " win";
                                     }
                                     stand.setCustomName(Bukkit.getOfflinePlayer(uuid).getName() + ChatColor.GRAY + " - " + ChatColor.YELLOW + winList.get(i) + string);
-                                    totalWbWins.remove(uuid, i);
-                                    winList.remove(i);
+                                    badUUIDneedToRemove.add(uuid);
                                 }
                             }
+                            for(UUID badUUID : badUUIDneedToRemove) {
+                                totalWbWins.remove(badUUID, i);
+                            }
+                            winList.remove(i);
                         }
                         i++;
                     }
@@ -1478,7 +1482,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                             Delivery delivery = new Delivery().createNewDelivery(deliveryInProcessItem.get(player), player.getUniqueId(), deliveryInProcessReciever.get(player));
                             MopsFiles.addDelivery(delivery);
 
-                            if (Bukkit.getOfflinePlayer(deliveryInProcessReciever.get(player)).getName().equals("null")) {
+                            if (Bukkit.getOfflinePlayer(deliveryInProcessReciever.get(player)).getName() == null) {
                                 player.sendMessage(ChatColor.GREEN + "You have delivered an item!");
                             } else {
                                 player.sendMessage(ChatColor.GREEN + "You have delivered an item to " + Bukkit.getOfflinePlayer(deliveryInProcessReciever.get(player)).getName() + "!");

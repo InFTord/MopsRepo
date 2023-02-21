@@ -534,7 +534,7 @@ public class MopsUtils <OBJ extends Object, COMPONENT_COLLECTION extends Collect
 		List<String> strings = Arrays.asList(string.toLowerCase(Locale.ROOT).split(" "));
 		String lowercase = string.toLowerCase(Locale.ROOT);
 
-		if(strings.contains("kys")) {
+		if(strings.contains("kys") || strings.contains("kуs")) {
 			return true;
 		}
 		if(noSpace.contains("killyoursel") || noSpace.contains("卐") || noSpace.contains("nigg") || noSpace.contains("хох") || noSpace.contains("canibeadmin")) {
