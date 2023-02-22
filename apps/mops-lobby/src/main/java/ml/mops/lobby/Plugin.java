@@ -860,26 +860,14 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 }
             }
 
+            //лантерн
+
             if(MopsFiles.getRank(player).getPermLevel() < 10) {
                 if (!flippable.contains(event.getClickedBlock().getLocation())) {
                     if(!usables.contains(event.getClickedBlock().getLocation())) {
                         if(!openables.contains(event.getClickedBlock().getLocation())) {
                             if(!atmButtons.contains(event.getClickedBlock().getLocation())) {
-                                Block funkyAhhBlock = event.getClickedBlock().getRelative(event.getBlockFace());
-
-                                try {
-                                    if (!funkyAhhBlock.getLocation().equals(new Location(player.getWorld(), -99, 10, -169))) {
-                                        event.setCancelled(true);
-                                        funkyAhhBlock.setType(Material.LANTERN);
-                                        player.getInventory().remove(new Items().funnyLantern());
-                                    }
-                                } catch (Exception ignored) { }
-
-                                if(funkyAhhBlock.getLocation().equals(new Location(player.getWorld(), -99, 10, -169))) {
-                                    if(funkyAhhBlock.getType() == Material.LANTERN) {
-                                        player.sendMessage(ChatColor.GRAY + "You have shined the light back again.");
-                                    }
-                                }
+                                event.setCancelled(true);
                             }
                         }
                     }
