@@ -534,13 +534,12 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
         for(Block block : targetsCuboid.getBlocks()) {
             if(block.getLocation().getWorld().getNearbyEntities(block.getLocation(), 0.2, 0.2, 0.2).contains(player)) {
-                player.setVelocity(new Vector(-0.5, 0, 0));
+                player.setVelocity(new Vector(-0.5, 0.2, 0));
             }
         }
         for(Block block : melonsCuboid.getBlocks()) {
             if(block.getLocation().getWorld().getNearbyEntities(block.getLocation(), 0.2, 0.2, 0.2).contains(player)) {
-                event.setCancelled(true);
-                player.setVelocity(new Vector(0, 0, -0.5));
+                player.setVelocity(new Vector(0, 0.2, -0.5));
             }
         }
 
@@ -870,9 +869,9 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
                                 try {
                                     if (!funkyAhhBlock.getLocation().equals(new Location(player.getWorld(), -99, 10, -169))) {
-                                        if (player.getItemInHand().getType() != Material.LANTERN) {
-                                            event.setCancelled(true);
-                                        }
+                                        event.setCancelled(true);
+                                        funkyAhhBlock.setType(Material.LANTERN);
+                                        player.getInventory().remove(new Items().funnyLantern());
                                     }
                                 } catch (Exception ignored) { }
 
@@ -1187,16 +1186,21 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
         if(leftSecondsAgo.get(player.getUniqueId()) > 20) {
             player.getInventory().clear();
-            Items items = new Items();
-
-            ItemStack compass = items.compass();
-            ItemStack custom = items.customization();
-            stupidItems.add(compass); stupidItems.add(custom);
-            player.getInventory().setItem(0, compass);
-            player.getInventory().setItem(8, custom);
         } else {
             player.sendMessage(ChatColor.GREEN + "Your inventory was saved since you logged off very recently!");
         }
+
+        Items items = new Items();
+
+        ItemStack compass = items.compass();
+        ItemStack profile = items.profile();
+        ItemStack custom = items.customization();
+        stupidItems.add(compass); stupidItems.add(custom); stupidItems.add(profile);
+        player.getInventory().setItem(0, compass);
+        player.getInventory().setItem(1, profile);
+        player.getInventory().setItem(8, custom);
+
+
 
         Location spawn = new Location(player.getWorld(), -106.0, 9, -186.0);
         spawn.setYaw(-90);
@@ -2019,7 +2023,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
             lore.add(" ");
             lore.add(ChatColor.GRAY + "Item: " + ChatColor.WHITE + deliveredItem.getItemMeta().getDisplayName() + ChatColor.DARK_GRAY + " x" + deliveredItem.getAmount());
-            lore.add(ChatColor.GRAY + "Sender: " + MopsFiles.getRank(delivery.getSender()).getPrefix() + Bukkit.getPlayer(delivery.getSender()).getName());
+            lore.add(ChatColor.GRAY + "Sender: " + MopsFiles.getRank(delivery.getSender()).getPrefix() + Bukkit.getOfflinePlayer(delivery.getSender()).getName());
             lore.add(ChatColor.GRAY + "Reciever: " + ChatColor.AQUA + "You");
             lore.add(" ");
             lore.add(ChatColor.DARK_GRAY + "Delivery ID: " + delivery.getDeliveryID());
