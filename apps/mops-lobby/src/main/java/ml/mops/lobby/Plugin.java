@@ -1418,6 +1418,12 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
                 player.sendMessage(ChatColor.GREEN + "You have changed your language to " + ChatColor.stripColor(languages.get(nextLanguage).getName()));
                 player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
+
+                Inventory inv = Bukkit.createInventory(null, 27, "Your Profile & Settings");
+                fillProfileMenu(inv, player);
+
+                profileGUI.put(player, inv);
+                player.openInventory(profileGUI.get(player));
             }
         }
         if (event.getClickedInventory() == cosmeticSelector.get(player)) {
