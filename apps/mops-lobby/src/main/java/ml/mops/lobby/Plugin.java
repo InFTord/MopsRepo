@@ -1405,6 +1405,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 int i = 0;
                 while (i < languages.size()) {
                     map.put(languages.get(i), i);
+                    i++;
                 }
 
                 int playerLanguage = map.get(MopsFiles.getLanguage(player));
