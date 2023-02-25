@@ -1354,8 +1354,8 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                         player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1, 2);
                     }
                     case 13 -> {
-                        newDestination = new Location(world, -87.0, 9, -204.0);
-                        newDestination.setYaw(180);
+                        newDestination = new Location(world, -130.0, 9, -174.0);
+                        newDestination.setYaw(90);
                         player.teleport(newDestination);
                         player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1, 2);
                     }
@@ -1411,7 +1411,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 int playerLanguage = map.get(MopsFiles.getLanguage(player));
                 int nextLanguage = 0;
 
-                if(playerLanguage < languages.size()) {
+                if((playerLanguage + 1) < languages.size()) {
                     nextLanguage = playerLanguage + 1;
                 }
 
@@ -1598,6 +1598,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
                         enderChestBackpack.put(player, event.getCurrentItem());
 
+                        player.playSound(player.getLocation(), Sound.ITEM_BUNDLE_DROP_CONTENTS, 5, 1);
                         player.openInventory(box.getInventory());
                     }
                     if(event.isRightClick()) {
