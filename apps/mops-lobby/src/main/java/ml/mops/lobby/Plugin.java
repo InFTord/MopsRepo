@@ -6,6 +6,7 @@ import club.minnced.discord.webhook.send.WebhookEmbedBuilder;
 import ml.mops.base.commands.Commands;
 import ml.mops.network.Aura;
 import ml.mops.network.Delivery;
+import ml.mops.network.Language;
 import ml.mops.network.MopsBadge;
 import ml.mops.utils.Cuboid;
 import ml.mops.utils.MopsColor;
@@ -14,9 +15,7 @@ import ml.mops.utils.MopsUtils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 import org.bukkit.block.ShulkerBox;
-import org.bukkit.block.data.type.Lantern;
 import org.bukkit.entity.Player;
 import org.bukkit.*;
 import org.bukkit.command.Command;
@@ -33,7 +32,6 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.*;
@@ -75,6 +73,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     HashMap<Player, Double> auraRadius = new HashMap<>();
 
     HashMap<Player, Inventory> gamesGUI = new HashMap<>();
+    HashMap<Player, Inventory> profileGUI = new HashMap<>();
     HashMap<Player, Inventory> effectsGUI = new HashMap<>();
     HashMap<Player, Inventory> auraGUI = new HashMap<>();
     HashMap<Player, Inventory> cosmeticSelector = new HashMap<>();
@@ -177,6 +176,10 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         openables.add(new Location(mainworld, 156, 3, 148));
         openables.add(new Location(mainworld, -91, 9, -167));
         openables.add(new Location(mainworld, -93, 9, -167));
+        openables.add(new Location(mainworld, -103, 16, -198));
+        openables.add(new Location(mainworld, -102, 15, -198));
+        openables.add(new Location(mainworld, -103, 15, -198));
+        openables.add(new Location(mainworld, -103, 15, -199));
 
         vendingButtons.add(new Location(mainworld, -92, 9, -194));
         vendingButtons.add(new Location(mainworld, -77, 9, -192));
@@ -596,11 +599,11 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                     event.setCancelled(true);
                 }
                 if (itemInHand.getItemMeta().getDisplayName().equals(new Items().profile().getItemMeta().getDisplayName())) {
-                    Inventory inv = Bukkit.createInventory(null, 27, "Profile & Settings");
-//                    fillGamesGUI(inv, player);
-//
-//                    gamesGUI.put(player, inv);
-//                    player.openInventory(gamesGUI.get(player));
+                    Inventory inv = Bukkit.createInventory(null, 27, "Your Profile & Settings");
+                    fillProfileMenu(inv, player);
+
+                    profileGUI.put(player, inv);
+                    player.openInventory(profileGUI.get(player));
                     event.setCancelled(true);
                 }
                 if (itemInHand.getItemMeta().getDisplayName().equals(new Items().customization().getItemMeta().getDisplayName())) {
@@ -1388,6 +1391,35 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 }
             } catch (Exception ignored) { }
         }
+        if (event.getClickedInventory() == profileGUI.get(player)) {
+            event.setCancelled(true);
+
+            if(event.getSlot() == 11) {
+                player.openInventory(player.getEnderChest());
+                player.playSound(player.getLocation(), Sound.BLOCK_ENDER_CHEST_OPEN, 1, 1);
+            }
+            if(event.getSlot() == 15) {
+                List<Language> languages = new ArrayList<>(Arrays.asList(Language.values()));
+                HashMap<Language, Integer> map = new HashMap<>();
+
+                int i = 0;
+                while (i < languages.size()) {
+                    map.put(languages.get(i), i);
+                }
+
+                int playerLanguage = map.get(MopsFiles.getLanguage(player));
+                int nextLanguage = 0;
+
+                if(playerLanguage < languages.size()) {
+                    nextLanguage = playerLanguage + 1;
+                }
+
+                MopsFiles.setLanguage(player, languages.get(nextLanguage));
+
+                player.sendMessage(ChatColor.GREEN + "You have changed your language to " + ChatColor.stripColor(languages.get(nextLanguage).getName()));
+                player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
+            }
+        }
         if (event.getClickedInventory() == cosmeticSelector.get(player)) {
             event.setCancelled(true);
 
@@ -1972,6 +2004,51 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         resetItem.setItemMeta(resetMeta);
 
         inv.setItem(35, resetItem);
+    }
+
+    public void fillProfileMenu(Inventory inv, Player player) {
+        int i = 0;
+        while(i < 27) {
+            inv.setItem(i, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
+            i++;
+        }
+
+        inv.setItem(11, MopsUtils.createItem(Material.ENDER_CHEST, ChatColor.GREEN + "EnderChest Shortcut"));
+
+
+        ItemStack head = new ItemStack(Material.PLAYER_HEAD);
+        SkullMeta skullMeta = (SkullMeta) head.getItemMeta();
+        skullMeta.setOwner(player.getName());
+        skullMeta.setDisplayName(MopsFiles.getRank(player).getPrefix() + player.getName() + MopsFiles.getBadge(player).getSymbol());
+
+        List<String> lore = new ArrayList<>();
+        lore.add(ChatColor.GRAY + "Rank: " + MopsFiles.getRank(player).getScoreboardText() + ChatColor.GRAY + "  |  Badge: " + MopsFiles.getBadge(player).getName());
+        lore.add(ChatColor.GRAY + "Coins: " + ChatColor.GOLD + MopsFiles.getCoins(player));
+
+        skullMeta.setLore(lore);
+        head.setItemMeta(skullMeta);
+
+        inv.setItem(13, head);
+
+
+        ItemStack language = MopsUtils.createCustomHead(MopsFiles.getLanguage(player).getHeadID());
+        ItemMeta languageMeta = language.getItemMeta();
+        languageMeta.setDisplayName(ChatColor.GRAY + "Language: " + MopsFiles.getLanguage(player).getName());
+        List<String> languageLore = new ArrayList<>();
+
+        List<Language> languages = new ArrayList<>(Arrays.asList(Language.values()));
+        for(Language lang : languages) {
+            if(lang != MopsFiles.getLanguage(player)) {
+                languageLore.add(ChatColor.DARK_GRAY + "- " + ChatColor.stripColor(lang.getName()));
+            }
+        }
+
+        languageLore.add(" ");
+        languageLore.add(ChatColor.GREEN + "Click to cycle!");
+        languageMeta.setLore(languageLore);
+        language.setItemMeta(languageMeta);
+
+        inv.setItem(15, language);
     }
 
     public void fillDeliveryInventory(Inventory inv, Player player) {

@@ -479,7 +479,7 @@ public class AdminUtils {
                             if (meta.hasLore()) {
                                 List<String> lore = meta.getLore();
                                 assert lore != null;
-                                lore.remove(args[0]);
+                                lore.remove(Integer.parseInt(args[0]));
 
                                 meta.setLore(lore);
                                 item.setItemMeta(meta);
