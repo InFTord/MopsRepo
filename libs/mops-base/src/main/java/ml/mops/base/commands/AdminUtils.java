@@ -3,6 +3,7 @@ package ml.mops.base.commands;
 import ml.mops.base.kits.Kit;
 import ml.mops.base.inventory.KitGUI;
 import ml.mops.network.Delivery;
+import ml.mops.network.Language;
 import ml.mops.network.MopsBadge;
 import ml.mops.network.MopsRank;
 import ml.mops.utils.Cuboid;
@@ -82,7 +83,7 @@ public class AdminUtils {
                             player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
                         }
                         if(args[0].equals("language")) {
-                            MopsFiles.setLanguage(player, args[1]);
+                            MopsFiles.setLanguage(player, Language.valueOf(args[1]));
                             player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
                         }
                         if(args[0].equals("lookingat")) {

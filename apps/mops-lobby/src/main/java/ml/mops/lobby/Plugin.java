@@ -1391,7 +1391,6 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 }
             } catch (Exception ignored) { }
         }
-        // a
         if (event.getClickedInventory() == profileGUI.get(player)) {
             event.setCancelled(true);
 
