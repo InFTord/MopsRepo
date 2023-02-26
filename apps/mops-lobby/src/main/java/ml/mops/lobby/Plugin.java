@@ -216,8 +216,10 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
                 player.getInventory().remove(Material.BROWN_STAINED_GLASS_PANE);
 
-                String message = ChatColor.YELLOW + "Your Points: " + ChatColor.GOLD + duckPoints;
-                MopsUtils.actionBarGenerator(player, message);
+                if(duckActive) {
+                    String message = ChatColor.YELLOW + "Your Points: " + ChatColor.GOLD + duckPoints;
+                    MopsUtils.actionBarGenerator(player, message);
+                }
             }
 
             String serverName = MopsUtils.getPath(this).replace("\\plugins", "").replace("D:\\servers\\MopsNetwork\\", "");
@@ -247,7 +249,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             }
 
             if(duckActive) {
-                duckDifficulty += 0.02;
+                duckDifficulty += 0.05;
 
                 int random = (int) (Math.random() * (2 + 1)) + 1;
                 if(random == 1) {
@@ -389,13 +391,13 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
                 if (entity.getScoreboardTags().contains("target")) {
                     if (entity.getScoreboardTags().contains("left")) {
-                        entity.teleport(entity.getLocation().add(0, 0, 0.05*duckDifficulty));
-                        if(entity.getLocation().getZ() < -186) {
+                        entity.teleport(entity.getLocation().add(0, 0, 0.075*duckDifficulty));
+                        if(entity.getLocation().getZ() > -177) {
                             entity.remove();
                         }
                     } else if (entity.getScoreboardTags().contains("right")) {
-                        entity.teleport(entity.getLocation().add(0, 0, -0.05*duckDifficulty));
-                        if(entity.getLocation().getZ() > -177) {
+                        entity.teleport(entity.getLocation().add(0, 0, -0.075*duckDifficulty));
+                        if(entity.getLocation().getZ() < -186) {
                             entity.remove();
                         }
                     }
@@ -578,12 +580,12 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         Cuboid melonsCuboid = new Cuboid(new Location(mainworld, -50, 11, -175), new Location(mainworld, -57, 8, -175));
 
         for(Block block : targetsCuboid.getBlocks()) {
-            if(block.getLocation().getWorld().getNearbyEntities(block.getLocation(), 0.1, 0.1, 0.1).contains(player)) {
+            if(block.getLocation().getWorld().getNearbyEntities(block.getLocation(), 0.2, 0.2, 0.2).contains(player)) {
                 player.setVelocity(new Vector(-0.5, 0.2, 0));
             }
         }
         for(Block block : melonsCuboid.getBlocks()) {
-            if(block.getLocation().getWorld().getNearbyEntities(block.getLocation(), 0.1, 0.1, 0.1).contains(player)) {
+            if(block.getLocation().getWorld().getNearbyEntities(block.getLocation(), 0.2, 0.2, 0.2).contains(player)) {
                 player.setVelocity(new Vector(0, 0.2, -0.5));
             }
         }
@@ -1798,10 +1800,12 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             }
         }
         if(damager instanceof Arrow arrow) {
-            if(Objects.equals(arrow.getShooter(), duckPlayer)) {
+            if(arrow.getShooter() instanceof Player player && player.equals(duckPlayer)) {
                 if(victim.getScoreboardTags().contains("target")) {
                     victim.remove();
+                    damager.remove();
                     duckPoints++;
+                    player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
                 }
             }
         }
