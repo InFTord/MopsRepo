@@ -432,7 +432,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                             entity.remove();
                             duckStrikes++;
 
-                            duckPlayer.playSound(duckPlayer.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 5, 0);
+                            duckPlayer.playSound(duckPlayer.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 10, 0);
                         }
                     } else if (entity.getScoreboardTags().contains("right")) {
                         double pointBooster = (duckPoints/150.0)+1;
@@ -441,11 +441,11 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                             entity.remove();
                             duckStrikes++;
 
-                            duckPlayer.playSound(duckPlayer.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 5, 0);
+                            duckPlayer.playSound(duckPlayer.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 10, 0);
                         }
                     }
                 }
-                if(duckStrikes >= 3) {
+                if(duckStrikes >= 4) {
                     stopDuck();
 
                     duckPlayer.sendMessage(ChatColor.RED + "You failed! You got 4 strikes! Hit the targets next time, and don't miss any!");
