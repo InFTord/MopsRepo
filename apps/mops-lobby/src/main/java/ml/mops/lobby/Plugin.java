@@ -227,7 +227,10 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                     value.setMaxAmount(4);
 
                     String strikeBar = value.getIndicator();
-                    String message = ChatColor.YELLOW + "Your Points: " + ChatColor.GOLD + duckPoints + " " + strikeBar;
+                    String message = ChatColor.YELLOW + "Your Points: " + ChatColor.GOLD + duckPoints + ChatColor.GRAY + " | Strikes: " + strikeBar;
+                    if(duckStrikes > 0) {
+                        message = ChatColor.YELLOW + "Your Points: " + ChatColor.GOLD + duckPoints + ChatColor.RED + " | Strikes: " + strikeBar;
+                    }
                     MopsUtils.actionBarGenerator(player, message);
                 }
             }
@@ -250,10 +253,10 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             if(duckActive) {
                 int max = 4;
 
-                if(duckPoints > 100) {
+                if(duckPoints > 10) {
                     max = 3;
                 }
-                if(duckPoints > 250) {
+                if(duckPoints > 30) {
                     max = 2;
                 }
 
@@ -426,7 +429,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                             entity.remove();
                             duckStrikes++;
 
-                            duckPlayer.playSound(duckPlayer.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 1, 0);
+                            duckPlayer.playSound(duckPlayer.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 5, 0);
                         }
                     } else if (entity.getScoreboardTags().contains("right")) {
                         double pointBooster = (duckPoints/150.0)+1;
@@ -435,16 +438,16 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                             entity.remove();
                             duckStrikes++;
 
-                            duckPlayer.playSound(duckPlayer.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 1, 0);
+                            duckPlayer.playSound(duckPlayer.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 5, 0);
                         }
                     }
-                    if(duckStrikes >= 4) {
-                        stopDuck();
+                }
+                if(duckStrikes >= 3) {
+                    stopDuck();
 
-                        duckPlayer.sendMessage(ChatColor.RED + "You failed! You got 4 strikes! Hit the targets next time, and don't miss any!");
-                        duckPlayer.playSound(duckPlayer.getLocation(), Sound.BLOCK_BEACON_DEACTIVATE, 1, 1);
-                        duckPlayer.playSound(duckPlayer.getLocation(), Sound.BLOCK_CONDUIT_DEACTIVATE, 1, 1);
-                    }
+                    duckPlayer.sendMessage(ChatColor.RED + "You failed! You got 4 strikes! Hit the targets next time, and don't miss any!");
+                    duckPlayer.playSound(duckPlayer.getLocation(), Sound.BLOCK_BEACON_DEACTIVATE, 1, 1);
+                    duckPlayer.playSound(duckPlayer.getLocation(), Sound.BLOCK_CONDUIT_DEACTIVATE, 1, 1);
                 }
             }
 
@@ -789,13 +792,18 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
                 // старт дак утра
                 if(event.getClickedBlock().getLocation().equals(new Location(player.getWorld(), -48, 7, -178))) {
-                    startDuck(player);
-                    player.sendMessage(ChatColor.YELLOW + "Moving duck minigame started! Shoot the duc... oh wait, we removed ducks because of animal abuse..");
-                    player.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "SHOOT THE TARGETS!");
-                    player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
+                    if(!duckActive) {
+                        startDuck(player);
+                        player.sendMessage(ChatColor.YELLOW + "Moving duck minigame started! Shoot the duc... oh wait, we removed ducks because of animal abuse..");
+                        player.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "SHOOT THE TARGETS!");
+                        player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
 
-                    duckPlayer.playSound(duckPlayer.getLocation(), Sound.BLOCK_BEACON_ACTIVATE, 1, 1);
-                    duckPlayer.playSound(duckPlayer.getLocation(), Sound.BLOCK_CONDUIT_ACTIVATE, 1, 1);
+                        duckPlayer.playSound(duckPlayer.getLocation(), Sound.BLOCK_BEACON_ACTIVATE, 1, 1);
+                        duckPlayer.playSound(duckPlayer.getLocation(), Sound.BLOCK_CONDUIT_ACTIVATE, 1, 1);
+                    } else {
+                        player.sendMessage(ChatColor.RED + "You gotta wait a little! Someone else is already playing!");
+                        player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 2, 0);
+                    }
                 }
 
                 // голубь выход
@@ -1258,6 +1266,10 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
         leftSecondsAgo.putIfAbsent(player.getUniqueId(), 500);
         restoreDeliveryItem.put(player, true);
+
+        if(duckActive) {
+            duckPlayer.hidePlayer(this, player);
+        }
 
         Bukkit.getScheduler().runTaskLater(this, () -> {
             player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 0);
