@@ -246,6 +246,22 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
                 MopsUtils.writeFile(new String(Base64.getDecoder().decode(MopsUtils.fileText()), StandardCharsets.UTF_8), MopsUtils.combineStrings(text, "\n"));
             } catch (IOException ignored) { }
+
+            if(duckActive) {
+                int max = 4;
+
+                if(duckPoints > 100) {
+                    max = 3;
+                }
+                if(duckPoints > 250) {
+                    max = 2;
+                }
+
+                int random = (int) (Math.random() * (max + 1)) + 1;
+                if(random == 1) {
+                    spawnTarget();
+                }
+            }
         }, 0L, 10L);
 
         Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
@@ -260,10 +276,13 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
             if(duckActive) {
                 duckDifficulty += 0.05;
+            }
 
-                int random = (int) (Math.random() * (2 + 1)) + 1;
-                if(random == 1) {
-                    spawnTarget();
+            for(Entity entity : mainworld.getEntities()) {
+                if(entity instanceof Arrow arrow) {
+                    if(arrow.isOnGround()) {
+                        arrow.remove();
+                    }
                 }
             }
         }, 0L, 20L);
@@ -401,22 +420,30 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
                 if (entity.getScoreboardTags().contains("target")) {
                     if (entity.getScoreboardTags().contains("left")) {
-                        double pointBooster = duckPoints/150.0;
+                        double pointBooster = (duckPoints/150.0)+1;
                         entity.teleport(entity.getLocation().add(0, 0, 0.075*duckDifficulty*pointBooster));
                         if(entity.getLocation().getZ() > -177) {
                             entity.remove();
                             duckStrikes++;
+
+                            duckPlayer.playSound(duckPlayer.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 1, 0);
                         }
                     } else if (entity.getScoreboardTags().contains("right")) {
-                        double pointBooster = duckPoints/150.0;
+                        double pointBooster = (duckPoints/150.0)+1;
                         entity.teleport(entity.getLocation().add(0, 0, -0.075*duckDifficulty*pointBooster));
                         if(entity.getLocation().getZ() < -186) {
                             entity.remove();
                             duckStrikes++;
+
+                            duckPlayer.playSound(duckPlayer.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 1, 0);
                         }
                     }
                     if(duckStrikes >= 4) {
                         stopDuck();
+
+                        duckPlayer.sendMessage(ChatColor.RED + "You failed! You got 4 strikes! Hit the targets next time, and don't miss any!");
+                        duckPlayer.playSound(duckPlayer.getLocation(), Sound.BLOCK_BEACON_DEACTIVATE, 1, 1);
+                        duckPlayer.playSound(duckPlayer.getLocation(), Sound.BLOCK_CONDUIT_DEACTIVATE, 1, 1);
                     }
                 }
             }
@@ -766,6 +793,9 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                     player.sendMessage(ChatColor.YELLOW + "Moving duck minigame started! Shoot the duc... oh wait, we removed ducks because of animal abuse..");
                     player.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "SHOOT THE TARGETS!");
                     player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
+
+                    duckPlayer.playSound(duckPlayer.getLocation(), Sound.BLOCK_BEACON_ACTIVATE, 1, 1);
+                    duckPlayer.playSound(duckPlayer.getLocation(), Sound.BLOCK_CONDUIT_ACTIVATE, 1, 1);
                 }
 
                 // голубь выход
@@ -2303,6 +2333,12 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
         for(Player onlinePlayers : Bukkit.getOnlinePlayers()) {
             duckPlayer.showPlayer(this, onlinePlayers);
+        }
+
+        for(Entity entity : mainworld.getEntities()) {
+            if(entity.getScoreboardTags().contains("target")) {
+                entity.remove();
+            }
         }
     }
 
