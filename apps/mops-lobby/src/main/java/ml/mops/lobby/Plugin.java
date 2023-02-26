@@ -1308,19 +1308,31 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             try {
                 ItemStack item = event.getClickedInventory().getItem(event.getSlot());
                 ItemMeta meta = item.getItemMeta();
-                String deliveryID = meta.getLore().get(5).replace(ChatColor.DARK_GRAY + "Delivery ID: ", "");
+                String deliveryID = meta.getLore().get(6).replace(ChatColor.DARK_GRAY + "Delivery ID: ", "");
 
-                player.getInventory().addItem(MopsFiles.getDelivery(deliveryID).getDeliveredItem());
-                MopsFiles.removeDelivery(deliveryID);
+                if(event.getClick().isLeftClick()) {
+                    player.getInventory().addItem(MopsFiles.getDelivery(deliveryID).getDeliveredItem());
+                    MopsFiles.removeDelivery(deliveryID);
 
-                player.sendMessage(ChatColor.GREEN + "You claimed your delivery!");
-                player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
+                    player.sendMessage(ChatColor.GREEN + "You claimed your delivery!");
+                    player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
+                } else if(event.getClick().isRightClick()) {
+                    Delivery delivery = MopsFiles.getDelivery(deliveryID);
+                    Delivery deliveryBack = new Delivery().createNewDelivery(delivery.getDeliveredItem(), delivery.getReciever(), delivery.getSender());
+                    MopsFiles.addDelivery(deliveryBack);
+
+                    MopsFiles.removeDelivery(deliveryID);
+
+                    player.sendMessage(ChatColor.GREEN + "You sent the delivery back.");
+                    player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 0);
+                }
 
                 Inventory inventory = Bukkit.createInventory(null, 45, "Your Deliveries");
                 fillDeliveryInventory(inventory, player);
 
                 deliveryInventory.put(player, inventory);
                 player.openInventory(inventory);
+
             } catch (Exception ignored) { }
         }
         if (event.getClickedInventory() == gamesGUI.get(player)) {
@@ -1531,27 +1543,33 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
                     if(event.getSlot() == 22 && event.getClickedInventory().getItem(event.getSlot()).getType() == Material.LIME_STAINED_GLASS_PANE) {
                         if (!(blockedItems.contains(deliveryInProcessItem.get(player).getType()) || stupidItems.contains(deliveryInProcessItem.get(player)))) {
-                            player.getOpenInventory().close();
+                            if (MopsFiles.getCoins(player) >= 2) {
+                                MopsFiles.setCoins(player, MopsFiles.getCoins(player) - 2);
+                                player.getOpenInventory().close();
 
-                            Delivery delivery = new Delivery().createNewDelivery(deliveryInProcessItem.get(player), player.getUniqueId(), deliveryInProcessReciever.get(player));
-                            MopsFiles.addDelivery(delivery);
+                                Delivery delivery = new Delivery().createNewDelivery(deliveryInProcessItem.get(player), player.getUniqueId(), deliveryInProcessReciever.get(player));
+                                MopsFiles.addDelivery(delivery);
 
-                            if (Bukkit.getOfflinePlayer(deliveryInProcessReciever.get(player)).getName() == null) {
-                                player.sendMessage(ChatColor.GREEN + "You have delivered an item!");
-                            } else {
-                                player.sendMessage(ChatColor.GREEN + "You have delivered an item to " + Bukkit.getOfflinePlayer(deliveryInProcessReciever.get(player)).getName() + "!");
-                            }
-                            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
-                            deliveryInProcessItem.put(player, new ItemStack(Material.AIR));
-                            event.getClickedInventory().setItem(13, new ItemStack(Material.AIR));
-
-                            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(deliveryInProcessReciever.get(player));
-                            if (offlinePlayer.isOnline()) {
-                                if (!MopsFiles.getDeliveries(offlinePlayer.getUniqueId()).isEmpty()) {
-                                    Player onlinePlayer = offlinePlayer.getPlayer();
-                                    int unclaimedDeliveries = MopsFiles.getDeliveries(offlinePlayer.getUniqueId()).size();
-                                    onlinePlayer.sendMessage(ChatColor.BLUE + "[MopsDeliveryService] " + ChatColor.RED + "You have " + ChatColor.BOLD + unclaimedDeliveries + ChatColor.RESET + "" + ChatColor.RED + " unclaimed delivery!");
+                                if (Bukkit.getOfflinePlayer(deliveryInProcessReciever.get(player)).getName() == null) {
+                                    player.sendMessage(ChatColor.GREEN + "You have delivered an item!");
+                                } else {
+                                    player.sendMessage(ChatColor.GREEN + "You have delivered an item to " + Bukkit.getOfflinePlayer(deliveryInProcessReciever.get(player)).getName() + "!");
                                 }
+                                player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
+                                deliveryInProcessItem.put(player, new ItemStack(Material.AIR));
+                                event.getClickedInventory().setItem(13, new ItemStack(Material.AIR));
+
+                                OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(deliveryInProcessReciever.get(player));
+                                if (offlinePlayer.isOnline()) {
+                                    if (!MopsFiles.getDeliveries(offlinePlayer.getUniqueId()).isEmpty()) {
+                                        Player onlinePlayer = offlinePlayer.getPlayer();
+                                        int unclaimedDeliveries = MopsFiles.getDeliveries(offlinePlayer.getUniqueId()).size();
+                                        onlinePlayer.sendMessage(ChatColor.BLUE + "[MopsDeliveryService] " + ChatColor.RED + "You have " + ChatColor.BOLD + unclaimedDeliveries + ChatColor.RESET + "" + ChatColor.RED + " unclaimed delivery!");
+                                    }
+                                }
+                            } else {
+                                player.sendMessage(ChatColor.RED + "Not enough coins!");
+                                player.playSound(player.getLocation(), Sound.ENTITY_ENDERMAN_TELEPORT, 1, 0);
                             }
                         }
                     }
@@ -2021,7 +2039,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             i++;
         }
 
-        inv.setItem(11, MopsUtils.createItem(Material.ENDER_CHEST, ChatColor.GREEN + "EnderChest Shortcut"));
+        inv.setItem(11, MopsUtils.createItem(Material.ENDER_CHEST, ChatColor.DARK_GREEN + "EnderChest Shortcut"));
 
 
         ItemStack head = new ItemStack(Material.PLAYER_HEAD);
@@ -2099,6 +2117,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             lore.add(ChatColor.GRAY + "Sender: " + MopsFiles.getRank(delivery.getSender()).getPrefix() + Bukkit.getOfflinePlayer(delivery.getSender()).getName());
             lore.add(ChatColor.GRAY + "Reciever: " + ChatColor.AQUA + "You");
             lore.add(" ");
+            lore.add(ChatColor.YELLOW + "Left-Click to claim" + ChatColor.GOLD + " | " + ChatColor.YELLOW + "Right-Click to reject");
             lore.add(ChatColor.DARK_GRAY + "Delivery ID: " + delivery.getDeliveryID());
 
             packageMeta.setLore(lore);
@@ -2126,6 +2145,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         if(itemInserted) {
             try {
                 ItemStack itemStack = MopsUtils.createItem(Material.LIME_STAINED_GLASS_PANE, ChatColor.GREEN + "^ " + item.getItemMeta().getDisplayName() + ChatColor.GREEN + " ^");
+                MopsUtils.addLore(itemStack, new String[]{ChatColor.GRAY + "Delivery cost: " + ChatColor.GOLD + "2"});
                 MopsUtils.addLore(itemStack, new String[]{ChatColor.GREEN + "Click to deliver!"});
 
                 inv.setItem(22, itemStack);
