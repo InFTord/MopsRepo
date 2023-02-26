@@ -259,6 +259,9 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 if(duckPoints > 30) {
                     max = 2;
                 }
+                if(duckPoints > 70) {
+                    max = 1;
+                }
 
                 int random = (int) (Math.random() * (max + 1)) + 1;
                 if(random == 1) {
@@ -2321,7 +2324,6 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         duckPlayer = player;
         duckPoints = 0;
         duckDifficulty = 1;
-        duckStrikes = 0;
 
         player.getInventory().addItem(new Items().bow());
         ItemStack arrow = new Items().arrow();
@@ -2341,6 +2343,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
     public void stopDuck() {
         duckActive = false;
+        duckStrikes = 0;
         duckPlayer.getInventory().remove(new Items().bow());
 
         for(Player onlinePlayers : Bukkit.getOnlinePlayers()) {
