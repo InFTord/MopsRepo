@@ -223,7 +223,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 if(duckActive) {
                     Value value = new Value();
                     value.setValues("", "", ChatColor.GRAY, ChatColor.GRAY, ChatColor.RED, "X", "X");
-                    value.setCurrentAmount(duckStrikes-1);
+                    value.setCurrentAmount(Math.max(0, duckStrikes-1));
                     value.setMaxAmount(4);
 
                     String strikeBar = value.getIndicator();
@@ -806,7 +806,11 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                         duckPlayer.playSound(duckPlayer.getLocation(), Sound.BLOCK_BEACON_ACTIVATE, 1, 1);
                         duckPlayer.playSound(duckPlayer.getLocation(), Sound.BLOCK_CONDUIT_ACTIVATE, 1, 1);
                     } else {
-                        player.sendMessage(ChatColor.RED + "You gotta wait a little! Someone else is already playing!");
+                        if(player != duckPlayer) {
+                            player.sendMessage(ChatColor.RED + "You gotta wait a little! Someone else is already playing!");
+                        } else {
+                            player.sendMessage(ChatColor.RED + "You already started the game!");
+                        }
                         player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 2, 0);
                     }
                 }
