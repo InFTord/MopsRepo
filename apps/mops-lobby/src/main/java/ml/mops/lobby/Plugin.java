@@ -32,6 +32,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.*;
@@ -90,6 +91,8 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     HashMap<UUID, Integer> leftSecondsAgo = new HashMap<>();
 
     List<ItemStack> stupidItems = new ArrayList<>();
+
+    HashMap<Player, Boolean> restoreDeliveryItem = new HashMap<>();
 
     float rgb = 0;
     float snowDoge = 0;
@@ -504,7 +507,9 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                     fillDeliveryItemInsert(inv, new ItemStack(Material.AIR), false);
 
                     deliveryInsertInventories.add(inv);
+                    restoreDeliveryItem.put(player, false);
                     player.openInventory(inv);
+                    restoreDeliveryItem.put(player, true);
                 }
             } catch (ArrayIndexOutOfBoundsException e) {
                 player.sendMessage(ChatColor.AQUA + "You need to do /deliver Player_Name");
@@ -1158,6 +1163,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         aura.put(player, MopsFiles.getAura(player));
 
         leftSecondsAgo.putIfAbsent(player.getUniqueId(), 500);
+        restoreDeliveryItem.put(player, false);
 
         Bukkit.getScheduler().runTaskLater(this, () -> {
             player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 0);
@@ -1687,19 +1693,21 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         } catch (Exception ignored) { }
     }
 
-//    @EventHandler
-//    public void onInventoryClose(InventoryCloseEvent event) {
-//        Player player = (Player) event.getPlayer();
-//        Inventory inv = event.getInventory();
-//
-//        try {
-//            if (deliveryInsertInventories.contains(inv)) {
-//                if(deliveryInProcessItem.get(player).getType() != Material.AIR) {
-//                    player.getInventory().addItem(deliveryInProcessItem.get(player));
-//                }
-//            }
-//        } catch (Exception ignored) { }
-//    }
+    @EventHandler
+    public void onInventoryClose(InventoryCloseEvent event) {
+        Player player = (Player) event.getPlayer();
+        Inventory inv = event.getInventory();
+
+        try {
+            if (deliveryInsertInventories.contains(inv)) {
+                if(deliveryInProcessItem.get(player).getType() != Material.AIR) {
+                    if(restoreDeliveryItem.get(player) == true) {
+                        player.getInventory().addItem(deliveryInProcessItem.get(player));
+                    }
+                }
+            }
+        } catch (Exception ignored) { }
+    }
 
     //МНЕ БИЛД ПЖ
 
@@ -2147,8 +2155,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         if(itemInserted) {
             try {
                 ItemStack itemStack = MopsUtils.createItem(Material.LIME_STAINED_GLASS_PANE, ChatColor.GREEN + "^ " + item.getItemMeta().getDisplayName() + ChatColor.GREEN + " ^");
-                MopsUtils.addLore(itemStack, new String[]{ChatColor.GRAY + "Delivery cost: " + ChatColor.GOLD + "2"});
-                MopsUtils.addLore(itemStack, new String[]{ChatColor.GREEN + "Click to deliver!"});
+                MopsUtils.addLore(itemStack, new String[]{ChatColor.GRAY + "Delivery cost: " + ChatColor.GOLD + "2", ChatColor.GREEN + "Click to deliver!"});
 
                 inv.setItem(22, itemStack);
             } catch (Exception ignored) { }
