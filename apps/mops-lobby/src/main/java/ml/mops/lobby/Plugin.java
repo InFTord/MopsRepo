@@ -215,6 +215,9 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 }
 
                 player.getInventory().remove(Material.BROWN_STAINED_GLASS_PANE);
+
+                String message = ChatColor.YELLOW + "Your Points: " + ChatColor.GOLD + duckPoints;
+                MopsUtils.actionBarGenerator(player, message);
             }
 
             String serverName = MopsUtils.getPath(this).replace("\\plugins", "").replace("D:\\servers\\MopsNetwork\\", "");
@@ -386,13 +389,13 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
                 if (entity.getScoreboardTags().contains("target")) {
                     if (entity.getScoreboardTags().contains("left")) {
-                        entity.teleport(entity.getLocation().add(0, 0, -0.05*duckDifficulty));
-                        if(entity.getLocation().getZ() > -177) {
+                        entity.teleport(entity.getLocation().add(0, 0, 0.05*duckDifficulty));
+                        if(entity.getLocation().getZ() < -186) {
                             entity.remove();
                         }
                     } else if (entity.getScoreboardTags().contains("right")) {
-                        entity.teleport(entity.getLocation().add(0, 0, 0.05*duckDifficulty));
-                        if(entity.getLocation().getZ() < -186) {
+                        entity.teleport(entity.getLocation().add(0, 0, -0.05*duckDifficulty));
+                        if(entity.getLocation().getZ() > -177) {
                             entity.remove();
                         }
                     }
