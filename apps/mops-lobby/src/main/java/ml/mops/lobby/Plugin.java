@@ -1701,6 +1701,8 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 //        } catch (Exception ignored) { }
 //    }
 
+    //МНЕ БИЛД ПЖ
+
     @EventHandler
     public void onMoveItemEvent(InventoryMoveItemEvent event) {
         if (stupidItems.contains(event.getItem())) {
