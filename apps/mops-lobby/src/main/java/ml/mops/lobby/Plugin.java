@@ -3,6 +3,7 @@ package ml.mops.lobby;
 import club.minnced.discord.webhook.WebhookClient;
 import club.minnced.discord.webhook.send.WebhookEmbed;
 import club.minnced.discord.webhook.send.WebhookEmbedBuilder;
+import ml.mops.base.Value;
 import ml.mops.base.commands.Commands;
 import ml.mops.network.Aura;
 import ml.mops.network.Delivery;
@@ -121,6 +122,9 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     boolean duckActive = false;
     boolean melonActive = false;
 
+    int duckStrikes = 0;
+    int melonStrikes = 0;
+
     Player duckPlayer = null;
     Player melonPlayer = null;
 
@@ -217,7 +221,13 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 player.getInventory().remove(Material.BROWN_STAINED_GLASS_PANE);
 
                 if(duckActive) {
-                    String message = ChatColor.YELLOW + "Your Points: " + ChatColor.GOLD + duckPoints;
+                    Value value = new Value();
+                    value.setValues("", "", ChatColor.GRAY, ChatColor.GRAY, ChatColor.RED, "X", "X");
+                    value.setCurrentAmount(duckStrikes);
+                    value.setMaxAmount(4);
+
+                    String strikeBar = value.getIndicator();
+                    String message = ChatColor.YELLOW + "Your Points: " + ChatColor.GOLD + duckPoints + " " + strikeBar;
                     MopsUtils.actionBarGenerator(player, message);
                 }
             }
@@ -391,15 +401,22 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
                 if (entity.getScoreboardTags().contains("target")) {
                     if (entity.getScoreboardTags().contains("left")) {
-                        entity.teleport(entity.getLocation().add(0, 0, 0.075*duckDifficulty));
+                        double pointBooster = duckPoints/150.0;
+                        entity.teleport(entity.getLocation().add(0, 0, 0.075*duckDifficulty*pointBooster));
                         if(entity.getLocation().getZ() > -177) {
                             entity.remove();
+                            duckStrikes++;
                         }
                     } else if (entity.getScoreboardTags().contains("right")) {
-                        entity.teleport(entity.getLocation().add(0, 0, -0.075*duckDifficulty));
+                        double pointBooster = duckPoints/150.0;
+                        entity.teleport(entity.getLocation().add(0, 0, -0.075*duckDifficulty*pointBooster));
                         if(entity.getLocation().getZ() < -186) {
                             entity.remove();
+                            duckStrikes++;
                         }
+                    }
+                    if(duckStrikes >= 4) {
+                        stopDuck();
                     }
                 }
             }
@@ -2229,13 +2246,13 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     public void spawnTarget() {
         int random = (int) (Math.random() * (2 + 1)) + 1;
         int random2 = (int) (Math.random() * (2 + 1)) + 1;
-        Location loc = new Location(mainworld, -44, 9, -177);
+        Location loc = new Location(mainworld, -43.5, 9.5, -177);
 
         if(random == 1) {
             loc.setZ(-186);
         }
         if(random2 == 1) {
-            loc.setY(7);
+            loc.setY(7.5);
         }
 
         loc.setYaw(90);
@@ -2243,6 +2260,8 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         ArmorStand target = (ArmorStand) mainworld.spawnEntity(loc, EntityType.ARMOR_STAND);
         target.setInvisible(true);
         target.setGravity(false);
+
+        target.setHeadPose(new EulerAngle(Math.toRadians(180), 0, 0));
 
         target.setHelmet(new ItemStack(Material.TARGET));
 
@@ -2260,8 +2279,18 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         duckPlayer = player;
         duckPoints = 0;
         duckDifficulty = 1;
+        duckStrikes = 0;
 
         player.getInventory().addItem(new Items().bow());
+        ItemStack arrow = new Items().arrow();
+
+        if(player.getInventory().getItem(17) == null) {
+            player.getInventory().setItem(17, arrow);
+        } else {
+            ItemStack item = player.getInventory().getItem(17);
+            player.getInventory().setItem(17, arrow);
+            player.getInventory().addItem(item);
+        }
 
         for(Player onlinePlayers : Bukkit.getOnlinePlayers()) {
             player.hidePlayer(this, onlinePlayers);

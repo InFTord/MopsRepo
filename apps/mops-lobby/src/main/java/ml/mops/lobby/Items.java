@@ -124,6 +124,13 @@ public class Items {
         return item;
     }
 
+    public ItemStack arrow() {
+        ItemStack item = new ItemStack(Material.ARROW);
+        MopsUtils.renameItem(item, ChatColor.GRAY + "Arrow");
+
+        return item;
+    }
+
     public ItemStack ruleBreaker() {
         ItemStack item = MopsUtils.createCustomHead("8da332abde333a15a6c6fcfeca83f0159ea94b68e8f274bafc04892b6dbfc");
         ItemMeta meta = item.getItemMeta();
