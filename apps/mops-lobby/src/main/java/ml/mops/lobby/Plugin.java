@@ -446,6 +446,9 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 if(duckStrikes >= 4) {
                     stopDuck();
 
+                    String message = ChatColor.YELLOW + "Your Points: " + ChatColor.GOLD + duckPoints + ChatColor.RED + " | Strikes: " + ChatColor.STRIKETHROUGH + "XXXX" + ChatColor.RESET + "" + ChatColor.RED + " you lost!";
+                    MopsUtils.actionBarGenerator(duckPlayer, message);
+
                     duckPlayer.sendMessage(ChatColor.RED + "You failed! You got 4 strikes! Hit the targets next time, and don't miss any!");
                     duckPlayer.playSound(duckPlayer.getLocation(), Sound.BLOCK_BEACON_DEACTIVATE, 1, 1);
                     duckPlayer.playSound(duckPlayer.getLocation(), Sound.BLOCK_CONDUIT_DEACTIVATE, 1, 1);
@@ -1277,13 +1280,16 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         }
 
         Bukkit.getScheduler().runTaskLater(this, () -> {
-            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 0);
+            int random1 = (int) (Math.random() * 3);
+            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, random1);
             player.sendTitle(ChatColor.AQUA + "Welcome!", ChatColor.DARK_AQUA + "To MopsNetwork", 10, 30, 20);
             Bukkit.getScheduler().runTaskLater(this, () -> {
-                player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
+                int random2 = (int) (Math.random() * 3);
+                player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, random2);
                 Bukkit.getScheduler().runTaskLater(this, () -> {
-                    player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
-                    player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_CHIME, 1, 2);
+                    int random3 = (int) (Math.random() * 3);
+                    player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, random3);
+                    player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_CHIME, 1, random3);
                 }, 4L);
             }, 4L);
         }, 50L);

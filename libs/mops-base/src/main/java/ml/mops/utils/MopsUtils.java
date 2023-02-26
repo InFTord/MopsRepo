@@ -169,6 +169,7 @@ public class MopsUtils <OBJ extends Object, COMPONENT_COLLECTION extends Collect
 		emotes.put("plead", ChatColor.YELLOW + "(*-*)☞☜");
 		emotes.put("pleading", ChatColor.YELLOW + "(*-*)☞☜");
 		emotes.put("pleading_face", ChatColor.YELLOW + "(*-*)☞☜");
+		emotes.put("bow", MopsColor.BROWN.getColor() + "🏹");
 
 		return emotes;
 	}
