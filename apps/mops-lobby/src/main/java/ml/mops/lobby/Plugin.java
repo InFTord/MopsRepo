@@ -223,7 +223,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 if(duckActive) {
                     Value value = new Value();
                     value.setValues("", "", ChatColor.GRAY, ChatColor.GRAY, ChatColor.RED, "X", "X");
-                    value.setCurrentAmount(duckStrikes);
+                    value.setCurrentAmount(duckStrikes-1);
                     value.setMaxAmount(4);
 
                     String strikeBar = value.getIndicator();
@@ -433,6 +433,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                             duckStrikes++;
 
                             duckPlayer.playSound(duckPlayer.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 10, 0);
+                            duckPlayer.playSound(duckPlayer.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 10, 0);
                         }
                     } else if (entity.getScoreboardTags().contains("right")) {
                         double pointBooster = (duckPoints/150.0)+1;
@@ -441,6 +442,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                             entity.remove();
                             duckStrikes++;
 
+                            duckPlayer.playSound(duckPlayer.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 10, 0);
                             duckPlayer.playSound(duckPlayer.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 10, 0);
                         }
                     }
@@ -2345,6 +2347,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         duckActive = false;
         duckStrikes = 0;
         duckPlayer.getInventory().remove(new Items().bow());
+        duckPlayer.getInventory().remove(new Items().arrow());
 
         for(Player onlinePlayers : Bukkit.getOnlinePlayers()) {
             duckPlayer.showPlayer(this, onlinePlayers);
