@@ -221,12 +221,8 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 player.getInventory().remove(Material.BROWN_STAINED_GLASS_PANE);
 
                 if(duckActive) {
-                    Value value = new Value();
-                    value.setValues("", "", ChatColor.GRAY, ChatColor.GRAY, ChatColor.RED, "X", "X");
-                    value.setCurrentAmount(duckStrikes);
-                    value.setMaxAmount(4);
+                    String strikeBar = (ChatColor.RED + "X").repeat(duckStrikes) + (ChatColor.GRAY + "X").repeat(4-duckStrikes);
 
-                    String strikeBar = value.getIndicator();
                     String message = ChatColor.YELLOW + "Your Points: " + ChatColor.GOLD + duckPoints + ChatColor.GRAY + " | Strikes: " + strikeBar;
                     if(duckStrikes > 0) {
                         message = ChatColor.YELLOW + "Your Points: " + ChatColor.GOLD + duckPoints + ChatColor.RED + " | Strikes: " + strikeBar;
@@ -429,12 +425,8 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                         double pointBooster = (duckPoints/150.0)+1;
                         entity.teleport(entity.getLocation().add(0, 0, 0.075*duckDifficulty*pointBooster));
                         if(entity.getLocation().getZ() > -177) {
-                            duckPlayer.sendMessage(String.valueOf(duckStrikes));
-
                             entity.remove();
                             duckStrikes++;
-
-                            duckPlayer.sendMessage(String.valueOf(duckStrikes));
 
                             duckPlayer.playSound(duckPlayer.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 10, 0);
                             duckPlayer.playSound(duckPlayer.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 10, 0);
@@ -443,12 +435,8 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                         double pointBooster = (duckPoints/150.0)+1;
                         entity.teleport(entity.getLocation().add(0, 0, -0.075*duckDifficulty*pointBooster));
                         if(entity.getLocation().getZ() < -186) {
-                            duckPlayer.sendMessage(String.valueOf(duckStrikes));
-
                             entity.remove();
-                            duckPlayer.sendMessage(String.valueOf(duckStrikes));
-
-                            duckPlayer.sendMessage(String.valueOf(duckStrikes));
+                            duckStrikes++;
 
                             duckPlayer.playSound(duckPlayer.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 10, 0);
                             duckPlayer.playSound(duckPlayer.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 10, 0);
