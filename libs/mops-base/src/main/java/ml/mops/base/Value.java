@@ -10,8 +10,6 @@ public class Value {
     private String usedChar = "X";
     private ChatColor usedColor = ChatColor.GRAY;
 
-    // if you need to squish the amount into X bars use this
-    // isnt implemented yet actually i would need to do that later
     private int squishAmount = 0;
 
     private int maxAmount = 5;

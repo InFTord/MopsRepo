@@ -223,7 +223,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 if(duckActive) {
                     Value value = new Value();
                     value.setValues("", "", ChatColor.GRAY, ChatColor.GRAY, ChatColor.RED, "X", "X");
-                    value.setCurrentAmount(Math.max(0, duckStrikes-1));
+                    value.setCurrentAmount(duckStrikes);
                     value.setMaxAmount(4);
 
                     String strikeBar = value.getIndicator();
