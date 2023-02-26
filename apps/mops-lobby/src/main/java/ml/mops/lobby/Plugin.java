@@ -231,7 +231,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                     if(duckStrikes > 0) {
                         message = ChatColor.YELLOW + "Your Points: " + ChatColor.GOLD + duckPoints + ChatColor.RED + " | Strikes: " + strikeBar;
                     }
-                    MopsUtils.actionBarGenerator(player, message);
+                    MopsUtils.actionBarGenerator(duckPlayer, message);
                 }
             }
 
@@ -429,8 +429,12 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                         double pointBooster = (duckPoints/150.0)+1;
                         entity.teleport(entity.getLocation().add(0, 0, 0.075*duckDifficulty*pointBooster));
                         if(entity.getLocation().getZ() > -177) {
+                            duckPlayer.sendMessage(String.valueOf(duckStrikes));
+
                             entity.remove();
                             duckStrikes++;
+
+                            duckPlayer.sendMessage(String.valueOf(duckStrikes));
 
                             duckPlayer.playSound(duckPlayer.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 10, 0);
                             duckPlayer.playSound(duckPlayer.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 10, 0);
@@ -439,8 +443,12 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                         double pointBooster = (duckPoints/150.0)+1;
                         entity.teleport(entity.getLocation().add(0, 0, -0.075*duckDifficulty*pointBooster));
                         if(entity.getLocation().getZ() < -186) {
+                            duckPlayer.sendMessage(String.valueOf(duckStrikes));
+
                             entity.remove();
-                            duckStrikes++;
+                            duckPlayer.sendMessage(String.valueOf(duckStrikes));
+
+                            duckPlayer.sendMessage(String.valueOf(duckStrikes));
 
                             duckPlayer.playSound(duckPlayer.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 10, 0);
                             duckPlayer.playSound(duckPlayer.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 10, 0);
@@ -1349,6 +1357,10 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
         leftSecondsAgo.put(player.getUniqueId(), 0);
 
+        if(player == duckPlayer) {
+            stopDuck();
+        }
+
         for(Player allPlayers : Bukkit.getOnlinePlayers()) {
             allPlayers.sendMessage( ChatColor.GOLD + "[MopsPVPs] " + ChatColor.YELLOW + player.getName() + " left the game. " + ChatColor.AQUA + ":(");
         }
@@ -1840,8 +1852,12 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
     @EventHandler
     public void onEntityDamage(EntityDamageEvent event) {
-        if(event.getEntityType() == EntityType.PLAYER) {
-            event.setDamage(0);
+        if(event.getEntity() instanceof Player player) {
+            if(player == duckPlayer) {
+                event.setCancelled(true);
+            } else {
+                event.setDamage(0);
+            }
         } else if(!event.getCause().equals(EntityDamageEvent.DamageCause.VOID)) {
             event.setCancelled(true);
         }
@@ -2330,6 +2346,10 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         duckPlayer = player;
         duckPoints = 0;
         duckDifficulty = 1;
+
+        Location newDestination = new Location(mainworld, -51, 7, -181.0);
+        newDestination.setYaw(-90);
+        player.teleport(newDestination);
 
         player.getInventory().addItem(new Items().bow());
         ItemStack arrow = new Items().arrow();

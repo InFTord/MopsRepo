@@ -111,10 +111,8 @@ public class Items {
     public ItemStack bow() {
         ItemStack item = new ItemStack(Material.BOW);
         ItemMeta meta = item.getItemMeta();
-
-        MopsUtils.renameItem(item, ChatColor.GREEN + "Bow");
-        MopsUtils.addLore(item, new String[]{ChatColor.GRAY + "Bow to shoot targets and melons."});
-
+        meta.setDisplayName(ChatColor.GREEN + "Bow");
+        meta.setLore(new ArrayList<>(Collections.singletonList(ChatColor.GRAY + "Bow to shoot targets and melons.")));
         meta.addEnchant(Enchantment.ARROW_INFINITE, 1, true);
         meta.setUnbreakable(true);
         meta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
