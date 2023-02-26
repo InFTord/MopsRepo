@@ -112,6 +112,18 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     ArmorStand ball;
     World mainworld;
 
+    int duckDifficulty = 1;
+    int melonDifficulty = 1;
+
+    int duckPoints = 0;
+    int melonPoints = 0;
+
+    boolean duckActive = false;
+    boolean melonActive = false;
+
+    Player duckPlayer = null;
+    Player melonPlayer = null;
+
 
     @Override
     public void onEnable() {
@@ -228,6 +240,15 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 OfflinePlayer player = Bukkit.getOfflinePlayer(uuid);
                 if(!player.isOnline()) {
                     leftSecondsAgo.put(uuid, leftSecondsAgo.get(uuid) + 1);
+                }
+            }
+
+            if(duckActive) {
+                duckDifficulty += 0.02;
+
+                int random = (int) (Math.random() * (2 + 1)) + 1;
+                if(random == 1) {
+                    spawnTarget();
                 }
             }
         }, 0L, 20L);
@@ -352,15 +373,29 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             }
 
             for(Entity entity : mainworld.getEntities()) {
-                if(entity.getScoreboardTags().contains("snowCleaningDoge")) {
+                if (entity.getScoreboardTags().contains("snowCleaningDoge")) {
                     ArmorStand stand = (ArmorStand) entity;
                     snowDoge += 0.1;
 
-                    double equation = Math.sin(snowDoge*2) * Math.cos(snowDoge*2) * 50;
+                    double equation = Math.sin(snowDoge * 2) * Math.cos(snowDoge * 2) * 50;
                     int result = (int) Math.round(equation) + 265;
                     stand.setRightArmPose(new EulerAngle(Math.toRadians(result), Math.toRadians(320), Math.toRadians(150)));
 
                     mainworld.spawnParticle(Particle.SNOWBALL, new Location(mainworld, -94.5, 9, -180.5), 10, 0.3, 0.2, 0.3);
+                }
+
+                if (entity.getScoreboardTags().contains("target")) {
+                    if (entity.getScoreboardTags().contains("left")) {
+                        entity.teleport(entity.getLocation().add(0, 0, -0.05*duckDifficulty));
+                        if(entity.getLocation().getZ() > -177) {
+                            entity.remove();
+                        }
+                    } else if (entity.getScoreboardTags().contains("right")) {
+                        entity.teleport(entity.getLocation().add(0, 0, 0.05*duckDifficulty));
+                        if(entity.getLocation().getZ() < -186) {
+                            entity.remove();
+                        }
+                    }
                 }
             }
 
@@ -540,12 +575,12 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         Cuboid melonsCuboid = new Cuboid(new Location(mainworld, -50, 11, -175), new Location(mainworld, -57, 8, -175));
 
         for(Block block : targetsCuboid.getBlocks()) {
-            if(block.getLocation().getWorld().getNearbyEntities(block.getLocation(), 0.2, 0.2, 0.2).contains(player)) {
+            if(block.getLocation().getWorld().getNearbyEntities(block.getLocation(), 0.1, 0.1, 0.1).contains(player)) {
                 player.setVelocity(new Vector(-0.5, 0.2, 0));
             }
         }
         for(Block block : melonsCuboid.getBlocks()) {
-            if(block.getLocation().getWorld().getNearbyEntities(block.getLocation(), 0.2, 0.2, 0.2).contains(player)) {
+            if(block.getLocation().getWorld().getNearbyEntities(block.getLocation(), 0.1, 0.1, 0.1).contains(player)) {
                 player.setVelocity(new Vector(0, 0.2, -0.5));
             }
         }
@@ -703,6 +738,14 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                     player.sendMessage(ChatColor.RED + "Our Youtube Channel: https://www.youtube.com/channel/UCmIrl7QQzVoVX-jeFNMkykg");
                 }
 
+                // старт дак утра
+                if(event.getClickedBlock().getLocation().equals(new Location(player.getWorld(), -48, 7, -178))) {
+                    startDuck(player);
+                    player.sendMessage(ChatColor.YELLOW + "Moving duck minigame started! Shoot the duc... oh wait, we removed ducks because of animal abuse..");
+                    player.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "SHOOT THE TARGETS!");
+                    player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
+                }
+
                 // голубь выход
                 if(event.getClickedBlock().getLocation().equals(new Location(player.getWorld(), 151, 7, 147))) {
                     player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
@@ -802,14 +845,14 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                     ArrayList<String> pages = new ArrayList<>();
                     pages.add(0,
                             "     " + ChatColor.GREEN + ChatColor.BOLD + "CHANGELOG" + "\n" + ChatColor.RESET +
-                            ChatColor.DARK_GREEN + " + " + ChatColor.BLACK + "WoolBattle" + "\n" +
+                            ChatColor.DARK_GREEN + "+ " + ChatColor.BLACK + "WoolBattle" + "\n" +
                             "    Leaderboards" + "\n" +
-                            ChatColor.DARK_GREEN + " + " + ChatColor.BLACK + "Woolbattle Attack" + "\n" +
+                            ChatColor.DARK_GREEN + "+ " + ChatColor.BLACK + "Woolbattle Attack" + "\n" +
                             "    Defense NPC" + "\n" +
-                            ChatColor.DARK_GREEN + " + " + ChatColor.BLACK + "Deliveries" + "\n" +
-                            ChatColor.GRAY + " - " + ChatColor.BLACK + "Bug Fixes" + "\n" +
-                            ChatColor.GRAY + " - " + ChatColor.BLACK + "AutoMod Updates" + "\n" +
-                            ChatColor.GRAY + " - " + ChatColor.BLACK + "Aura Changes" + "\n"
+                            ChatColor.DARK_GREEN + "+ " + ChatColor.BLACK + "Deliveries" + "\n" +
+                            ChatColor.GRAY + "- " + ChatColor.BLACK + "Bug Fixes" + "\n" +
+                            ChatColor.GRAY + "- " + ChatColor.BLACK + "AutoMod Updates" + "\n" +
+                            ChatColor.GRAY + "- " + ChatColor.BLACK + "Aura Changes" + "\n"
                     );
                     bookMeta.setPages(pages);
 
@@ -1751,6 +1794,14 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 player.playSound(player.getLocation(), Sound.BLOCK_BAMBOO_HIT, 1, 1);
             }
         }
+        if(damager instanceof Arrow arrow) {
+            if(Objects.equals(arrow.getShooter(), duckPlayer)) {
+                if(victim.getScoreboardTags().contains("target")) {
+                    victim.remove();
+                    duckPoints++;
+                }
+            }
+        }
     }
 
     @EventHandler
@@ -2197,6 +2248,27 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         }
     }
 
+    public void startDuck(Player player) {
+        duckActive = true;
+        duckPlayer = player;
+        duckPoints = 0;
+        duckDifficulty = 1;
+
+        player.getInventory().addItem(new Items().bow());
+
+        for(Player onlinePlayers : Bukkit.getOnlinePlayers()) {
+            player.hidePlayer(this, onlinePlayers);
+        }
+    }
+
+    public void stopDuck() {
+        duckActive = false;
+        duckPlayer.getInventory().remove(new Items().bow());
+
+        for(Player onlinePlayers : Bukkit.getOnlinePlayers()) {
+            duckPlayer.showPlayer(this, onlinePlayers);
+        }
+    }
 
     public static int getAmount(ItemStack[] inventory, ItemStack item) {
         if (item == null)

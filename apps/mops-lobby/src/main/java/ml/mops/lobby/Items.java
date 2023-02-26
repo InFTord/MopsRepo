@@ -5,6 +5,7 @@ import ml.mops.utils.MopsUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -106,6 +107,23 @@ public class Items {
 
         return item;
     }
+
+    public ItemStack bow() {
+        ItemStack item = new ItemStack(Material.BOW);
+        ItemMeta meta = item.getItemMeta();
+
+        MopsUtils.renameItem(item, ChatColor.GREEN + "Bow");
+        MopsUtils.addLore(item, new String[]{ChatColor.GRAY + "Bow to shoot targets and melons."});
+
+        meta.addEnchant(Enchantment.ARROW_INFINITE, 1, true);
+        meta.setUnbreakable(true);
+        meta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);
+
+        item.setItemMeta(meta);
+
+        return item;
+    }
+
     public ItemStack ruleBreaker() {
         ItemStack item = MopsUtils.createCustomHead("8da332abde333a15a6c6fcfeca83f0159ea94b68e8f274bafc04892b6dbfc");
         ItemMeta meta = item.getItemMeta();
