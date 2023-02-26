@@ -1700,10 +1700,8 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
         try {
             if (deliveryInsertInventories.contains(inv)) {
-                if(deliveryInProcessItem.get(player).getType() != Material.AIR) {
-                    if(restoreDeliveryItem.get(player) == true) {
-                        player.getInventory().addItem(deliveryInProcessItem.get(player));
-                    }
+                if(restoreDeliveryItem.get(player)) {
+                    player.getInventory().addItem(inv.getItem(13));
                 }
             }
         } catch (Exception ignored) { }
