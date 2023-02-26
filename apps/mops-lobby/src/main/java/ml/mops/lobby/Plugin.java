@@ -507,9 +507,8 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                     fillDeliveryItemInsert(inv, new ItemStack(Material.AIR), false);
 
                     deliveryInsertInventories.add(inv);
-                    restoreDeliveryItem.put(player, false);
-                    player.openInventory(inv);
                     restoreDeliveryItem.put(player, true);
+                    player.openInventory(inv);
                 }
             } catch (ArrayIndexOutOfBoundsException e) {
                 player.sendMessage(ChatColor.AQUA + "You need to do /deliver Player_Name");
@@ -1163,7 +1162,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         aura.put(player, MopsFiles.getAura(player));
 
         leftSecondsAgo.putIfAbsent(player.getUniqueId(), 500);
-        restoreDeliveryItem.put(player, false);
+        restoreDeliveryItem.put(player, true);
 
         Bukkit.getScheduler().runTaskLater(this, () -> {
             player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 0);
@@ -1523,6 +1522,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 fillDeliveryItemInsert(inv, new ItemStack(Material.AIR), false);
 
                 deliveryInsertInventories.add(inv);
+                restoreDeliveryItem.put(player, true);
                 player.openInventory(inv);
 
                 deliveryInProcessReciever.put(player, UUID.fromString(inventoryName.get(event.getClickedInventory())));
@@ -1541,7 +1541,9 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                         fillDeliveryItemInsert(inv, event.getClickedInventory().getItem(13), true);
 
                         deliveryInsertInventories.add(inv);
+                        restoreDeliveryItem.put(player, false);
                         player.openInventory(inv);
+                        restoreDeliveryItem.put(player, true);
                     }
 
                     List<Material> blockedItems = new ArrayList<>();
@@ -1551,6 +1553,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                         if (!(blockedItems.contains(deliveryInProcessItem.get(player).getType()) || stupidItems.contains(deliveryInProcessItem.get(player)))) {
                             if (MopsFiles.getCoins(player) >= 2) {
                                 MopsFiles.setCoins(player, MopsFiles.getCoins(player) - 2);
+                                restoreDeliveryItem.put(player, false);
                                 player.getOpenInventory().close();
 
                                 Delivery delivery = new Delivery().createNewDelivery(deliveryInProcessItem.get(player), player.getUniqueId(), deliveryInProcessReciever.get(player));
