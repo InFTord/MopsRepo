@@ -563,13 +563,11 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 }
 
                 if (entity.getScoreboardTags().contains("gameMelon")) {
-                    if (entity.getScoreboardTags().contains("left")) {
-                        if(entity.getLocation().getY() <= 5.5) {
-                            entity.remove();
+                    if(entity.getLocation().getY() <= 5.5) {
+                        entity.remove();
 
-                            melonPlayer.playSound(melonPlayer.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 10, 0);
-                            melonPlayer.playSound(melonPlayer.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 10, 0);
-                        }
+                        melonPlayer.playSound(melonPlayer.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 10, 0);
+                        melonPlayer.playSound(melonPlayer.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 10, 0);
                     }
                 }
             }
@@ -2571,7 +2569,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
         Bukkit.getScheduler().runTaskLater(this, () -> {
             int randomVectorY = (int) (Math.random() * (65 - 45)) + 45;
-            melon.setVelocity(new Vector(0, (randomVectorY / 10) + melonDifficulty, 0));
+            melon.setVelocity(new Vector(0, (randomVectorY / 100) + melonDifficulty, 0));
         }, 2L);
     }
 
