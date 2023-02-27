@@ -361,7 +361,13 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
                 String message = ChatColor.GREEN + "Your Points: " + ChatColor.GOLD + melonPoints + ChatColor.DARK_GREEN + " | " + ChatColor.YELLOW + "Time Left: 0:" + melonSeconds;
                 if(melonTimer >= 60) {
-                    message = ChatColor.GREEN + "Your Points: " + ChatColor.GOLD + melonPoints + ChatColor.DARK_GREEN + " | " + ChatColor.YELLOW + "Time Left: 1:" + melonSeconds;
+                    String melonSeconds2 = String.valueOf(melonTimer-60);
+
+                    if((melonTimer-60) < 10) {
+                        melonSeconds2 = "0" + melonSeconds2;
+                    }
+
+                    message = ChatColor.GREEN + "Your Points: " + ChatColor.GOLD + melonPoints + ChatColor.DARK_GREEN + " | " + ChatColor.YELLOW + "Time Left: 1:" + melonSeconds2;
                 }
                 MopsUtils.actionBarGenerator(melonPlayer, message);
 
@@ -519,11 +525,12 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                             for(Entity strikeCounter : mainworld.getEntities()) {
                                 int i = 0;
                                 while (i <= duckStrikes) {
+                                    duckPlayer.sendMessage("among us");
                                     if(strikeCounter.getScoreboardTags().contains("duckStrike" + i)) {
+                                        duckPlayer.sendMessage("among us 2");
                                         ItemFrame frame = (ItemFrame) entity;
                                         frame.setItem(new ItemStack(Material.RED_STAINED_GLASS_PANE));
-
-                                        duckPlayer.sendMessage("among us");
+                                        duckPlayer.sendMessage("among us 3");
                                     }
                                     i++;
                                 }
@@ -2520,7 +2527,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
             ArmorStand target = (ArmorStand) mainworld.spawnEntity(loc, EntityType.ARMOR_STAND);
             target.setInvisible(true);
-            target.setGravity(false);
+            target.setGravity(true);
 
             if (first) {
                 target.setCustomNameVisible(true);
@@ -2546,13 +2553,14 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     public void spawnMelon(boolean named) {
         int randomX = (int) (Math.random() * (-49 + 57)) + -57;
         int randomZ = (int) (Math.random() * (-169 + 173)) + -173;
-        Location loc = new Location(mainworld, randomX, 6, randomZ);
+        Location loc = new Location(mainworld, randomX+0.5, 6.5, randomZ);
 
         int randomYaw = (int) (Math.random() * (360 + -180)) + -180;
         loc.setYaw(randomYaw);
 
         ArmorStand melon = (ArmorStand) mainworld.spawnEntity(loc, EntityType.ARMOR_STAND);
         melon.setVisible(false);
+        melon.setGravity(false);
 
         if(named) {
             melon.setCustomNameVisible(true);
@@ -2610,15 +2618,14 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         for(Entity entity : mainworld.getEntities()) {
             if(entity.getScoreboardTags().contains("target")) {
                 entity.remove();
-
-                int i = 0;
-                while (i < 5) {
-                    if(entity.getScoreboardTags().contains("duckStrike" + i)) {
-                        ItemFrame frame = (ItemFrame) entity;
-                        frame.setItem(new ItemStack(Material.AIR));
-                    }
-                    i++;
+            }
+            int i = 0;
+            while (i < 5) {
+                if(entity.getScoreboardTags().contains("duckStrike" + i)) {
+                    ItemFrame frame = (ItemFrame) entity;
+                    frame.setItem(new ItemStack(Material.AIR));
                 }
+                i++;
             }
         }
     }
