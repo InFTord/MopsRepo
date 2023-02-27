@@ -254,8 +254,6 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 if(random == 1) {
                     spawnMelon(false);
                 }
-
-                melonTimer--;
             }
 
             mainworld.spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, new Location(mainworld, -54, 6, -172), 5, 2, 0.5, 1.2, 0.01);
@@ -2544,8 +2542,8 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     }
 
     public void spawnMelon(boolean named) {
-        int randomX = (int) (Math.random() * (-49 + 57)) + -57;
-        int randomZ = (int) (Math.random() * (-170 + 174)) + -174;
+        int randomX = (int) (Math.random() * (-48 + 56)) + -56;
+        int randomZ = (int) (Math.random() * (-169 + 173)) + -173;
         Location loc = new Location(mainworld, randomX, 6, randomZ);
 
         int randomYaw = (int) (Math.random() * (360 + -180)) + -180;
@@ -2652,6 +2650,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
     public void stopMelon() {
         melonActive = false;
+        melonTimer = 60;
         melonPlayer.getInventory().remove(new Items().bow());
         melonPlayer.getInventory().remove(new Items().arrow());
 
