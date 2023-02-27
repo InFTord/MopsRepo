@@ -2615,14 +2615,17 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         for(Entity entity : mainworld.getEntities()) {
             if(entity.getScoreboardTags().contains("target")) {
                 entity.remove();
-            }
-            int i = 0;
-            while (i < 5) {
-                if(entity.getScoreboardTags().contains("duckStrike" + i)) {
-                    ItemFrame frame = (ItemFrame) entity;
-                    frame.setItem(new ItemStack(Material.AIR));
+
+                for(Entity strikeCounter : mainworld.getEntities()) {
+                    int i = 0;
+                    while (i < 5) {
+                        if (strikeCounter.getScoreboardTags().contains("duckStrike" + i)) {
+                            ItemFrame frame = (ItemFrame) strikeCounter;
+                            frame.setItem(new ItemStack(Material.AIR));
+                        }
+                        i++;
+                    }
                 }
-                i++;
             }
         }
     }
