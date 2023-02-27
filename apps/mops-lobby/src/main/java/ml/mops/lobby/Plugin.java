@@ -311,19 +311,29 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 }
                 if(entity.getScoreboardTags().contains("hologram")) {
                     int radius = 15;
-                    if(entity.getNearbyEntities(radius, radius, radius).isEmpty()) {
-                        entity.setCustomNameVisible(false);
-                    } else {
-                        entity.setCustomNameVisible(true);
+
+                    boolean show = false;
+                    List<Entity> entities = entity.getNearbyEntities(radius, radius, radius);
+                    for(Entity entity2 : entities) {
+                        if (entity2 instanceof Player) {
+                            show = true;
+                            break;
+                        }
                     }
+                    entity.setCustomNameVisible(show);
                 }
                 if(entity.getScoreboardTags().contains("dynamicCustomName")) {
                     int radius = 10;
-                    if(entity.getNearbyEntities(radius, radius, radius).isEmpty()) {
-                        entity.setCustomNameVisible(false);
-                    } else {
-                        entity.setCustomNameVisible(true);
+
+                    boolean show = false;
+                    List<Entity> entities = entity.getNearbyEntities(radius, radius, radius);
+                    for(Entity entity2 : entities) {
+                        if (entity2 instanceof Player) {
+                            show = true;
+                            break;
+                        }
                     }
+                    entity.setCustomNameVisible(show);
                 }
             }
 
@@ -510,7 +520,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
                             for(Entity strikeCounter : mainworld.getEntities()) {
                                 int i = 0;
-                                while (i < duckStrikes) {
+                                while (i <= duckStrikes) {
                                     if(strikeCounter.getScoreboardTags().contains("duckStrike" + i)) {
                                         ItemFrame frame = (ItemFrame) entity;
                                         frame.setItem(new ItemStack(Material.RED_STAINED_GLASS_PANE));
@@ -909,7 +919,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                     player.sendMessage(ChatColor.RED + "Our Youtube Channel: https://www.youtube.com/channel/UCmIrl7QQzVoVX-jeFNMkykg");
                 }
 
-                // старт дак утра
+                // старт дак утка
                 if(event.getClickedBlock().getLocation().equals(new Location(player.getWorld(), -48, 7, -178))) {
                     if(!duckActive) {
                         startDuck(player);
@@ -921,6 +931,26 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                         duckPlayer.playSound(duckPlayer.getLocation(), Sound.BLOCK_CONDUIT_ACTIVATE, 1, 1);
                     } else {
                         if(player != duckPlayer) {
+                            player.sendMessage(ChatColor.RED + "You gotta wait a little! Someone else is already playing!");
+                        } else {
+                            player.sendMessage(ChatColor.RED + "You already started the game!");
+                        }
+                        player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 2, 0);
+                    }
+                }
+
+                // старт мелон арбуз
+                if(event.getClickedBlock().getLocation().equals(new Location(player.getWorld(), -57, 7, -176))) {
+                    if(!melonActive) {
+                        startMelon(player);
+                        player.sendMessage(ChatColor.GREEN + "Melon minigame started! Melons are now gonna be flying into the sky!");
+                        player.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "SHOOT THE MELONS!");
+                        player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
+
+                        melonPlayer.playSound(melonPlayer.getLocation(), Sound.BLOCK_BEACON_ACTIVATE, 1, 1);
+                        melonPlayer.playSound(melonPlayer.getLocation(), Sound.BLOCK_CONDUIT_ACTIVATE, 1, 1);
+                    } else {
+                        if(player != melonPlayer) {
                             player.sendMessage(ChatColor.RED + "You gotta wait a little! Someone else is already playing!");
                         } else {
                             player.sendMessage(ChatColor.RED + "You already started the game!");
@@ -2465,40 +2495,51 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     }
 
     public void spawnTarget(boolean first) {
-        int random = (int) (Math.random() * (2 + 1)) + 1;
-        int random2 = (int) (Math.random() * (2 + 1)) + 1;
-        Location loc = new Location(mainworld, -43.5, 9.5, -177);
-
-        if(random == 1) {
-            loc.setZ(-186);
-        }
-        if(random2 == 1) {
-            loc.setY(7.5);
+        boolean spawn = true;
+        for(Entity entity : mainworld.getEntities()) {
+            if (entity.getScoreboardTags().contains("slow")) {
+                spawn = false;
+                break;
+            }
         }
 
-        loc.setYaw(90);
+        if(spawn) {
 
-        ArmorStand target = (ArmorStand) mainworld.spawnEntity(loc, EntityType.ARMOR_STAND);
-        target.setInvisible(true);
-        target.setGravity(false);
+            int random = (int) (Math.random() * (2 + 1)) + 1;
+            int random2 = (int) (Math.random() * (2 + 1)) + 1;
+            Location loc = new Location(mainworld, -43.5, 9.5, -177);
 
-        if(first) {
-            target.setCustomNameVisible(true);
-            target.setCustomName(ChatColor.RED + "Shoot the Target!");
+            if (random == 1) {
+                loc.setZ(-186);
+            }
+            if (random2 == 1) {
+                loc.setY(7.5);
+            }
 
-            target.getScoreboardTags().add("slow");
-        }
+            loc.setYaw(90);
 
-        target.setHeadPose(new EulerAngle(Math.toRadians(180), 0, 0));
+            ArmorStand target = (ArmorStand) mainworld.spawnEntity(loc, EntityType.ARMOR_STAND);
+            target.setInvisible(true);
+            target.setGravity(false);
 
-        target.setHelmet(new ItemStack(Material.TARGET));
+            if (first) {
+                target.setCustomNameVisible(true);
+                target.setCustomName(ChatColor.RED + "Shoot the Target!");
 
-        target.addScoreboardTag("target");
+                target.getScoreboardTags().add("slow");
+            }
 
-        if(random == 1) {
-            target.addScoreboardTag("left");
-        } else {
-            target.addScoreboardTag("right");
+            target.setHeadPose(new EulerAngle(Math.toRadians(180), 0, 0));
+
+            target.setHelmet(new ItemStack(Material.TARGET));
+
+            target.addScoreboardTag("target");
+
+            if (random == 1) {
+                target.addScoreboardTag("left");
+            } else {
+                target.addScoreboardTag("right");
+            }
         }
     }
 
