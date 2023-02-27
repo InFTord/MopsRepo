@@ -564,7 +564,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
                 if (entity.getScoreboardTags().contains("gameMelon")) {
                     if (entity.getScoreboardTags().contains("left")) {
-                        if(entity.getLocation().getY() >= 5) {
+                        if(entity.getLocation().getY() <= 5.5) {
                             entity.remove();
 
                             melonPlayer.playSound(melonPlayer.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 10, 0);
@@ -2556,8 +2556,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         loc.setYaw(randomYaw);
 
         ArmorStand melon = (ArmorStand) mainworld.spawnEntity(loc, EntityType.ARMOR_STAND);
-        melon.setVisible(false);
-        melon.setGravity(true);
+        melon.setInvisible(true);
 
         if(named) {
             melon.setCustomNameVisible(true);
@@ -2570,8 +2569,10 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
         melon.addScoreboardTag("gameMelon");
 
-        int randomVectorY = (int) (Math.random() * (65 - 45)) + 45;
-        melon.setVelocity(new Vector(0, (randomVectorY/100)+melonDifficulty, 0));
+        Bukkit.getScheduler().runTaskLater(this, () -> {
+            int randomVectorY = (int) (Math.random() * (65 - 45)) + 45;
+            melon.setVelocity(new Vector(0, (randomVectorY / 10) + melonDifficulty, 0));
+        }, 2L);
     }
 
     public void startDuck(Player player) {
