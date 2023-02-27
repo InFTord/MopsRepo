@@ -522,6 +522,8 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                                     if(strikeCounter.getScoreboardTags().contains("duckStrike" + i)) {
                                         ItemFrame frame = (ItemFrame) entity;
                                         frame.setItem(new ItemStack(Material.RED_STAINED_GLASS_PANE));
+
+                                        duckPlayer.sendMessage("among us");
                                     }
                                     i++;
                                 }
@@ -2041,7 +2043,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 }
             }
             if(arrow.getShooter() instanceof Player player && player.equals(melonPlayer)) {
-                if(victim.getScoreboardTags().contains("duckMelon")) {
+                if(victim.getScoreboardTags().contains("gameMelon")) {
                     victim.remove();
                     damager.remove();
                     melonPoints++;
@@ -2542,7 +2544,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     }
 
     public void spawnMelon(boolean named) {
-        int randomX = (int) (Math.random() * (-48 + 56)) + -56;
+        int randomX = (int) (Math.random() * (-49 + 57)) + -57;
         int randomZ = (int) (Math.random() * (-169 + 173)) + -173;
         Location loc = new Location(mainworld, randomX, 6, randomZ);
 
@@ -2550,10 +2552,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         loc.setYaw(randomYaw);
 
         ArmorStand melon = (ArmorStand) mainworld.spawnEntity(loc, EntityType.ARMOR_STAND);
-        melon.setInvisible(true);
-
-        int randomVectorY = (int) (Math.random() * (65 - 45)) + 45;
-        melon.setVelocity(new Vector(0, (randomVectorY/100)+melonDifficulty, 0));
+        melon.setVisible(false);
 
         if(named) {
             melon.setCustomNameVisible(true);
@@ -2565,6 +2564,9 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         melon.setHelmet(MopsUtils.createCustomHead("351883d6b7fa42dd0cf0d9cd999615a8540bc07c6fcd5be5dbea5617fd139fd4"));
 
         melon.addScoreboardTag("gameMelon");
+
+        int randomVectorY = (int) (Math.random() * (65 - 45)) + 45;
+        melon.setVelocity(new Vector(0, (randomVectorY/100)+melonDifficulty, 0));
     }
 
     public void startDuck(Player player) {
