@@ -107,3 +107,6 @@ commands:
   emoji:
     description: ""
     usage: /emoji
+  viewdeliveries:
+    description: ""
+    usage: /viewdeliveries

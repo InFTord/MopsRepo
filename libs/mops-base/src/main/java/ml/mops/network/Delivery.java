@@ -16,7 +16,7 @@ import java.util.UUID;
 public class Delivery {
     private ItemStack deliveredItem = MopsUtils.addLore(MopsUtils.createItem(Material.SUGAR, "kuudra washing machine powder"), new String[] {ChatColor.GRAY + "(legal)"});
     private UUID sender = UUID.randomUUID();
-    private UUID reciever = UUID.randomUUID();
+    private UUID receiver = UUID.randomUUID();
     private String deliveryID;
     private String key = "player";
 
@@ -44,7 +44,7 @@ public class Delivery {
 
         string = string.replaceAll("\n", "").replaceAll("\r", "");
 
-        return reciever.toString() + ";;" +
+        return receiver.toString() + ";;" +
                string + ";;" +
                sender.toString() + ";;" +
                deliveryID + ";;" +
@@ -54,7 +54,7 @@ public class Delivery {
     public Delivery fromString(String string) {
         String[] array = string.split(";;");
 
-        reciever = UUID.fromString(array[0]);
+        receiver = UUID.fromString(array[0]);
 
         try {
             ByteArrayInputStream inputStream = new ByteArrayInputStream(Base64Coder.decodeLines(array[1]));
@@ -76,7 +76,7 @@ public class Delivery {
     public Delivery createNewDelivery(ItemStack deliveredItem, UUID sender, UUID reciever) {
         this.deliveredItem = deliveredItem;
         this.sender = sender;
-        this.reciever = reciever;
+        this.receiver = reciever;
 
         generateNewID();
 
@@ -101,8 +101,8 @@ public class Delivery {
     }
 
 
-    public UUID getReciever() {
-        return reciever;
+    public UUID getReceiver() {
+        return receiver;
     }
 
     public ItemStack getDeliveredItem() {

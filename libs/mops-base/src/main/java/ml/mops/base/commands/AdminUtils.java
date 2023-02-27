@@ -30,10 +30,8 @@ import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
 
-import javax.swing.filechooser.FileSystemView;
 import java.io.*;
 import java.net.URL;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
@@ -116,7 +114,7 @@ public class AdminUtils {
                                     Delivery delivery = MopsFiles.getDelivery(args[2]);
 
                                     player.sendMessage(delivery.getSender());
-                                    player.sendMessage(delivery.getReciever());
+                                    player.sendMessage(delivery.getReceiver());
                                     player.sendMessage(delivery.getDeliveredItem().getType().toString());
                                     player.sendMessage(delivery.getDeliveryID());
                                     player.sendMessage(delivery.getKey());

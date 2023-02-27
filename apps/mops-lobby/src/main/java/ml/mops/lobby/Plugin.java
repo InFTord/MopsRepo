@@ -3,7 +3,6 @@ package ml.mops.lobby;
 import club.minnced.discord.webhook.WebhookClient;
 import club.minnced.discord.webhook.send.WebhookEmbed;
 import club.minnced.discord.webhook.send.WebhookEmbedBuilder;
-import ml.mops.base.Value;
 import ml.mops.base.commands.Commands;
 import ml.mops.network.Aura;
 import ml.mops.network.Delivery;
@@ -87,7 +86,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     List<Inventory> deliveryInsertInventories = new ArrayList<>();
 
     HashMap<Player, ItemStack> deliveryInProcessItem = new HashMap<>();
-    HashMap<Player, UUID> deliveryInProcessReciever = new HashMap<>();
+    HashMap<Player, UUID> deliveryInProcessReceiver = new HashMap<>();
 
     HashMap<UUID, Integer> leftSecondsAgo = new HashMap<>();
 
@@ -114,7 +113,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     World mainworld;
 
     int duckDifficulty = 1;
-    int melonDifficulty = 1;
+    int melonDifficulty = 0;
 
     int duckPoints = 0;
     int melonPoints = 0;
@@ -123,7 +122,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     boolean melonActive = false;
 
     int duckStrikes = 0;
-    int melonStrikes = 0;
+    int melonTimer = 60;
 
     Player duckPlayer = null;
     Player melonPlayer = null;
@@ -206,9 +205,6 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
         Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
             for(Player player : Bukkit.getServer().getOnlinePlayers()) {
-                Scoreboard lobbyscoreboard = new LobbyScoreboard().generateLobbyScoreboard(player, mainworld.getTime());
-                player.setScoreboard(lobbyscoreboard);
-
                 if(auraTimer.get(player) != 0) {
                     auraTimer.put(player, auraTimer.get(player)-1);
                 }
@@ -216,18 +212,6 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 Calendar calendar = Calendar.getInstance();
                 if(calendar.get(Calendar.MONTH) == Calendar.DECEMBER || calendar.get(Calendar.MONTH) == Calendar.JANUARY) {
                     player.getWorld().spawnParticle(Particle.SNOWFLAKE, player.getLocation().add(0, 7, 0), 450, 15, 6, 15, 0);
-                }
-
-                player.getInventory().remove(Material.BROWN_STAINED_GLASS_PANE);
-
-                if(duckActive) {
-                    String strikeBar = (ChatColor.RED + "X").repeat(duckStrikes) + (ChatColor.GRAY + "X").repeat(4-duckStrikes);
-
-                    String message = ChatColor.YELLOW + "Your Points: " + ChatColor.GOLD + duckPoints + ChatColor.GRAY + " | Strikes: " + strikeBar;
-                    if(duckStrikes > 0) {
-                        message = ChatColor.YELLOW + "Your Points: " + ChatColor.GOLD + duckPoints + ChatColor.RED + " | Strikes: " + strikeBar;
-                    }
-                    MopsUtils.actionBarGenerator(duckPlayer, message);
                 }
             }
 
@@ -252,17 +236,53 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 if(duckPoints > 10) {
                     max = 3;
                 }
-                if(duckPoints > 30) {
+                if(duckPoints > 34) {
                     max = 2;
                 }
-                if(duckPoints > 70) {
+                if(duckPoints > 80) {
                     max = 1;
                 }
 
-                int random = (int) (Math.random() * (max + 1)) + 1;
+                int random = (int) (Math.random() * (max)) + 1;
                 if(random == 1) {
-                    spawnTarget();
+                    spawnTarget(false);
                 }
+            }
+
+            if(melonActive) {
+                int random = (int) (Math.random() * (2)) + 1;
+                if(random == 1) {
+                    spawnMelon(false);
+                }
+
+                melonTimer--;
+            }
+
+            mainworld.spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, new Location(mainworld, -54, 6, -172), 5, 2, 0.5, 1.2, 0.01);
+            if(melonActive) {
+                mainworld.spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, new Location(mainworld, -54, 5, -172), 10, 2, 0.5, 1.2, 0.03);
+            }
+
+            if(duckStrikes >= 4) {
+                stopDuck();
+
+                String message = ChatColor.YELLOW + "Your Points: " + ChatColor.GOLD + duckPoints + ChatColor.RED + " | Strikes: " + ChatColor.STRIKETHROUGH + "XXXX" + ChatColor.RESET + "" + ChatColor.RED + " you lost!";
+                MopsUtils.actionBarGenerator(duckPlayer, message);
+
+                duckPlayer.sendMessage(ChatColor.RED + "You failed! You got 4 strikes! Hit the targets next time, and don't miss any!");
+                duckPlayer.playSound(duckPlayer.getLocation(), Sound.BLOCK_BEACON_DEACTIVATE, 1, 1);
+                duckPlayer.playSound(duckPlayer.getLocation(), Sound.BLOCK_CONDUIT_DEACTIVATE, 1, 1);
+            }
+
+            if(melonTimer <= 0) {
+                stopMelon();
+
+                String message = ChatColor.GREEN + "Your Points: " + ChatColor.GOLD + melonPoints + ChatColor.DARK_GREEN + " | " + ChatColor.RED + "Time Left: " + ChatColor.STRIKETHROUGH + "0:00" + ChatColor.RESET + "" + ChatColor.RED + " ended!";
+                MopsUtils.actionBarGenerator(melonPlayer, message);
+
+                melonPlayer.sendMessage(ChatColor.RED + "The time ran out! Shoot more melons next time!");
+                melonPlayer.playSound(melonPlayer.getLocation(), Sound.BLOCK_BEACON_DEACTIVATE, 1, 1);
+                melonPlayer.playSound(melonPlayer.getLocation(), Sound.BLOCK_CONDUIT_DEACTIVATE, 1, 1);
             }
         }, 0L, 10L);
 
@@ -279,6 +299,9 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             if(duckActive) {
                 duckDifficulty += 0.05;
             }
+            if(melonActive) {
+                melonDifficulty += 0.0025;
+            }
 
             for(Entity entity : mainworld.getEntities()) {
                 if(entity instanceof Arrow arrow) {
@@ -286,6 +309,55 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                         arrow.remove();
                     }
                 }
+                if(entity.getScoreboardTags().contains("hologram")) {
+                    int radius = 15;
+                    if(entity.getNearbyEntities(radius, radius, radius).isEmpty()) {
+                        entity.setCustomNameVisible(false);
+                    } else {
+                        entity.setCustomNameVisible(true);
+                    }
+                }
+                if(entity.getScoreboardTags().contains("dynamicCustomName")) {
+                    int radius = 10;
+                    if(entity.getNearbyEntities(radius, radius, radius).isEmpty()) {
+                        entity.setCustomNameVisible(false);
+                    } else {
+                        entity.setCustomNameVisible(true);
+                    }
+                }
+            }
+
+            for(Player player : Bukkit.getServer().getOnlinePlayers()) {
+                player.getInventory().remove(Material.BROWN_STAINED_GLASS_PANE);
+
+                Scoreboard lobbyScoreboard = new LobbyScoreboard().generateLobbyScoreboard(player, mainworld.getTime());
+                player.setScoreboard(lobbyScoreboard);
+            }
+
+            if(duckActive) {
+                String strikeBar = (ChatColor.RED + "X").repeat(duckStrikes) + (ChatColor.GRAY + "X").repeat(4-duckStrikes);
+
+                String message = ChatColor.YELLOW + "Your Points: " + ChatColor.GOLD + duckPoints + ChatColor.GRAY + " | Strikes: " + strikeBar;
+                if(duckStrikes > 0) {
+                    message = ChatColor.YELLOW + "Your Points: " + ChatColor.GOLD + duckPoints + ChatColor.RED + " | Strikes: " + strikeBar;
+                }
+                MopsUtils.actionBarGenerator(duckPlayer, message);
+            }
+
+            if(melonActive) {
+                String melonSeconds = String.valueOf(melonTimer);
+
+                if(melonTimer < 10) {
+                    melonSeconds = "0" + melonSeconds;
+                }
+
+                String message = ChatColor.GREEN + "Your Points: " + ChatColor.GOLD + melonPoints + ChatColor.DARK_GREEN + " | " + ChatColor.YELLOW + "Time Left: 0:" + melonSeconds;
+                if(melonTimer >= 60) {
+                    message = ChatColor.GREEN + "Your Points: " + ChatColor.GOLD + melonPoints + ChatColor.DARK_GREEN + " | " + ChatColor.YELLOW + "Time Left: 1:" + melonSeconds;
+                }
+                MopsUtils.actionBarGenerator(melonPlayer, message);
+
+                melonTimer--;
             }
         }, 0L, 20L);
 
@@ -423,35 +495,68 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 if (entity.getScoreboardTags().contains("target")) {
                     if (entity.getScoreboardTags().contains("left")) {
                         double pointBooster = (duckPoints/150.0)+1;
-                        entity.teleport(entity.getLocation().add(0, 0, 0.075*duckDifficulty*pointBooster));
+                        double slowBoost = 1;
+                        if(entity.getScoreboardTags().contains("slow")) {
+                            slowBoost = 0.5;
+                        }
+                        entity.teleport(entity.getLocation().add(0, 0, 0.075 * duckDifficulty * pointBooster * slowBoost));
+
                         if(entity.getLocation().getZ() > -177) {
                             entity.remove();
                             duckStrikes++;
 
                             duckPlayer.playSound(duckPlayer.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 10, 0);
                             duckPlayer.playSound(duckPlayer.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 10, 0);
+
+                            for(Entity strikeCounter : mainworld.getEntities()) {
+                                int i = 0;
+                                while (i < duckStrikes) {
+                                    if(strikeCounter.getScoreboardTags().contains("duckStrike" + i)) {
+                                        ItemFrame frame = (ItemFrame) entity;
+                                        frame.setItem(new ItemStack(Material.RED_STAINED_GLASS_PANE));
+                                    }
+                                    i++;
+                                }
+                            }
                         }
                     } else if (entity.getScoreboardTags().contains("right")) {
                         double pointBooster = (duckPoints/150.0)+1;
-                        entity.teleport(entity.getLocation().add(0, 0, -0.075*duckDifficulty*pointBooster));
+                        double slowBoost = 1;
+                        if(entity.getScoreboardTags().contains("slow")) {
+                            slowBoost = 0.5;
+                        }
+                        entity.teleport(entity.getLocation().add(0, 0, -0.075*duckDifficulty * pointBooster * slowBoost));
+
                         if(entity.getLocation().getZ() < -186) {
                             entity.remove();
                             duckStrikes++;
 
                             duckPlayer.playSound(duckPlayer.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 10, 0);
                             duckPlayer.playSound(duckPlayer.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 10, 0);
+
+                            for(Entity strikeCounter : mainworld.getEntities()) {
+                                int i = 0;
+                                while (i < duckStrikes) {
+                                    if(strikeCounter.getScoreboardTags().contains("duckStrike" + i)) {
+                                        ItemFrame frame = (ItemFrame) entity;
+                                        frame.setItem(new ItemStack(Material.RED_STAINED_GLASS_PANE));
+                                    }
+                                    i++;
+                                }
+                            }
                         }
                     }
                 }
-                if(duckStrikes >= 4) {
-                    stopDuck();
 
-                    String message = ChatColor.YELLOW + "Your Points: " + ChatColor.GOLD + duckPoints + ChatColor.RED + " | Strikes: " + ChatColor.STRIKETHROUGH + "XXXX" + ChatColor.RESET + "" + ChatColor.RED + " you lost!";
-                    MopsUtils.actionBarGenerator(duckPlayer, message);
+                if (entity.getScoreboardTags().contains("gameMelon")) {
+                    if (entity.getScoreboardTags().contains("left")) {
+                        if(entity.getLocation().getY() >= 5) {
+                            entity.remove();
 
-                    duckPlayer.sendMessage(ChatColor.RED + "You failed! You got 4 strikes! Hit the targets next time, and don't miss any!");
-                    duckPlayer.playSound(duckPlayer.getLocation(), Sound.BLOCK_BEACON_DEACTIVATE, 1, 1);
-                    duckPlayer.playSound(duckPlayer.getLocation(), Sound.BLOCK_CONDUIT_DEACTIVATE, 1, 1);
+                            melonPlayer.playSound(melonPlayer.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 10, 0);
+                            melonPlayer.playSound(melonPlayer.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 10, 0);
+                        }
+                    }
                 }
             }
 
@@ -587,12 +692,22 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             }
             return true;
         }
+        if (command.getName().equals("viewdeliveries")) {
+            try {
+                Inventory inventory = Bukkit.createInventory(null, 45, Bukkit.getOfflinePlayer(UUID.fromString(args[0])).getName() + "'s Deliveries");
+                fillDeliveryInventory(inventory, player, UUID.fromString(args[0]));
+
+                cancelledInventory.put(player, inventory);
+                player.openInventory(inventory);
+            } catch (Exception ignored) { }
+            return true;
+        }
         if(command.getName().equals("deliver")) {
             try {
-                if(args[0].equals(player.getName())) {
+                if(args[0].toLowerCase(Locale.ROOT).equals(player.getName().toLowerCase(Locale.ROOT))) {
                     player.sendMessage(ChatColor.AQUA + "That's you, silly!");
                 } else {
-                    deliveryInProcessReciever.put(player, Bukkit.getOfflinePlayer(args[0]).getUniqueId());
+                    deliveryInProcessReceiver.put(player, Bukkit.getOfflinePlayer(args[0]).getUniqueId());
 
                     Inventory inv = Bukkit.createInventory(null, 27, "Insert Delivery Item");
                     fillDeliveryItemInsert(inv, new ItemStack(Material.AIR), false);
@@ -1150,7 +1265,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                         player.playSound(player.getLocation(), Sound.ENTITY_WOLF_AMBIENT, 10, 2);
 
                         Inventory inventory = Bukkit.createInventory(null, 45, "Your Deliveries");
-                        fillDeliveryInventory(inventory, player);
+                        fillDeliveryInventory(inventory, player, player.getUniqueId());
 
                         deliveryInventory.put(player, inventory);
                         player.openInventory(inventory);
@@ -1445,7 +1560,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                     player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
                 } else if(event.getClick().isRightClick()) {
                     Delivery delivery = MopsFiles.getDelivery(deliveryID);
-                    Delivery deliveryBack = new Delivery().createNewDelivery(delivery.getDeliveredItem(), delivery.getReciever(), delivery.getSender());
+                    Delivery deliveryBack = new Delivery().createNewDelivery(delivery.getDeliveredItem(), delivery.getReceiver(), delivery.getSender());
                     MopsFiles.addDelivery(deliveryBack);
 
                     MopsFiles.removeDelivery(deliveryID);
@@ -1455,7 +1570,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 }
 
                 Inventory inventory = Bukkit.createInventory(null, 45, "Your Deliveries");
-                fillDeliveryInventory(inventory, player);
+                fillDeliveryInventory(inventory, player, player.getUniqueId());
 
                 deliveryInventory.put(player, inventory);
                 player.openInventory(inventory);
@@ -1647,7 +1762,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 restoreDeliveryItem.put(player, true);
                 player.openInventory(inv);
 
-                deliveryInProcessReciever.put(player, UUID.fromString(inventoryName.get(event.getClickedInventory())));
+                deliveryInProcessReceiver.put(player, UUID.fromString(inventoryName.get(event.getClickedInventory())));
             }
         }
         if(deliveryInsertInventories.contains(event.getClickedInventory())) {
@@ -1678,19 +1793,19 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                                 restoreDeliveryItem.put(player, false);
                                 player.getOpenInventory().close();
 
-                                Delivery delivery = new Delivery().createNewDelivery(deliveryInProcessItem.get(player), player.getUniqueId(), deliveryInProcessReciever.get(player));
+                                Delivery delivery = new Delivery().createNewDelivery(deliveryInProcessItem.get(player), player.getUniqueId(), deliveryInProcessReceiver.get(player));
                                 MopsFiles.addDelivery(delivery);
 
-                                if (Bukkit.getOfflinePlayer(deliveryInProcessReciever.get(player)).getName() == null) {
+                                if (Bukkit.getOfflinePlayer(deliveryInProcessReceiver.get(player)).getName() == null) {
                                     player.sendMessage(ChatColor.GREEN + "You have delivered an item!");
                                 } else {
-                                    player.sendMessage(ChatColor.GREEN + "You have delivered an item to " + Bukkit.getOfflinePlayer(deliveryInProcessReciever.get(player)).getName() + "!");
+                                    player.sendMessage(ChatColor.GREEN + "You have delivered an item to " + Bukkit.getOfflinePlayer(deliveryInProcessReceiver.get(player)).getName() + "!");
                                 }
                                 player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
                                 deliveryInProcessItem.put(player, new ItemStack(Material.AIR));
                                 event.getClickedInventory().setItem(13, new ItemStack(Material.AIR));
 
-                                OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(deliveryInProcessReciever.get(player));
+                                OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(deliveryInProcessReceiver.get(player));
                                 if (offlinePlayer.isOnline()) {
                                     if (!MopsFiles.getDeliveries(offlinePlayer.getUniqueId()).isEmpty()) {
                                         Player onlinePlayer = offlinePlayer.getPlayer();
@@ -1761,7 +1876,9 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                                 ItemStack item = event.getCurrentItem();
                                 ItemMeta meta = item.getItemMeta();
                                 List<String> lore = meta.getLore();
-                                lore.remove(lore.size() - 1);
+                                for(String string : lore) {
+                                    lore.remove(ChatColor.YELLOW + "Left-Click to open" + ChatColor.GOLD + " | " + ChatColor.YELLOW + "Right-Click to remove");
+                                }
                                 meta.setLore(lore);
                                 item.setItemMeta(meta);
                             } catch (Exception ignored) { }
@@ -1883,6 +2000,39 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                     victim.remove();
                     damager.remove();
                     duckPoints++;
+
+                    String strikeBar = (ChatColor.RED + "X").repeat(duckStrikes) + (ChatColor.GRAY + "X").repeat(4-duckStrikes);
+
+                    String message = ChatColor.YELLOW + "Your Points: " + ChatColor.GOLD + duckPoints + ChatColor.GRAY + " | Strikes: " + strikeBar;
+                    if(duckStrikes > 0) {
+                        message = ChatColor.YELLOW + "Your Points: " + ChatColor.GOLD + duckPoints + ChatColor.RED + " | Strikes: " + strikeBar;
+                    }
+                    MopsUtils.actionBarGenerator(duckPlayer, message);
+
+                    player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
+                }
+            }
+            if(arrow.getShooter() instanceof Player player && player.equals(melonPlayer)) {
+                if(victim.getScoreboardTags().contains("duckMelon")) {
+                    victim.remove();
+                    damager.remove();
+                    melonPoints++;
+
+                    duckPlayer.sendTitle("", ChatColor.GREEN + "+1 Second!", 0, 5, 10);
+                    melonTimer++;
+
+                    String melonSeconds = String.valueOf(melonTimer);
+
+                    if(melonTimer < 10) {
+                        melonSeconds = "0" + melonSeconds;
+                    }
+
+                    String message = ChatColor.GREEN + "Your Points: " + ChatColor.GOLD + melonPoints + ChatColor.DARK_GREEN + " | " + ChatColor.YELLOW + "Time Left: 0:" + melonSeconds;
+                    if(melonTimer >= 60) {
+                        message = ChatColor.GREEN + "Your Points: " + ChatColor.GOLD + melonPoints + ChatColor.DARK_GREEN + " | " + ChatColor.YELLOW + "Time Left: 1:" + melonSeconds;
+                    }
+                    MopsUtils.actionBarGenerator(melonPlayer, message);
+
                     player.playSound(player.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1, 1);
                 }
             }
@@ -2224,7 +2374,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         inv.setItem(15, language);
     }
 
-    public void fillDeliveryInventory(Inventory inv, Player player) {
+    public void fillDeliveryInventory(Inventory inv, Player player, UUID whosDeliveries) {
         int t = 0;
         while(t < 9) {
             inv.setItem(t, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
@@ -2242,7 +2392,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         inv.setItem(27, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
         inv.setItem(35, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
 
-        List<Delivery> deliveries = MopsFiles.getDeliveries(player.getUniqueId());
+        List<Delivery> deliveries = MopsFiles.getDeliveries(whosDeliveries);
 
         int i = 0;
         while(i < deliveries.size()) {
@@ -2259,10 +2409,20 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             ItemMeta packageMeta = packageItem.getItemMeta();
             List<String> lore = new ArrayList<>();
 
+            String senderName = MopsFiles.getRank(delivery.getSender()).getPrefix() + Bukkit.getOfflinePlayer(delivery.getSender()).getName();
+            String receiverName = MopsFiles.getRank(delivery.getReceiver()).getPrefix() + Bukkit.getOfflinePlayer(delivery.getReceiver()).getName();
+
+            if(delivery.getSender() == player.getUniqueId()) {
+                senderName = ChatColor.AQUA + "You";
+            }
+            if(delivery.getReceiver() == player.getUniqueId()) {
+                receiverName = ChatColor.AQUA + "You";
+            }
+
             lore.add(" ");
             lore.add(ChatColor.GRAY + "Item: " + ChatColor.WHITE + deliveredItem.getItemMeta().getDisplayName() + ChatColor.DARK_GRAY + " x" + deliveredItem.getAmount());
-            lore.add(ChatColor.GRAY + "Sender: " + MopsFiles.getRank(delivery.getSender()).getPrefix() + Bukkit.getOfflinePlayer(delivery.getSender()).getName());
-            lore.add(ChatColor.GRAY + "Reciever: " + ChatColor.AQUA + "You");
+            lore.add(ChatColor.GRAY + "Sender: " + senderName);
+            lore.add(ChatColor.GRAY + "Receiver: " + receiverName);
             lore.add(" ");
             lore.add(ChatColor.YELLOW + "Left-Click to claim" + ChatColor.GOLD + " | " + ChatColor.YELLOW + "Right-Click to reject");
             lore.add(ChatColor.DARK_GRAY + "Delivery ID: " + delivery.getDeliveryID());
@@ -2304,7 +2464,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         }
     }
 
-    public void spawnTarget() {
+    public void spawnTarget(boolean first) {
         int random = (int) (Math.random() * (2 + 1)) + 1;
         int random2 = (int) (Math.random() * (2 + 1)) + 1;
         Location loc = new Location(mainworld, -43.5, 9.5, -177);
@@ -2322,6 +2482,13 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         target.setInvisible(true);
         target.setGravity(false);
 
+        if(first) {
+            target.setCustomNameVisible(true);
+            target.setCustomName(ChatColor.RED + "Shoot the Target!");
+
+            target.getScoreboardTags().add("slow");
+        }
+
         target.setHeadPose(new EulerAngle(Math.toRadians(180), 0, 0));
 
         target.setHelmet(new ItemStack(Material.TARGET));
@@ -2335,11 +2502,39 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         }
     }
 
+    public void spawnMelon(boolean named) {
+        int randomX = (int) (Math.random() * (-49 + 57)) + -57;
+        int randomZ = (int) (Math.random() * (-170 + 174)) + -174;
+        Location loc = new Location(mainworld, randomX, 6, randomZ);
+
+        int randomYaw = (int) (Math.random() * (360 + -180)) + -180;
+        loc.setYaw(randomYaw);
+
+        ArmorStand melon = (ArmorStand) mainworld.spawnEntity(loc, EntityType.ARMOR_STAND);
+        melon.setInvisible(true);
+
+        int randomVectorY = (int) (Math.random() * (65 - 45)) + 45;
+        melon.setVelocity(new Vector(0, (randomVectorY/100)+melonDifficulty, 0));
+
+        if(named) {
+            melon.setCustomNameVisible(true);
+            melon.setCustomName(ChatColor.GREEN + "Shoot the Melon!");
+        }
+
+        melon.setHeadPose(new EulerAngle(Math.toRadians(180), 0, 0));
+
+        melon.setHelmet(MopsUtils.createCustomHead("351883d6b7fa42dd0cf0d9cd999615a8540bc07c6fcd5be5dbea5617fd139fd4"));
+
+        melon.addScoreboardTag("gameMelon");
+    }
+
     public void startDuck(Player player) {
         duckActive = true;
         duckPlayer = player;
         duckPoints = 0;
         duckDifficulty = 1;
+
+        spawnTarget(true);
 
         Location newDestination = new Location(mainworld, -51, 7, -181.0);
         newDestination.setYaw(-90);
@@ -2373,6 +2568,58 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
         for(Entity entity : mainworld.getEntities()) {
             if(entity.getScoreboardTags().contains("target")) {
+                entity.remove();
+
+                int i = 0;
+                while (i < 5) {
+                    if(entity.getScoreboardTags().contains("duckStrike" + i)) {
+                        ItemFrame frame = (ItemFrame) entity;
+                        frame.setItem(new ItemStack(Material.AIR));
+                    }
+                    i++;
+                }
+            }
+        }
+    }
+
+    public void startMelon(Player player) {
+        melonActive = true;
+        melonPlayer = player;
+        melonPoints = 0;
+        melonDifficulty = 0;
+
+        spawnMelon(true);
+
+        Location newDestination = new Location(mainworld, -53.0, 7, -179);
+        player.teleport(newDestination);
+
+        player.getInventory().addItem(new Items().bow());
+        ItemStack arrow = new Items().arrow();
+
+        if(player.getInventory().getItem(17) == null) {
+            player.getInventory().setItem(17, arrow);
+        } else {
+            ItemStack item = player.getInventory().getItem(17);
+            player.getInventory().setItem(17, arrow);
+            player.getInventory().addItem(item);
+        }
+
+        for(Player onlinePlayers : Bukkit.getOnlinePlayers()) {
+            player.hidePlayer(this, onlinePlayers);
+        }
+    }
+
+    public void stopMelon() {
+        melonActive = false;
+        melonPlayer.getInventory().remove(new Items().bow());
+        melonPlayer.getInventory().remove(new Items().arrow());
+
+        for(Player onlinePlayers : Bukkit.getOnlinePlayers()) {
+            melonPlayer.showPlayer(this, onlinePlayers);
+        }
+
+        for(Entity entity : mainworld.getEntities()) {
+            if(entity.getScoreboardTags().contains("gameMelon")) {
                 entity.remove();
             }
         }
