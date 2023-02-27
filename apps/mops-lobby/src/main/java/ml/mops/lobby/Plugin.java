@@ -2569,7 +2569,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
         Bukkit.getScheduler().runTaskLater(this, () -> {
             int randomVectorY = (int) (Math.random() * (65 - 45)) + 45;
-            melon.setVelocity(new Vector(0, (randomVectorY / 25) + melonDifficulty, 0));
+            melon.setVelocity(new Vector(0, (randomVectorY / 80) + melonDifficulty, 0));
         }, 2L);
     }
 
