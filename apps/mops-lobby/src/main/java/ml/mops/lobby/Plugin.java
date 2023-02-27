@@ -525,12 +525,9 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                             for(Entity strikeCounter : mainworld.getEntities()) {
                                 int i = 0;
                                 while (i <= duckStrikes) {
-                                    duckPlayer.sendMessage("among us");
                                     if(strikeCounter.getScoreboardTags().contains("duckStrike" + i)) {
-                                        duckPlayer.sendMessage("among us 2");
-                                        ItemFrame frame = (ItemFrame) entity;
+                                        ItemFrame frame = (ItemFrame) strikeCounter;
                                         frame.setItem(new ItemStack(Material.RED_STAINED_GLASS_PANE));
-                                        duckPlayer.sendMessage("among us 3");
                                     }
                                     i++;
                                 }
@@ -553,9 +550,9 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
                             for(Entity strikeCounter : mainworld.getEntities()) {
                                 int i = 0;
-                                while (i < duckStrikes) {
+                                while (i <= duckStrikes) {
                                     if(strikeCounter.getScoreboardTags().contains("duckStrike" + i)) {
-                                        ItemFrame frame = (ItemFrame) entity;
+                                        ItemFrame frame = (ItemFrame) strikeCounter;
                                         frame.setItem(new ItemStack(Material.RED_STAINED_GLASS_PANE));
                                     }
                                     i++;
@@ -2527,7 +2524,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
             ArmorStand target = (ArmorStand) mainworld.spawnEntity(loc, EntityType.ARMOR_STAND);
             target.setInvisible(true);
-            target.setGravity(true);
+            target.setGravity(false);
 
             if (first) {
                 target.setCustomNameVisible(true);
@@ -2560,7 +2557,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
         ArmorStand melon = (ArmorStand) mainworld.spawnEntity(loc, EntityType.ARMOR_STAND);
         melon.setVisible(false);
-        melon.setGravity(false);
+        melon.setGravity(true);
 
         if(named) {
             melon.setCustomNameVisible(true);
