@@ -1130,7 +1130,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                     // локпик
                     if (event.getClickedBlock().getType() == Material.IRON_TRAPDOOR) {
                         if (event.getItem().getType() == new Items().lockPick().getType() && event.getItem().getItemMeta().getDisplayName().equals(new Items().lockPick().getItemMeta().getDisplayName())) {
-                            player.teleport(event.getClickedBlock().getLocation().add(-0.5, 0, -0.5));
+                            player.teleport(event.getClickedBlock().getLocation().add(0.5, 0, 0.5));
                             player.setSwimming(true);
 
                             player.getInventory().remove(MopsUtils.amount(new Items().lockPick(), 1));
@@ -2523,6 +2523,11 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             String senderName = MopsFiles.getRank(delivery.getSender()).getPrefix() + Bukkit.getOfflinePlayer(delivery.getSender()).getName();
             String receiverName = MopsFiles.getRank(delivery.getReceiver()).getPrefix() + Bukkit.getOfflinePlayer(delivery.getReceiver()).getName();
 
+            System.out.println(delivery.getSender());
+            System.out.println(player.getUniqueId());
+            System.out.println(player.getName());
+            System.out.println(player.getUniqueId());
+
             if(delivery.getSender() == player.getUniqueId()) {
                 senderName = ChatColor.AQUA + "You";
             }
@@ -2646,7 +2651,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
         melon.addScoreboardTag("gameMelon");
 
-        int randomVectorY = (int) (Math.random() * (20));
+        int randomVectorY = (int) (Math.random() * (50));
 
         melon.setVelocity(new Vector(0, 1 + melonDifficulty + (randomVectorY/100), 0));
     }
