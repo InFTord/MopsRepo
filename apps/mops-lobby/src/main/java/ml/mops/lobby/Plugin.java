@@ -2523,15 +2523,10 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             String senderName = MopsFiles.getRank(delivery.getSender()).getPrefix() + Bukkit.getOfflinePlayer(delivery.getSender()).getName();
             String receiverName = MopsFiles.getRank(delivery.getReceiver()).getPrefix() + Bukkit.getOfflinePlayer(delivery.getReceiver()).getName();
 
-            System.out.println(delivery.getSender());
-            System.out.println(player.getUniqueId());
-            System.out.println(player.getName());
-            System.out.println(player.getUniqueId());
-
-            if(delivery.getSender() == player.getUniqueId()) {
+            if(delivery.getSender().toString().trim().equals(player.getUniqueId().toString().trim())) {
                 senderName = ChatColor.AQUA + "You";
             }
-            if(delivery.getReceiver() == player.getUniqueId()) {
+            if(delivery.getReceiver().toString().trim().equals(player.getUniqueId().toString().trim())) {
                 receiverName = ChatColor.AQUA + "You";
             }
 
