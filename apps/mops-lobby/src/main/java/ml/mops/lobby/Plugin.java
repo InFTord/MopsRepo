@@ -2567,10 +2567,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
         melon.addScoreboardTag("gameMelon");
 
-        Bukkit.getScheduler().runTaskLater(this, () -> {
-            int randomVectorY = (int) (Math.random() * (65 - 45)) + 45;
-            melon.setVelocity(new Vector(0, (randomVectorY / 60) + melonDifficulty, 0));
-        }, 2L);
+        melon.setVelocity(new Vector(0, 0.7 + melonDifficulty, 0));
     }
 
     public void startDuck(Player player) {
