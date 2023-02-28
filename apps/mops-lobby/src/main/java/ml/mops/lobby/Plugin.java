@@ -1126,28 +1126,30 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                     }
                 }
 
-                // локпик
-                if(event.getClickedBlock().getType() == Material.IRON_TRAPDOOR) {
-                    if(event.getItem().getType() == new Items().lockPick().getType() && event.getItem().getItemMeta().getDisplayName().equals(new Items().lockPick().getItemMeta().getDisplayName())) {
-                        player.teleport(event.getClickedBlock().getLocation().add(-0.5, 0, -0.5));
-                        player.setSwimming(true);
+                try {
+                    // локпик
+                    if (event.getClickedBlock().getType() == Material.IRON_TRAPDOOR) {
+                        if (event.getItem().getType() == new Items().lockPick().getType() && event.getItem().getItemMeta().getDisplayName().equals(new Items().lockPick().getItemMeta().getDisplayName())) {
+                            player.teleport(event.getClickedBlock().getLocation().add(-0.5, 0, -0.5));
+                            player.setSwimming(true);
 
-                        player.getInventory().remove(MopsUtils.amount(new Items().lockPick(), 1));
-                        event.setCancelled(true);
+                            player.getInventory().remove(MopsUtils.amount(new Items().lockPick(), 1));
+                            event.setCancelled(true);
+                        }
                     }
-                }
 
-                // лантерн поставить
-                if(event.getItem().getType() == new Items().funnyLantern().getType() && event.getItem().getItemMeta().getDisplayName().equals(new Items().funnyLantern().getItemMeta().getDisplayName())) {
-                    player.sendMessage(ChatColor.GRAY + "You have shined the light back again.");
+                    // лантерн поставить
+                    if (event.getItem().getType() == new Items().funnyLantern().getType() && event.getItem().getItemMeta().getDisplayName().equals(new Items().funnyLantern().getItemMeta().getDisplayName())) {
+                        player.sendMessage(ChatColor.GRAY + "You have shined the light back again.");
 
-                    new Location(mainworld, -99, 10, -169).getBlock().setType(Material.LANTERN);
-                    player.playSound(player.getLocation(), Sound.ENTITY_LIGHTNING_BOLT_THUNDER, 1, 2);
-                    player.playSound(player.getLocation(), Sound.BLOCK_BEACON_ACTIVATE, 1, 2);
-                    player.playSound(player.getLocation(), Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1, 1);
-                    player.playSound(player.getLocation(), Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1, 0);
-                    player.getInventory().remove(MopsUtils.amount(new Items().funnyLantern(), 1));
-                }
+                        new Location(mainworld, -99, 10, -169).getBlock().setType(Material.LANTERN);
+                        player.playSound(player.getLocation(), Sound.ENTITY_LIGHTNING_BOLT_THUNDER, 1, 2);
+                        player.playSound(player.getLocation(), Sound.BLOCK_BEACON_ACTIVATE, 1, 2);
+                        player.playSound(player.getLocation(), Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1, 1);
+                        player.playSound(player.getLocation(), Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1, 0);
+                        player.getInventory().remove(MopsUtils.amount(new Items().funnyLantern(), 1));
+                    }
+                } catch (Exception ignored) { }
             }
 
             if(action == Action.RIGHT_CLICK_BLOCK || action == Action.LEFT_CLICK_BLOCK) {
@@ -1986,6 +1988,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                                 int i = 0;
                                 while (i < lore.size()) {
                                     lore.remove(ChatColor.YELLOW + "Left-Click to open" + ChatColor.GOLD + " | " + ChatColor.YELLOW + "Right-Click to remove");
+                                    i++;
                                 }
                                 meta.setLore(lore);
                                 item.setItemMeta(meta);
