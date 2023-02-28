@@ -932,41 +932,51 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
                 // старт дак утка
                 if(event.getClickedBlock().getLocation().equals(new Location(player.getWorld(), -48, 7, -178))) {
-                    if(!duckActive) {
-                        startDuck(player);
-                        player.sendMessage(ChatColor.YELLOW + "Moving duck minigame started! Shoot the duc... oh wait, we removed ducks because of animal abuse..");
-                        player.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "SHOOT THE TARGETS!");
-                        player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
-
-                        duckPlayer.playSound(duckPlayer.getLocation(), Sound.BLOCK_BEACON_ACTIVATE, 1, 1);
-                        duckPlayer.playSound(duckPlayer.getLocation(), Sound.BLOCK_CONDUIT_ACTIVATE, 1, 1);
-                    } else {
-                        if(player != duckPlayer) {
-                            player.sendMessage(ChatColor.RED + "You gotta wait a little! Someone else is already playing!");
-                        } else {
-                            player.sendMessage(ChatColor.RED + "You already started the game!");
-                        }
+                    if(melonActive && player == melonPlayer) {
+                        player.sendMessage(ChatColor.RED + "You already playing Melon!");
                         player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 2, 0);
+                    } else {
+                        if (!duckActive) {
+                            startDuck(player);
+                            player.sendMessage(ChatColor.YELLOW + "Moving duck minigame started! Shoot the duc... oh wait, we removed ducks because of animal abuse..");
+                            player.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "SHOOT THE TARGETS!");
+                            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
+
+                            duckPlayer.playSound(duckPlayer.getLocation(), Sound.BLOCK_BEACON_ACTIVATE, 1, 1);
+                            duckPlayer.playSound(duckPlayer.getLocation(), Sound.BLOCK_CONDUIT_ACTIVATE, 1, 1);
+                        } else {
+                            if (player != duckPlayer) {
+                                player.sendMessage(ChatColor.RED + "You gotta wait a little! Someone else is already playing!");
+                            } else {
+                                player.sendMessage(ChatColor.RED + "You already started the game!");
+                            }
+                            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 2, 0);
+                        }
                     }
                 }
 
                 // старт мелон арбуз
                 if(event.getClickedBlock().getLocation().equals(new Location(player.getWorld(), -57, 7, -176))) {
-                    if(!melonActive) {
-                        startMelon(player);
-                        player.sendMessage(ChatColor.GREEN + "Melon minigame started! Melons are now gonna be flying into the sky!");
-                        player.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "SHOOT THE MELONS!");
-                        player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
-
-                        melonPlayer.playSound(melonPlayer.getLocation(), Sound.BLOCK_BEACON_ACTIVATE, 1, 1);
-                        melonPlayer.playSound(melonPlayer.getLocation(), Sound.BLOCK_CONDUIT_ACTIVATE, 1, 1);
-                    } else {
-                        if(player != melonPlayer) {
-                            player.sendMessage(ChatColor.RED + "You gotta wait a little! Someone else is already playing!");
-                        } else {
-                            player.sendMessage(ChatColor.RED + "You already started the game!");
-                        }
+                    if(duckActive && player == duckPlayer) {
+                        player.sendMessage(ChatColor.RED + "You already playing Duck!");
                         player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 2, 0);
+                    } else {
+                        if (!melonActive) {
+                            startMelon(player);
+                            player.sendMessage(ChatColor.GREEN + "Melon minigame started! Melons are now gonna be flying into the sky!");
+                            player.sendMessage(ChatColor.RED + "" + ChatColor.BOLD + "SHOOT THE MELONS!");
+                            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
+
+                            melonPlayer.playSound(melonPlayer.getLocation(), Sound.BLOCK_BEACON_ACTIVATE, 1, 1);
+                            melonPlayer.playSound(melonPlayer.getLocation(), Sound.BLOCK_CONDUIT_ACTIVATE, 1, 1);
+                        } else {
+                            if (player != melonPlayer) {
+                                player.sendMessage(ChatColor.RED + "You gotta wait a little! Someone else is already playing!");
+                            } else {
+                                player.sendMessage(ChatColor.RED + "You already started the game!");
+                            }
+                            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 2, 0);
+                        }
                     }
                 }
 
@@ -1119,7 +1129,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 // локпик
                 if(event.getClickedBlock().getType() == Material.IRON_TRAPDOOR) {
                     if(event.getItem().getType() == new Items().lockPick().getType() && event.getItem().getItemMeta().getDisplayName().equals(new Items().lockPick().getItemMeta().getDisplayName())) {
-                        player.teleport(event.getClickedBlock().getLocation());
+                        player.teleport(event.getClickedBlock().getLocation().add(-0.5, 0, -0.5));
                         player.setSwimming(true);
 
                         player.getInventory().remove(MopsUtils.amount(new Items().lockPick(), 1));
@@ -1131,7 +1141,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 if(event.getItem().getType() == new Items().funnyLantern().getType() && event.getItem().getItemMeta().getDisplayName().equals(new Items().funnyLantern().getItemMeta().getDisplayName())) {
                     player.sendMessage(ChatColor.GRAY + "You have shined the light back again.");
 
-                    new Location(mainworld, -99, 9, -169).getBlock().setType(Material.LANTERN);
+                    new Location(mainworld, -99, 10, -169).getBlock().setType(Material.LANTERN);
                     player.playSound(player.getLocation(), Sound.ENTITY_LIGHTNING_BOLT_THUNDER, 1, 2);
                     player.playSound(player.getLocation(), Sound.BLOCK_BEACON_ACTIVATE, 1, 2);
                     player.playSound(player.getLocation(), Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1, 1);
@@ -1156,8 +1166,6 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                     }, 5L);
                 }
             }
-
-            //лантерн
 
             if(MopsFiles.getRank(player).getPermLevel() < 10) {
                 if (!flippable.contains(event.getClickedBlock().getLocation())) {
@@ -1425,11 +1433,11 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
                         entity.setVelocity(new Vector(0, 0.25, 0));
                         Bukkit.getScheduler().runTaskLater(this, () -> {
-                            entity.teleport(new Location(mainworld, -94, 4, -170));
+                            entity.teleport(new Location(mainworld, -93.5, 4, -168.5));
 
                             player.playSound(player.getLocation(), Sound.ENTITY_SKELETON_HURT, 1, 0);
                             player.playSound(player.getLocation(), Sound.ENTITY_SKELETON_CONVERTED_TO_STRAY, 1, 0);
-                            player.playSound(player.getLocation(), Sound.ENTITY_SKELETON_CONVERTED_TO_STRAY, 1, 0);
+                            player.playSound(player.getLocation(), Sound.ENTITY_SKELETON_HORSE_DEATH, 1, 0);
 
                             Particle.DustOptions dustOptions = new Particle.DustOptions(Color.WHITE, 1F);
                             mainworld.spawnParticle(Particle.REDSTONE, new Location(mainworld, -94, 9.5, -169), 10, 0.5, 0.5, 0.5, dustOptions);
@@ -1439,9 +1447,11 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                             Bukkit.getScheduler().runTaskLater(this, () -> {
                                 new Location(mainworld, -94, 8, -168).getBlock().setType(Material.AIR);
 
-                                entity.teleport(new Location(mainworld, -93.95, 9, -168.5));
+                                Location back = new Location(mainworld, -93.95, 9, -168.5);
+                                back.setYaw(90);
+                                entity.teleport(back);
                             }, 2400L);
-                        }, 5L);
+                        }, 10L);
                     }
                 } catch (Exception ignored) { }
 
@@ -1973,7 +1983,8 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                                 ItemStack item = event.getCurrentItem();
                                 ItemMeta meta = item.getItemMeta();
                                 List<String> lore = meta.getLore();
-                                for(String string : lore) {
+                                int i = 0;
+                                while (i < lore.size()) {
                                     lore.remove(ChatColor.YELLOW + "Left-Click to open" + ChatColor.GOLD + " | " + ChatColor.YELLOW + "Right-Click to remove");
                                 }
                                 meta.setLore(lore);
@@ -2511,16 +2522,10 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
             if(delivery.getSender() == player.getUniqueId()) {
                 senderName = ChatColor.AQUA + "You";
-                player.sendMessage("akmfgjmd");
-                player.sendMessage(player.getUniqueId());
             }
             if(delivery.getReceiver() == player.getUniqueId()) {
                 receiverName = ChatColor.AQUA + "You";
-                player.sendMessage("akmfgjmd 3");
-                player.sendMessage(player.getUniqueId());
             }
-
-            player.sendMessage(player.getUniqueId());
 
             lore.add(" ");
             lore.add(ChatColor.GRAY + "Item: " + ChatColor.WHITE + deliveredItem.getItemMeta().getDisplayName() + ChatColor.DARK_GRAY + " x" + deliveredItem.getAmount());
