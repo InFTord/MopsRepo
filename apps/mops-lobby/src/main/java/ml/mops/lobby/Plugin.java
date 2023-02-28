@@ -217,7 +217,14 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
                 try {
                     if (player.getItemInHand().getType() == new Items().secretRadio().getType() && player.getItemInHand().getItemMeta().getDisplayName().equals(new Items().secretRadio().getItemMeta().getDisplayName())) {
-                        player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BIT, 1, (float) (frequency/200.0));
+                        if(frequency != 67) {
+                            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BIT, 1, (float) (frequency / 200.0));
+                        } else {
+                            player.playSound(player.getLocation(), Sound.ITEM_SHIELD_BREAK, 1, 0);
+                            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BIT, 1, (float) (frequency / 200.0));
+                        }
+
+                        MopsUtils.actionBarGenerator(player, ChatColor.GRAY + "Frequency: " + ChatColor.GREEN + frequency + ".0 kHz");
                     }
                 } catch (Exception ignored) { }
             }
@@ -803,19 +810,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         Player player = event.getPlayer();
         Block block = event.getBlock();
 
-        if (!block.getLocation().equals(new Location(player.getWorld(), -99, 10, -169))) {
-            if (block.getType() != Material.LANTERN) {
-                if (MopsFiles.getRank(player).getPermLevel() < 10) {
-                    event.setCancelled(true);
-                }
-            }
-        }
 
-        if (block.getLocation().equals(new Location(player.getWorld(), -99, 10, -169))) {
-            if (block.getType() == Material.LANTERN) {
-                player.sendMessage(ChatColor.GRAY + "You have shined the light back again.");
-            }
-        }
     }
 
     @EventHandler
@@ -1125,7 +1120,23 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 if(event.getClickedBlock().getType() == Material.IRON_TRAPDOOR) {
                     if(event.getItem().getType() == new Items().lockPick().getType() && event.getItem().getItemMeta().getDisplayName().equals(new Items().lockPick().getItemMeta().getDisplayName())) {
                         player.teleport(event.getClickedBlock().getLocation());
+                        player.setSwimming(true);
+
+                        player.getInventory().remove(MopsUtils.amount(new Items().lockPick(), 1));
+                        event.setCancelled(true);
                     }
+                }
+
+                // лантерн поставить
+                if(event.getItem().getType() == new Items().funnyLantern().getType() && event.getItem().getItemMeta().getDisplayName().equals(new Items().funnyLantern().getItemMeta().getDisplayName())) {
+                    player.sendMessage(ChatColor.GRAY + "You have shined the light back again.");
+
+                    new Location(mainworld, -99, 9, -169).getBlock().setType(Material.LANTERN);
+                    player.playSound(player.getLocation(), Sound.ENTITY_LIGHTNING_BOLT_THUNDER, 1, 2);
+                    player.playSound(player.getLocation(), Sound.BLOCK_BEACON_ACTIVATE, 1, 2);
+                    player.playSound(player.getLocation(), Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1, 1);
+                    player.playSound(player.getLocation(), Sound.BLOCK_ENCHANTMENT_TABLE_USE, 1, 0);
+                    player.getInventory().remove(MopsUtils.amount(new Items().funnyLantern(), 1));
                 }
             }
 
@@ -1403,8 +1414,41 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             }
             if (entity.getScoreboardTags().contains("skeletonLock")) {
                 event.setCancelled(true);
-                player.playSound(player.getLocation(), Sound.ENTITY_SKELETON_STEP, 4F, 0F);
-                player.sendMessage(ChatColor.GRAY + "You do not have the key.");
+
+                boolean open = false;
+                try {
+                    if (player.getItemInHand().getType() == new Items().skeletonKey().getType() && player.getItemInHand().getItemMeta().getDisplayName().equals(new Items().skeletonKey().getItemMeta().getDisplayName())) {
+                        open = true;
+
+                        player.playSound(player.getLocation(), Sound.ENTITY_SKELETON_STEP, 4F, 0F);
+                        player.sendMessage(ChatColor.GRAY + "You do have the key.");
+
+                        entity.setVelocity(new Vector(0, 0.25, 0));
+                        Bukkit.getScheduler().runTaskLater(this, () -> {
+                            entity.teleport(new Location(mainworld, -94, 4, -170));
+
+                            player.playSound(player.getLocation(), Sound.ENTITY_SKELETON_HURT, 1, 0);
+                            player.playSound(player.getLocation(), Sound.ENTITY_SKELETON_CONVERTED_TO_STRAY, 1, 0);
+                            player.playSound(player.getLocation(), Sound.ENTITY_SKELETON_CONVERTED_TO_STRAY, 1, 0);
+
+                            Particle.DustOptions dustOptions = new Particle.DustOptions(Color.WHITE, 1F);
+                            mainworld.spawnParticle(Particle.REDSTONE, new Location(mainworld, -94, 9.5, -169), 10, 0.5, 0.5, 0.5, dustOptions);
+
+                            new Location(mainworld, -94, 8, -168).getBlock().setType(Material.REDSTONE_TORCH);
+
+                            Bukkit.getScheduler().runTaskLater(this, () -> {
+                                new Location(mainworld, -94, 8, -168).getBlock().setType(Material.AIR);
+
+                                entity.teleport(new Location(mainworld, -93.95, 9, -168.5));
+                            }, 2400L);
+                        }, 5L);
+                    }
+                } catch (Exception ignored) { }
+
+                if(!open) {
+                    player.playSound(player.getLocation(), Sound.ENTITY_SKELETON_STEP, 4F, 0F);
+                    player.sendMessage(ChatColor.GRAY + "You do not have the key.");
+                }
             }
 
 
@@ -2594,7 +2638,9 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
         melon.addScoreboardTag("gameMelon");
 
-        melon.setVelocity(new Vector(0, 0.9 + melonDifficulty, 0));
+        int randomVectorY = (int) (Math.random() * (20));
+
+        melon.setVelocity(new Vector(0, 1 + melonDifficulty + (randomVectorY/100), 0));
     }
 
     public void startDuck(Player player) {
