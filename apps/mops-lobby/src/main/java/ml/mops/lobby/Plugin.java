@@ -127,6 +127,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     Player duckPlayer = null;
     Player melonPlayer = null;
 
+    int frequency = 60;
 
     @Override
     public void onEnable() {
@@ -213,6 +214,12 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 if(calendar.get(Calendar.MONTH) == Calendar.DECEMBER || calendar.get(Calendar.MONTH) == Calendar.JANUARY) {
                     player.getWorld().spawnParticle(Particle.SNOWFLAKE, player.getLocation().add(0, 7, 0), 450, 15, 6, 15, 0);
                 }
+
+                try {
+                    if (player.getItemInHand().getType() == new Items().secretRadio().getType() && player.getItemInHand().getItemMeta().getDisplayName().equals(new Items().secretRadio().getItemMeta().getDisplayName())) {
+                        player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BIT, 1, (float) (frequency/200.0));
+                    }
+                } catch (Exception ignored) { }
             }
 
             String serverName = MopsUtils.getPath(this).replace("\\plugins", "").replace("D:\\servers\\MopsNetwork\\", "");
@@ -249,38 +256,9 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 }
             }
 
-            if(melonActive) {
-                int random = (int) (Math.random() * (2)) + 1;
-                if(random == 1) {
-                    spawnMelon(false);
-                }
-            }
-
             mainworld.spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, new Location(mainworld, -54, 6, -172), 5, 2, 0.5, 1.2, 0.01);
             if(melonActive) {
                 mainworld.spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, new Location(mainworld, -54, 5, -172), 10, 2, 0.5, 1.2, 0.03);
-            }
-
-            if(duckStrikes >= 4) {
-                stopDuck();
-
-                String message = ChatColor.YELLOW + "Your Points: " + ChatColor.GOLD + duckPoints + ChatColor.RED + " | Strikes: " + ChatColor.STRIKETHROUGH + "XXXX" + ChatColor.RESET + "" + ChatColor.RED + " you lost!";
-                MopsUtils.actionBarGenerator(duckPlayer, message);
-
-                duckPlayer.sendMessage(ChatColor.RED + "You failed! You got 4 strikes! Hit the targets next time, and don't miss any!");
-                duckPlayer.playSound(duckPlayer.getLocation(), Sound.BLOCK_BEACON_DEACTIVATE, 1, 1);
-                duckPlayer.playSound(duckPlayer.getLocation(), Sound.BLOCK_CONDUIT_DEACTIVATE, 1, 1);
-            }
-
-            if(melonTimer <= 0) {
-                stopMelon();
-
-                String message = ChatColor.GREEN + "Your Points: " + ChatColor.GOLD + melonPoints + ChatColor.DARK_GREEN + " | " + ChatColor.RED + "Time Left: " + ChatColor.STRIKETHROUGH + "0:00" + ChatColor.RESET + "" + ChatColor.RED + " ended!";
-                MopsUtils.actionBarGenerator(melonPlayer, message);
-
-                melonPlayer.sendMessage(ChatColor.RED + "The time ran out! Shoot more melons next time!");
-                melonPlayer.playSound(melonPlayer.getLocation(), Sound.BLOCK_BEACON_DEACTIVATE, 1, 1);
-                melonPlayer.playSound(melonPlayer.getLocation(), Sound.BLOCK_CONDUIT_DEACTIVATE, 1, 1);
             }
         }, 0L, 10L);
 
@@ -373,6 +351,37 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
                 melonTimer--;
             }
+
+            if(melonActive) {
+                int random = (int) (Math.random() * (2)) + 1;
+                if(random == 1) {
+                    spawnMelon(false);
+                }
+            }
+
+            if(duckStrikes >= 4) {
+                stopDuck();
+
+                String message = ChatColor.YELLOW + "Your Points: " + ChatColor.GOLD + duckPoints + ChatColor.RED + " | Strikes: " + ChatColor.STRIKETHROUGH + "XXXX" + ChatColor.RESET + "" + ChatColor.RED + " you lost!";
+                MopsUtils.actionBarGenerator(duckPlayer, message);
+
+                duckPlayer.sendMessage(ChatColor.RED + "You failed! You got 4 strikes! Hit the targets next time, and don't miss any!");
+                duckPlayer.playSound(duckPlayer.getLocation(), Sound.BLOCK_BEACON_DEACTIVATE, 1, 1);
+                duckPlayer.playSound(duckPlayer.getLocation(), Sound.BLOCK_CONDUIT_DEACTIVATE, 1, 1);
+            }
+
+            if(melonTimer <= 0) {
+                stopMelon();
+
+                String message = ChatColor.GREEN + "Your Points: " + ChatColor.GOLD + melonPoints + ChatColor.DARK_GREEN + " | " + ChatColor.RED + "Time Left: " + ChatColor.STRIKETHROUGH + "0:00" + ChatColor.RESET + "" + ChatColor.RED + " ended!";
+                MopsUtils.actionBarGenerator(melonPlayer, message);
+
+                melonPlayer.sendMessage(ChatColor.RED + "The time ran out! Shoot more melons next time!");
+                melonPlayer.playSound(melonPlayer.getLocation(), Sound.BLOCK_BEACON_DEACTIVATE, 1, 1);
+                melonPlayer.playSound(melonPlayer.getLocation(), Sound.BLOCK_CONDUIT_DEACTIVATE, 1, 1);
+            }
+
+            frequency = (int) (Math.random() * (200));
         }, 0L, 20L);
 
         Bukkit.getScheduler().scheduleSyncRepeatingTask(this, () -> {
@@ -568,6 +577,9 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
                         melonPlayer.playSound(melonPlayer.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 10, 0);
                         melonPlayer.playSound(melonPlayer.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 10, 0);
+
+                        melonPlayer.playSound(melonPlayer.getLocation(), Sound.ENTITY_PLAYER_SPLASH, 10, 2);
+                        melonPlayer.playSound(melonPlayer.getLocation(), Sound.BLOCK_WOOD_BREAK, 10, 1);
                     }
                 }
             }
@@ -680,6 +692,8 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                     case "rulebreaker" -> player.getInventory().addItem(new Items().ruleBreaker());
                     case "funnylantern" -> player.getInventory().addItem(new Items().funnyLantern());
                     case "skeletonkey" -> player.getInventory().addItem(new Items().skeletonKey());
+                    case "lockpick" -> player.getInventory().addItem(new Items().lockPick());
+                    case "secretradio" -> player.getInventory().addItem(new Items().secretRadio());
                     case "overview" -> {
                         if(args[1].equals("self")) {
                             craftNewOverview(player, player);
@@ -1104,6 +1118,13 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                             player.getInventory().addItem(lantern);
                             new Location(player.getWorld(), -99, 10, -169).getBlock().setType(Material.AIR);
                         }
+                    }
+                }
+
+                // локпик
+                if(event.getClickedBlock().getType() == Material.IRON_TRAPDOOR) {
+                    if(event.getItem().getType() == new Items().lockPick().getType() && event.getItem().getItemMeta().getDisplayName().equals(new Items().lockPick().getItemMeta().getDisplayName())) {
+                        player.teleport(event.getClickedBlock().getLocation());
                     }
                 }
             }
@@ -2050,7 +2071,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                     damager.remove();
                     melonPoints++;
 
-                    duckPlayer.sendTitle("", ChatColor.GREEN + "+1 Second!", 0, 5, 10);
+                    melonPlayer.sendTitle("", ChatColor.GREEN + "+1 Second!", 0, 5, 10);
                     melonTimer++;
 
                     String melonSeconds = String.valueOf(melonTimer);
@@ -2446,10 +2467,16 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
             if(delivery.getSender() == player.getUniqueId()) {
                 senderName = ChatColor.AQUA + "You";
+                player.sendMessage("akmfgjmd");
+                player.sendMessage(player.getUniqueId());
             }
             if(delivery.getReceiver() == player.getUniqueId()) {
                 receiverName = ChatColor.AQUA + "You";
+                player.sendMessage("akmfgjmd 3");
+                player.sendMessage(player.getUniqueId());
             }
+
+            player.sendMessage(player.getUniqueId());
 
             lore.add(" ");
             lore.add(ChatColor.GRAY + "Item: " + ChatColor.WHITE + deliveredItem.getItemMeta().getDisplayName() + ChatColor.DARK_GRAY + " x" + deliveredItem.getAmount());
@@ -2567,7 +2594,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
         melon.addScoreboardTag("gameMelon");
 
-        melon.setVelocity(new Vector(0, 0.7 + melonDifficulty, 0));
+        melon.setVelocity(new Vector(0, 0.9 + melonDifficulty, 0));
     }
 
     public void startDuck(Player player) {

@@ -70,7 +70,29 @@ public class Items {
 
         return item;
     }
+    public ItemStack secretRadio() {
+        ItemStack item = MopsUtils.createCustomHead("148a8c55891dec76764449f57ba677be3ee88a06921ca93b6cc7c9611a7af");
+        ItemMeta meta = item.getItemMeta();
+        meta.setDisplayName(MopsColor.BROWN.getColor() + "Secret Radio");
+        List<String> lore = new ArrayList<>();
+        lore.add(ChatColor.GRAY + "It looks broken, it sounds broken, but");
+        lore.add(ChatColor.GRAY + "whatever you think, it may not be one.");
+        lore.add(" ");
+        lore.add(ChatColor.GRAY + "Frequency: " + ChatColor.GREEN + "??? kHz");
+        meta.setLore(lore);
+        item.setItemMeta(meta);
 
+        return item;
+    }
+
+    public ItemStack lockPick() {
+        ItemStack item = MopsUtils.createItem(Material.CHAIN, ChatColor.DARK_GRAY + "Lockpick");
+        ItemMeta meta = item.getItemMeta();
+        meta.setLore(new ArrayList<>(Collections.singletonList(ChatColor.GRAY + "Lets you enter vents.")));
+        item.setItemMeta(meta);
+
+        return item;
+    }
 
     public ItemStack kuudraWashingMachine() {
         ItemStack item = MopsUtils.createCustomHead("c7de63d401f85eed8a5e08cfa6cb290c40b11a7c72b579b2f06e8bb4a8a7c099");
