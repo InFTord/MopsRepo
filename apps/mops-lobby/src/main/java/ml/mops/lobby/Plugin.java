@@ -85,6 +85,8 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
     List<Inventory> overviewInventories = new ArrayList<>();
     List<Inventory> deliveryInsertInventories = new ArrayList<>();
 
+    HashMap<Player, Boolean> checkedFurnace = new HashMap<>();
+
     HashMap<Player, ItemStack> deliveryInProcessItem = new HashMap<>();
     HashMap<Player, UUID> deliveryInProcessReceiver = new HashMap<>();
 
@@ -911,13 +913,95 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                 }
 
                 // печка
-                if(event.getClickedBlock().getLocation().equals(new Location(player.getWorld(), -82, 10, -216))) {
-                    player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
-                    player.playSound(player.getLocation(), Sound.BLOCK_FIRE_EXTINGUISH, 0.3F, 1);
-                    player.playSound(player.getLocation(), Sound.ITEM_FIRECHARGE_USE, 0.3F, 1);
+                try {
+                    if (event.getClickedBlock().getLocation().equals(new Location(player.getWorld(), -82, 10, -216))) {
+                        if (player.getItemInHand().getItemMeta().getDisplayName().equals(new Items().mopsCoin().getItemMeta().getDisplayName()) && player.getItemInHand().getType().equals(new Items().mopsCoin().getType())) {
+                            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
+                            player.playSound(player.getLocation(), Sound.BLOCK_FIRE_EXTINGUISH, 0.3F, 1);
+                            player.playSound(player.getLocation(), Sound.ITEM_FIRECHARGE_USE, 0.3F, 1);
 
-                    player.sendMessage(ChatColor.GRAY + "add furnace later plslssl");
-                }
+                            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
+                            player.playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_BREAK, 1, 2);
+                        } else {
+                            Inventory inventory = Bukkit.createInventory(null, 27, "Smelter GUI");
+                            cancelledInventory.put(player, inventory);
+
+                            int i = 0;
+                            while (i < 27) {
+                                inventory.setItem(i, MopsUtils.createItem(Material.BLACK_STAINED_GLASS_PANE, " "));
+                                i++;
+                            }
+
+                            ItemStack furnace = new ItemStack(Material.BARREL);
+                            ItemMeta furnaceMeta = furnace.getItemMeta();
+                            furnaceMeta.setDisplayName(ChatColor.GOLD + "Hyper Smelter");
+                            List<String> lore = new ArrayList<>();
+                            lore.add(ChatColor.GRAY + "Tier: " + ChatColor.DARK_GREEN + "I");
+                            lore.add(ChatColor.GRAY + "Coins smelted: " + ChatColor.GOLD + "0");
+                            lore.add(" ");
+                            lore.add(ChatColor.YELLOW + "Click with MopsCoins to smelt!");
+                            furnaceMeta.setLore(lore);
+                            furnace.setItemMeta(furnaceMeta);
+
+                            inventory.setItem(10, furnace);
+
+                            ItemStack t1 = new ItemStack(Material.GREEN_STAINED_GLASS_PANE);
+                            ItemMeta t1Meta = furnace.getItemMeta();
+                            t1Meta.setDisplayName(ChatColor.GREEN + "Tier I");
+                            List<String> t1Lore = new ArrayList<>();
+                            t1Lore.add(ChatColor.GREEN + "Default tier, already upgraded!");
+                            t1Meta.setLore(t1Lore);
+                            t1.setItemMeta(t1Meta);
+
+                            ItemStack t2 = new ItemStack(Material.YELLOW_STAINED_GLASS_PANE);
+                            ItemMeta t2Meta = furnace.getItemMeta();
+                            t2Meta.setDisplayName(ChatColor.YELLOW + "Tier II - Upgrade");
+                            List<String> t2Lore = new ArrayList<>();
+                            t2Lore.add(ChatColor.GRAY + "Cost: " + ChatColor.GOLD + "???");
+                            t2Lore.add(ChatColor.GRAY + "Coins smelted: " + ChatColor.GOLD + "> ???");
+                            t2Lore.add(ChatColor.YELLOW + "Click to upgrade!");
+                            t2Meta.setLore(t2Lore);
+                            t2.setItemMeta(t2Meta);
+
+                            ItemStack t3 = new ItemStack(Material.RED_STAINED_GLASS_PANE);
+                            ItemMeta t3Meta = furnace.getItemMeta();
+                            t3Meta.setDisplayName(ChatColor.RED + "Tier III - Locked");
+                            List<String> t3Lore = new ArrayList<>();
+                            t3Lore.add(ChatColor.GRAY + "Cost: " + ChatColor.GOLD + "???");
+                            t3Lore.add(ChatColor.GRAY + "Coins smelted: " + ChatColor.GOLD + "> ???");
+                            t3Lore.add(ChatColor.RED + "Upgrade previous first!");
+                            t3Meta.setLore(t3Lore);
+                            t3.setItemMeta(t3Meta);
+
+                            ItemStack t4 = new ItemStack(Material.RED_STAINED_GLASS_PANE);
+                            ItemMeta t4Meta = furnace.getItemMeta();
+                            t4Meta.setDisplayName(ChatColor.RED + "Tier IV - Locked");
+                            List<String> t4Lore = new ArrayList<>();
+                            t4Lore.add(ChatColor.GRAY + "Cost: " + ChatColor.GOLD + "???");
+                            t4Lore.add(ChatColor.GRAY + "Coins smelted: " + ChatColor.GOLD + "> ???");
+                            t4Lore.add(ChatColor.RED + "Upgrade previous first!");
+                            t4Meta.setLore(t4Lore);
+                            t4.setItemMeta(t4Meta);
+
+                            ItemStack t5 = new ItemStack(Material.RED_STAINED_GLASS_PANE);
+                            ItemMeta t5Meta = furnace.getItemMeta();
+                            t5Meta.setDisplayName(ChatColor.RED + "Tier V - Locked");
+                            List<String> t5Lore = new ArrayList<>();
+                            t5Lore.add(ChatColor.GRAY + "Cost: " + ChatColor.GOLD + "???");
+                            t5Lore.add(ChatColor.GRAY + "Coins smelted: " + ChatColor.GOLD + "> ???");
+                            t5Lore.add(ChatColor.RED + "Upgrade previous first!");
+                            t5Meta.setLore(t5Lore);
+                            t5.setItemMeta(t5Meta);
+
+                            inventory.setItem(12, t1);
+                            inventory.setItem(13, t2);
+                            inventory.setItem(14, t3);
+                            inventory.setItem(15, t4);
+                            inventory.setItem(16, t5);
+                        }
+                        event.setCancelled(true);
+                    }
+                } catch (Exception ignored) { }
 
                 // дискорд
                 if(event.getClickedBlock().getLocation().equals(new Location(player.getWorld(), -84, 9, -184))) {
@@ -1377,8 +1461,9 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
                 if(!scoreboardTags.contains("guideline") && !cancelDialogue) {
                     MopsUtils.sendDialogueMessage(dialogue, player, entity);
-                } else if (scoreboardTags.contains("furnaceGuideline")) {
+                } else if (scoreboardTags.contains("furnaceGuideline") && !checkedFurnace.get(player)) {
                     player.sendMessage(ChatColor.GRAY + "This furnace is the only one in the hub. It smelts corn for the Theatre, or fish for the Fisherman. It also needs to be fueled, however, not by coal. It uses MopsCoins. But the Doge are not always smart. They tried to put all sorts of items in there to fuel the Smelter. And sometimes when you put in MopsCoins, it gives you some cool items. It may still give you something!");
+                    checkedFurnace.put(player, true);
                 }
             }
             if (entity.getScoreboardTags().contains("adminfrog")) {
@@ -1499,21 +1584,20 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         leftSecondsAgo.putIfAbsent(player.getUniqueId(), 500);
         restoreDeliveryItem.put(player, true);
 
+        checkedFurnace.put(player, false);
+
         if(duckActive) {
             duckPlayer.hidePlayer(this, player);
         }
 
         Bukkit.getScheduler().runTaskLater(this, () -> {
-            int random1 = (int) (Math.random() * 3);
-            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, random1);
+            player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 0);
             player.sendTitle(ChatColor.AQUA + "Welcome!", ChatColor.DARK_AQUA + "To MopsNetwork", 10, 30, 20);
             Bukkit.getScheduler().runTaskLater(this, () -> {
-                int random2 = (int) (Math.random() * 3);
-                player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, random2);
+                player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 1);
                 Bukkit.getScheduler().runTaskLater(this, () -> {
-                    int random3 = (int) (Math.random() * 3);
-                    player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, random3);
-                    player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_CHIME, 1, random3);
+                    player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 1, 2);
+                    player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_CHIME, 1, 2);
                 }, 4L);
             }, 4L);
         }, 50L);
@@ -2277,6 +2361,21 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
         inv.setItem(13, head);
         inv.setItem(22, MopsUtils.createItem(Material.GOLD_INGOT, ChatColor.GOLD + "EnderChest Value: " + getEnderchestValue(clickedAt)));
         inv.setItem(35, deliver);
+
+        if(MopsFiles.getRank(opening).getPermLevel() > 10) {
+            ItemStack console = MopsUtils.createCustomHead("dfc196edb1244810c39f23e08bb26a1753f57358f0d63ab139c993dce595e968");
+            ItemMeta consoleMeta = console.getItemMeta();
+            consoleMeta.setDisplayName(ChatColor.GREEN + "Developer Console");
+            List<String> consoleLore = new ArrayList<>();
+            consoleLore.add(ChatColor.GRAY + "Tweak any player settings");
+            consoleLore.add(ChatColor.GRAY + "you want! hehe");
+            consoleLore.add(" ");
+            consoleLore.add(ChatColor.YELLOW + "Click to open!");
+            consoleMeta.setLore(consoleLore);
+            console.setItemMeta(consoleMeta);
+
+            inv.setItem(13, head);
+        }
 
         overviewInventories.add(inv);
         inventoryName.put(inv, clickedAt.getUniqueId().toString());
