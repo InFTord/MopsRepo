@@ -998,6 +998,8 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                             inventory.setItem(14, t3);
                             inventory.setItem(15, t4);
                             inventory.setItem(16, t5);
+
+                            player.openInventory(inventory);
                         }
                         event.setCancelled(true);
                     }
