@@ -14,8 +14,10 @@ import ml.mops.utils.MopsFiles;
 import ml.mops.utils.MopsUtils;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
+import org.bukkit.block.Banner;
 import org.bukkit.block.Block;
 import org.bukkit.block.ShulkerBox;
+import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Player;
 import org.bukkit.*;
 import org.bukkit.command.Command;
@@ -38,10 +40,7 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.*;
 import org.bukkit.event.vehicle.VehicleDamageEvent;
 import org.bukkit.inventory.*;
-import org.bukkit.inventory.meta.BlockStateMeta;
-import org.bukkit.inventory.meta.BookMeta;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.inventory.meta.*;
 import org.bukkit.material.MaterialData;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffect;
@@ -2376,7 +2375,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             consoleMeta.setLore(consoleLore);
             console.setItemMeta(consoleMeta);
 
-            inv.setItem(13, head);
+            inv.setItem(27, head);
         }
 
         overviewInventories.add(inv);
@@ -2837,7 +2836,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
     public void stopMelon() {
         melonActive = false;
-        melonTimer = 60;
+        melonTimer = 30;
         melonPlayer.getInventory().remove(new Items().bow());
         melonPlayer.getInventory().remove(new Items().arrow());
 
