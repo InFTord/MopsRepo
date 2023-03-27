@@ -520,7 +520,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                     int result = (int) Math.round(equation) + 265;
                     stand.setRightArmPose(new EulerAngle(Math.toRadians(result), Math.toRadians(320), Math.toRadians(150)));
 
-                    mainworld.spawnParticle(Particle.SNOWBALL, new Location(mainworld, -94.5, 9, -180.5), 10, 0.3, 0.2, 0.3);
+//                    mainworld.spawnParticle(Particle.SNOWBALL, new Location(mainworld, -94.5, 9, -180.5), 10, 0.3, 0.2, 0.3);
                 }
 
                 if (entity.getScoreboardTags().contains("target")) {
@@ -1276,8 +1276,6 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             }
         }
     }
-
-    //A
 
     @EventHandler
     public void onAtEntityInteract(PlayerInteractAtEntityEvent event) {
