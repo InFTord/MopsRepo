@@ -60,7 +60,7 @@ public class Change {
                 lineCount++;
             }
 
-            if(lineCount == change.length() - 1) {
+            if(i == change.length() - 1) {
                 lines.add(additionalText);
 
                 lineCount++;
