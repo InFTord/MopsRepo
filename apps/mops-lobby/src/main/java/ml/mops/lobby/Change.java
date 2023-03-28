@@ -52,6 +52,10 @@ public class Change {
                 additionalText = "";
             }
 
+            if(i == change.length() - 1) {
+                lines.add(additionalText);
+            }
+
             i++;
         }
 
