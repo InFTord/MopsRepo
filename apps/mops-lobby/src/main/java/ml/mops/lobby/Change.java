@@ -49,21 +49,21 @@ public class Change {
         while (i < change.length()) {
             additionalText += change.charAt(i);
 
-            if(additionalText.length() * 4 >= 105) {
-                if(lineCount >= 1) {
-                    lines.add("   " + additionalText);
-                } else {
-                    lines.add(additionalText);
-                }
-                additionalText = "";
-
-                lineCount++;
-            }
-
             if(i == change.length() - 1) {
                 lines.add(additionalText);
 
                 lineCount++;
+            } else {
+                if (additionalText.length() * 4 >= 105) {
+                    if (lineCount >= 1) {
+                        lines.add("   " + additionalText);
+                    } else {
+                        lines.add(additionalText);
+                    }
+                    additionalText = "";
+
+                    lineCount++;
+                }
             }
 
             i++;
