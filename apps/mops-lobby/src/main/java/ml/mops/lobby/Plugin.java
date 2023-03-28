@@ -1169,7 +1169,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
 
                     changes.add(new Change(1, "Spring Lobby", 0));
                     changes.add(new Change(1, "Changelog Reworks", 1));
-                    changes.add(new Change(1, "test test hi catalyst bleh :p", 2));
+                    changes.add(new Change(2, "test test hi catalyst bleh :p", 2));
 
                     for(Change change : changes) {
                         fullChangelogText += change.getText(version);

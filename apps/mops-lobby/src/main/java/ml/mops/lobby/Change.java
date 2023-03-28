@@ -59,7 +59,7 @@ public class Change {
             i++;
         }
 
-        string += ChatColor.BLACK + MopsUtils.combineStrings(lines, "\n   ") + "\n" + ChatColor.RESET;
+        string += ChatColor.BLACK + MopsUtils.combineStrings(lines, "\n   ") + ChatColor.RESET;
 
         return string;
     }
