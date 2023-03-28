@@ -1161,18 +1161,21 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                     bookMeta.setAuthor(ChatColor.DARK_AQUA + "SirCat07");
                     bookMeta.setTitle("MopsNet Changelog");
 
+                    String fullChangelogText = "";
+                    String title = "     " + ChatColor.GREEN + ChatColor.BOLD + "CHANGELOG" + "\n" + ChatColor.RESET;
+
+                    int version = 1;
+                    List<Change> changes = new ArrayList<>();
+
+                    changes.add(new Change(1, "Spring Lobby", 0));
+                    changes.add(new Change(1, "Changelog Reworks", 1));
+
+                    for(Change change : changes) {
+                        fullChangelogText += change.getText(version);
+                    }
+
                     ArrayList<String> pages = new ArrayList<>();
-                    pages.add(0,
-                            "     " + ChatColor.GREEN + ChatColor.BOLD + "CHANGELOG" + "\n" + ChatColor.RESET +
-                            ChatColor.DARK_GREEN + "+ " + ChatColor.BLACK + "WoolBattle" + "\n" +
-                            "    Leaderboards" + "\n" +
-                            ChatColor.DARK_GREEN + "+ " + ChatColor.BLACK + "Woolbattle Attack" + "\n" +
-                            "    Defense NPC" + "\n" +
-                            ChatColor.DARK_GREEN + "+ " + ChatColor.BLACK + "Deliveries" + "\n" +
-                            ChatColor.GRAY + "- " + ChatColor.BLACK + "Bug Fixes" + "\n" +
-                            ChatColor.GRAY + "- " + ChatColor.BLACK + "AutoMod Updates" + "\n" +
-                            ChatColor.GRAY + "- " + ChatColor.BLACK + "Aura Changes" + "\n"
-                    );
+                    pages.add(0, title + fullChangelogText);
                     bookMeta.setPages(pages);
 
                     book.setItemMeta(bookMeta);
@@ -1301,7 +1304,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
                         dialogue = "i am cleaning snow i think";
                         player.playSound(player.getLocation(), Sound.ENTITY_WOLF_AMBIENT, 10, 2);
                     } else {
-                        dialogue = "i am cleaning something i think, i may not be";
+                        dialogue = "i am cleaning";
                         player.playSound(player.getLocation(), Sound.ENTITY_WOLF_AMBIENT, 10, 2);
                     }
                 }
