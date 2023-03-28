@@ -2379,7 +2379,7 @@ public class Plugin extends JavaPlugin implements Listener, CommandExecutor {
             consoleMeta.setLore(consoleLore);
             console.setItemMeta(consoleMeta);
 
-            inv.setItem(27, head);
+            inv.setItem(27, console);
         }
 
         overviewInventories.add(inv);

@@ -29,13 +29,13 @@ public class Change {
         }
 
         switch (type) {
-            case 1 -> {
+            case 0 -> {
                 string += ChatColor.DARK_GREEN + "+ ";
             }
-            case 2 -> {
+            default -> {
                 string += ChatColor.GRAY + "- ";
             }
-            case 3 -> {
+            case 2 -> {
                 string += ChatColor.DARK_RED + "- ";
             }
         }
@@ -43,21 +43,27 @@ public class Change {
         String additionalText = "";
         List<String> lines = new ArrayList<>();
 
+        int lineCount = 0;
+
         int i = 0;
         while (i < change.length()) {
             additionalText += change.charAt(i);
 
             if(additionalText.length() * 4 >= 105) {
-                if(lines.size() > 0) {
+                if(lineCount >= 1) {
                     lines.add("   " + additionalText);
                 } else {
                     lines.add(additionalText);
                 }
                 additionalText = "";
+
+                lineCount++;
             }
 
-            if(i == change.length() - 1) {
+            if(lineCount == change.length() - 1) {
                 lines.add(additionalText);
+
+                lineCount++;
             }
 
             i++;
