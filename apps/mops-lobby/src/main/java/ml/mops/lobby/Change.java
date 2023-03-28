@@ -48,7 +48,11 @@ public class Change {
             additionalText += change.charAt(i);
 
             if(additionalText.length() * 4 >= 105) {
-                lines.add(additionalText);
+                if(lines.size() > 0) {
+                    lines.add("   " + additionalText);
+                } else {
+                    lines.add(additionalText);
+                }
                 additionalText = "";
             }
 
@@ -59,7 +63,7 @@ public class Change {
             i++;
         }
 
-        string += ChatColor.BLACK + MopsUtils.combineStrings(lines, "\n   ") + ChatColor.RESET;
+        string += ChatColor.BLACK + MopsUtils.combineStrings(lines, "\n") + ChatColor.RESET;
 
         return string;
     }
